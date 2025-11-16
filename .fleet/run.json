@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "Accra Academy – Node Server",
+            "type": "node",
+            "file": "server.mjs",
+            "workingDirectory": "${PROJECT_DIR}",
+            "environmentVariables": {},
+            "watch": false
+        }
+    ]
+}
