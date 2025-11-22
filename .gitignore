@@ -1,3 +1,15 @@
-.fleet/
-server.mjs
+
+# Node.js
+node_modules/
+package-lock.json
 tailwindcss
+
+# Dev servers & temp
+server.mjs
+.fleet/
+*.kate-swp
+.DS_Store
+Thumbs.db
+
+# Build artifacts (optional – regenerate with npm run build)
+# css/styles.css
