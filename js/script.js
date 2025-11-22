@@ -103,8 +103,8 @@ if (themeToggle) {
     const storedTheme = localStorage.getItem('theme');
 
     // Icons (you can use any Unicode or SVG)
-    const SUN_ICON  = 'Sun';
-    const MOON_ICON = 'Moon';
+    const SUN_ICON  = 'Light';
+    const MOON_ICON = 'Dark';
 
     // Apply correct class + icon
     const applyTheme = () => {
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (crestClicks === 5) {
       // 1. Alert
-      alert('Bleoo Spirit Unlocked! You’re now a certified Accra Academy legend!');
+     // alert('Bleoo Spirit Unlocked! You’re now a certified Accra Academy legend!');
 
       // 2. Pop animation
       crest.style.transition = 'transform 0.2s ease-out';

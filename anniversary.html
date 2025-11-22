@@ -1,180 +1,179 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Accra Academy 94th Anniversary – Esse Quam Videri</title>
-  <meta name="description" content="Celebrating 94 years of excellence at Accra Academy. History, mission, achievements, and legacy since 1931.">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accra Academy 94th Anniversary – Esse Quam Videri</title>
+    <meta name="description" content="Celebrating 94 years of excellence at Accra Academy. History, mission, achievements, and legacy since 1931.">
 
-  <link href="./css/styles.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css">
-  <link href="./css/custom.css" rel="stylesheet">
-  <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href=./css/styles.css rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css">
+    <link href=./css/custom.css rel="stylesheet">
+    <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-  <!-- Navbar -->
-  <header class="site-header fixed top-0 w-full z-50 bg-white dark:bg-gray-800 shadow-md">
+<!-- Navbar -->
+<header class="site-header fixed top-0 w-full z-50 bg-white dark:bg-gray-800 shadow-md">
     <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <img src="./assets/crest.webp" alt="Crest" class="w-10 h-10">
-        <div>
-          <div class="font-bold text-lg">Accra Academy</div>
-          <div class="text-xs text-gray-600 dark:text-gray-400">Esse Quam Videri</div>
+        <div class="flex items-center space-x-3">
+            <img src="./assets/crest.webp" alt="Crest" class="w-10 h-10">
+            <div>
+                <div class="font-bold text-lg">Accra Academy</div>
+                <div class="text-xs text-gray-600 dark:text-gray-400">Esse Quam Videri</div>
+            </div>
         </div>
-      </div>
-      <nav class="hidden md:flex space-x-6">
-        <a href="index.html" class="hover:text-royal transition">Home</a>
-        <a href="anniversary.html" class="text-royal font-bold">94th Anniversary</a>
-        <a href="about.html" class="hover:text-royal transition">About</a>
-        <a href="#" class="hover:text-royal transition">Gallery</a>
-        <a href="#" class="hover:text-royal transition">Contact</a>
-      </nav>
-      <button id="darkModeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
-        <span class="sun hidden dark:inline">Sun</span>
-        <span class="moon dark:hidden">Moon</span>
-      </button>
+        <nav class="hidden md:flex space-x-6">
+            <a href="./index.html" class="hover:text-royal transition">Home</a>
+            <a href="./anniversary.html" class="text-royal font-bold">94th Anniversary</a>
+            <a href="./about.html" class="hover:text-royal transition">About</a>
+            <a href="#" class="hover:text-royal transition">Gallery</a>
+            <a href="#" class="hover:text-royal transition">Contact</a>
+        </nav>
+        <button id="darkModeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+            <span class="sun hidden dark:inline">Sun</span>
+            <span class="moon dark:hidden">Moon</span>
+        </button>
     </div>
-  </header>
+</header>
 
-  <!-- Anniversary Hero -->
-  <section class="relative h-screen flex items-center justify-center overflow-hidden" data-aos="fade">
+<!-- Anniversary Hero -->
+<section class="relative h-screen flex items-center justify-center overflow-hidden" data-aos="fade">
     <div class="absolute inset-0 bg-gradient-to-b from-royal/80 to-royal"></div>
     <img src="./assets/entrance.webp" alt="Accra Academy Entrance" class="absolute inset-0 w-full h-full object-cover parallax">
     <div class="relative z-10 text-center text-white px-4">
-      <h1 class="text-5xl md:text-7xl font-bold mb-4" data-aos="fade-up" data-aos-delay="100">
-        94 Years of Excellence
-      </h1>
-      <p class="text-xl md:text-2xl mb-6" data-aos="fade-up" data-aos-delay="200">
-        Celebrating Legacy & Innovation Since 1931
-      </p>
-      <p class="text-lg italic" data-aos="fade-up" data-aos-delay="300">"Esse Quam Videri" – To Be, Rather Than to Seem</p>
+        <h1 class="text-5xl md:text-7xl font-bold mb-4" data-aos="fade-up" data-aos-delay="100">
+            94 Years of Excellence
+        </h1>
+        <p class="text-xl md:text-2xl mb-6" data-aos="fade-up" data-aos-delay="200">
+            Celebrating Legacy & Innovation Since 1931
+        </p>
+        <p class="text-lg italic" data-aos="fade-up" data-aos-delay="300">"Esse Quam Videri" – To Be, Rather Than to Seem</p>
     </div>
-  </section>
+</section>
 
-  <!-- History Timeline -->
-  <section class="py-20 bg-white dark:bg-gray-800">
+<!-- History Timeline -->
+<section class="py-20 bg-white dark:bg-gray-800">
     <div class="container mx-auto px-4">
-      <h2 class="text-4xl font-bold text-center mb-16" data-aos="fade-up">Our Legacy</h2>
-      <div class="timeline">
-        <div class="timeline-item" data-aos="fade-right">
-          <div class="timeline-year">1931</div>
-          <div class="timeline-content">
-            <h3>Founding</h3>
-            <p>Established by Kofi George Konuah and others as a private school, setting the foundation for excellence.</p>
-          </div>
+        <h2 class="text-4xl font-bold text-center mb-16" data-aos="fade-up">Our Legacy</h2>
+        <div class="timeline">
+            <div class="timeline-item" data-aos="fade-right">
+                <div class="timeline-year">1931</div>
+                <div class="timeline-content">
+                    <h3>Founding</h3>
+                    <p>Established by Kofi George Konuah and others as a private school, setting the foundation for excellence.</p>
+                </div>
+            </div>
+            <div class="timeline-item" data-aos="fade-left">
+                <div class="timeline-year">1950</div>
+                <div class="timeline-content">
+                    <h3>Government-Assisted</h3>
+                    <p>Transitioned to Government-Assisted, expanding access and resources for generations.</p>
+                </div>
+            </div>
+            <div class="timeline-item" data-aos="fade-right">
+                <div class="timeline-year">2003</div>
+                <div class="timeline-content">
+                    <h3>African Excellence</h3>
+                    <p>Ranked 8th among Africa's top high schools, producing leaders like Chief Justices and Heads of State.</p>
+                </div>
+            </div>
+            <div class="timeline-item" data-aos="fade-left">
+                <div class="timeline-year">2025</div>
+                <div class="timeline-content">
+                    <h3>94 Years Strong</h3>
+                    <p>4,381 students, 226 staff, 160 award-winners — shaping the future with Bleoo Spirit.</p>
+                </div>
+            </div>
         </div>
-        <div class="timeline-item" data-aos="fade-left">
-          <div class="timeline-year">1950</div>
-          <div class="timeline-content">
-            <h3>Government-Assisted</h3>
-            <p>Transitioned to Government-Assisted, expanding access and resources for generations.</p>
-          </div>
-        </div>
-        <div class="timeline-item" data-aos="fade-right">
-          <div class="timeline-year">2003</div>
-          <div class="timeline-content">
-            <h3>African Excellence</h3>
-            <p>Ranked 8th among Africa's top high schools, producing leaders like Chief Justices and Heads of State.</p>
-          </div>
-        </div>
-        <div class="timeline-item" data-aos="fade-left">
-          <div class="timeline-year">2025</div>
-          <div class="timeline-content">
-            <h3>94 Years Strong</h3>
-            <p>4,381 students, 226 staff, 160 award-winners — shaping the future with Bleoo Spirit.</p>
-          </div>
-        </div>
-      </div>
     </div>
-  </section>
+</section>
 
-  <!-- Mission & Vision -->
-  <section class="py-20 bg-gray-50 dark:bg-gray-900">
+<!-- Mission & Vision -->
+<section class="py-20 bg-gray-50 dark:bg-gray-900">
     <div class="container mx-auto px-4">
-      <h2 class="text-4xl font-bold text-center mb-16" data-aos="fade-up">Our Guiding Principles</h2>
-      <div class="grid md:grid-cols-2 gap-12">
-        <div class="bg-royal/10 dark:bg-royal/20 p-8 rounded-xl" data-aos="fade-right">
-          <h3 class="text-2xl font-bold mb-4 text-royal">Mission</h3>
-          <p class="text-lg">To develop and manage a model school of excellence by instilling in all learners the virtues of Truth, Honesty, Selfless Service, Hardwork, Critical Thinking, and Problem Solving Skills.</p>
+        <h2 class="text-4xl font-bold text-center mb-16" data-aos="fade-up">Our Guiding Principles</h2>
+        <div class="grid md:grid-cols-2 gap-12">
+            <div class="bg-royal/10 dark:bg-royal/20 p-8 rounded-xl" data-aos="fade-right">
+                <h3 class="text-2xl font-bold mb-4 text-royal">Mission</h3>
+                <p class="text-lg">To develop and manage a model school of excellence by instilling in all learners the virtues of Truth, Honesty, Selfless Service, Hardwork, Critical Thinking, and Problem Solving Skills.</p>
+            </div>
+            <div class="bg-gold/10 dark:bg-gold/20 p-8 rounded-xl" data-aos="fade-left">
+                <h3 class="text-2xl font-bold mb-4 text-gold">Vision</h3>
+                <p class="text-lg">Quality Education For Life And Selfless Service Based On Truth, Hardwork And Honesty.</p>
+            </div>
         </div>
-        <div class="bg-gold/10 dark:bg-gold/20 p-8 rounded-xl" data-aos="fade-left">
-          <h3 class="text-2xl font-bold mb-4 text-gold">Vision</h3>
-          <p class="text-lg">Quality Education For Life And Selfless Service Based On Truth, Hardwork And Honesty.</p>
+        <div class="mt-16 text-center">
+            <h3 class="text-3xl font-bold mb-4">Core Values</h3>
+            <div class="grid md:grid-cols-4 gap-4">
+                <div class="p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md" data-aos="zoom-in">Truth</div>
+                <div class="p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md" data-aos="zoom-in" data-aos-delay="100">Honesty</div>
+                <div class="p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md" data-aos="zoom-in" data-aos-delay="200">Justice</div>
+                <div class="p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md" data-aos="zoom-in" data-aos-delay="300">Selfless Service</div>
+                <div class="p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md" data-aos="zoom-in" data-aos-delay="400">Hardwork</div>
+                <div class="p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md" data-aos="zoom-in" data-aos-delay="500">Critical Thinking</div>
+                <div class="p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md" data-aos="zoom-in" data-aos-delay="600">Excellence</div>
+            </div>
         </div>
-      </div>
-      <div class="mt-16 text-center">
-        <h3 class="text-3xl font-bold mb-4">Core Values</h3>
-        <div class="grid md:grid-cols-4 gap-4">
-          <div class="p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md" data-aos="zoom-in">Truth</div>
-          <div class="p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md" data-aos="zoom-in" data-aos-delay="100">Honesty</div>
-          <div class="p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md" data-aos="zoom-in" data-aos-delay="200">Justice</div>
-          <div class="p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md" data-aos="zoom-in" data-aos-delay="300">Selfless Service</div>
-          <div class="p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md" data-aos="zoom-in" data-aos-delay="400">Hardwork</div>
-          <div class="p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md" data-aos="zoom-in" data-aos-delay="500">Critical Thinking</div>
-          <div class="p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md" data-aos="zoom-in" data-aos-delay="600">Excellence</div>
-        </div>
-      </div>
     </div>
-  </section>
+</section>
 
-  <!-- Achievements -->
-  <section class="py-20 bg-white dark:bg-gray-800">
+<!-- Achievements -->
+<section class="py-20 bg-white dark:bg-gray-800">
     <div class="container mx-auto px-4">
-      <h2 class="text-4xl font-bold text-center mb-16" data-aos="fade-up">Achievements</h2>
-      <div class="grid md:grid-cols-2 gap-8">
-        <div data-aos="fade-up">
-          <h3 class="text-2xl font-bold mb-4">Academic Excellence</h3>
-          <p>Ranked 8th among Africa's top high schools in 2003. Consistent national excellence in Science & Maths Quizzes.</p>
+        <h2 class="text-4xl font-bold text-center mb-16" data-aos="fade-up">Achievements</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+            <div data-aos="fade-up">
+                <h3 class="text-2xl font-bold mb-4">Academic Excellence</h3>
+                <p>Ranked 8th among Africa's top high schools in 2003. Consistent national excellence in Science & Maths Quizzes.</p>
+            </div>
+            <div data-aos="fade-up" data-aos-delay="100">
+                <h3 class="text-2xl font-bold mb-4">Alumni Legacy</h3>
+                <p>Produced Chief Justices, Speakers of Parliament, concurrent Heads of State, and global leaders.</p>
+            </div>
+            <div data-aos="fade-up" data-aos-delay="200">
+                <h3 class="text-2xl font-bold mb-4">Modern Facilities</h3>
+                <p>Ultra Modern ICT Lab, Music Studio, Science Resource Centre — fostering innovation for 4,381+ students.</p>
+            </div>
+            <div data-aos="fade-up" data-aos-delay="300">
+                <h3 class="text-2xl font-bold mb-4">Staff & Community</h3>
+                <p>226 dedicated staff across 5 departments, nurturing 160+ award-winners annually.</p>
+            </div>
         </div>
-        <div data-aos="fade-up" data-aos-delay="100">
-          <h3 class="text-2xl font-bold mb-4">Alumni Legacy</h3>
-          <p>Produced Chief Justices, Speakers of Parliament, concurrent Heads of State, and global leaders.</p>
-        </div>
-        <div data-aos="fade-up" data-aos-delay="200">
-          <h3 class="text-2xl font-bold mb-4">Modern Facilities</h3>
-          <p>Ultra Modern ICT Lab, Music Studio, Science Resource Centre — fostering innovation for 4,381+ students.</p>
-        </div>
-        <div data-aos="fade-up" data-aos-delay="300">
-          <h3 class="text-2xl font-bold mb-4">Staff & Community</h3>
-          <p>226 dedicated staff across 5 departments, nurturing 160+ award-winners annually.</p>
-        </div>
-      </div>
     </div>
-  </section>
+</section>
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-white py-12 relative">
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-12 relative">
     <div class="container mx-auto px-4">
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="footer-brand flex items-center space-x-3">
-          <img src="./assets/crest.webp" alt="Crest" class="w-12 h-12">
-          <div>
-            <h3 class="font-bold">Accra Academy</h3>
-            <p class="text-sm">Esse Quam Videri</p>
-          </div>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="footer-brand flex items-center space-x-3">
+                <img src="./assets/crest.webp" alt="Crest" class="w-12 h-12">
+                <div>
+                    <h3 class="font-bold">Accra Academy</h3>
+                    <p class="text-sm">Esse Quam Videri</p>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-bold mb-2">Quick Links</h4>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="./index.html" class="hover:text-gold">Home</a></li>
+                    <li><a href="./about.html" class="hover:text-gold">About</a></li>
+                    <li><a href="#" class="hover:text-gold">Gallery</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-2">Contact</h4>
+                <p class="text-sm">Bubuashie, Greater Accra<br>+233 (0) 123 456 789</p>
+            </div>
         </div>
-        <div>
-          <h4 class="font-bold mb-2">Quick Links</h4>
-          <ul class="space-y-1 text-sm">
-            <li><a href="index.html" class="hover:text-gold">Home</a></li>
-            <li><a href="about.html" class="hover:text-gold">About</a></li>
-            <li><a href="#" class="hover:text-gold">Gallery</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="font-bold mb-2">Contact</h4>
-          <p class="text-sm">Bubuashie, Greater Accra<br>+233 (0) 123 456 789</p>
-        </div>
-      </div>
-      <div class="bleoo-counter mt-8"></div>
+        <div class="bleoo-counter mt-8"></div>
     </div>
-  </footer>
+</footer>
 
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="./js/script.js"></script>
-  <script>AOS.init({ duration: 800, once: true });</script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="./js/script.js"></script>
+<script>AOS.init({ duration: 800, once: true });</script>
 </body>
 </html>

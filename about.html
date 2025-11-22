@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accra Academy | Esse Quam Videri</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link  href="./css/abt.css" rel="stylesheet">
+</head>
+
+
+<style>
+  /* ------------------------------------------------------------------
+ *  10. FOOTER
+ *  ------------------------------------------------------------------ */
+.site-footer{
+    background:var(--footer-bg); color:var(--footer-text); padding:4rem 0 2rem;
+    border-top:1px solid rgba(255,204,0,.1);
+}
+.footer-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:2.5rem; margin-bottom:3rem;
+}
+.footer-col{ padding:.6rem; }
+.footer-brand h3{
+    font-family:'Merriweather',serif; font-size:1.6rem; color:var(--gold); margin-bottom:.3rem;
+}
+.footer-motto{
+    color:var(--gold); font-size:1rem; margin-bottom:.8rem; font-weight:600;
+}
+.footer-desc{ color:var(--footer-link); font-size:1rem; line-height:1.7; }
+.footer-title{
+    font-weight:700; color:#fff; margin-bottom:1.2rem; font-size:1.1rem;
+    text-transform:uppercase; letter-spacing:.1rem;
+}
+.footer-links{ list-style:none; padding:0; }
+.footer-links li{ margin-bottom:.8rem; }
+.footer-links a{
+    color:var(--footer-link); text-decoration:none;
+    transition:color .3s ease,transform .2s ease;
+}
+.footer-links a:hover{ color:var(--gold); transform:translateX(5px); }
+.footer-contact p{ color:var(--footer-link); margin-bottom:1.2rem; font-size:1rem; line-height:1.7; }
+.footer-contact strong{ color:#fff; }
+.footer-contact a{ color:var(--gold); text-decoration:none; }
+.footer-contact a:hover{ text-decoration:underline; text-underline-offset:4px; }
+.footer-bottom{
+    display:flex; justify-content:space-between; align-items:center; padding-top:2rem;
+    border-top:1px solid rgba(255,204,0,.15);
+}
+.footer-bottom p{ color:var(--footer-link); font-size:.95rem; }
+.footer-social{ display:flex; gap:1.5rem; }
+.footer-social a{
+    color:var(--gold); font-size:1.3rem; transition:transform .3s ease,color .3s ease;
+}
+.footer-social a:hover{ transform:scale(1.3); color:#e6b800; }
+
+</style>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- Navbar -->
+  <header class="bg-[#002E6D] text-white shadow-md fixed w-full z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div class="flex items-center space-x-4">
+        <img src="./assets/crest.webp" alt="Accra Academy Crest" class="h-12 w-12 rounded-full pulse">
+        <h1 class="text-2xl font-bold">Accra Academy</h1>
+      </div>
+      <nav class="space-x-6 hidden md:flex">
+        <a href="#history" class="hover:text-[#FFCC00] transition duration-300">History</a>
+        <a href="#mission" class="hover:text-[#FFCC00] transition duration-300">Mission</a>
+        <a href="#academics" class="hover:text-[#FFCC00] transition duration-300">Academics</a>
+        <a href="#campus-life" class="hover:text-[#FFCC00] transition duration-300">Campus Life</a>
+        <a href="#gallery" class="hover:text-[#FFCC00] transition duration-300">Gallery</a>
+        <a href="#contact" class="hover:text-[#FFCC00] transition duration-300">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="pt-28 bg-gradient-to-r from-[#002E6D] to-[#004D99] text-white text-center">
+    <div class="max-w-5xl mx-auto px-6 py-20">
+      <img src="assets/crest.png" alt="Crest" class="h-28 w-28 mx-auto mb-8 rounded-full border-4 border-[#FFCC00] shadow-lg fade-in-up" style="animation-delay: 0.2s;">
+      <h2 class="text-5xl font-bold mb-4 fade-in-up" style="animation-delay: 0.4s;">Welcome to Accra Academy</h2>
+      <p class="text-xl italic mb-8 fade-in-up" style="animation-delay: 0.6s;">"Esse Quam Videri" — To be, rather than to seem</p>
+      <a href="#history" class="bg-[#FFCC00] text-[#002E6D] px-8 py-3 rounded-full font-semibold hover:bg-[#E6B800] transition duration-300 fade-in-up" style="animation-delay: 0.8s;">Discover Our Legacy</a>
+    </div>
+  </section>
+
+  <!-- History Section -->
+  <section id="history" class="py-16 bg-gray-100">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-[#002E6D] text-center mb-10 fade-in-up" style="animation-delay: 0.2s;">Our History</h2>
+
+      <!-- Founding Years -->
+      <div class="mb-12 fade-in-up" style="animation-delay: 0.4s;">
+        <h3 class="text-2xl font-semibold mb-4">Founding Years (1931–1949)</h3>
+        <p class="text-lg text-gray-700 mb-4">Accra Academy was founded on July 20, 1931, by four visionary educators—Kofi George Konuah, Samuel Neils Awuletey, Gottfried Narku Alema, and James Akwei Halm-Addo—in Mantse Agbonaa, a suburb of James Town in Accra. With a startup capital of £200 and an initial enrollment of 19 students in a one-storey building called Ellen House, the school aimed to provide affordable secondary education to brilliant but financially disadvantaged boys. The founders served as the first teaching staff, focusing on English, Mathematics, Science, Business Studies, and Agriculture, while emphasizing character formation through daily devotions and moral instruction.</p>
+        <img src="assets/founders.webp" alt="Founders of Accra Academy" class="w-full rounded-lg shadow-md mb-4 max-w-md mx-auto">
+      </div>
+
+      <!-- Early Challenges and Growth -->
+      <div class="mb-12 fade-in-up" style="animation-delay: 0.6s;">
+        <h3 class="text-2xl font-semibold mb-4">Early Challenges and Growth (1950–1960)</h3>
+        <p class="text-lg text-gray-700 mb-4">The early years were marked by financial difficulties, limited infrastructure, and high teacher turnover. Despite these hurdles, the school's impressive examination results led to its recognition by the Department of Education. In 1950, following a recommendation, Accra Academy became a Government-Assisted School, gaining access to better funding and qualified teachers. Under A.K. Konuah's leadership, the school introduced the Sixth Form program, emphasizing science, mathematics, and business education. Konuah traveled across Ghana to recruit talented students, promoting equal opportunity and expanding enrollment.</p>
+        <img src="assets/Ellen_House.webp" alt="Ellen House, the original school building" class="w-full rounded-lg shadow-md mb-4 max-w-md mx-auto">
+      </div>
+
+      <!-- Relocation and Expansion -->
+      <div class="mb-12 fade-in-up" style="animation-delay: 0.8s;">
+        <h3 class="text-2xl font-semibold mb-4">Relocation and Expansion (1961–1980)</h3>
+        <p class="text-lg text-gray-700 mb-4">Due to growing enrollment, the school relocated to a 37-acre plot at Bubuashie in 1961, designed by Barnes, Hubbard & Arundel. The new campus, opened in 1962, featured modern classrooms, libraries, and science labs, earning the nickname "Little Legon" for its resemblance to the University of Ghana. J.K. Okine introduced Business Education in 1970, and the Parent-Teacher Association (PTA) was established in 1973. By its Golden Jubilee in 1981, the school had 900 students and 52 staff, celebrating with the creation of its song and anthem.</p>
+        <video controls autoplay muted class="w-full max-w-2xl mx-auto rounded-lg shadow-md fade-in-up" style="animation-delay: 0.6s;">
+          <source src="assets/campus-now.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <!-- Modern Era -->
+      <div class="mb-12 fade-in-up" style="animation-delay: 1.0s;">
+        <h3 class="text-2xl font-semibold mb-4">Modern Era (1981–Present)</h3>
+        <p class="text-lg text-gray-700 mb-4">V.B. Freeman introduced Computer Science in the 1980s, making Accra Academy one of Ghana's first ICT-focused schools. Mrs. Beatrice Lokko, appointed in 1997 as the first female headmistress, launched the school's website in 2002, added internet connectivity, and established a Guidance and Counselling Department. Under her leadership, scholarships for needy students and extracurriculars flourished. The 70th anniversary in 2001 was attended by President John Agyekum Kufuor.</p>
+        <p class="text-lg text-gray-700 mb-4">Rev. William Foli Garr (2017–2020) upgraded labs, expanded the dining hall, and added an e-library. Emmanuel Ofoe Fiemawhle, appointed in 2020 amid COVID-19, completed the Administration, Library, and ICT Block. Recent milestones include a 98.9% WASSCE pass rate in 2006, a solar-powered football field in 2012, and an astroturf pitch in 2017 sponsored by alumnus Asamoah Gyan.</p>
+        <div class="carousel fade-in-up" style="animation-delay: 1.4s;">
+          <div class="carousel-inner" id="modernEraCarousel">
+            <div class="carousel-item"><img src="assets/modern1.webp" alt="Modern Campus 1"></div>
+            <div class="carousel-item"><img src="assets/modern2.webp" alt="Modern Campus 2"></div>
+            <div class="carousel-item"><video controls autoplay muted><source src="assets/video-modern-era.mp4" type="video/mp4">Your browser does not support the video tag.</video></div>
+            <div class="carousel-item"><img src="assets/modern3.webp" alt="Modern Campus 3"></div>
+          </div>
+          <div class="carousel-controls">
+            <button class="carousel-btn" onclick="plusSlides(-1)">&#10094;</button>
+            <button class="carousel-btn" onclick="plusSlides(1)">&#10095;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Achievements and Legacy -->
+      <div class="fade-in-up" style="animation-delay: 1.2s;">
+        <h3 class="text-2xl font-semibold mb-4">Achievements & Legacy</h3>
+        <p class="text-lg text-gray-700 mb-4">Ranked 8th in Africa's top 100 high schools in 2003 by Africa Almanac, Accra Academy has produced leaders like J.A. Ankrah (head of state), Chief Justices Samuel Azu Crabbe and Fred Apaloo, and sports icons Ohene Djan and Asamoah Gyan. It's the first school to produce successive Chief Justices, Speakers of Parliament, and a head/deputy head of state in the same government. With 4,381 students and 226 staff today, the school's ethos of "every child counts" continues to inspire.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission and Vision Section -->
+  <section id="mission" class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-[#002E6D] text-center mb-10 fade-in-up" style="animation-delay: 0.2s;">Mission & Vision</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="fade-in-up" style="animation-delay: 0.4s;">
+          <h3 class="text-xl font-semibold mb-4">Mission</h3>
+          <p class="text-lg text-gray-700">To provide quality education and foster holistic development for students to become responsible leaders.</p>
+        </div>
+        <div class="fade-in-up" style="animation-delay: 0.6s;">
+          <h3 class="text-xl font-semibold mb-4">Vision</h3>
+          <p class="text-lg text-gray-700">To be a world-class institution producing innovative and ethical leaders for tomorrow.</p>
+        </div>
+      </div>
+      <div class="mt-8 fade-in-up" style="animation-delay: 0.8s;">
+        <h3 class="text-xl font-semibold mb-4">Core Values</h3>
+        <ul class="list-disc list-inside text-lg text-gray-700">
+          <li>Integrity</li>
+          <li>Excellence</li>
+          <li>Teamwork</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Academics Section -->
+  <section id="academics" class="py-16 bg-gray-100">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-[#002E6D] text-center mb-10 fade-in-up" style="animation-delay: 0.2s;">Academics</h2>
+      <p class="text-lg text-gray-700 mb-6 fade-in-up" style="animation-delay: 0.4s;">Accra Academy offers a diverse curriculum including Business, General Science, General Arts, Agricultural Science, and Visual Arts, leading to the West African Senior School Certificate. With a legacy of academic rigor, the school achieved a 98.9% WASSCE pass rate in 2006.</p>
+      <p class="text-lg text-gray-700 mb-6 fade-in-up" style="animation-delay: 0.6s;">Our state-of-the-art facilities, including science laboratories and a new ICT Block, support innovative learning, preparing students for higher education and global careers.</p>
+    </div>
+  </section>
+
+  <!-- Campus Life Section -->
+  <section id="campus-life" class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-[#002E6D] text-center mb-10 fade-in-up" style="animation-delay: 0.2s;">Campus Life</h2>
+      <p class="text-lg text-gray-700 mb-6 fade-in-up" style="animation-delay: 0.4s;">Life at Accra Academy extends beyond the classroom with vibrant extracurriculars like sports, the Cadet Corps, and student exchange programs with Germany. Boarding facilities such as Ellen House and KG Konuah Hall foster a strong community spirit.</p>
+      <p class="text-lg text-gray-700 mb-6 fade-in-up" style="animation-delay: 0.6s;">Students engage in work-study programs, leadership opportunities, and community projects, enhancing their personal and social skills.</p>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section id="gallery" class="py-16 bg-gray-100">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-[#002E6D] text-center mb-10 fade-in-up" style="animation-delay: 0.2s;">Gallery</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <img src="assets/library_of_Accra_Academy.jpg" alt="Library" class="rounded-lg shadow-md fade-in-up" style="animation-delay: 0.4s;">
+        <img src="assets/crest.jpeg" alt="Crest" class="rounded-lg shadow-md fade-in-up" style="animation-delay: 0.6s;">
+        <img src="assets/Ellen_House.jpg" alt="Ellen House" class="rounded-lg shadow-md fade-in-up" style="animation-delay: 0.8s;">
+        <img src="assets/K._G._Konuah_hall_of_Accra_Academy.jpg" alt="KG Konuah Hall" class="rounded-lg shadow-md fade-in-up" style="animation-delay: 1.0s;">
+        <img src="assets/osm-intl,13,a,a,270x200.png" alt="Location Map" class="rounded-lg shadow-md fade-in-up" style="animation-delay: 1.2s;">
+        <img src="assets/S.S_Sackey_Block.jpg" alt="S.S Sackey Block" class="rounded-lg shadow-md fade-in-up" style="animation-delay: 1.4s;">
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <div id="contact" class="py-16 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-[#002E6D] text-center mb-10 fade-in-up" style="animation-delay: 0.2s;">Contact Us</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="fade-in-up" style="animation-delay: 0.4s;">
+          <h3 class="text-xl font-bold mb-3">Accra Academy</h3>
+          <p>Bubuashie, Accra - Ghana<br>📞 +233 (0)30 222 2405<br>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fa93949c95ba9b9999889b9b999b9e9f9783d49f9e8fd49d92">[email&#160;protected]</a></p>
+        </div>
+        <div class="fade-in-up" style="animation-delay: 0.6s;">
+          <h3 class="text-xl font-bold mb-3">Quick Links</h3>
+          <ul>
+            <li><a href="#history" class="hover:text-[#FFCC00] transition duration-300">History</a></li>
+            <li><a href="#mission" class="hover:text-[#FFCC00] transition duration-300">Mission</a></li>
+            <li><a href="#academics" class="hover:text-[#FFCC00] transition duration-300">Academics</a></li>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+          </ul>
+          </div>
+          </div>
+    </div>
+          </div>
+
+
+
+          <!-- FOOTER -->
+          <footer class="site-footer">
+              <div class="container">
+                  <div class="footer-grid">
+                      <div class="footer-col">
+                          <div class="footer-brand">
+                              <h3>Accra Academy</h3>
+                              <p class="footer-motto">Esse Quam Videri</p>
+                              <p class="footer-desc">Pioneering education since 1931, shaping leaders of tomorrow.</p>
+                              <picture>
+                                  <source srcset="./assets/crest.webp" type="image/webp">
+                                  <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest" loading="lazy">
+                              </picture>
+                          </div>
+                      </div>
+                      <div class="footer-col">
+                          <h4 class="footer-title">Quick Links</h4>
+                          <ul class="footer-links">
+                              <li><a href=./about.html>About Us</a></li>
+                              <li><a href="./academics">Academics</a></li>
+                              <li><a href="#gallery">Gallery</a></li>
+                              <li><a href="#">Admissions</a></li>
+                              <li><a href="#">Alumni</a></li>
+                          </ul>
+                      </div>
+                      <div class="footer-col">
+                          <h4 class="footer-title">Resources</h4>
+                          <ul class="footer-links">
+                              <li><a href="#">Student Portal</a></li>
+                              <li><a href="#">Handbook</a></li>
+                              <li><a href="#">Calendar</a></li>
+                              <li><a href="#">Events</a></li>
+                              <li><a href="#">News & Updates</a></li>
+                          </ul>
+                      </div>
+                      <div class="footer-col">
+                          <h4 class="footer-title">Contact</h4>
+                          <div class="footer-contact">
+                              <p><strong>Address</strong><br>Bubuashie, Greater Accra<br>Ghana</p>
+                              <p><strong>Phone</strong><br><a href="tel:+233123456789">+233 (0) 242 513 897</a></p>
+                              <p><strong>Email</strong><br><a href="mailto:info@accraacademy.edu.gh">info@accraacademy.edu.gh</a></p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="footer-bottom">
+                      <p>&copy; <span id="yr"></span> Accra Academy. All rights reserved.</p>
+                      <div class="footer-social">
+                          <a href="https://web.facebook.com/AccraAcademyGH/" aria-label="Facebook">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34" class="social-icon">
+                                  <circle cx="12" cy="12" r="11" />
+                                  <path fill="white" d="M13 11h2.5l.4-2.6H13V7.5c0-.7.2-1.1 1.2-1.1H16V4h-2.1c-2.5 0-3.6 1.2-3.6 3.3v1.1H9v2.6h1.3v6.9h2.7V11z"/>
+                              </svg>
+                          </a>
+                          <a href="#" aria-label="Twitter">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34" class="social-icon">
+                                  <circle cx="12" cy="12" r="11" />
+                                  <path fill="white" d="M17.7 6H15.6l-2.5 3.2L10.8 6H7.9l3.9 5.2L7.6 18h2.1l2.8-3.8 2.6 3.8h2.8l-4-5.5L17.7 6z"/>
+                              </svg>
+                          </a>
+                          <a href="https://www.instagram.com/insidebleoo/" aria-label="Instagram">
+                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34" class="social-icon">
+                                  <circle cx="12" cy="12" r="11" />
+                                  <path fill="white" d="M16 2H8C4.7 2 2 4.7 2 8v8c0 3.3 2.7 6 6 6h8c3.3 0 6-2.7 6-6V8c0-3.3-2.7-6-6-6zM12 17c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5zm5.5-9.6c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z"/>
+                              </svg>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </footer>
+
+
+</body>
+</html>
