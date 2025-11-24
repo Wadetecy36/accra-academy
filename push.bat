@@ -1,4 +1,6 @@
 @echo off
+color 2
+
 echo.
 echo   BLEOO SPIRIT PUSHING TO GITHUB...
 echo.
