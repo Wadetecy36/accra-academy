@@ -1,30 +1,41 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Accra Academy – Prototype Homepage</title>
-    <meta name="description" content="Accra Academy – Esse Quam Videri. Prototype homepage with animated hero, mission block, and interactive feature cards." />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Accra Academy – Esse Quam Videri</title>
+  <meta name="description" content="Celebrating 94 years of excellence. Quality Education For Life And Selfless Service.">
 
-    <!-- Tailwind CSS (Local) -->
-    <link href="./css/styles.css" rel="stylesheet">
+  <!-- FAVICON -->
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="./favicon.ico">
 
-    <!-- Google Fonts Preload -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Merriweather:wght@700&display=swap" as="style" onload="this.rel='stylesheet'">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+  <!-- SEO + Social -->
+  <meta property="og:title" content="Accra Academy – Esse Quam Videri">
+  <meta property="og:description" content="Quality Education For Life And Selfless Service Based On Truth, Hardwork And Honesty">
+  <meta property="og:image" content="./assets/crest.webp">
+  <meta property="og:url" content="https://wadetecy36.github.io/accra-academy-website">
+  <meta name="twitter:card" content="summary_large_image">
 
-    <!-- AOS (Animate On Scroll) -->
-    <link href="./node_modules/aos/dist/aos.js" rel="stylesheet" />
+  <!-- PWA Manifest -->
+  <link href="/manifest.json" rel="manifest">
 
-    <!-- Custom CSS -->
-    <link href="./css/custom.css" rel="stylesheet">
+  <!-- Tailwind (local) -->
+  <link href="./css/styles.css" rel="stylesheet">
 
-    <!-- Swiper.js -->
-    <link rel="stylesheet" href="./node_modules/swiper/swiper-bundle.min.css" />
-    <script src="./node_modules/swiper/swiper-bundle.min.js"></script>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
 
-    <!-- Confetti (for Easter egg) -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- AOS + Swiper (CDN – reliable & fast) -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css">
+
+  <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Custom Styles (merged abt.css into this) -->
+  <link href="./css/custom.css" rel="stylesheet">
+</head>
 
     <!-- Live Reload Client -->
     <script>
@@ -39,9 +50,7 @@
             ws.onclose = () => setTimeout(() => location.reload(), 1000);
         }
     </script>
-
-</head>
-<script>
+    <script>
     document.addEventListener('scroll', () => {
         const panels = document.querySelectorAll('.mv-panel');
         panels.forEach(panel => {
@@ -53,7 +62,7 @@
     });
 </script>
 
-<body>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
 <!-- NAVBAR -->
 <header class="site-header">
     <div class="container">
@@ -75,9 +84,11 @@
             <a href="#gallery">Gallery</a>
             <a href="./contacts.html">Contact</a>
         </nav>
-        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">+</button>
-        <button id="mobile-toggle" class="mobile-btn" aria-label="Toggle menu" aria-expanded="false">☰</button>
-    </div>
+        <!-- DARK MODE TOGGLE – WORKS ON ALL PAGES -->
+        <button id="theme-toggle" class="p-3 rounded-full bg-gray-200 dark:bg-gray-700 hover:ring-4 hover:ring-gold/30 transition-all" aria-label="Toggle dark mode">
+          <!-- Icons will be injected by JavaScript -->📚
+        </button>
+      </div>
 </header>
 
 <!-- HERO -->
@@ -154,12 +165,12 @@
                 <h3>Modern Facilities</h3>
                 <p>Equipped with the latest resources for learning.</p>
             </div>
-            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-card hover-active" data-aos="fade-up" data-aos-delay="100">
                 <div class="icon">🧪</div>
                 <h3>Science Labs</h3>
                 <p>Hands-on experiments for future innovators.</p>
             </div>
-            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="feature-card hover-active" data-aos="fade-up" data-aos-delay="100">
                 <div class="icon">🏟️</div>
                 <h3>Sports Facilities</h3>
                 <p>Training grounds for champions.</p>
@@ -169,12 +180,12 @@
 </section>
 
 
- <section class="features">
-    <div class="container">
+ <section class="feat">
+    <div class="cont">
       <h2 class="section-title" data-aos="fade-up">Explore</h2>
       <p class="section-lead" data-aos="fade-up" data-aos-delay="100">Explore the key aspects of our academy.</p>
       <div class="features-grid">
-        <div class="feature-card" data-aos="fade-up" data-aos-dely="200" data-key="programs">
+        <div class="feature-card hover-active" data-aos="fade-up" data-aos-dely="200" data-key="programs">
           <div class="icon">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Academic Programs Icon">
               <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="#002E6D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -184,7 +195,7 @@
          <a href= 'https://googl.com' ><h3>Programs</h3></a>
          <p>Explore our diverse academic and co-curricular programs designed to build knowledge and leadership.</p>
         </div>
-        <div class="feature-card" data-key="labs" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-card hover-active" data-aos="fade-up" data-aos-dely="200" data-key="labs" >
             <div class="icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Labs Icon">
                 <rect x="3" y="6" width="18" height="12" rx="2" stroke="#002E6D" stroke-width="1.2"/>
                 <path d="M3 10h18" stroke="#FFCC00" stroke-width="1.2"/>
@@ -192,18 +203,18 @@
             <a href= 'https://googl.com' ><h3>Halls</h3></a>
           <p>Discover our boarding facilities and the strong house spirit that drives unity and competition.</p>
         </div>
-        <div class="feature-card" data-key="contact">
+        <div class="feature-card hover-active" data-aos="fade-up" data-aos-dely="200" data-key="contact">
             <div class="icon">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Contact Icon">
                 <path d="M22 16V8a2 2 0 00-2-2H4a2 2 0 00-2 2v8" stroke="#002E6D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M16 10l-4 4-4-4" stroke="#FFCC00" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
-           <a href= 'https://googl.com' ><h3>Contact</h3></a>
+           <a href= './contacts.html' ><h3>Contact</h3></a>
            <p>Get in touch with our administration and support team for inquiries or assistance.</p>
           </div>
 
-          <div class="feature-card" data-key="infra">
+          <div class="feature-card hover-active" data-aos="fade-up" data-aos-dely="200" data-key="infra">
             <div class="icon">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Infrastructure Icon">
                 <path d="M3 21h18" stroke="#002E6D" stroke-width="1.2" stroke-linecap="round"/>
@@ -213,7 +224,7 @@
             <a href= 'https://googl.com' ><h3>Infrastructure</h3></a>
             <p>Learn about our modern facilities, labs, and digital learning resources.</p>
           </div>
-          <div class="feature-card" data-key="news" id="news">
+          <div class="feature-card hover-active" data-aos="fade-up" data-aos-dely="200" data-key="news" id="news">
             <div class="icon">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="News Icon">
                 <rect x="3" y="4" width="18" height="16" rx="2" stroke="#002E6D" stroke-width="1.2"/>
@@ -223,7 +234,7 @@
             <a href= 'https://googl.com' ><h3>Our News</h3></a>
             <p>Stay up to date with school events, achievements, and announcements.</p>
           </div>
-          <div class="feature-card" data-key="clubs">
+          <div class="feature-card hover-active" data-aos="fade-up" data-aos-dely="200" data-key="clubs">
             <div class="icon">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Clubs Icon">
                 <path d="M12 2l2 5 5 .4-4 3 1.2 5L12 14l-4.2 3 1.2-5-4-3L10 7 12 2z" stroke="#002E6D" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
@@ -336,12 +347,12 @@
                 </ul>
             </div>
             <div class="footer-col">
-                <h4 class="footer-title">Contact</h4>
-                <div class="footer-contact">
+            <div class="footer-contact">
                     <p><strong>Address</strong><br>Bubuashie, Greater Accra<br>Ghana</p>
-                    <p><strong>Phone</strong><br><a href="tel:+233123456789">+233 (0) 242 513 897</a></p>
+                    <p><strong>Phone 1</strong><br><a href="tel:+233302222690">📞+233 30 222 2690</a></>
+                    <p><strong>Phone 2</strong><br><a href="tel:+233302222691">📞+233 30 222 2691</a></p>
                     <p><strong>Email</strong><br><a href="mailto:info@accraacademy.edu.gh">info@accraacademy.edu.gh</a></p>
-                </div>
+            </div>
             </div>
         </div>
         <div class="footer-bottom">
@@ -370,8 +381,13 @@
     </div>
 </footer>
 
-<!-- Scripts -->
-<script defer src="./node_modules/aos/dist/aos.js"></script>
-<script defer src="./js/script.js"></script>
+<!-- SCROLL TO TOP BUTTON -->
+  <button id="scrollTop" title="Back to top" class="fixed bottom-6 right-6 z-50 p-3 bg-gold text-royal rounded-full shadow-lg hover:scale-110 transition"><b>˄</b>
+  </button>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="./js/script.js"></script>
 </body>
 </html>

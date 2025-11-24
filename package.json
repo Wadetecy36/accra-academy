@@ -4,9 +4,10 @@
   "description": "Accra Academy prototype homepage – Tailwind + Swiper + AOS + Easter-egg",
   "private": true,
   "scripts": {
-    "dev": "tailwindcss -i ./css/input.css -o ./css/styles.css --watch",
-    "build": "tailwindcss -i ./css/input.css -o ./css/styles.css --minify",
-    "serve": "python3 -m http.server 8000"
+  "dev": "tailwindcss -i ./css/input.css -o ./css/styles.css --watch",
+  "build": "tailwindcss -i ./css/input.css -o ./css/styles.css --minify",
+  "serve": "python3 -m http.server 8000",
+  "start": "node server.mjs"
   },
   "author": "Trinity <trinity@example.com>",
   "license": "MIT",

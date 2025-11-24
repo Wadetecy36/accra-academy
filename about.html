@@ -1,63 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Accra Academy | Esse Quam Videri</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Accra Academy – Esse Quam Videri</title>
+  <meta name="description" content="Celebrating 94 years of excellence. Quality Education For Life And Selfless Service.">
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link  href="./css/abt.css" rel="stylesheet">
+  <!-- FAVICON -->
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="./favicon.ico">
+
+  <!-- SEO + Social -->
+  <meta property="og:title" content="Accra Academy – Esse Quam Videri">
+  <meta property="og:description" content="Quality Education For Life And Selfless Service Based On Truth, Hardwork And Honesty">
+  <meta property="og:image" content="./assets/crest.webp">
+  <meta property="og:url" content="https://wadetecy36.github.io/accra-academy-website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="./manifest.json">
+
+  <!-- Tailwind (local) -->
+  <link href="./css/styles.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+
+  <!-- AOS + Swiper (CDN – reliable & fast) -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css">
+
+  <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Custom Styles (merged abt.css into this) -->
+  <link href="./css/custom.css" rel="stylesheet">
 </head>
-
-
-<style>
-  /* ------------------------------------------------------------------
- *  10. FOOTER
- *  ------------------------------------------------------------------ */
-.site-footer{
-    background:var(--footer-bg); color:var(--footer-text); padding:4rem 0 2rem;
-    border-top:1px solid rgba(255,204,0,.1);
-}
-.footer-grid{
-    display:grid; grid-template-columns:repeat(4,1fr); gap:2.5rem; margin-bottom:3rem;
-}
-.footer-col{ padding:.6rem; }
-.footer-brand h3{
-    font-family:'Merriweather',serif; font-size:1.6rem; color:var(--gold); margin-bottom:.3rem;
-}
-.footer-motto{
-    color:var(--gold); font-size:1rem; margin-bottom:.8rem; font-weight:600;
-}
-.footer-desc{ color:var(--footer-link); font-size:1rem; line-height:1.7; }
-.footer-title{
-    font-weight:700; color:#fff; margin-bottom:1.2rem; font-size:1.1rem;
-    text-transform:uppercase; letter-spacing:.1rem;
-}
-.footer-links{ list-style:none; padding:0; }
-.footer-links li{ margin-bottom:.8rem; }
-.footer-links a{
-    color:var(--footer-link); text-decoration:none;
-    transition:color .3s ease,transform .2s ease;
-}
-.footer-links a:hover{ color:var(--gold); transform:translateX(5px); }
-.footer-contact p{ color:var(--footer-link); margin-bottom:1.2rem; font-size:1rem; line-height:1.7; }
-.footer-contact strong{ color:#fff; }
-.footer-contact a{ color:var(--gold); text-decoration:none; }
-.footer-contact a:hover{ text-decoration:underline; text-underline-offset:4px; }
-.footer-bottom{
-    display:flex; justify-content:space-between; align-items:center; padding-top:2rem;
-    border-top:1px solid rgba(255,204,0,.15);
-}
-.footer-bottom p{ color:var(--footer-link); font-size:.95rem; }
-.footer-social{ display:flex; gap:1.5rem; }
-.footer-social a{
-    color:var(--gold); font-size:1.3rem; transition:transform .3s ease,color .3s ease;
-}
-.footer-social a:hover{ transform:scale(1.3); color:#e6b800; }
-
-</style>
-<body class="bg-gray-50 text-gray-800">
-
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
   <!-- Navbar -->
   <header class="bg-[#002E6D] text-white shadow-md fixed w-full z-50">
     <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
@@ -207,7 +186,7 @@
       <div class="grid md:grid-cols-3 gap-8">
         <div class="fade-in-up" style="animation-delay: 0.4s;">
           <h3 class="text-xl font-bold mb-3">Accra Academy</h3>
-          <p>Bubuashie, Accra - Ghana<br>📞 +233 (0)30 222 2405<br>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fa93949c95ba9b9999889b9b999b9e9f9783d49f9e8fd49d92">[email&#160;protected]</a></p>
+          <p>Bubuashie, Accra - Ghana<br> +233 (0)30 222 2405<br>✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fa93949c95ba9b9999889b9b999b9e9f9783d49f9e8fd49d92">[email&#160;protected]</a></p>
         </div>
         <div class="fade-in-up" style="animation-delay: 0.6s;">
           <h3 class="text-xl font-bold mb-3">Quick Links</h3>
@@ -263,7 +242,7 @@
                           <h4 class="footer-title">Contact</h4>
                           <div class="footer-contact">
                               <p><strong>Address</strong><br>Bubuashie, Greater Accra<br>Ghana</p>
-                              <p><strong>Phone</strong><br><a href="tel:+233123456789">+233 (0) 242 513 897</a></p>
+                              <p><strong>Phone</strong><br><a href="tel:+233123456789">📞+233 (0) 242 513 897</a></p>
                               <p><strong>Email</strong><br><a href="mailto:info@accraacademy.edu.gh">info@accraacademy.edu.gh</a></p>
                           </div>
                       </div>
@@ -294,6 +273,14 @@
               </div>
           </footer>
 
+          <!-- SCROLL TO TOP BUTTON -->
+          <button id="scrollTop" title="Back to top" class="fixed bottom-6 right-6 z-50 p-3 bg-gold text-royal rounded-full shadow-lg hover:scale-110 transition">
+            Up Arrow
+          </button>
 
-</body>
-</html>
+          <!-- Scripts -->
+          <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+          <script src="./js/script.js"></script>
+        </body>
+        </html>
