@@ -345,3 +345,17 @@ html { scroll-behavior: smooth; }
     transform: scale(1.1) translateY(-2px);
     filter: invert(83%) sepia(34%) saturate(1873%) hue-rotate(358deg) brightness(110%) contrast(110%) drop-shadow(0 0 5px rgba(253, 190, 17, 0.7));
 }
+
+
+/* Skip Link for Accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--gold);
+  color: var(--royal);
+  padding: 0.5rem 1rem;
+  z-index: 100;
+  font-weight: 700;
+}
+.skip-link:focus { top: 0; }
