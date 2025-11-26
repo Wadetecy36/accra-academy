@@ -5,20 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Contact Us - Accra Academy</title>
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
-  <!-- TAILWIND CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: { royal: '#002147', gold: '#FDBE11', soft: '#F0F4F8' },
-          fontFamily: { display: ['Merriweather', 'serif'], body: ['Inter', 'sans-serif'] }
-        }
-      }
-    }
-  </script>
-
+  
   <link href="./css/custom.css" rel="stylesheet">
 </head>
 <body class="bg-gray-50 dark:bg-gray-900">
@@ -56,21 +43,84 @@
 
       <div class="grid md:grid-cols-2 gap-10">
           <!-- Form -->
-          <form class="feature-card" action="https://formspree.io/f/xrbvojar" method="POST">
-            <label class="block mb-4">
-                <span class="text-gray-700 dark:text-gray-300">Name</span>
-                <input type="text" name="name" class="w-full p-3 border rounded mt-1 dark:bg-gray-800 dark:text-white" required>
-            </label>
-            <label class="block mb-4">
-                <span class="text-gray-700 dark:text-gray-300">Email</span>
-                <input type="email" name="email" class="w-full p-3 border rounded mt-1 dark:bg-gray-800 dark:text-white" required>
-            </label>
-            <label class="block mb-4">
-                <span class="text-gray-700 dark:text-gray-300">Message</span>
-                <textarea name="message" rows="4" class="w-full p-3 border rounded mt-1 dark:bg-gray-800 dark:text-white" required></textarea>
-            </label>
-            <button type="submit" class="btn primary w-full">Send Message</button>
-          </form>
+         <form id="contact-form" class="feature-card" action="https://formspree.io/f/xrbvojar" method="POST">
+  <!-- Add honeypot -->
+  <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+  
+  <!-- Your existing fields stay, just add patterns -->
+  <label class="block mb-4">
+    <span class="text-gray-700 dark:text-gray-300">Name</span>
+    <input type="text" name="name" 
+           pattern="[A-Za-z\s]{2,50}" 
+           required 
+           class="w-full p-3 border rounded mt-1 dark:bg-gray-800 dark:text-white">
+  </label>
+  
+  <label class="block mb-4">
+    <span class="text-gray-700 dark:text-gray-300">Email</span>
+    <input type="email" name="email" required 
+           class="w-full p-3 border rounded mt-1 dark:bg-gray-800 dark:text-white">
+  </label>
+  
+  <label class="block mb-4">
+    <span class="text-gray-700 dark:text-gray-300">Message</span>
+    <textarea name="message" rows="4" 
+              minlength="10" 
+              maxlength="1000" 
+              required 
+              class="w-full p-3 border rounded mt-1 dark:bg-gray-800 dark:text-white"></textarea>
+  </label>
+  
+  <button type="submit" id="submit-btn" class="btn primary w-full">Send Message</button>
+  <div id="form-status" class="mt-4 hidden"></div>
+</form>
+
+<script>
+document.getElementById('contact-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  const status = document.getElementById('form-status');
+  
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  
+  // Rate limit check
+  const lastSubmit = localStorage.getItem('lastFormSubmit');
+  if (lastSubmit && Date.now() - lastSubmit < 60000) {
+    status.textContent = '⏱️ Please wait 1 minute between submissions';
+    status.className = 'mt-4 p-3 bg-red-100 text-red-800 rounded';
+    status.classList.remove('hidden');
+    btn.disabled = false;
+    btn.textContent = 'Send Message';
+    return;
+  }
+  
+  try {
+    const response = await fetch('https://formspree.io/f/xrbvojar', {
+      method: 'POST',
+      body: new FormData(e.target),
+      headers: { 'Accept': 'application/json' }
+    });
+    
+    if (response.ok) {
+      localStorage.setItem('lastFormSubmit', Date.now());
+      status.textContent = '✅ Message sent successfully!';
+      status.className = 'mt-4 p-3 bg-green-100 text-green-800 rounded';
+      status.classList.remove('hidden');
+      e.target.reset();
+    } else {
+      throw new Error('Failed');
+    }
+  } catch (error) {
+    status.textContent = '❌ Error. Please try again.';
+    status.className = 'mt-4 p-3 bg-red-100 text-red-800 rounded';
+    status.classList.remove('hidden');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Send Message';
+  }
+});
+</script>
 
           <!-- Info -->
           <div class="feature-card">
