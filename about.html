@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>About Us - Accra Academy</title>
+  <title>Our History - Accra Academy</title>
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
 
   <!-- TAILWIND CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -19,80 +20,255 @@
     }
   </script>
 
-  <link href="./css/custom.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+  <!-- FONTS & LIBRARIES -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css">
+  
+  <!-- CUSTOM CSS -->
+  <link href="./css/custom.css" rel="stylesheet">
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
 
-  <!-- NAVBAR -->
+<body class="min-h-screen bg-soft dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+  <!-- HEADER -->
   <header class="site-header">
-    <div class="container">
-        <div class="brand">
-            <img src="assets/1crest.png" alt="Crest" class="crest">
+    <div class="container flex justify-between items-center py-3">
+        <div class="brand flex items-center gap-4">
+            <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest w-12 h-12">
             <div class="brand-text">
-                <div class="school-name">Accra Academy</div>
-                <div class="school-motto">Esse Quam Videri</div>
+                <h1 class="school-name text-2xl font-bold text-royal dark:text-gold">Accra Academy</h1>
+                <p class="school-motto text-sm text-gray-600 dark:text-gray-400">Esse Quam Videri</p>
             </div>
         </div>
-        <nav class="navlinks">
-            <a href="./index.html">Home</a>
-            <a href="./about.html">About</a>
-            <a href="./academics.html">Academics</a>
-            <a href="./contacts.html">Contact</a>
+
+        <nav class="navlinks hidden md:flex gap-8 text-lg font-medium">
+            <a href="./index.html" class="hover:text-gold transition">Home</a>
+            <a href="./about.html" class="text-gold font-bold">About</a>
+            <a href="./academics.html" class="hover:text-gold transition">Academics</a>
+            <a href="./index.html#gallery" class="hover:text-gold transition">Gallery</a>
+            <a href="./contacts.html" class="hover:text-gold transition">Contact</a>
         </nav>
-        <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">🌗</button>
+
+        <div class="flex items-center gap-4">
+            <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:ring-2 hover:ring-gold transition-all" aria-label="Toggle dark mode"></button>
+            <button class="mobile-btn md:hidden text-2xl">☰</button>
+        </div>
     </div>
   </header>
 
   <!-- HERO -->
-  <section class="pt-40 pb-16 bg-royal text-white text-center">
-    <div class="container">
-      <img src="assets/crest.png" alt="Crest" class="h-28 w-28 mx-auto mb-6 filter drop-shadow-lg" data-aos="zoom-in">
-      <h1 class="text-5xl font-display font-bold mb-4" data-aos="fade-up">Our History</h1>
-      <p class="text-xl text-gold italic" data-aos="fade-up" data-aos-delay="200">"To be, rather than to seem"</p>
+  <section class="relative py-32 bg-royal text-white overflow-hidden">
+    <div class="absolute inset-0 opacity-20" style="background-image: url('./assets/entrance.webp'); background-size: cover; background-position: center;"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-royal/90 to-royal/95"></div>
+    
+    <div class="container relative z-10 text-center">
+      <img src="assets/crest.png" alt="Crest" class="h-24 w-24 mx-auto mb-6 drop-shadow-[0_0_15px_rgba(253,190,17,0.5)]" data-aos="zoom-in">
+      <h1 class="text-5xl md:text-6xl font-display font-bold mb-4 text-gold">Our Heritage</h1>
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto italic" data-aos="fade-up" data-aos-delay="100">"To be, rather than to seem"</p>
     </div>
   </section>
 
-  <!-- HISTORY CONTENT -->
-  <section id="history" class="py-16">
+  <!-- THE ORIGIN STORY -->
+  <section class="py-20">
     <div class="container">
-      <div class="mb-16" data-aos="fade-up">
-        <h2 class="text-3xl font-display text-royal dark:text-gold mb-6">Founding Years (1931–1949)</h2>
-        <div class="grid md:grid-cols-2 gap-8 items-center">
-            <p class="text-lg text-gray-700 dark:text-gray-300">Accra Academy was founded on July 20, 1931, by four visionary educators in Mantse Agbonaa. Starting with 19 students in Ellen House, the school aimed to provide affordable secondary education to brilliant but financially disadvantaged boys.</p>
-            <img src="assets/founders.webp" alt="Founders" class="rounded-lg shadow-lg w-full object-cover h-64">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div data-aos="fade-right">
+          <div class="w-12 h-1 bg-gold mb-6"></div>
+          <h2 class="text-3xl font-display font-bold text-royal dark:text-white mb-6">The Beginning (1931)</h2>
+          <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
+            Accra Academy was founded on <strong>July 20, 1931</strong>, in Mantse Agbonaa, James Town. It was born out of the vision of four young educators who wanted to provide affordable, high-quality secondary education to brilliant but financially disadvantaged boys.
+          </p>
+          <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+            Starting with just 19 students in a one-story building known as <strong>Ellen House</strong>, the school has grown into one of the most prestigious institutions in Africa.
+          </p>
+        </div>
+        <div class="relative" data-aos="fade-left">
+          <div class="absolute -inset-4 bg-gold/20 rounded-2xl transform rotate-3"></div>
+          <img src="assets/founders.webp" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/5/5e/Accra_Academy_Original_Campus.jpg'" alt="Old Campus" class="relative rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 grayscale hover:grayscale-0 transition duration-500">
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="mb-12" data-aos="fade-up">
-        <h3 class="text-2xl font-display text-royal dark:text-gold mb-4">Modern Era</h3>
-        <p class="mb-4 text-gray-700 dark:text-gray-300">From the 1980s to present day, Accra Academy has continued to lead in ICT, Sports, and Academics.</p>
+  <!-- THE BIG FOUR (FOUNDERS) -->
+  <section class="py-20 bg-gray-100 dark:bg-gray-800">
+    <div class="container">
+      <div class="text-center mb-16" data-aos="fade-up">
+        <h2 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-gold">The Big Four</h2>
+        <p class="text-gray-600 dark:text-gray-400 mt-2">The visionaries who started it all.</p>
+      </div>
 
-        <!-- CAROUSEL -->
-        <div class="carousel mt-6">
-          <div class="carousel-inner">
-            <div class="carousel-item active"><img src="assets/modern1.webp" alt="Modern Campus 1"></div>
-            <div class="carousel-item"><img src="assets/modern2.webp" alt="Modern Campus 2"></div>
-            <div class="carousel-item"><img src="assets/modern3.webp" alt="Modern Campus 3"></div>
-          </div>
-          <div class="carousel-controls">
-            <button class="carousel-btn" onclick="plusSlides(-1)">&#10094;</button>
-            <button class="carousel-btn" onclick="plusSlides(1)">&#10095;</button>
-          </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Founder 1 -->
+        <div class="feature-card text-center group" data-aos="fade-up" data-aos-delay="100">
+          <div class="w-24 h-24 mx-auto bg-royal rounded-full flex items-center justify-center text-3xl mb-4 text-gold border-2 border-gold">K</div>
+          <h3 class="text-lg font-bold text-royal dark:text-white">K.G. Konuah</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Principal</p>
+        </div>
+        <!-- Founder 2 -->
+        <div class="feature-card text-center group" data-aos="fade-up" data-aos-delay="200">
+          <div class="w-24 h-24 mx-auto bg-royal rounded-full flex items-center justify-center text-3xl mb-4 text-gold border-2 border-gold">A</div>
+          <h3 class="text-lg font-bold text-royal dark:text-white">G.N. Alema</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Agricultural Science</p>
+        </div>
+        <!-- Founder 3 -->
+        <div class="feature-card text-center group" data-aos="fade-up" data-aos-delay="300">
+          <div class="w-24 h-24 mx-auto bg-royal rounded-full flex items-center justify-center text-3xl mb-4 text-gold border-2 border-gold">A</div>
+          <h3 class="text-lg font-bold text-royal dark:text-white">S.N. Awuletey</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Secretary</p>
+        </div>
+        <!-- Founder 4 -->
+        <div class="feature-card text-center group" data-aos="fade-up" data-aos-delay="400">
+          <div class="w-24 h-24 mx-auto bg-royal rounded-full flex items-center justify-center text-3xl mb-4 text-gold border-2 border-gold">H</div>
+          <h3 class="text-lg font-bold text-royal dark:text-white">J.A. Halm-Addo</h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Treasurer</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE / MODERN ERA -->
+  <section class="py-20">
+    <div class="container">
+      <div class="flex flex-col md:flex-row gap-12">
+        
+        <!-- Text Content -->
+        <div class="md:w-1/2" data-aos="fade-right">
+          <h2 class="text-3xl font-display font-bold text-royal dark:text-gold mb-6">The Modern Era</h2>
+          <div class="space-y-6 border-l-2 border-gold pl-6">
+            <div class="relative">
+              <span class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-gold border-4 border-white dark:border-gray-900"></span>
+              <h4 class="text-xl font-bold dark:text-white">1961 - Relocation</h4>
+              <p class="text-gray-600 dark:text-gray-400 text-sm">Moved to the current expansive campus at Bubuashie ("Little Legon").</p>
+            </div>
+            <div class="relative">
+              <span class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-gold border-4 border-white dark:border-gray-900"></span>
+              <h4 class="text-xl font-bold dark:text-white">1981 - Golden Jubilee</h4>
+              <p class="text-gray-600 dark:text-gray-400 text-sm">Celebrated 50 years of excellence and adopted the school anthem.</p>
+            </div>
+            <div class="relative">
+              <span class="absolute -left-[31px] top-1 w-4 h-4 rounded-full bg-gold border-4 border-white dark:border-gray-900"></span>
+              <h4 class="text-xl font-bold dark:text-white">2000s - ICT & Expansion</h4>
+              <p class="text-gray-600 dark:text-gray-400 text-sm">Introduction of modern computer labs, astroturf, and new science blocks.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carousel (Using Manual Logic from script.js) -->
+        <div class="md:w-1/2" data-aos="fade-left">
+            <div class="carousel h-full min-h-[300px]">
+              <div class="carousel-inner h-full">
+                <div class="carousel-item active h-full">
+                    <img src="https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=800&auto=format&fit=crop" alt="Modern Campus" class="h-full object-cover">
+                </div>
+                <div class="carousel-item h-full">
+                    <img src="https://images.unsplash.com/photo-1598981493905-701333574184?q=80&w=800&auto=format&fit=crop" alt="Science Lab" class="h-full object-cover">
+                </div>
+                <div class="carousel-item h-full">
+                    <img src="https://images.unsplash.com/photo-1577896334523-69610eed5471?q=80&w=800&auto=format&fit=crop" alt="Library" class="h-full object-cover">
+                </div>
+              </div>
+              <div class="carousel-controls">
+                <button class="carousel-btn" onclick="plusSlides(-1)">&#10094;</button>
+                <button class="carousel-btn" onclick="plusSlides(1)">&#10095;</button>
+              </div>
+            </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHOOL ANTHEM -->
+  <section class="py-20 bg-royal text-white text-center relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-full h-full opacity-10" style="background: repeating-linear-gradient(45deg, transparent, transparent 10px, #FDBE11 10px, #FDBE11 20px);"></div>
+    <div class="container relative z-10">
+        <div class="max-w-2xl mx-auto border border-gold/30 p-8 rounded-2xl bg-royal/80 backdrop-blur-sm">
+            <h2 class="text-3xl font-display font-bold text-gold mb-6">School Anthem</h2>
+            <p class="italic text-lg leading-loose font-light opacity-90">
+                "Accra Academy, a school of our own<br>
+                The pride of the coast, a star that has shown<br>
+                We'll live by the truth, and honor our name<br>
+                In service and duty, we'll rise up to fame..."
+            </p>
+            <div class="mt-6">
+                <span class="text-sm text-gold uppercase tracking-widest">Esse Quam Videri</span>
+            </div>
+        </div>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="site-footer">
-      <div class="container text-center">
-          <p>&copy; <span id="yr"></span> Accra Academy. All rights reserved.</p>
-      </div>
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <h3>Accra Academy</h3>
+                    <p class="footer-motto">Esse Quam Videri</p>
+                    <p class="footer-desc">Pioneering education since 1931, shaping leaders of tomorrow.</p>
+                    <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest mt-4">
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-title">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="./about.html">About Us</a></li>
+                    <li><a href="./academics.html">Academics</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="./contacts.html">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-title">Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Student Portal</a></li>
+                    <li><a href="#">Handbook</a></li>
+                    <li><a href="#">Calendar</a></li>
+                    <li><a href="#">Events</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4 class="footer-title">Contact Info</h4>
+                <div class="footer-contact">
+                    <div class="contact-item">
+                        <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></div>
+                        <div class="text-box"><span class="label">Location</span><p>Bubuashie, Greater Accra</p></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></div>
+                        <div class="text-box"><span class="label">Phone</span><p><a href="tel:+233302222690">+233 30 222 2690</a></p></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></div>
+                        <div class="text-box"><span class="label">Email</span><p><a href="mailto:info@accraacademy.edu.gh">info@accraacademy.edu.gh</a></p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; <span id="yr"></span> Accra Academy. All rights reserved.</p>
+            <div class="footer-social">
+                <a href="https://web.facebook.com/AccraAcademyGH/" aria-label="Facebook" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="11" /><path fill="white" d="M13 11h2.5l.4-2.6H13V7.5c0-.7.2-1.1 1.2-1.1H16V4h-2.1c-2.5 0-3.6 1.2-3.6 3.3v1.1H9v2.6h1.3v6.9h2.7V11z"/></svg></a>
+                <a href="#" aria-label="Twitter" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="11" /><path fill="white" d="M17.7 6H15.6l-2.5 3.2L10.8 6H7.9l3.9 5.2L7.6 18h2.1l2.8-3.8 2.6 3.8h2.8l-4-5.5L17.7 6z"/></svg></a>
+            </div>
+        </div>
+    </div>
   </footer>
 
+  <!-- SCROLL TOP -->
+  <button id="scrollTop" title="Back to top">
+    <svg class="scroll-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+  </button>
+
+  <!-- SCRIPTS -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="./js/script.js"></script>
 </body>
 </html>

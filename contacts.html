@@ -23,22 +23,33 @@
 </head>
 <body class="bg-gray-50 dark:bg-gray-900">
 
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container">
-        <div class="brand">
-            <img src="./assets/1crest.png" alt="Crest" class="crest">
-            <div class="brand-text">
-                <div class="school-name">Accra Academy</div>
-            </div>
-        </div>
-        <nav class="navlinks">
-            <a href="./index.html">Home</a>
-            <a href="./about.html">About</a>
-            <a href="./contacts.html">Contact</a>
-        </nav>
-    </div>
-  </header>
+    <!-- HEADER -->
+    <header class="site-header">
+      <div class="container flex justify-between items-center py-3">
+          <div class="brand flex items-center gap-4">
+              <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest w-12 h-12">
+              <div class="brand-text">
+                  <h1 class="school-name text-2xl font-bold text-royal dark:text-gold">Accra Academy</h1>
+                  <p class="school-motto text-sm text-gray-600 dark:text-gray-400">Esse Quam Videri</p>
+              </div>
+          </div>
+
+          <nav class="navlinks hidden md:flex gap-8 text-lg font-medium">
+              <a href="./index.html">Home</a>
+              <a href="./about.html">About</a>
+              <a href="./academics.html">Academics</a>
+              <a href="#gallery">Gallery</a>
+              <a href="./contacts.html">Contact</a>
+          </nav>
+
+          <div class="flex items-center gap-4">
+              <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:ring-2 hover:ring-gold transition-all" aria-label="Toggle dark mode">
+                  <!-- Icon injected by JS -->
+              </button>
+              <button class="mobile-btn md:hidden text-2xl">☰</button>
+          </div>
+      </div>
+    </header>
 
   <section class="pt-40 pb-16 container">
       <h1 class="text-4xl font-bold text-royal dark:text-gold mb-10 text-center">Get in Touch</h1>
