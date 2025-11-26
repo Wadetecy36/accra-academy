@@ -208,6 +208,17 @@
         });
     };
 
+        // Auto-fallback for missing images
+document.querySelectorAll('img').forEach(img => {
+  if (!img.hasAttribute('onerror')) {
+    img.onerror = function() {
+      this.onerror = null;
+      const alt = this.alt || 'Image';
+      this.src = `https://placehold.co/800x450/002147/FDBE11?text=${encodeURIComponent(alt)}`;
+    };
+  }
+});
+    
     // Create Intersection Observer
     const counterObserver = new IntersectionObserver(startCounting, {
         root: null,
