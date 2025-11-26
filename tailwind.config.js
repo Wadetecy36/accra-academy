@@ -1,11 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./*.html"], // Scans index.html for classes
+  content: ["./*.{html,js}"],
   theme: {
     extend: {
       colors: {
-        royal: '#002E6D',
-        gold: '#FFCC00'
+        royal: '#002147', // Official Deep Navy
+        gold: '#FDBE11',  // Official Rich Gold
+        soft: '#F0F4F8'
       },
       fontFamily: {
         display: ['Merriweather', 'serif'],

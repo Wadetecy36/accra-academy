@@ -1,413 +1,347 @@
 /* ============================================================= */
-/*  css/custom.css – Accra Academy prototype                     */
+/*  css/custom.css – GOLDEN GLOW + MERRIWEATHER                  */
 /* ============================================================= */
 
-/* ------------------------------------------------------------------
- *  1. ROOT VARIABLES (light / dark mode)
- *  ------------------------------------------------------------------ */
-:root {
-    --royal: #002E6D;
-    --gold:  #FFCC00;
+    :root {
+    --royal: #002147; /* Bleoo Navy */
+    --gold:  #FDBE11; /* Bleoo Gold */
     --soft:  #F7FAFC;
-    --shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
 
-    /* Light mode */
-    --bg-body: linear-gradient(180deg,rgba(0,46,109,.08) 0%,rgba(255,236,179,.02) 60%),var(--soft);
-    --bg-overlay: rgba(255,255,255,.7);
-    --text-primary: #0b1220;
-    --text-secondary: #475569;
-    --card-bg: linear-gradient(135deg,rgba(255,255,255,.95),rgba(250,250,252,.98));
-    --footer-bg: linear-gradient(180deg,#0f1724 0%,#081829 100%);
+    /* Modern Gradient Backgrounds */
+    --bg-body: linear-gradient(180deg, #F0F9FF 0%, #E0F2FE 100%);
+    --bg-dark: linear-gradient(180deg, #020617 0%, #0F172A 100%);
+
+    /* Glassmorphism Variables */
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+    --glass-blur: blur(12px);
+    --shadow-soft: 0 10px 30px -10px rgba(0, 33, 71, 0.1);
+    --shadow-hover: 0 20px 40px -5px rgba(0, 33, 71, 0.2);
+
+    /* Footer Variables */
+    --footer-bg: linear-gradient(180deg, #0f1724 0%, #081829 100%);
     --footer-text: #e0e7ff;
     --footer-link: #cbd5e1;
 }
-
-
-
-.dark-mode {
-    --bg-body: linear-gradient(180deg,rgba(2,6,23,.8) 0%,rgba(0,46,109,.2) 60%),#1e293b;
-    --bg-overlay: rgba(30,41,59,.9);
+    .dark-mode {
+    --bg-body: var(--bg-dark);
+    --glass-bg: rgba(30, 41, 59, 0.6);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
     --text-primary: #f1f5f9;
     --text-secondary: #94a3b8;
-    --card-bg: linear-gradient(135deg,rgba(30,41,59,.95),rgba(15,23,42,.98));
-    --footer-bg: linear-gradient(180deg,#0f1724 0%,#020617 100%);
-    --footer-text: #e0e7ff;
-    --footer-link: #94a3b8;
+    --footer-bg: linear-gradient(180deg, #020617 0%, #000000 100%);
 }
 
-/* Smooth scroll */
+/* --- GLOBAL RESET --- */
 html { scroll-behavior: smooth; }
 
-/* Scroll to top button */
-#scrollTop {
-    display: none;
-}
-#scrollTop.show {
-    display: block;
-    animation: bounce 2s infinite;
-}
-@keyframes bounce {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+    body {
+    /* MERRIWEATHER APPLIED GLOBALLY */
+    font-family: 'Merriweather', serif;
+    font-weight: 300; /* Lighter weight for elegance */
+    background: var(--bg-body);
+    color: #0F172A;
+    transition: background 0.3s ease;
 }
 
+.dark-mode body { color: var(--text-primary); }
 
+.container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
 
-/* ------------------------------------------------------------------
- *  2. GLOBAL RESET & LAYOUT
- *  ------------------------------------------------------------------ */
-
-*, *::before, *::after { box-sizing:border-box; }
-html, body { height:100%; font-size:16px; scroll-behavior:smooth; }
-body {
-    font-family:'Inter',system-ui,Arial,sans-serif;
-    background-color: rgb(243, 223, 73);
-    background:var(--bg-body);
-    color:var(--text-primary);
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    position:relative;
+/* --- HEADER --- */
+.site-header {
+    position: fixed; top: 0; width: 100%; z-index: 50;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
 }
-body::before{
-    content:''; position:absolute; inset:0;
-    background:var(--bg-overlay); z-index:-1;
-}
-.container, .cont {
-    max-width:1200px; margin:0 auto; padding:0 1rem; position:relative; z-index:1;
+.dark-mode .site-header {
+    background: rgba(15, 23, 42, 0.85);
+    border-color: rgba(255,255,255,0.05);
 }
 
-
-/* ------------------------------------------------------------------
- *  3. HEADER
- *  ------------------------------------------------------------------ */
-
-
-.site-header{
-    position:fixed; top:0; left:0; right:0; z-index:60;
-    border-bottom:1px solid rgba(2,6,23,.06);
-    box-shadow:var(--shadow);
-
-}
-.site-header .container{
-    display:flex; align-items:center; justify-content:space-between; padding:.8rem 1.2rem;
-}
-.brand{ display:flex; align-items:center; gap:1rem; }
-.brand .crest{
-    width:50px; height:50px; border-radius:999px; object-fit:contain;
-}
-.brand-text .school-name{
-    font-family:'Merriweather',serif; color:var(--royal); font-weight:700; font-size:1.4rem;
-}
-.brand-text .school-motto{
-    font-size:.85rem; color:var(--text-secondary); font-weight:500;
-}
-.navlinks{ display:flex; gap:1.5rem; align-items:center; }
-.navlinks a{
-    color:var(--text-primary); text-decoration:none; font-weight:600; padding:.3rem .5rem;
-    transition:color .3s ease,transform .2s ease;
-}
-.navlinks a:hover{ color:var(--royal); transform:translateY(-2px); }
-.mobile-btn{
-    display:none; background:none; border:none; font-size:1.8rem; cursor:pointer;
-    color:var(--royal);
-}
-.mobile-btn:hover{ transform:rotate(90deg); }
-
-/* ------------------------------------------------------------------
- *  4. HERO
- *  ------------------------------------------------------------------ */
-
-.hero{ position:relative; min-height:70vh; display:flex; align-items:center; justify-content:center; padding:6rem 0; }
-.hero-bg{ position:absolute; inset:0; background:url('../assets/entrance.webp') center/cover no-repeat; z-index:-20; }
-.hero-bg::before{ content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,46,109,.5),rgba(2,16,43,.8)); z-index:-10; }
-.hero-inner{ text-align:center; padding:1.5rem; }
-.crest-wrap{ width:180px; height:180px; margin:0 auto; position:relative; }
-.crest-aura{ position:absolute; inset:-12px; border-radius:999px; background:radial-gradient(circle at 30% 30%,rgba(255,204,0,.4),rgba(0,46,109,.1) 40%,transparent 60%); filter:blur(30px); animation:pulse 6s infinite ease-in-out; }
-.crest-img{ width:100%; height:100%; object-fit:contain; border-radius:999px; box-shadow:0 0 20px rgba(255,204,0,.2); }
-.hero-title{ font-family:'Merriweather',serif; color:#fff; font-size:2.8rem; margin-top:1.2rem; }
-.hero-sub{ color:rgba(255,236,179,.98); margin-top:.8rem; font-size:1.1rem; font-weight:500; }
-.hero-cta{ margin-top:1.5rem; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
-.btn{ border-radius:999px; padding:.7rem 1.2rem; font-weight:700; text-decoration:none; transition:transform .3s ease,box-shadow .3s ease; }
-.btn.primary{ background:linear-gradient(90deg,var(--gold),#e6b800); color:var(--royal); box-shadow:0 12px 40px rgba(255,204,0,.12); }
-.btn.primary:hover{ transform:translateY(-3px); box-shadow:0 15px 50px rgba(255,204,0,.25); }
-.btn.ghost{ background:transparent; border:2px solid rgba(255,255,255,.25); color:#fff; backdrop-filter:blur(5px); }
-.btn.ghost:hover{ transform:translateY(-3px); box-shadow:0 15px 50px rgba(255,204,0,.25); }
-
-
-/* ------------------------------------------------------------------
- *  5. INFO CARDS (hero bottom)
- *  ------------------------------------------------------------------ */
-
-.hero-cards{ margin-top:2.5rem; display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; max-width:950px; margin-left:auto; margin-right:auto; padding:0 1rem; }
-.info-card{ background:var(--card-bg); padding:1.2rem; border-radius:16px; box-shadow:0 8px 30px rgba(0,46,109,.08); transition:transform .3s ease,box-shadow .3s ease; }
-.info-card:hover{ transform:translateY(-5px); box-shadow:0 12px 40px rgba(0,46,109,.12); }
-.card-title{ color:var(--royal); font-weight:700; font-size:1.1rem; }
-.card-sub{ color:#374151; font-size:.95rem; margin-top:.4rem; }
-
-
-/* ------------------------------------------------------------------
- *  6. MISSION / VISION / CORE VALUES
- *  ------------------------------------------------------------------ */
-
-.mvcore, .features, .gallery, .stats { padding:5rem 0; background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(248,250,255,.99)); }
-.section-title{ font-family:'Merriweather',serif; color:var(--royal); font-size:2.2rem; text-align:center; }
-.section-lead{ color:#475569; margin-top:.6rem; text-align:center; max-width:700px; margin-left:auto; margin-right:auto; }
-
-.mv-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:2rem; padding:0 1rem; }
-.mv-panel{ background:var(--card-bg); padding:1.8rem; border-radius:14px; box-shadow:0 10px 35px rgba(2,6,23,.06); border-top:5px solid var(--gold); transition:transform .4s ease,box-shadow .4s ease; }
-.mv-panel:hover{ transform:translateY(-6px); box-shadow:0 15px 50px rgba(2,6,23,.12),0 0 20px rgba(255,204,0,.1); }
-
-
-/* ------------------------------------------------------------------
- *  7. FEATURES (tilt cards)
- *  ------------------------------------------------------------------ */
-
-.features{ padding:5rem 0; background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(248,250,255,.99)); }
-.features-grid{
-    display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:2rem;
-}
-.feature-card{
-    background:var(--card-bg); border-radius:16px; padding:1.5rem;
-    box-shadow:0 10px 35px rgba(2,6,23,.08);
-    border:1px solid rgba(2,6,23,.05); cursor:pointer;
-    transition:all .01s ease;
-}
-.feature-card .icon{
-    width:48px; height:48px; border-radius:10px; display:flex; align-items:center; justify-content:center;
-    margin-bottom:.8rem; background:rgba(0,46,109,.05);
-}
-.feature-card h3{ color:var(--royal); font-weight:700; font-size:1.2rem; }
-.feature-card p{ color:#475569; margin-top:.6rem; }
-.feature-card:hover{
-    box-shadow:0 20px 50px rgba(2,6,23,.15),0 0 25px rgba(255,204,0,.12);
-    border-color:rgba(255,204,0,.7); transform:translateY(-4px);
-}
-
-/* tilt effect active shadow/highlight */
-.feature-card .hover-active{box-shadow:0 20px 40px rgba(2,6,23,0.12), 0 0 40px rgba(255,204,0,0.08);border-color:rgba(255,204,0,0.6)}
-
-
-/* feat (Everything you need) */
-.feat{position:relative;padding:4.5rem 0}
-.feat .cont{position:relative}
-.feat-bg{position:absolute;inset:0;z-index:-10;background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(248,250,255,0.98))}
-
-.feat-grid{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:1.25rem}
-.feat-card{background:rgba(255,255,255,0.75);backdrop-filter:blur(6px);border-radius:14px;padding:1.2rem;box-shadow:0 8px 30px rgba(2,6,23,0.06);transition:transform .28s ease,box-shadow .28s ease;border:1px solid rgba(2,6,23,0.04);cursor:pointer}
-.feat-card .icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:.6rem}
-.feat-card h3{color:var(--royal);font-weight:700}
-.feat-card p{color:#475569;margin-top:.45rem;font-size:.95rem}
-.feat-card:hover{
-    box-shadow:0 20px 50px rgba(2,6,23,.15),0 0 25px rgba(255,204,0,.12);
-    border-color:rgba(255,204,0,.7); transform:translateY(-4px);
-}
-/* tilt effect active shadow/highlight */
-.feat-card .hover-active{box-shadow:0 20px 40px rgba(2,6,23,0.12), 0 0 40px rgba(255,204,0,0.08);border-color:rgba(255,204,0,0.6)}
-
-/* Animation */
-@keyframes spinSlow {
-    to { transform: rotate(360deg); }
-}
-
-/* responsive */
-@media(max-width:900px){
-    .navlinks{display:none}
-    .mobile-btn{display:block}
-    .hero-cards{grid-template-columns:repeat(1,1fr)}
-    .mv-grid{grid-template-columns:1fr}
-    .feat-grid{grid-template-columns:repeat(2,1fr)}
-    .features-grid{grid-template-columns:repeat(2,1fr)}
-}
-
-@media(max-width:520px){
-    .feat-grid{grid-template-columns:1fr}
-    .features-grid{grid-template-columns:1fr}
-    .hero-title{font-size:2rem}
-}
-
-/* ------------------------------------------------------------------
- *  8. GALLERY – Swiper with responsive 16:9 aspect ratio
- *  ------------------------------------------------------------------ */
-
-.gallery{ padding:5rem 0; background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(248,250,255,.99)); }
-.mySwiper{ position:relative; padding:2rem 0; }
-.aspect-ratio-16-9{ position:relative; width:100%; padding-top:56.25%; }
-.aspect-ratio-16-9 picture, .aspect-ratio-16-9 img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-.swiper-slide img{ border-radius:12px; box-shadow:var(--shadow); transition:transform .3s ease; }
-.swiper-slide:hover img{ transform:scale(1.05); }
-
-
-/* ------------------------------------------------------------------
- *  9. STATS
- *  ------------------------------------------------------------------ */
-
-.stats{ padding:5rem 0; background:linear-gradient(180deg,rgba(0,46,109,.06),rgba(255,204,0,.03)); }
-.stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:2rem; margin-top:2.5rem; padding:0 1rem; }
-.stat-card{ background:var(--card-bg); padding:2.2rem; border-radius:16px; text-align:center; border:1px solid rgba(0,46,109,.1); box-shadow:0 10px 35px rgba(2,6,23,.06); transition:all .1s ease; }
-.stat-card:hover{ box-shadow:0 20px 50px rgba(2,6,23,.15),0 0 25px rgba(255,204,0,.12); border-color:rgba(255,204,0,.7); transform:translateY(-4px); }
-.stat-number{ font-family:'Merriweather',serif; font-size:3rem; color:var(--royal); font-weight:700; }
-.stat-label{ font-weight:700; color:var(--royal); font-size:1.2rem; margin:.6rem 0 .8rem; }
-.stat-desc{ color:#475569; font-size:1rem; }
-
-/* ------------------------------------------------------------------
- *  10. FOOTER
- *  ------------------------------------------------------------------ */
-
-.site-footer{
-    background:var(--footer-bg);
-    color:var(--footer-text);
-    padding:4rem 0 2rem;
-    border-top:1px solid rgba(255,204,0,.1);
-}
-.footer-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:2.5rem;
-    margin-bottom:3rem;
-}
-.footer-col{ padding:.6rem; }
-.footer-brand h3{
-    font-family:'Merriweather',serif;
-    font-size:1.6rem;
-    color:var(--gold);
-    margin-bottom:.3rem;
-}
-.footer-motto{
-    color:var(--gold);
-    font-size:1rem;
-    margin-bottom:.8rem;
-    font-weight:600;
-}
-.footer-desc{ color:var(--footer-link); font-size:1rem; line-height:1.7; }
-.footer-title{
-    font-weight:700;
-    color:#fff;
-    margin-bottom:1.2rem;
-    font-size:1.1rem;
-    text-transform:uppercase;
-    letter-spacing:.1rem;
-}
-.footer-links{ list-style:none; padding:0; }
-.footer-links li{ margin-bottom:.8rem; }
-.footer-links a{
-    color:var(--footer-link);
-    text-decoration:none;
-    transition:color .3s ease,transform .25s ease;
-}
-.footer-links a:hover{
-    color:var(--gold);
-    transform:translateX(8px);
-}
-.footer-contact p{ color:var(--footer-link); margin-bottom:1.2rem; font-size:1rem; line-height:1.7; }
-.footer-contact strong{ color:#fff; }
-.footer-contact a{ color:var(--gold); text-decoration:none; }
-.footer-contact a:hover{ text-decoration:underline; text-underline-offset:4px; }
-.footer-bottom{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding-top:2rem;
-    border-top:1px solid rgba(255,204,0,.15);
-}
-.footer-bottom p{ color:var(--footer-link); font-size:.95rem; }
-.footer-social{ display:flex; gap:1.8rem; }
-.footer-social a{
-    color:var(--gold);
-    font-size:1.4rem;
-    transition:transform .3s ease;
-}
-.footer-social a:hover{
-    transform:scale(1.35) rotate(8deg);
-    color:#e6b800;
-}
-.social-icon circle { fill: var(--gold); transition: fill .3s; }
-.social-icon:hover circle { fill: #fff; }
-
-/* ------------------------------------------------------------------
- * 11–13. EASTER EGG, ANIMATIONS, RESPONSIVE (all preserved + improved)
- * ------------------------------------------------------------------ */
-
-.footer-brand .crest{
-    width:30px; height:30px;
-    border:2px solid var(--gold);
-    border-radius:50%;
-    padding:2px;
-    background:var(--soft);
-    cursor:pointer;
-    transition:transform .3s ease;
-}
-.footer-brand .crest:hover{ transform:scale(1.3) rotate(15deg); }
-
-@keyframes pulse{ 0%,100%{transform:scale(1);opacity:.6} 50%{transform:scale(1.05);opacity:.8} }
-@keyframes fadeIn{ from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-
-/* ------------------------------------------------------------------
- *  12. ANIMATIONS
- *  ------------------------------------------------------------------ */
-
-@keyframes pulse{
-    0%,100%{transform:scale(1);opacity:.6}
-    50%{transform:scale(1.05);opacity:.8}
-}
-@keyframes fadeIn{
-    from{opacity:0;transform:translateY(20px)}
-    to{opacity:1;transform:translateY(0)}
-}
-@keyframes pulseBorder{
-    0%,100%{width:0}
-    50%{width:100%}
-}
-
-/* ------------------------------------------------------------------
- *  13. RESPONSIVE
- *  ------------------------------------------------------------------ */
-
-@media (max-width:900px){
-    .navlinks{display:none;}
-    .mobile-btn{display:block;}
-    .hero-cards{grid-template-columns:1fr;}
-    .mv-grid{grid-template-columns:1fr;}
-    .features-grid{grid-template-columns:repeat(2,1fr);}
-    .stats-grid{grid-template-columns:repeat(2,1fr);}
-    .mySwiper{padding:1rem 0;}
-    .aspect-ratio-16-9{padding-top:75%;}   /* tablet – a bit taller */
-    .footer-grid{grid-template-columns:repeat(2,1fr);}
-}
-@media (max-width:768px){
-    .features-grid{grid-template-columns:1fr;}
-    .hero-title{font-size:2.8rem;}
-    .stats-grid{grid-template-columns:1fr;}
-    .mySwiper{padding:.5rem 0;}
-    .aspect-ratio-16-9{padding-top:100%;}   /* mobile – square */
-    .footer-grid{grid-template-columns:1fr; text-align:center; }
-    .footer-bottom{flex-direction:column; gap:1.5rem; text-align:center;}
-    .stat-number{font-size:2.5rem;}
-}
-
-
-#scrollTop {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 99;
-    background: var(--gold);
-    color: var(--royal);
-    border: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    font-size: 1.5rem;
+/* --- BUTTONS --- */
+.btn {
+    padding: 14px 40px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    opacity: 0;
-    transition: all 0.3s ease;
-    pointer-events: none;
-  }
-  #scrollTop.show {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  #scrollTop:hover {
+}
+
+.btn.primary {
+    background: var(--gold) !important;
+    color: var(--royal) !important;
+    border: 2px solid var(--gold) !important;
+    box-shadow: 0 0 15px rgba(253, 190, 17, 0.4);
+}
+.btn.primary:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 0 30px var(--gold), 0 0 60px rgba(253, 190, 17, 0.6);
+}
+
+.btn.ghost {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    color: white;
+    backdrop-filter: blur(4px);
+}
+.btn.ghost:hover {
+    background: white;
+    color: var(--royal);
+    border-color: white;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+    transform: translateY(-3px) scale(1.05);
+}
+/* --- MODERN TILT CARDS + GOLDEN GLOW --- */
+.feature-card, .info-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+
+    /* 3D Props */
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
+
+    /* Added border-color to transition */
+    transition: transform 0.1s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+
+    box-shadow: var(--shadow-soft);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.dark-mode .feature-card { border-color: rgba(255, 255, 255, 0.1); }
+
+/* Hover Effects */
+.feature-card:hover, .info-card:hover {
+    /* Golden Glow Logic */
+    border-color: var(--gold);
+    box-shadow: 0 10px 40px -5px rgba(253, 190, 17, 0.3);
+}
+
+.feature-card h3 {
+    font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--royal);
+}
+.dark-mode .feature-card h3 { color: var(--gold); }
+
+/* SVG Icon Styling */
+.feature-card .icon svg {
+    width: 40px; height: 40px; margin-bottom: 1rem; color: var(--royal); transition: transform 0.3s ease;
+}
+.dark-mode .feature-card .icon svg { color: var(--gold); }
+.feature-card:hover .icon svg { transform: scale(1.1); color: var(--gold); }
+
+/* --- GALLERY CAROUSEL STYLING --- */
+.gallery-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.swiper-slide {
+    /* rounded corners for modern look */
+    border-radius: 20px;
+    overflow: hidden;
+    /* subtle shadow */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+}
+
+/* Image Aspect Ratio Lock */
+.swiper-slide img {
+    width: 2500%;
+    height: 350px; /* Fixed height for consistency */
+    object-fit: cover; /* Prevents stretching */
+    transition: transform 0.5s ease;
+}
+
+/* Zoom effect on hover */
+.swiper-slide:hover img {
     transform: scale(1.1);
-  }
+}
+
+/* Customizing Swiper Buttons to match Royal/Gold */
+:root {
+    --swiper-theme-color: var(--gold) !important;
+    --swiper-navigation-size: 25px !important;
+}
+
+.swiper-button-next, .swiper-button-prev {
+    background: var(--royal);
+    padding: 30px;
+    border-radius: 50%;
+    color: var(--gold) !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    border: 2px solid var(--gold);
+    transition: all 0.3s ease;
+}
+
+.swiper-button-next:hover, .swiper-button-prev:hover {
+    background: var(--gold);
+    color: var(--royal) !important;
+    transform: scale(1.1);
+}
+
+/* Hide arrows on very small mobile screens to save space */
+@media (max-width: 640px) {
+    .swiper-button-next, .swiper-button-prev {
+        display: none;
+    }
+}
+
+/* --- FOOTER --- */
+.site-footer {
+    background: var(--footer-bg);
+    color: var(--footer-text);
+    padding: 4rem 0 2rem;
+    border-top: 1px solid rgba(255,204,0,0.1);
+    margin-top: 4rem;
+}
+.footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem; margin-bottom: 3rem; }
+.footer-col { padding: 0.6rem; }
+.footer-brand h3 { font-family: 'Merriweather', serif; font-size: 1.6rem; color: var(--gold); margin-bottom: 0.3rem; }
+.footer-title { color: var(--gold); font-weight: 700; margin-bottom: 1.2rem; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Added subtle shadow for legibility */}
+.footer-links a { color: var(--footer-link); text-decoration: none; transition: color 0.3s ease, transform 0.25s ease; }
+.footer-links a:hover { color: var(--gold); transform: translateX(8px); display: inline-block; }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid rgba(255,204,0,0.15); }
+.footer-social { display: flex; gap: 1.8rem; }
+.footer-social a { color: var(--gold); font-size: 1.4rem; transition: transform 0.3s ease; }
+.footer-social a:hover { transform: scale(1.35) rotate(8deg); color: #e6b800; }
+
+
+
+/* --- FOOTER CONTACT FIX --- */
+        .contact-item {
+            display: flex;
+            align-items: flex-start; /* Aligns icon with top line of text */
+            gap: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item .icon-box svg {
+            width: 24px;
+            height: 24px;
+            color: var(--gold);
+            margin-top: 3px; /* Fine-tune alignment with text */
+        }
+
+        .contact-item .text-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-item .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b; /* Muted color for labels like "Location" */
+            margin-bottom: 2px;
+            font-weight: 700;
+        }
+
+        .contact-item p, .contact-item a {
+            color: var(--footer-link);
+            font-size: 0.95rem;
+            line-height: 1.4;
+            text-decoration: none;
+            margin: 0;
+        }
+
+        .contact-item a:hover {
+            color: var(--gold);
+            text-decoration: underline;
+        }
+
+/* --- ANIMATIONS & EXTRAS (FIXED EASTER EGG STYLE) --- */
+.footer-brand .crest {
+    width: 40px; /* Constrain width prevents it from being huge */
+    height: 40px; /* Fixed height */
+    object-fit: contain; /* Keeps aspect ratio inside the box */
+
+    /* Styling to make it look like a button/seal */
+    margin-top: 1rem;
+    border: 2px solid var(--gold);
+    border-radius: 50%; /* Makes it a circle */
+    padding: 8px; /* Space between crest and border */
+    background: rgba(255, 255, 255, 0.05); /* Subtle glass background */
+
+    cursor: pointer; /* Crucial: Shows hand cursor so users know to click */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+}
+
+/* Hover effect to hint at the Easter Egg */
+.footer-brand .crest:hover {
+    transform: scale(1.15) rotate(15deg);
+    background: rgba(253, 190, 17, 0.1); /* Slight gold tint on hover */
+    box-shadow: 0 0 15px rgba(253, 190, 17, 0.3);
+}
+
+/* The Click Animation (Triggered by JS) */
+@keyframes spin-win {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.5) rotate(180deg); }
+    100% { transform: scale(1) rotate(360deg); }
+}
+
+/* --- SCROLL TOP --- */
+#scrollTop {
+    position: fixed; bottom: 20px; right: 20px;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    width: 50px; height: 50px; border-radius: 50%;
+    border: none; cursor: pointer;
+    opacity: 0; transform: translateY(20px); transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    z-index: 90; padding: 0;
+}
+.scroll-icon { width: 24px; height: 24px; object-fit: contain; filter: sepia(100%) hue-rotate(190deg) saturate(500%) brightness(0.7); }
+#scrollTop:hover { transform: scale(1.1); }
+#scrollTop.show { opacity: 1; transform: translateY(0); }
+
+/* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+    .navlinks, .mobile-btn { display: none; }
+    .mobile-btn { display: block; }
+    .hero-cards, .features-grid, .footer-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+    .hero-title { font-size: 2.2rem; }
+    .footer-grid { grid-template-columns: 1fr; text-align: center; }
+    .footer-bottom { flex-direction: column; gap: 1.5rem; }
+}
+
+/* Stats Icons Glow */
+.stat-item .icon svg {
+    filter: drop-shadow(0 0 8px rgba(253, 190, 17, 0.4));
+    transition: transform 0.3s ease;
+}
+.stat-item:hover .icon svg {
+    transform: scale(1.1) translateY(-2px);
+    filter: drop-shadow(0 0 15px rgba(253, 190, 17, 0.7));
+}
+
+/* --- UTILITIES ---
+ */
+
+
+/* This filter calculates the exact hex code for Bleoo Gold (#FDBE11)
+   It turns a Black SVG into a Gold SVG */
+.gold-filter {
+    filter: invert(83%) sepia(34%) saturate(1873%) hue-rotate(358deg) brightness(102%) contrast(98%);
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover .gold-filter {
+    transform: scale(1.1) translateY(-2px);
+    filter: invert(83%) sepia(34%) saturate(1873%) hue-rotate(358deg) brightness(110%) contrast(110%) drop-shadow(0 0 5px rgba(253, 190, 17, 0.7));
+}

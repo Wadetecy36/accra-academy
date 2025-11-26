@@ -11,7 +11,7 @@ accra-academy-website
 │   contact.html
 │   edit.html
 │   package.json
-│   push.bat
+│   git push.bat
 │   README.md
 │   server.mjs
 │   tailwind.config.js

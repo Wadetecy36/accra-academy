@@ -4,315 +4,315 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Accra Academy – Esse Quam Videri</title>
-  <meta name="description" content="Celebrating 94 years of excellence. Quality Education For Life And Selfless Service.">
+     <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <!-- TAILWIND CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: { royal: '#002147', gold: '#FDBE11', soft: '#F0F4F8' },
+          fontFamily: { display: ['Merriweather', 'serif'], body: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
 
-  <!-- FAVICON -->
-  <link rel="icon" href="./favicon.ico" type="image/x-icon">
-  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
-  <link rel="apple-touch-icon" href="./favicon.ico">
-
-  <!-- SEO + Social -->
-  <meta property="og:title" content="Accra Academy – Esse Quam Videri">
-  <meta property="og:description" content="Quality Education For Life And Selfless Service Based On Truth, Hardwork And Honesty">
-  <meta property="og:image" content="./assets/crest.webp">
-  <meta property="og:url" content="https://wadetecy36.github.io/accra-academy-website">
-  <meta name="twitter:card" content="summary_large_image">
-
-  <!-- PWA Manifest -->
-  <link href="/manifest.json" rel="manifest">
-
-  <!-- Tailwind (local) -->
-  <link href="./css/styles.css" rel="stylesheet">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Merriweather:wght@700&display=swap" rel="stylesheet">
-
-  <!-- AOS + Swiper (CDN – reliable & fast) -->
+  <!-- FONTS & LIBRARIES -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css">
 
-  <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
-
-  <!-- Custom Styles (merged abt.css into this) -->
+  <!-- CUSTOM CSS -->
   <link href="./css/custom.css" rel="stylesheet">
 </head>
 
-    <!-- Live Reload Client -->
-    <script>
-        if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
-            const ws = new WebSocket('ws://' + location.host);
-            ws.onmessage = (msg) => {
-                if (msg.data === 'reload') {
-                    console.log('Reloading...');
-                    location.reload();
-                }
-            };
-            ws.onclose = () => setTimeout(() => location.reload(), 1000);
-        }
-    </script>
-    <script>
-    document.addEventListener('scroll', () => {
-        const panels = document.querySelectorAll('.mv-panel');
-        panels.forEach(panel => {
-            const rect = panel.getBoundingClientRect();
-            if (rect.top < window.innerHeight) {
-                panel.style.animation = 'fadeIn 1s ease-out forwards';
-            }
-        });
-    });
-</script>
+<body class="min-h-screen bg-soft dark:bg-gray-900 transition-colors duration-300">
 
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-<!-- NAVBAR -->
-<header class="site-header">
-    <div class="container">
-        <div class="brand">
-            <picture>
-                <source srcset="./assets/crest.webp" type="image/webp">
-                <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest" loading="lazy">
-            </picture>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container flex justify-between items-center py-3">
+        <div class="brand flex items-center gap-4">
+            <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest w-12 h-12">
             <div class="brand-text">
-                <div class="school-name">Accra Academy</div>
-                <div class="school-motto" style="text-align: center;">Esse Quam Videri</div>
+                <h1 class="school-name text-2xl font-bold text-royal dark:text-gold">Accra Academy</h1>
+                <p class="school-motto text-sm text-gray-600 dark:text-gray-400">Esse Quam Videri</p>
             </div>
         </div>
 
-        <nav class="navlinks">
+        <nav class="navlinks hidden md:flex gap-8 text-lg font-medium">
             <a href="./index.html">Home</a>
             <a href="./about.html">About</a>
-            <a href="./academics">Academics</a>
+            <a href="./academics.html">Academics</a>
             <a href="#gallery">Gallery</a>
             <a href="./contacts.html">Contact</a>
         </nav>
-        <!-- DARK MODE TOGGLE – WORKS ON ALL PAGES -->
-        <button id="theme-toggle" class="p-3 rounded-full bg-gray-200 dark:bg-gray-700 hover:ring-4 hover:ring-gold/30 transition-all" aria-label="Toggle dark mode">
-          <!-- Icons will be injected by JavaScript -->📚
-        </button>
-      </div>
-</header>
 
-<!-- HERO -->
-<section class="hero" data-aos="fade-up">
+        <div class="flex items-center gap-4">
+            <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:ring-2 hover:ring-gold transition-all" aria-label="Toggle dark mode">
+                <!-- Icon injected by JS -->
+            </button>
+            <button class="mobile-btn md:hidden text-2xl">☰</button>
+        </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" data-aos="fade-up">
     <div class="hero-bg"></div>
-    <div class="hero-inner">
-        <div class="crest-wrap">
-            <div class="crest-aura"></div>
-            <picture>
-                <source srcset="./assets/crest.webp" type="image/webp">
-                <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest-img" loading="lazy">
-            </picture>
+    <div class="hero-inner relative z-10 text-center text-white px-4">
+        <div class="crest-wrap mb-6">
+            <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest-img w-32 h-32 mx-auto">
         </div>
-        <h1 class="hero-title">Welcome to Accra Academy</h1>
-        <p class="hero-sub">Esse Quam Videri – To Be, Rather Than to Seem</p>
-        <div class="hero-cta">
-            <a href=./anniversary.html class="btn primary">Learn More</a>
-            <a href="./contact" class="btn ghost">Get in Touch</a>
+        <h1 class="hero-title text-5xl md:text-6xl font-bold mb-4 font-display">Welcome to Accra Academy</h1>
+        <p class="hero-sub text-xl md:text-2xl mb-8 text-gold">Esse Quam Videri – To Be, Rather Than to Seem</p>
+
+        <div class="hero-cta flex flex-col sm:flex-row gap-6 justify-center mb-16">
+            <a href="./about.html" class="btn primary">Learn More</a>
+            <a href="./contacts.html" class="btn ghost">Get in Touch</a>
         </div>
-        <div class="hero-cards">
+
+        <!-- Info Cards -->
+        <div class="hero-cards grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             <div class="info-card" data-aos="fade-up" data-aos-delay="100">
-                <h3 class="card-title">Founded 1931</h3>
-                <p class="card-sub">A legacy of excellence.</p>
+                <h3 class="font-bold text-xl text-royal dark:text-gold">Founded 1931</h3>
+                <p class="text-gray-600 dark:text-gray-300">A legacy of excellence spanning over 90 years.</p>
             </div>
             <div class="info-card" data-aos="fade-up" data-aos-delay="200">
-                <h3 class="card-title">5000+ Students</h3>
-                <p class="card-sub">Shaping young minds.</p>
+                <h3 class="font-bold text-xl text-royal dark:text-gold">5000+ Students</h3>
+                <p class="text-gray-600 dark:text-gray-300">Shaping young minds for a brighter future.</p>
             </div>
             <div class="info-card" data-aos="fade-up" data-aos-delay="300">
-                <h3 class="card-title">100+ Staff</h3>
-                <p class="card-sub">Dedicated educators.</p>
+                <h3 class="font-bold text-xl text-royal dark:text-gold">100+ Staff</h3>
+                <p class="text-gray-600 dark:text-gray-300">Dedicated educators committed to success.</p>
             </div>
         </div>
     </div>
-</section>
+  </section>
 
-<!-- MISSION VISION CORE VALUES -->
-<section class="mvcore">
+  <!-- EXPLORE FEATURES (Now with SVGs) -->
+  <section class="features py-20">
     <div class="container">
-        <h2 class="section-title">Mission, Vision & Core Values</h2>
-        <p class="section-lead">Our guiding principles shape the future of Accra Academy.</p>
-        <div class="mv-grid">
-            <div class="mv-panel" data-aos="fade-up" data-aos-delay="100">
-                <h3>Mission</h3>
-                <p>To provide quality education, fostering academic excellence, character development, and leadership skills.</p>
-            </div>
-            <div class="mv-panel" data-aos="fade-up" data-aos-delay="200">
-                <h3>Vision</h3>
-                <p>To be a world-class institution producing innovative and ethical leaders.</p>
-            </div>
-            <div class="mv-panel" data-aos="fade-up" data-aos-delay="300">
-                <h3>Core Values</h3>
-                <ul>
+        <h2 class="section-title text-4xl font-bold text-center mb-12 text-royal dark:text-gold font-display" data-aos="fade-up">Explore Campus</h2>
+        <p class="text-center text-gray-600 dark:text-gray-400 mb-16 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">Discover the vibrant life and facilities that make Accra Academy unique.</p>
 
-                        <li><b>Integrity</b></li>
-                        <li><b>Excellence</b></li>
-                        <li><b>Teamwork</b></li>
+        <div class="features-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-
-                </ul>
+            <!-- Card 1: Programs -->
+            <div class="feature-card group" data-aos="fade-up" data-aos-delay="200">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                </div>
+                <h3>Programs</h3>
+                <p class="text-gray-600 dark:text-gray-300">Diverse academic programs designed to build knowledge and leadership.</p>
             </div>
-        </div>
-    </div>
-</section>
-
-<!-- FEATURES -->
-<section class="features">
-    <div class="container">
-        <h2 class="section-title">Everything You Need</h2>
-        <p class="section-lead">Explore the facilities and opportunities at Accra Academy.</p>
-        <div class="features-grid">
-            <div class="feature-card hover-active" data-aos="fade-up" data-aos-delay="100">
-                <div class="icon">📚</div>
-                <h3>Modern Facilities</h3>
-                <p>Equipped with the latest resources for learning.</p>
-            </div>
-            <div class="feature-card hover-active" data-aos="fade-up" data-aos-delay="100">
-                <div class="icon">🧪</div>
+            <!-- Card 2: Science Labs -->
+            <div class="feature-card group" data-aos="fade-up" data-aos-delay="300">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                </div>
                 <h3>Science Labs</h3>
-                <p>Hands-on experiments for future innovators.</p>
+                <p class="text-gray-600 dark:text-gray-300">State-of-the-art labs for hands-on experiments and innovation.</p>
             </div>
-            <div class="feature-card hover-active" data-aos="fade-up" data-aos-delay="100">
-                <div class="icon">🏟️</div>
-                <h3>Sports Facilities</h3>
-                <p>Training grounds for champions.</p>
+
+            <!-- Card 3: Sports -->
+            <div class="feature-card group" data-aos="fade-up" data-aos-delay="400">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
+                </div>
+                <h3>Sports</h3>
+                <p class="text-gray-600 dark:text-gray-300">World-class training grounds for future champions.</p>
             </div>
-          </div>
+
+            <!-- Card 4: Halls -->
+            <div class="feature-card group" data-aos="fade-up" data-aos-delay="500">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-3a1 1 0 011-1h2a1 1 0 011 1v3m-5-6h6m-6 0H4m12 0h4m-6-6h6m-6 0H4"></path></svg>
+                </div>
+                <h3>Halls</h3>
+                <p class="text-gray-600 dark:text-gray-300">Boarding facilities fostering brotherhood and unity.</p>
+            </div>
+
+            <!-- Card 5: News -->
+            <div class="feature-card group" data-aos="fade-up" data-aos-delay="600">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+                </div>
+                <h3>News</h3>
+                <p class="text-gray-600 dark:text-gray-300">Stay up to date with school events and announcements.</p>
+            </div>
+
+            <!-- Card 6: Clubs -->
+            <div class="feature-card group" data-aos="fade-up" data-aos-delay="700">
+                <div class="icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                </div>
+                <h3>Clubs</h3>
+                <p class="text-gray-600 dark:text-gray-300">Creativity, teamwork, and leadership opportunities.</p>
+            </div>
+        </div>
     </div>
-</section>
+  </section>
 
+  <!-- ACHIEVEMENTS SECTION -->
+ <section class="achievements py-20 bg-gray-900 text-white relative overflow-hidden" id="achievements">
+     <!-- Decorative Background Pattern -->
+     <div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(#FDBE11 1px, transparent 1px); background-size: 40px 40px;"></div>
 
- <section class="feat">
-    <div class="cont">
-      <h2 class="section-title" data-aos="fade-up">Explore</h2>
-      <p class="section-lead" data-aos="fade-up" data-aos-delay="100">Explore the key aspects of our academy.</p>
-      <div class="features-grid">
-        <div class="feature-card hover-active" data-aos="fade-up" data-aos-dely="200" data-key="programs">
-          <div class="icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Academic Programs Icon">
-              <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="#002E6D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M2 17l10 5 10-5" stroke="#FFCC00" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-         <a href= 'https://googl.com' ><h3>Programs</h3></a>
-         <p>Explore our diverse academic and co-curricular programs designed to build knowledge and leadership.</p>
-        </div>
-        <div class="feature-card hover-active" data-aos="fade-up" data-aos-dely="200" data-key="labs" >
-            <div class="icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Labs Icon">
-                <rect x="3" y="6" width="18" height="12" rx="2" stroke="#002E6D" stroke-width="1.2"/>
-                <path d="M3 10h18" stroke="#FFCC00" stroke-width="1.2"/>
-              </svg></div>
-            <a href= 'https://googl.com' ><h3>Halls</h3></a>
-          <p>Discover our boarding facilities and the strong house spirit that drives unity and competition.</p>
-        </div>
-        <div class="feature-card hover-active" data-aos="fade-up" data-aos-dely="200" data-key="contact">
-            <div class="icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Contact Icon">
-                <path d="M22 16V8a2 2 0 00-2-2H4a2 2 0 00-2 2v8" stroke="#002E6D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M16 10l-4 4-4-4" stroke="#FFCC00" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-           <a href= './contacts.html' ><h3>Contact</h3></a>
-           <p>Get in touch with our administration and support team for inquiries or assistance.</p>
+     <div class="container mx-auto px-6 relative z-10">
+         <!-- Header Area -->
+         <div class="flex items-start gap-5 mb-16 max-w-4xl" data-aos="fade-right">
+             <div class="w-2 h-20 bg-gold rounded-sm shrink-0 shadow-[0_0_15px_rgba(253,190,17,0.5)]"></div>
+             <div>
+                 <h2 class="text-4xl md:text-5xl font-bold font-display mb-4">
+                     Our <span class="text-gray-300">Achievement</span>
+                 </h2>
+                 <p class="text-gray-400 text-lg leading-relaxed">
+                     Accra Academy, ranked 8th among Africa's top high schools in 2003, excels in education and leadership. Notably producing Chief Justices, Ghanaian Speakers, and even concurrent heads of state.
+                 </p>
+             </div>
+         </div>
+
+         <!-- Stats Grid with Custom Icons -->
+         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 border-t border-gray-800 pt-12">
+
+             <!-- Item 1: Students (Fixed & Matched) -->
+             <div class="stat-item flex items-center gap-4 md:border-r border-gray-800 md:pr-8">
+                 <div class="icon text-gold">
+                     <!-- Replaced <img> with this bold SVG to match the others -->
+                     <svg class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                         <!-- Hand Grip -->
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                     </svg>
+                 </div>
+                 <div>
+                     <div class="text-3xl md:text-4xl font-bold text-white flex items-baseline">
+                         <span class="counter" data-target="4381">0</span><span>+</span>
+                     </div>
+                     <p class="text-xs md:text-sm text-gray-500 uppercase tracking-wider font-bold mt-1">Students</p>
+                 </div>
+             </div>
+
+             <!-- Item 2: Bleoobi (Graduate Cap) -->
+             <div class="stat-item flex items-center gap-4 md:pl-8 md:border-r border-gray-800 md:pr-8">
+                 <div class="icon text-gold">
+                     <!-- Graduation Cap Icon -->
+                     <svg class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.499 5.516 51.55 51.55 0 01-3.187 2.722m-14.314-5.424l1.245 1.245M12 12h1.5m-1.5 12c2.21 0 4-1.79 4-4h-8c0 2.21 1.79 4 4 4z" />
+                     </svg>
+                 </div>
+                 <div>
+                     <div class="text-3xl md:text-4xl font-bold text-white flex items-baseline">
+                         <span class="counter" data-target="1800">0</span><span>+</span>
+                     </div>
+                     <p class="text-xs md:text-sm text-gray-500 uppercase tracking-wider font-bold mt-1">Bleoobi</p>
+                 </div>
+             </div>
+
+             <!-- Item 3: Awards (Badge/Trophy) -->
+             <div class="stat-item flex items-center gap-4 md:pl-8 md:border-r border-gray-800 md:pr-8">
+                 <div class="icon text-gold">
+                     <!-- Award Badge Icon -->
+                     <svg class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                     </svg>
+                 </div>
+                 <div>
+                     <div class="text-3xl md:text-4xl font-bold text-white flex items-baseline">
+                         <span class="counter" data-target="190">0</span>
+                     </div>
+                     <p class="text-xs md:text-sm text-gray-500 uppercase tracking-wider font-bold mt-1">Awards</p>
+                 </div>
+             </div>
+
+             <!-- Item 4: Departments (Open Book) -->
+             <div class="stat-item flex items-center gap-4 md:pl-8">
+                 <div class="icon text-gold">
+                     <!-- Open Book Icon -->
+                     <svg class="w-12 h-12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                     </svg>
+                 </div>
+                 <div>
+                     <div class="text-3xl md:text-4xl font-bold text-white flex items-baseline">
+                         <span class="counter" data-target="5">0</span>
+                     </div>
+                     <p class="text-xs md:text-sm text-gray-500 uppercase tracking-wider font-bold mt-1">Depts</p>
+                 </div>
+             </div>
+
+         </div>
+     </div>
+ </section>
+  <!-- GALLERY SECTION -->
+  <section class="gallery-section py-20 bg-soft dark:bg-gray-800" id="gallery">
+      <div class="container">
+          <!-- Section Title -->
+          <div class="text-center mb-12" data-aos="fade-up">
+              <h2 class="text-4xl font-bold text-royal dark:text-gold font-display mb-4">Campus Gallery</h2>
+              <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                  Experience the vibrant atmosphere, modern facilities, and student life at Accra Academy.
+              </p>
           </div>
 
-          <div class="feature-card hover-active" data-aos="fade-up" data-aos-dely="200" data-key="infra">
-            <div class="icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Infrastructure Icon">
-                <path d="M3 21h18" stroke="#002E6D" stroke-width="1.2" stroke-linecap="round"/>
-                <path d="M6 3v14" stroke="#FFCC00" stroke-width="1.2" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <a href= 'https://googl.com' ><h3>Infrastructure</h3></a>
-            <p>Learn about our modern facilities, labs, and digital learning resources.</p>
-          </div>
-          <div class="feature-card hover-active" data-aos="fade-up" data-aos-dely="200" data-key="news" id="news">
-            <div class="icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="News Icon">
-                <rect x="3" y="4" width="18" height="16" rx="2" stroke="#002E6D" stroke-width="1.2"/>
-                <path d="M8 8h8" stroke="#FFCC00" stroke-width="1.2"/>
-              </svg>
-            </div>
-            <a href= 'https://googl.com' ><h3>Our News</h3></a>
-            <p>Stay up to date with school events, achievements, and announcements.</p>
-          </div>
-          <div class="feature-card hover-active" data-aos="fade-up" data-aos-dely="200" data-key="clubs">
-            <div class="icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Clubs Icon">
-                <path d="M12 2l2 5 5 .4-4 3 1.2 5L12 14l-4.2 3 1.2-5-4-3L10 7 12 2z" stroke="#002E6D" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <a href= 'https://googl.com' ><h3>Extra Curricular</h3></a>
-            <p>Join student-led organizations that foster creativity, teamwork, and leadership.</p>
+          <!-- Swiper Container -->
+          <div class="swiper mySwiper px-4 pb-10" data-aos="fade-up" data-aos-delay="200">
+              <div class="swiper-wrapper">
+
+                  <!-- Slide 1: Campus -->
+                  <div class="swiper-slide">
+                      <img src="./assets/gallery1.webp"
+                           alt="Accra Academy Campus" loading="lazy">
+                  </div>
+
+                  <!-- Slide 2: Students -->
+                  <div class="swiper-slide">
+                      <img src="./assets/gallery2.webp"
+                           alt="Students Graduating" loading="lazy">
+                  </div>
+
+                  <!-- Slide 3: Sports -->
+                  <div class="swiper-slide">
+                      <img src="./assets/gallery3.webp"
+                           alt="Sports Activities" loading="lazy">
+                  </div>
+
+                  <!-- Slide 4: Library -->
+                  <div class="swiper-slide">
+                      <img src="./assets/gallery4.webp"
+                           alt="Library" loading="lazy">
+                  </div>
+
+                  <!-- Slide 5: Science Lab -->
+                  <div class="swiper-slide">
+                      <img src="./assets/gallery5.webp"
+                           alt="Science Lab" loading="lazy">
+                  </div>
+
+                  <!-- Slide 6: Arts -->
+                  <div class="swiper-slide">
+                      <img src="./assets/gallery6.webp"
+                           alt="Classroom" loading="lazy">
+                  </div>
+
+                  <!-- Slide 7: Cadet -->
+                  <div class="swiper-slide">
+                      <img src="./assets/cadet.jpg"
+                           alt="Cadet Activities" loading="lazy">
+                  </div>
+              </div>
+
+              <!-- Controls -->
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
           </div>
       </div>
-    </div>
-</section>
+  </section>
 
-
-
-<!-- GALLERY -->
-<section class="gallery" data-aos="fade-up" id="gallery">
-    <div class="container">
-        <h2 class="section-title">Gallery</h2>
-        <p class="section-lead" data-aos="fade-up" data-aos-delay="100">A glimpse into life at Accra Academy.</p>
-        <div class="mySwiper mt-6">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <picture>
-                        <source srcset="./assets/gallery1.webp" type="image/webp">
-                        <img src="./assets/gallery1.webp" alt="Campus Event" class="rounded-lg" loading="lazy">
-                    </picture>
-                </div>
-                <div class="swiper-slide">
-                    <picture>
-                        <source srcset="./assets/gallery2.webp" type="image/webp">
-                        <img src="./assets/gallery2.jpg" alt="Students in Class" class="rounded-lg" loading="lazy">
-                    </picture>
-                </div>
-                <div class="swiper-slide">
-                    <picture>
-                        <source srcset="./assets/gallery3.webp" type="image/webp">
-                        <img src="./assets/gallery3.jpg" alt="Sports Day" class="rounded-lg" loading="lazy">
-                    </picture>
-                </div>
-            </div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-pagination"></div>
-        </div>
-    </div>
-</section>
-
-<!-- STATS -->
-<section class="stats">
-    <div class="container">
-        <h2 class="section-title">Our Impact</h2>
-        <div class="stats-grid">
-            <div class="feature-card" data-aos="fade-up" data-aos-delay="80">
-                <div class="stat-number">5200+</div>
-                <div class="stat-label">Students</div>
-                <p class="stat-desc">Current enrollment.</p>
-            </div>
-            <div class="feature-card" data-aos="fade-up" data-aos-delay="160">
-                <div class="stat-number">100+</div>
-                <div class="stat-label">Staff</div>
-                <p class="stat-desc">Dedicated team.</p>
-            </div>
-            <div class="feature-card" data-aos="fade-up" data-aos-delay="240">
-                <div class="stat-number">94</div>
-                <div class="stat-label">Years</div>
-                <p class="stat-desc">Of excellence.</p>
-            </div>
-            <div class="feature-card" data-aos="fade-up" data-aos-delay="240">
-                <div class="stat-number">15+</div>
-                <div class="stat-label">Clubs & Societies</div>
-                <p class="stat-desc">training leaders.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="site-footer">
+  <!-- FOOTER -->
+  <footer class="site-footer">
     <div class="container">
         <div class="footer-grid">
             <div class="footer-col">
@@ -320,74 +320,112 @@
                     <h3>Accra Academy</h3>
                     <p class="footer-motto">Esse Quam Videri</p>
                     <p class="footer-desc">Pioneering education since 1931, shaping leaders of tomorrow.</p>
-                    <picture>
-                        <source srcset="./assets/crest.webp" type="image/webp">
-                        <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest" loading="lazy">
-                    </picture>
+                    <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest">
                 </div>
             </div>
+
             <div class="footer-col">
                 <h4 class="footer-title">Quick Links</h4>
                 <ul class="footer-links">
-                    <li><a href=./about.html>About Us</a></li>
-                    <li><a href="./academics">Academics</a></li>
+                    <li><a href="./about.html">About Us</a></li>
+                    <li><a href="./academics.html">Academics</a></li>
                     <li><a href="#gallery">Gallery</a></li>
-                    <li><a href="#">Admissions</a></li>
-                    <li><a href="#">Alumni</a></li>
+                    <li><a href="./contacts.html">Contact</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4 class="footer-title">Resources</h4>
-                <ul class="footer-links">
+            <ul class="footer-links">
                     <li><a href="#">Student Portal</a></li>
                     <li><a href="#">Handbook</a></li>
                     <li><a href="#">Calendar</a></li>
                     <li><a href="#">Events</a></li>
-                    <li><a href="#">News & Updates</a></li>
-                </ul>
+            </ul>
+            </div>
             </div>
             <div class="footer-col">
-            <div class="footer-contact">
-                    <p><strong>Address</strong><br>Bubuashie, Greater Accra<br>Ghana</p>
-                    <p><strong>Phone 1</strong><br><a href="tel:+233302222690">📞+233 30 222 2690</a></>
-                    <p><strong>Phone 2</strong><br><a href="tel:+233302222691">📞+233 30 222 2691</a></p>
-                    <p><strong>Email</strong><br><a href="mailto:info@accraacademy.edu.gh">info@accraacademy.edu.gh</a></p>
+                <h4 class="footer-title">Contact Info</h4>
+                <div class="footer-contact">
+
+                    <!-- Address Item -->
+                    <div class="contact-item">
+                        <div class="icon-box">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </div>
+                        <div class="text-box">
+                            <span class="label">Location</span>
+                            <p>Bubuashie, Greater Accra, Ghana</p>
+                        </div>
+                    </div>
+
+                    <!-- Phone Item -->
+                    <div class="contact-item">
+                        <div class="icon-box">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                        </div>
+                        <div class="text-box">
+                            <span class="label">Phone</span>
+                            <p><a href="tel:+233302222690">+233 30 222 2690</a></p>
+                        </div>
+                    </div>
+
+                    <!-- Email Item -->
+                    <div class="contact-item">
+                        <div class="icon-box">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <div class="text-box">
+                            <span class="label">Email</span>
+                            <p><a href="mailto:info@accraacademy.edu.gh">info@accraacademy.edu.gh</a></p>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            </div>
-        </div>
+
+
         <div class="footer-bottom">
             <p>&copy; <span id="yr"></span> Accra Academy. All rights reserved.</p>
             <div class="footer-social">
-                <a href="https://web.facebook.com/AccraAcademyGH/" aria-label="Facebook">
+                <a href="https://web.facebook.com/AccraAcademyGH/" aria-label="Facebook" class="social-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34" class="social-icon">
                         <circle cx="12" cy="12" r="11" />
                         <path fill="white" d="M13 11h2.5l.4-2.6H13V7.5c0-.7.2-1.1 1.2-1.1H16V4h-2.1c-2.5 0-3.6 1.2-3.6 3.3v1.1H9v2.6h1.3v6.9h2.7V11z"/>
-                    </svg>
+                      </svg>
                 </a>
-                <a href="#" aria-label="Twitter">
+                <a href="https://x.com/accraacademygh" aria-label="Twitter" class="social-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34" class="social-icon">
                         <circle cx="12" cy="12" r="11" />
                         <path fill="white" d="M17.7 6H15.6l-2.5 3.2L10.8 6H7.9l3.9 5.2L7.6 18h2.1l2.8-3.8 2.6 3.8h2.8l-4-5.5L17.7 6z"/>
-                    </svg>
+                      </svg>
                 </a>
                 <a href="https://www.instagram.com/insidebleoo/" aria-label="Instagram">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34" class="social-icon">
-                        <circle cx="12" cy="12" r="11" />
-                        <path fill="white" d="M16 2H8C4.7 2 2 4.7 2 8v8c0 3.3 2.7 6 6 6h8c3.3 0 6-2.7 6-6V8c0-3.3-2.7-6-6-6zM12 17c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5zm5.5-9.6c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z"/>
+                      <circle cx="12" cy="12" r="11" />
+                      <path fill="white" d="M16 2H8C4.7 2 2 4.7 2 8v8c0 3.3 2.7 6 6 6h8c3.3 0 6-2.7 6-6V8c0-3.3-2.7-6-6-6zM12 17c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5zm5.5-9.6c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z"/>
                     </svg>
-                </a>
+                  </a>
             </div>
         </div>
     </div>
-</footer>
+  </footer>
 
-<!-- SCROLL TO TOP BUTTON -->
-  <button id="scrollTop" title="Back to top" class="fixed bottom-6 right-6 z-50 p-3 bg-gold text-royal rounded-full shadow-lg hover:scale-110 transition"><b>˄</b>
+
+
+  <!-- SCROLL TOP BUTTON -->
+  <button id="scrollTop" title="Back to top">
+    <svg class="scroll-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+    </svg>
   </button>
 
-  <!-- Scripts -->
+  <!-- SCRIPTS -->
+  <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Main Logic File -->
   <script src="./js/script.js"></script>
-</body>
-</html>
+
+  </body>
+  </html>

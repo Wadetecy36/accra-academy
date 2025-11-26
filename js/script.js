@@ -1,104 +1,220 @@
-/* ============================================================= */
-/*  FINAL WORKING script.js – DARK MODE + EASTER EGG + SCROLL   */
-/* ============================================================= */
+    document.addEventListener('DOMContentLoaded', () => {
 
-document.addEventListener('DOMContentLoaded', () => {
-  // ——— 1. DARK MODE TOGGLE (WITH SUN/MOON SVG) ———
-  const themeToggle = document.getElementById('theme-toggle');
-  const html = document.documentElement;
+    /* =========================================
+       1. 3D TILT EFFECT FOR CARDS
+       ========================================= */
+    const cards = document.querySelectorAll('.feature-card, .info-card');
 
-  const sunIcon = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
-  const moonIcon = `<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>`;
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            // Max tilt 10 degrees
+            const rotateX = ((y - centerY) / centerY) * -10;
+            const rotateY = ((x - centerX) / centerX) * 10;
 
-  // Apply saved theme or system preference
-  const savedTheme = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        });
 
-  function setTheme(dark) {
-    html.classList.toggle('dark', dark);
-    themeToggle.innerHTML = dark ? sunIcon : moonIcon;
-    localStorage.setItem('theme', dark ? 'dark' : 'light');
-  }
-
-  setTheme(isDark);
-
-  themeToggle?.addEventListener('click', () => {
-    const currentlyDark = html.classList.contains('dark');
-    setTheme(!currentlyDark);
-  });
-
-  // ——— 2. SCROLL TO TOP BUTTON ———
-  const scrollBtn = document.getElementById('scrollTop');
-  if (scrollBtn) {
-    window.addEventListener('scroll', () => {
-      scrollBtn.classList.toggle('show', window.scrollY > 500);
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+        });
     });
-    scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-  }
 
-  // ——— 3. EASTER EGG: 5 clicks on footer crest ———
-  let clicks = 0;
-  const crest = document.querySelector('.footer-brand img');
-  if (crest) {
-    crest.style.cursor = 'pointer';
-    crest.title = 'Click 5 times for Bleoo magic…';
-    crest.addEventListener('click', () => {
-      if (++clicks === 5) {
-        alert('BLEOO SPIRIT UNLOCKED! Legendary!');
-        crest.style.transform = 'scale(2) rotate(360deg)';
-        setTimeout(() => crest.style.transform = '', 800);
+    /* =========================================
+       2. DARK MODE TOGGLE
+       ========================================= */
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
 
-        // CONFETTI
-        const duration = 3 * 1000;
-        const end = Date.now() + duration;
-        (function frame() {
-          confetti({ particleCount: 8, spread: 70, origin: { y: 0.6 } });
-          if (Date.now() < end) requestAnimationFrame(frame);
-        }());
-        clicks = 0;
-      }
+    // Check saved theme
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        html.classList.add('dark');
+    }
+
+    if(themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        });
+    }
+
+    /* =========================================
+       3. GALLERY SWIPER (RESPONSIVE)
+       ========================================= */
+    // Only init if the element exists to prevent errors on other pages
+    if (document.querySelector('.mySwiper')) {
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 1,       // Mobile default
+            spaceBetween: 30,
+            loop: true,             // Infinite loop
+            grabCursor: true,       // Hand cursor on drag
+
+            autoplay: {
+                delay: 3500,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            },
+
+            // Navigation Arrows
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+
+            // Dots
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+                dynamicBullets: true,
+            },
+
+            // Responsive Breakpoints
+            breakpoints: {
+                640: { slidesPerView: 2, spaceBetween: 20 }, // Tablets
+                1024: { slidesPerView: 3, spaceBetween: 30 }, // Desktops
+            },
+        });
+    }
+
+    /* =========================================
+       4. ABOUT PAGE CAROUSEL (MANUAL)
+       ========================================= */
+    // This is for the specific history slider in about.html
+    const slides = document.querySelectorAll('.carousel-item');
+    if (slides.length > 0) {
+        let slideIndex = 0;
+        showSlides(slideIndex);
+
+        window.plusSlides = function(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function showSlides(n) {
+            if (n >= slides.length) slideIndex = 0;
+            if (n < 0) slideIndex = slides.length - 1;
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[slideIndex].classList.add('active');
+        }
+
+        // Slower auto-play for history
+        setInterval(() => plusSlides(1), 6000);
+    }
+
+    /* =========================================
+       5. SCROLL TO TOP & COPYRIGHT
+       ========================================= */
+    const scrollBtn = document.getElementById('scrollTop');
+    if (scrollBtn) {
+        window.addEventListener('scroll', () => {
+            scrollBtn.classList.toggle('show', window.scrollY > 500);
+        });
+        scrollBtn.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
+    }
+
+    const yearSpan = document.getElementById('yr');
+    if (yearSpan) yearSpan.innerText = new Date().getFullYear();
+
+    /* =========================================
+       6. EASTER EGG (5 Clicks)
+       ========================================= */
+    let clicks = 0;
+    const crest = document.querySelector('.footer-brand img');
+
+    if (crest) {
+      crest.addEventListener('click', () => {
+        clicks++;
+
+        // Visual feedback on every click
+        crest.style.transform = `scale(${1 + (clicks * 0.1)})`;
+
+        if (clicks === 5) {
+          // Reset scale immediately for the spin
+          crest.style.transition = 'all 1s ease';
+          crest.style.transform = 'scale(1.8) rotate(360deg)';
+
+          alert('BLEOO SPIRIT UNLOCKED! 🟡🔵');
+
+          // Reset after animation
+          setTimeout(() => {
+              crest.style.transition = '';
+              crest.style.transform = '';
+              clicks = 0;
+          }, 1000);
+
+          // Confetti
+          if(typeof confetti === 'function') {
+            const end = Date.now() + 3000;
+            (function frame() {
+                confetti({
+                    particleCount: 8,
+                    spread: 70,
+                    origin: { y: 0.8 }, // Confetti comes from bottom near footer
+                    colors: ['#002147', '#FDBE11']
+                });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+          }
+        }
+      });
+
+      // Reset clicks if user stops clicking for 2 seconds
+      crest.addEventListener('mouseleave', () => {
+          setTimeout(() => { if(clicks < 5) clicks = 0; crest.style.transform = ''; }, 2000);
+      });
+    }
+    /* =========================================
+       7. INITIALIZE AOS ANIMATIONS
+       ========================================= */
+    if (window.AOS) {
+        AOS.init({
+            duration: 800,
+            offset: 100,
+            once: true
+        });
+    }
+
+    /* =========================================
+       8. ACHIEVEMENTS COUNTER ANIMATION
+       ========================================= */
+    const counters = document.querySelectorAll('.counter');
+    const speed = 200; // The lower the slower
+
+    const startCounting = (entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counter = entry.target;
+                const target = +counter.getAttribute('data-target');
+
+                const updateCount = () => {
+                    const count = +counter.innerText;
+                    const inc = target / speed;
+
+                    if (count < target) {
+                        // Round up to avoid decimals
+                        counter.innerText = Math.ceil(count + inc);
+                        setTimeout(updateCount, 20);
+                    } else {
+                        counter.innerText = target; // Ensure it ends exactly on target
+                    }
+                };
+
+                updateCount();
+                observer.unobserve(counter); // Stop watching once animation starts
+            }
+        });
+    };
+
+    // Create Intersection Observer
+    const counterObserver = new IntersectionObserver(startCounting, {
+        root: null,
+        threshold: 0.5 // Trigger when 50% of the element is visible
     });
-  }
 
-
-
-  /* --------------------------------------------------------------
-   * 3. Feature Cards – Tilt Effect (pointermove)
-   * -------------------------------------------------------------- */
-  const cards = document.querySelectorAll('.feature-card');
-  let lastUpdate = 0;
-
-  cards.forEach(card => {
-      card.addEventListener('pointermove', handleTilt);
-      card.addEventListener('pointerleave', resetTilt);
-  });
-
-  function handleTilt(e) {
-      const now = performance.now();
-      if (now - lastUpdate < 16) return;               // ~60 fps throttle
-      lastUpdate = now;
-
-      const card = e.currentTarget;
-      const rect = card.getBoundingClientRect();
-      const cx = rect.left + rect.width  / 2;
-      const cy = rect.top  + rect.height / 2;
-      const dx = e.clientX - cx;
-      const dy = e.clientY - cy;
-
-      const tiltX = (dy / rect.height) * -8;   // rotateX
-      const tiltY = (dx / rect.width)  * 10;   // rotateY
-
-      card.style.transform = `perspective(900px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.03)`;
-      card.classList.add('hover-active');
-  }
-
-  function resetTilt(e) {
-      const card = e.currentTarget;
-      card.style.transform = '';
-      card.classList.remove('hover-active');
-  }
-  
-  // ——— 4. AOS Init ———
-  if (window.AOS) AOS.init({ duration: 800, once: true });
+    counters.forEach(counter => {
+        counterObserver.observe(counter);
+    });
 });
