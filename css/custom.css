@@ -217,6 +217,13 @@ html { scroll-behavior: smooth; }
 .footer-social a:hover { transform: scale(1.35) rotate(8deg); color: #e6b800; }
 
 
+.footer-motto {
+  color: #FFD54F; /* Passes WCAG AAA */
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
 
 /* --- FOOTER CONTACT FIX --- */
         .contact-item {
