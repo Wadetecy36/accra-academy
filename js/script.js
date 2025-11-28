@@ -1,9 +1,46 @@
-    document.addEventListener('DOMContentLoaded', () => {
+/* ============================================================= */
+/*  js/script.js – SENIOR DEV MODE: DEBUGGING ENABLED            */
+/* ============================================================= */
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // SENIOR DEV: Initialization Log
+    console.log('%c 🔧 DOMContentLoaded: Initializing Scripts... ', 'background: #002147; color: #FDBE11; font-weight: bold;');
+
+    /* =========================================
+       0. MOBILE MENU TOGGLE (CRITICAL FIX)
+       ========================================= */
+    const mobileBtn = document.querySelector('.mobile-btn');
+    const navLinks = document.querySelector('.navlinks');
+
+    if (mobileBtn && navLinks) {
+        mobileBtn.addEventListener('click', () => {
+            // Toggle visibility
+            navLinks.classList.toggle('hidden');
+            navLinks.classList.toggle('flex');
+
+            // Add mobile styling classes dynamically
+            if (navLinks.classList.contains('flex')) {
+                navLinks.classList.add('flex-col', 'absolute', 'top-16', 'left-0', 'w-full', 'bg-white', 'dark:bg-gray-900', 'p-6', 'shadow-xl', 'border-b', 'border-gold');
+                mobileBtn.textContent = '✕'; // Change icon to Close
+                console.log('📱 Mobile Menu: OPEN'); // DEBUG
+            } else {
+                navLinks.classList.remove('flex-col', 'absolute', 'top-16', 'left-0', 'w-full', 'bg-white', 'dark:bg-gray-900', 'p-6', 'shadow-xl', 'border-b', 'border-gold');
+                mobileBtn.textContent = '☰'; // Change icon back to Menu
+                console.log('📱 Mobile Menu: CLOSED'); // DEBUG
+            }
+        });
+    } else {
+        console.warn('⚠️ Mobile Menu elements not found in DOM.');
+    }
+
 
     /* =========================================
        1. 3D TILT EFFECT FOR CARDS
        ========================================= */
     const cards = document.querySelectorAll('.feature-card, .info-card');
+
+    if (cards.length === 0) console.warn('ℹ️ No tilt cards found on this page.');
 
     cards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
@@ -33,12 +70,18 @@
     // Check saved theme
     if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         html.classList.add('dark');
+        console.log('🌙 Dark Mode: Active (System/Storage)'); // DEBUG
+    } else {
+        console.log('☀️ Light Mode: Active'); // DEBUG
     }
 
     if(themeToggle) {
         themeToggle.addEventListener('click', () => {
             html.classList.toggle('dark');
-            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            themeToggle.setAttribute('aria-pressed', isDark);
+            console.log(`🌗 Theme toggled to: ${isDark ? 'Dark' : 'Light'}`); // DEBUG
         });
     }
 
@@ -47,37 +90,43 @@
        ========================================= */
     // Only init if the element exists to prevent errors on other pages
     if (document.querySelector('.mySwiper')) {
-        var swiper = new Swiper(".mySwiper", {
-            slidesPerView: 1,       // Mobile default
-            spaceBetween: 30,
-            loop: true,             // Infinite loop
-            grabCursor: true,       // Hand cursor on drag
+        // SENIOR DEV: Check if library is loaded
+        if (typeof Swiper === 'undefined') {
+            console.error('❌ Swiper JS not detected. Gallery will not work.');
+        } else {
+            var swiper = new Swiper(".mySwiper", {
+                slidesPerView: 1,       // Mobile default
+                spaceBetween: 30,
+                loop: true,             // Infinite loop
+                grabCursor: true,       // Hand cursor on drag
 
-            autoplay: {
-                delay: 3500,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true,
-            },
+                autoplay: {
+                    delay: 3500,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                },
 
-            // Navigation Arrows
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
+                // Navigation Arrows
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
 
-            // Dots
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-                dynamicBullets: true,
-            },
+                // Dots
+                pagination: {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                    dynamicBullets: true,
+                },
 
-            // Responsive Breakpoints
-            breakpoints: {
-                640: { slidesPerView: 2, spaceBetween: 20 }, // Tablets
-                1024: { slidesPerView: 3, spaceBetween: 30 }, // Desktops
-            },
-        });
+                // Responsive Breakpoints
+                breakpoints: {
+                    640: { slidesPerView: 2, spaceBetween: 20 }, // Tablets
+                    1024: { slidesPerView: 3, spaceBetween: 30 }, // Desktops
+                },
+            });
+            console.log('✅ Swiper Initialized'); // DEBUG
+        }
     }
 
     /* =========================================
@@ -102,6 +151,7 @@
 
         // Slower auto-play for history
         setInterval(() => plusSlides(1), 6000);
+        console.log(`🎞️ Custom Carousel started with ${slides.length} slides.`); // DEBUG
     }
 
     /* =========================================
@@ -127,11 +177,13 @@
     if (crest) {
       crest.addEventListener('click', () => {
         clicks++;
+        console.log(`🥚 Easter Egg Progress: ${clicks}/5`); // DEBUG
 
         // Visual feedback on every click
         crest.style.transform = `scale(${1 + (clicks * 0.1)})`;
 
         if (clicks === 5) {
+          console.log('🎉 BLEOO SPIRIT UNLOCKED!'); // DEBUG
           // Reset scale immediately for the spin
           crest.style.transition = 'all 1s ease';
           crest.style.transform = 'scale(1.8) rotate(360deg)';
@@ -157,6 +209,8 @@
                 });
                 if (Date.now() < end) requestAnimationFrame(frame);
             }());
+          } else {
+             console.warn('⚠️ Confetti library not loaded.');
           }
         }
       });
@@ -166,6 +220,7 @@
           setTimeout(() => { if(clicks < 5) clicks = 0; crest.style.transform = ''; }, 2000);
       });
     }
+
     /* =========================================
        7. INITIALIZE AOS ANIMATIONS
        ========================================= */
@@ -175,6 +230,9 @@
             offset: 100,
             once: true
         });
+        console.log('✅ AOS Initialized'); // DEBUG
+    } else {
+        console.warn('⚠️ AOS Library not found. Animations disabled.');
     }
 
     /* =========================================
@@ -183,38 +241,58 @@
     const counters = document.querySelectorAll('.counter');
     const speed = 200; // The lower the slower
 
-    const startCounting = (entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const counter = entry.target;
-                const target = +counter.getAttribute('data-target');
+    if (counters.length > 0) {
+        const startCounting = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = +counter.getAttribute('data-target');
+                    console.log(`📈 Counter started for: ${target}`); // DEBUG
 
-                const updateCount = () => {
-                    const count = +counter.innerText;
-                    const inc = target / speed;
+                    const updateCount = () => {
+                        const count = +counter.innerText;
+                        const inc = target / speed;
 
-                    if (count < target) {
-                        // Round up to avoid decimals
-                        counter.innerText = Math.ceil(count + inc);
-                        setTimeout(updateCount, 20);
-                    } else {
-                        counter.innerText = target; // Ensure it ends exactly on target
-                    }
-                };
+                        if (count < target) {
+                            // Round up to avoid decimals
+                            counter.innerText = Math.ceil(count + inc);
+                            setTimeout(updateCount, 20);
+                        } else {
+                            counter.innerText = target; // Ensure it ends exactly on target
+                        }
+                    };
 
-                updateCount();
-                observer.unobserve(counter); // Stop watching once animation starts
-            }
+                    updateCount();
+                    observer.unobserve(counter); // Stop watching once animation starts
+                }
+            });
+        };
+
+        // Create Intersection Observer
+        const counterObserver = new IntersectionObserver(startCounting, {
+            root: null,
+            threshold: 0.5 // Trigger when 50% of the element is visible
         });
-    };
 
-    // Create Intersection Observer
-    const counterObserver = new IntersectionObserver(startCounting, {
-        root: null,
-        threshold: 0.5 // Trigger when 50% of the element is visible
+        counters.forEach(counter => {
+            counterObserver.observe(counter);
+        });
+    }
+
+    /* =========================================
+       9. IMAGE FALLBACK (MISSING ASSETS)
+       ========================================= */
+    document.querySelectorAll('img').forEach(img => {
+        if (!img.hasAttribute('onerror')) {
+            img.onerror = function() {
+                console.warn(`🖼️ Image Failed: ${this.src} -> Replaced with placeholder`); // DEBUG
+                this.onerror = null; // Prevent infinite loop
+                const alt = this.alt || 'Image';
+                const width = this.width || 800;
+                const height = this.height || 450;
+                this.src = `https://placehold.co/${width}x${height}/002147/FDBE11?text=${encodeURIComponent(alt)}`;
+            };
+        }
     });
 
-    counters.forEach(counter => {
-        counterObserver.observe(counter);
-    });
 });
