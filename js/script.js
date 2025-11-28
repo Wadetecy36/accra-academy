@@ -77,12 +77,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(themeToggle) {
         themeToggle.addEventListener('click', () => {
+<<<<<<< HEAD
             html.classList.toggle('dark');
             const isDark = html.classList.contains('dark');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
             themeToggle.setAttribute('aria-pressed', isDark);
             console.log(`🌗 Theme toggled to: ${isDark ? 'Dark' : 'Light'}`); // DEBUG
         });
+=======
+    html.classList.toggle('dark');
+    const isDark = html.classList.contains('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    themeToggle.setAttribute('aria-pressed', isDark); // ADD THIS LINE
+});
+>>>>>>> 91311ebb1bf70f170312d814d9bdbb3214a401da
     }
 
     /* =========================================
@@ -274,6 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
             threshold: 0.5 // Trigger when 50% of the element is visible
         });
 
+<<<<<<< HEAD
         counters.forEach(counter => {
             counterObserver.observe(counter);
         });
@@ -296,3 +305,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+=======
+        // Auto-fallback for missing images
+document.querySelectorAll('img').forEach(img => {
+  if (!img.hasAttribute('onerror')) {
+    img.onerror = function() {
+      this.onerror = null;
+      const alt = this.alt || 'Image';
+      this.src = `https://placehold.co/800x450/002147/FDBE11?text=${encodeURIComponent(alt)}`;
+    };
+  }
+});
+    
+    // Create Intersection Observer
+    const counterObserver = new IntersectionObserver(startCounting, {
+        root: null,
+        threshold: 0.5 // Trigger when 50% of the element is visible
+    });
+
+    counters.forEach(counter => {
+        counterObserver.observe(counter);
+    });
+});
+>>>>>>> 91311ebb1bf70f170312d814d9bdbb3214a401da

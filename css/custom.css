@@ -158,7 +158,62 @@ body {
 .contact-item p, .contact-item a { color: var(--footer-link); font-size: 0.95rem; line-height: 1.4; text-decoration: none; margin: 0; }
 .contact-item a:hover { color: var(--gold); text-decoration: underline; }
 
+<<<<<<< HEAD
 /* Easter Egg */
+=======
+
+.footer-motto {
+  color: #FFD54F; /* Passes WCAG AAA */
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
+
+/* --- FOOTER CONTACT FIX --- */
+        .contact-item {
+            display: flex;
+            align-items: flex-start; /* Aligns icon with top line of text */
+            gap: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item .icon-box svg {
+            width: 24px;
+            height: 24px;
+            color: var(--gold);
+            margin-top: 3px; /* Fine-tune alignment with text */
+        }
+
+        .contact-item .text-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-item .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b; /* Muted color for labels like "Location" */
+            margin-bottom: 2px;
+            font-weight: 700;
+        }
+
+        .contact-item p, .contact-item a {
+            color: var(--footer-link);
+            font-size: 0.95rem;
+            line-height: 1.4;
+            text-decoration: none;
+            margin: 0;
+        }
+
+        .contact-item a:hover {
+            color: var(--gold);
+            text-decoration: underline;
+        }
+
+/* --- ANIMATIONS & EXTRAS (FIXED EASTER EGG STYLE) --- */
+>>>>>>> 91311ebb1bf70f170312d814d9bdbb3214a401da
 .footer-brand .crest {
     width: 40px; height: 40px; border: 2px solid var(--gold); border-radius: 50%;
     padding: 8px; background: rgba(255, 255, 255, 0.05); cursor: pointer;
@@ -216,6 +271,7 @@ body {
     box-shadow: 0 10px 30px rgba(253, 190, 17, 0.15);
 }
 
+<<<<<<< HEAD
 /* Large Background Number Effect */
 .legacy-number {
     position: absolute;
@@ -371,3 +427,18 @@ body.debug-layout * {
 body.debug-layout img {
     outline: 2px solid blue !important;
 }
+=======
+
+/* Skip Link for Accessibility */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--gold);
+  color: var(--royal);
+  padding: 0.5rem 1rem;
+  z-index: 100;
+  font-weight: 700;
+}
+.skip-link:focus { top: 0; }
+>>>>>>> 91311ebb1bf70f170312d814d9bdbb3214a401da
