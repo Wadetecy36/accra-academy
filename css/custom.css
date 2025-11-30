@@ -1,5 +1,5 @@
 /* ============================================================= */
-/*  css/custom.css – FIXED + MODERN TILT + NEW FOOTER            */
+/*  css/custom.css – CLEAN, MERGED & VALIDATED                   */
 /* ============================================================= */
 
 :root {
@@ -39,6 +39,14 @@ body {
 
 .dark-mode body { color: var(--text-primary); }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+
+/* --- ACCESSIBILITY --- */
+.skip-link {
+    position: absolute; top: -40px; left: 0;
+    background: var(--gold); color: var(--royal);
+    padding: 0.5rem 1rem; z-index: 100; font-weight: 700;
+}
+.skip-link:focus { top: 0; }
 
 /* --- HEADER --- */
 .site-header {
@@ -102,31 +110,24 @@ body {
 .dark-mode .feature-card .icon svg { color: var(--gold); }
 .feature-card:hover .icon svg { transform: scale(1.1); color: var(--gold); }
 
-/* --- GALLERY CAROUSEL --- */
+/* --- GALLERY CAROUSEL (SWIPER) --- */
 .gallery-section { position: relative; overflow: hidden; }
 
 .swiper-slide {
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        transition: transform 0.3s ease;
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
 }
 
-/* RESTORED: Cinematic Aspect Ratio (Fixes the group photo crop) */
 .swiper-slide img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 10; /* The "Golden" ratio for group shots */
-    object-fit: cover;
-    object-position: top center; /* Focuses on faces */
+    width: 100%; height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover; object-position: top center;
     transition: transform 0.5s ease;
 }
 
-/* Mobile adjustments */
 @media (max-width: 768px) {
-    .swiper-slide img {
-        aspect-ratio: 4 / 3; /* Taller on mobile for visibility */
-    }
+    .swiper-slide img { aspect-ratio: 4 / 3; }
 }
 .swiper-slide:hover img { transform: scale(1.1); }
 
@@ -140,17 +141,22 @@ body {
 @media (max-width: 640px) { .swiper-button-next, .swiper-button-prev { display: none; } }
 
 /* --- FOOTER --- */
-.site-footer { background: var(--footer-bg); color: var(--footer-text); padding: 4rem 0 2rem; border-top: 1px solid rgba(255,204,0,0.1); margin-top: 4rem; }
+.site-footer {
+    background: var(--footer-bg); color: var(--footer-text);
+    padding: 4rem 0 2rem; border-top: 1px solid rgba(255,204,0,0.1); margin-top: 4rem;
+}
 .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem; margin-bottom: 3rem; }
 .footer-col { padding: 0.6rem; }
 .footer-brand h3 { font-family: 'Merriweather', serif; font-size: 1.6rem; color: var(--gold); margin-bottom: 0.3rem; }
-.footer-title { color: var(--gold); font-weight: 700; margin-bottom: 1.2rem; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+.footer-motto { color: #FFD54F; font-size: 1rem; margin-bottom: 0.8rem; font-weight: 600; }
+.footer-title { color: var(--gold); font-weight: 700; margin-bottom: 1.2rem; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1rem; }
 .footer-links a { color: var(--footer-link); text-decoration: none; transition: color 0.3s ease, transform 0.25s ease; }
 .footer-links a:hover { color: var(--gold); transform: translateX(8px); display: inline-block; }
 .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid rgba(255,204,0,0.15); }
 .footer-social { display: flex; gap: 1.8rem; }
 .footer-social a { color: var(--gold); font-size: 1.4rem; transition: transform 0.3s ease; }
 .footer-social a:hover { transform: scale(1.35) rotate(8deg); color: #e6b800; }
+
 .contact-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 1.5rem; }
 .contact-item .icon-box svg { width: 24px; height: 24px; color: var(--gold); margin-top: 3px; }
 .contact-item .text-box { display: flex; flex-direction: column; }
@@ -158,62 +164,7 @@ body {
 .contact-item p, .contact-item a { color: var(--footer-link); font-size: 0.95rem; line-height: 1.4; text-decoration: none; margin: 0; }
 .contact-item a:hover { color: var(--gold); text-decoration: underline; }
 
-<<<<<<< HEAD
-/* Easter Egg */
-=======
-
-.footer-motto {
-  color: #FFD54F; /* Passes WCAG AAA */
-  font-size: 1rem;
-  margin-bottom: 0.8rem;
-  font-weight: 600;
-}
-
-
-/* --- FOOTER CONTACT FIX --- */
-        .contact-item {
-            display: flex;
-            align-items: flex-start; /* Aligns icon with top line of text */
-            gap: 15px;
-            margin-bottom: 1.5rem;
-        }
-
-        .contact-item .icon-box svg {
-            width: 24px;
-            height: 24px;
-            color: var(--gold);
-            margin-top: 3px; /* Fine-tune alignment with text */
-        }
-
-        .contact-item .text-box {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .contact-item .label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #64748b; /* Muted color for labels like "Location" */
-            margin-bottom: 2px;
-            font-weight: 700;
-        }
-
-        .contact-item p, .contact-item a {
-            color: var(--footer-link);
-            font-size: 0.95rem;
-            line-height: 1.4;
-            text-decoration: none;
-            margin: 0;
-        }
-
-        .contact-item a:hover {
-            color: var(--gold);
-            text-decoration: underline;
-        }
-
-/* --- ANIMATIONS & EXTRAS (FIXED EASTER EGG STYLE) --- */
->>>>>>> 91311ebb1bf70f170312d814d9bdbb3214a401da
+/* Easter Egg Crest */
 .footer-brand .crest {
     width: 40px; height: 40px; border: 2px solid var(--gold); border-radius: 50%;
     padding: 8px; background: rgba(255, 255, 255, 0.05); cursor: pointer;
@@ -231,14 +182,11 @@ body {
 #scrollTop:hover { transform: scale(1.1); }
 #scrollTop.show { opacity: 1; transform: translateY(0); }
 
-.skip-link { position: absolute; top: -40px; left: 0; background: var(--gold); color: var(--royal); padding: 0.5rem 1rem; z-index: 100; font-weight: 700; }
-.skip-link:focus { top: 0; }
-
-/* Responsive */
+/* Responsive Grid Adjustments */
 @media (max-width: 900px) {
     .navlinks, .mobile-btn { display: none; }
     .mobile-btn { display: block; }
-    .hero-cards, .mv-grid, .features-grid, .stats-grid, .footer-grid { grid-template-columns: 1fr; }
+    .hero-cards, .features-grid, .footer-grid { grid-template-columns: 1fr; }
     .footer-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 520px) {
@@ -246,10 +194,6 @@ body {
     .footer-grid { grid-template-columns: 1fr; text-align: center; }
     .footer-bottom { flex-direction: column; gap: 1.5rem; }
 }
-
-
-
-
 
 /* =========================================
    LEGACY / HISTORY SECTION
@@ -271,91 +215,36 @@ body {
     box-shadow: 0 10px 30px rgba(253, 190, 17, 0.15);
 }
 
-<<<<<<< HEAD
-/* Large Background Number Effect */
 .legacy-number {
-    position: absolute;
-    top: -20px;
-    right: -10px;
-    font-size: 6rem;
-    font-weight: 900;
-    color: rgba(255, 255, 255, 0.03);
-    font-family: 'Merriweather', serif;
-    transition: color 0.3s ease;
-    z-index: 0;
+    position: absolute; top: -20px; right: -10px; font-size: 6rem; font-weight: 900;
+    color: rgba(255, 255, 255, 0.03); font-family: 'Merriweather', serif; transition: color 0.3s ease; z-index: 0;
 }
-
-.legacy-card:hover .legacy-number {
-    color: rgba(253, 190, 17, 0.1); /* Glows gold on hover */
-}
-
+.legacy-card:hover .legacy-number { color: rgba(253, 190, 17, 0.1); }
 .legacy-icon {
-    width: 50px;
-    height: 50px;
-    background: rgba(253, 190, 17, 0.1);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-    color: var(--gold);
-    position: relative;
-    z-index: 1;
+    width: 50px; height: 50px; background: rgba(253, 190, 17, 0.1); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;
+    color: var(--gold); position: relative; z-index: 1;
 }
-
 .legacy-content { position: relative; z-index: 1; }
-
-.legacy-title {
-    color: white;
-    font-family: 'Merriweather', serif;
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-
-.legacy-desc {
-    color: #94A3B8; /* Slate-400 */
-    font-size: 0.95rem;
-    line-height: 1.6;
-}
+.legacy-title { color: white; font-family: 'Merriweather', serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+.legacy-desc { color: #94A3B8; font-size: 0.95rem; line-height: 1.6; }
 
 /* =========================================
-   GALLERY MASONRY
+   GALLERY MASONRY & LIGHTBOX
    ========================================= */
-.gallery-grid-masonry {
-    column-count: 1;
-    column-gap: 1.5rem;
-}
+.gallery-grid-masonry { column-count: 1; column-gap: 1.5rem; }
 @media (min-width: 640px) { .gallery-grid-masonry { column-count: 2; } }
 @media (min-width: 1024px) { .gallery-grid-masonry { column-count: 3; } }
 
 .gallery-item {
-    break-inside: avoid;
-    margin-bottom: 1.5rem;
-    border-radius: 16px;
-    overflow: hidden;
-    position: relative;
-    cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: var(--shadow-soft);
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    break-inside: avoid; margin-bottom: 1.5rem; border-radius: 16px; overflow: hidden;
+    position: relative; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-soft); transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
-
-.gallery-item img {
-    width: 100%;
-    display: block;
-    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.gallery-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px -10px rgba(253, 190, 17, 0.3);
-    border-color: var(--gold);
-}
-
+.gallery-item img { width: 100%; display: block; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.gallery-item:hover { transform: translateY(-5px); box-shadow: 0 20px 40px -10px rgba(253, 190, 17, 0.3); border-color: var(--gold); }
 .gallery-item:hover img { transform: scale(1.1); }
 
-/* Overlay */
 .overlay {
     position: absolute; inset: 0;
     background: linear-gradient(to top, rgba(0, 33, 71, 0.9), transparent 80%);
@@ -363,82 +252,71 @@ body {
     padding: 1.5rem; opacity: 0; transition: opacity 0.3s ease;
 }
 .gallery-item:hover .overlay { opacity: 1; }
-
 .overlay h4 { color: var(--gold); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; margin-bottom: 0.25rem; }
 .overlay p { color: white; font-family: 'Merriweather', serif; font-size: 1.1rem; }
 
-/* --- GALLERY UPGRADES --- */
+/* Filter Buttons */
+.filter-btn.active { background-color: var(--gold) !important; color: var(--royal) !important; border-color: var(--gold) !important; }
+.filter-btn { background-color: white; color: #4b5563; }
+.dark-mode .filter-btn { background-color: #1f2937; color: #d1d5db; }
 
-/* Active State for Filter Buttons */
-.filter-btn.active {
-    background-color: var(--gold) !important;
-    color: var(--royal) !important;
-    border-color: var(--gold) !important;
-}
-
-/* Inactive State (Default) */
-.filter-btn {
-    background-color: white;
-    color: #4b5563; /* Gray-600 */
-}
-.dark-mode .filter-btn {
-    background-color: #1f2937; /* Gray-800 */
-    color: #d1d5db; /* Gray-300 */
-}
-
-/* Lightbox Animation */
-#lightbox {
-    transition: opacity 0.3s ease, backdrop-filter 0.3s ease;
-}
-#lightbox:not(.hidden) {
-    backdrop-filter: blur(10px);
-}
+/* Lightbox */
+#lightbox { transition: opacity 0.3s ease, backdrop-filter 0.3s ease; }
+#lightbox:not(.hidden) { backdrop-filter: blur(10px); }
 
 /* =========================================
-   SENIOR DEV: POLISH & DEBUG MODULE
+   SENIOR DEV: POLISH & DEBUG
    ========================================= */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--royal); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 5px; border: 2px solid var(--royal); }
+::-webkit-scrollbar-thumb:hover { background: #e6b800; }
 
-/* 1. Custom Scrollbar (Premium Feel) */
-::-webkit-scrollbar {
-    width: 10px;
+::selection { background: var(--gold); color: var(--royal); }
+
+body.debug-layout * { outline: 1px solid rgba(255, 0, 0, 0.3) !important; }
+body.debug-layout img { outline: 2px solid blue !important; }
+
+
+/* --- AWARD WINNING ACADEMICS --- */
+.dept-tab {
+    cursor: pointer;
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden;
 }
-::-webkit-scrollbar-track {
-    background: var(--royal);
-}
-::-webkit-scrollbar-thumb {
+.dept-tab::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; width: 100%; height: 3px;
     background: var(--gold);
-    border-radius: 5px;
-    border: 2px solid var(--royal);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: right;
 }
-::-webkit-scrollbar-thumb:hover {
-    background: #e6b800;
+.dept-tab:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+.dept-tab.active::after {
+    transform: scaleX(1);
 }
 
-/* 2. Text Selection (On Brand) */
-::selection {
+/* --- TIMELINE ANIMATIONS --- */
+.timeline-dot {
+    position: relative;
+    z-index: 10;
+}
+.timeline-dot::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
     background: var(--gold);
-    color: var(--royal);
+    opacity: 0.4;
+    animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
 }
-
-/* 3. Debug Helpers (Only visible if class 'debug-layout' is added to body via JS) */
-body.debug-layout * {
-    outline: 1px solid rgba(255, 0, 0, 0.3) !important;
+@keyframes pulse-ring {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    100% { transform: scale(2.5); opacity: 0; }
 }
-body.debug-layout img {
-    outline: 2px solid blue !important;
-}
-=======
-
-/* Skip Link for Accessibility */
-.skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: var(--gold);
-  color: var(--royal);
-  padding: 0.5rem 1rem;
-  z-index: 100;
-  font-weight: 700;
-}
-.skip-link:focus { top: 0; }
->>>>>>> 91311ebb1bf70f170312d814d9bdbb3214a401da

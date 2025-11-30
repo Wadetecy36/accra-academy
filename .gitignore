@@ -1,13 +1,14 @@
-
-# Node.js
+# Ignore Dependencies (Too heavy, we re-install them on the server)
 node_modules/
-package-lock.json
-tailwindcss
-
-# Dev servers & temp
-server.mjs
+server/node_modules/
+Thumbs.db
 .fleet/
 *.kate-swp
+# Ignore Secrets (CRITICAL SECURITY)
+.env
+server/.env
+*.env
+
 .DS_Store
 Thumbs.db
 

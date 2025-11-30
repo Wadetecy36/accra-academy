@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal | Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { royal: '#002147', gold: '#FDBE11' } } } }
+    </script>
+</head>
+<body class="bg-gray-100 h-screen flex items-center justify-center bg-[url('./assets/pattern.png')]">
+
+    <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden">
+        <!-- Decor -->
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-royal to-gold"></div>
+
+        <div class="text-center mb-8">
+            <img src="./assets/crest.png" class="w-20 mx-auto mb-4">
+            <h1 class="text-2xl font-bold text-royal">Student Portal</h1>
+            <p class="text-gray-500 text-sm">Secure Access Gateway</p>
+        </div>
+
+        <form id="login-form" class="space-y-6">
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Student ID</label>
+                <input type="text" id="sid" placeholder="e.g. 2025001" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-royal outline-none" required>
+            </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Password</label>
+                <input type="password" id="pass" placeholder="••••••••" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-royal outline-none" required>
+            </div>
+            <div id="error-msg" class="text-red-500 text-sm text-center hidden"></div>
+
+            <button type="submit" class="w-full bg-royal text-gold font-bold py-3 rounded-lg hover:bg-blue-900 transition shadow-lg">
+                ACCESS DASHBOARD
+            </button>
+        </form>
+        <div class="mt-6 text-center">
+            <a href="index.html" class="text-gray-400 text-xs hover:text-royal">← Back to Website</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const err = document.getElementById('error-msg');
+
+            btn.innerHTML = "Authenticating...";
+            btn.disabled = true;
+            err.classList.add('hidden');
+
+            const studentId = document.getElementById('sid').value;
+            const password = document.getElementById('pass').value;
+
+            try {
+                const res = await fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ studentId, password })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    // Save Student Data to Session
+                    sessionStorage.setItem('bleoo_user', JSON.stringify(data.student));
+                    window.location.href = 'dashboard.html';
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (error) {
+                err.innerText = error.message || "Connection Error";
+                err.classList.remove('hidden');
+                btn.innerHTML = "ACCESS DASHBOARD";
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

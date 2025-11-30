@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <!-- SENIOR DEV: SEO & Meta Tags -->
+  <meta name="description" content="The history and heritage of Accra Academy. Founded in 1931, the first private academy in the Gold Coast, producing Ghana's leaders.">
   <title>About Us - Accra Academy</title>
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
 
   <!-- TAILWIND CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -20,13 +24,19 @@
   </script>
 
   <!-- FONTS & LIBRARIES -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css">
 
   <!-- CUSTOM CSS -->
   <link href="./css/custom.css" rel="stylesheet">
 </head>
-<body class="min-h-screen bg-soft dark:bg-gray-900 transition-colors duration-300">
+
+<body class="min-h-screen bg-soft dark:bg-gray-900 transition-colors duration-300" id="main-content">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <!-- HEADER -->
   <header class="site-header">
@@ -41,62 +51,357 @@
 
         <nav class="navlinks hidden md:flex gap-8 text-lg font-medium">
             <a href="./index.html" class="hover:text-gold transition">Home</a>
-            <a href="./about.html" class="text-gold font-bold">About</a>
+            <a href="./about.html" class="text-gold font-bold border-b-2 border-gold">About</a>
             <a href="./academics.html" class="hover:text-gold transition">Academics</a>
+            <a href="./news.html" class="hover:text-gold transition">News</a>
             <a href="./gallery.html" class="hover:text-gold transition">Gallery</a>
             <a href="./contacts.html" class="hover:text-gold transition">Contact</a>
         </nav>
 
         <div class="flex items-center gap-4">
-            <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:ring-2 hover:ring-gold transition-all" aria-label="Toggle dark mode"></button>
-            <button class="mobile-btn md:hidden text-2xl text-royal dark:text-gold">☰</button>
+            <!-- Theme Toggle -->
+            <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:ring-2 hover:ring-gold transition-all flex items-center justify-center" aria-label="Toggle dark mode">
+                <svg class="w-5 h-5 text-gold hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                <svg class="w-5 h-5 text-royal block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+            </button>
+            <button class="mobile-btn md:hidden text-2xl text-royal dark:text-gold" aria-label="Toggle navigation menu">☰</button>
         </div>
     </div>
   </header>
 
   <!-- HERO -->
-  <section class="relative py-32 bg-royal text-white overflow-hidden">
+  <section class="relative py-32 md:py-48 bg-royal text-white overflow-hidden">
     <div class="absolute inset-0 opacity-20" style="background-image: url('./assets/entrance.webp'); background-size: cover; background-position: center;"></div>
-    <div class="absolute inset-0 bg-gradient-to-b from-royal/90 to-royal/95"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-royal/90 via-royal/80 to-royal/95"></div>
 
     <div class="container relative z-10 text-center">
-      <img src="assets/crest.png" alt="Crest" class="h-24 w-24 mx-auto mb-6 drop-shadow-[0_0_15px_rgba(253,190,17,0.5)]" data-aos="zoom-in">
-      <h1 class="text-5xl md:text-6xl font-display font-bold mb-4 text-gold">Our Heritage</h1>
-      <p class="text-xl text-gray-300 max-w-2xl mx-auto italic" data-aos="fade-up" data-aos-delay="100">"To be, rather than to seem"</p>
+      <img src="assets/crest.png" alt="Crest" class="h-24 w-24 mx-auto mb-6 drop-shadow-[0_0_15px_rgba(253,190,17,0.5)]" data-aos="zoom-in" fetchpriority="high">
+      <h1 class="text-5xl md:text-7xl font-display font-bold mb-4 text-gold tracking-tight">Our Heritage</h1>
+      <div class="h-1 w-24 bg-gold mx-auto mb-6 rounded-full"></div>
+      <p class="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto italic font-light" data-aos="fade-up" data-aos-delay="100">"The first private academy in the Gold Coast established by indigenous investors."</p>
     </div>
   </section>
 
-  <!-- HISTORY CONTENT -->
-  <section id="history" class="py-16">
-    <div class="container">
-      <!-- Founders -->
-      <div class="mb-16" data-aos="fade-up">
-        <h2 class="text-3xl font-display text-royal dark:text-gold mb-6">Founding Years (1931–1949)</h2>
-        <div class="grid md:grid-cols-2 gap-8 items-center">
-            <p class="text-lg text-gray-700 dark:text-gray-300">Accra Academy was founded on July 20, 1931, by four visionary educators in Mantse Agbonaa. Starting with 19 students in Ellen House, the school aimed to provide affordable secondary education to brilliant but financially disadvantaged boys.</p>
-            <img src="assets/founders.webp" alt="Founders" class="rounded-lg shadow-lg w-full object-cover h-64">
-        </div>
-      </div>
-
-      <div class="mb-12" data-aos="fade-up">
-        <h3 class="text-2xl font-display text-royal dark:text-gold mb-4">Modern Era</h3>
-        <p class="mb-4 text-gray-700 dark:text-gray-300">From the 1980s to present day, Accra Academy has continued to lead in ICT, Sports, and Academics.</p>
-
-        <!-- CAROUSEL (Manual Logic) -->
-        <div class="carousel mt-6">
-          <div class="carousel-inner">
-            <div class="carousel-item active"><img src="assets/modern1.webp" alt="Modern Campus 1"></div>
-            <div class="carousel-item"><img src="assets/modern2.webp" alt="Modern Campus 2"></div>
-            <div class="carousel-item"><img src="assets/modern3.webp" alt="Modern Campus 3"></div>
+  <!-- THE BIG FOUR (FOUNDERS) -->
+  <section class="py-20 bg-white dark:bg-gray-800">
+      <div class="container">
+          <div class="grid md:grid-cols-2 gap-12 items-center">
+              <div data-aos="fade-right">
+                  <span class="text-gold font-bold tracking-widest uppercase text-sm mb-2 block">The Visionaries</span>
+                  <h2 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white mb-6">Founded by the "Big Four"</h2>
+                  <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                      On July 20, 1931, four visionary educators—all under the age of 30—established Accra Academy in Ellen House, Mantse Agbonaa. Their mission was to provide affordable, high-quality secondary education to brilliant students who could not afford government schools.
+                  </p>
+                  <ul class="space-y-2 mt-4 text-gray-600 dark:text-gray-400 font-bold">
+                      <li class="flex items-center gap-2"><div class="w-2 h-2 bg-gold rounded-full"></div> Dr. Kofi George Konuah</li>
+                      <li class="flex items-center gap-2"><div class="w-2 h-2 bg-gold rounded-full"></div> Gottfried Narku Alema</li>
+                      <li class="flex items-center gap-2"><div class="w-2 h-2 bg-gold rounded-full"></div> James Akwei Halm-Addo</li>
+                      <li class="flex items-center gap-2"><div class="w-2 h-2 bg-gold rounded-full"></div> Samuel Neils Awuletey</li>
+                  </ul>
+              </div>
+              <div class="relative" data-aos="fade-left">
+                  <div class="absolute -inset-4 bg-gold/10 rounded-xl transform rotate-3"></div>
+                  <img src="assets/founders.webp" alt="Founders of Accra Academy" class="relative rounded-lg shadow-2xl w-full border-4 border-white dark:border-gray-700">
+              </div>
           </div>
-          <div class="carousel-controls">
-            <button class="carousel-btn" onclick="plusSlides(-1)">&#10094;</button>
-            <button class="carousel-btn" onclick="plusSlides(1)">&#10095;</button>
-          </div>
-        </div>
       </div>
-    </div>
   </section>
+  <!-- HISTORY TIMELINE (REMASTERED) -->
+    <section id="history" class="py-24 bg-soft dark:bg-gray-900 relative overflow-hidden">
+
+      <!-- Background Watermark -->
+      <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-5 pointer-events-none">
+          <h2 class="text-[20rem] font-bold text-royal dark:text-white absolute -top-20 -left-20 rotate-12">1931</h2>
+      </div>
+
+      <div class="container relative z-10">
+        <div class="text-center mb-20" data-aos="fade-down">
+            <span class="text-gold font-bold tracking-[0.2em] uppercase text-sm">Our Journey</span>
+            <h2 class="text-4xl md:text-5xl font-display font-bold text-royal dark:text-white mt-2">A Timeline of <span class="text-gold">Glory</span></h2>
+        </div>
+
+        <div class="relative max-w-5xl mx-auto">
+            <!-- The Vertical Spine (Gradient Line) -->
+            <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-royal via-gold to-royal dark:from-white dark:via-gold dark:to-white transform md:-translate-x-1/2 rounded-full"></div>
+
+            <!-- EVENT 1: 1931 (Left on Desktop) -->
+            <div class="mb-16 flex flex-col md:flex-row items-center justify-between w-full group">
+                <div class="hidden md:block w-5/12"></div> <!-- Spacer -->
+
+                <!-- Center Dot -->
+                <div class="absolute left-4 md:left-1/2 transform -translate-x-[10px] md:-translate-x-1/2 z-20">
+                    <div class="w-6 h-6 bg-royal dark:bg-white border-4 border-gold rounded-full timeline-dot shadow-lg" data-aos="zoom-in"></div>
+                </div>
+
+                <!-- Content Card -->
+                <div class="w-full md:w-5/12 pl-12 md:pl-0 md:pr-12 md:text-right" data-aos="fade-right">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border-l-4 md:border-l-0 md:border-r-4 border-gold hover:-translate-y-2 transition-transform duration-300">
+                        <h3 class="text-5xl font-bold text-royal/10 dark:text-white/10 absolute top-4 right-6 md:right-auto md:left-6 select-none">1931</h3>
+                        <span class="inline-block px-3 py-1 bg-royal/10 text-royal dark:bg-gold/20 dark:text-gold rounded-full text-xs font-bold mb-3">The Genesis</span>
+                        <h4 class="text-2xl font-bold text-royal dark:text-white mb-2">Ellen House</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                            The vision comes to life. Accra Academy is founded with 19 students in James Town. The motto <em>"Esse Quam Videri"</em> is etched into history.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EVENT 2: 1950 (Right on Desktop) -->
+            <div class="mb-16 flex flex-col md:flex-row items-center justify-between w-full group">
+                <!-- Content Card -->
+                <div class="w-full md:w-5/12 pl-12 md:pl-12 md:text-left order-2 md:order-1" data-aos="fade-left">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border-l-4 border-gold hover:-translate-y-2 transition-transform duration-300">
+                        <h3 class="text-5xl font-bold text-royal/10 dark:text-white/10 absolute top-4 right-6 select-none">1950</h3>
+                        <span class="inline-block px-3 py-1 bg-royal/10 text-royal dark:bg-gold/20 dark:text-gold rounded-full text-xs font-bold mb-3">Recognition</span>
+                        <h4 class="text-2xl font-bold text-royal dark:text-white mb-2">Government Assistance</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                            A pivotal moment. We became a Government-Assisted School, a testament to the high academic standards set by the founders.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Center Dot -->
+                <div class="absolute left-4 md:left-1/2 transform -translate-x-[10px] md:-translate-x-1/2 z-20 order-1 md:order-2">
+                    <div class="w-6 h-6 bg-royal dark:bg-white border-4 border-gold rounded-full timeline-dot shadow-lg" data-aos="zoom-in" data-aos-delay="100"></div>
+                </div>
+
+                <div class="hidden md:block w-5/12 order-3"></div> <!-- Spacer -->
+            </div>
+
+            <!-- EVENT 3: 1961 (Left on Desktop) -->
+            <div class="mb-16 flex flex-col md:flex-row items-center justify-between w-full group">
+                <div class="hidden md:block w-5/12"></div> <!-- Spacer -->
+
+                <!-- Center Dot -->
+                <div class="absolute left-4 md:left-1/2 transform -translate-x-[10px] md:-translate-x-1/2 z-20">
+                    <div class="w-6 h-6 bg-royal dark:bg-white border-4 border-gold rounded-full timeline-dot shadow-lg" data-aos="zoom-in" data-aos-delay="200"></div>
+                </div>
+
+                <!-- Content Card -->
+                <div class="w-full md:w-5/12 pl-12 md:pl-0 md:pr-12 md:text-right" data-aos="fade-right">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border-l-4 md:border-l-0 md:border-r-4 border-gold hover:-translate-y-2 transition-transform duration-300">
+                        <h3 class="text-5xl font-bold text-royal/10 dark:text-white/10 absolute top-4 right-6 md:right-auto md:left-6 select-none">1961</h3>
+                        <span class="inline-block px-3 py-1 bg-royal/10 text-royal dark:bg-gold/20 dark:text-gold rounded-full text-xs font-bold mb-3">The Expansion</span>
+                        <h4 class="text-2xl font-bold text-royal dark:text-white mb-2">Little Legon</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                            The Great Migration to Bubuashie. The expansive, modern campus earned the nickname "Little Legon," setting the stage for sports and academic dominance.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EVENT 4: 2003 (Right on Desktop) -->
+            <div class="mb-16 flex flex-col md:flex-row items-center justify-between w-full group">
+                <!-- Content Card -->
+                <div class="w-full md:w-5/12 pl-12 md:pl-12 md:text-left order-2 md:order-1" data-aos="fade-left">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border-l-4 border-gold hover:-translate-y-2 transition-transform duration-300">
+                        <h3 class="text-5xl font-bold text-royal/10 dark:text-white/10 absolute top-4 right-6 select-none">2003</h3>
+                        <span class="inline-block px-3 py-1 bg-royal/10 text-royal dark:bg-gold/20 dark:text-gold rounded-full text-xs font-bold mb-3">Global Stage</span>
+                        <h4 class="text-2xl font-bold text-royal dark:text-white mb-2">Top 10 in Africa</h4>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                            The Africa Almanac ranked Accra Academy as the 8th Best High School in Africa, cementing its status as a continental giant in education.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Center Dot -->
+                <div class="absolute left-4 md:left-1/2 transform -translate-x-[10px] md:-translate-x-1/2 z-20 order-1 md:order-2">
+                    <div class="w-6 h-6 bg-royal dark:bg-white border-4 border-gold rounded-full timeline-dot shadow-lg" data-aos="zoom-in" data-aos-delay="300"></div>
+                </div>
+
+                <div class="hidden md:block w-5/12 order-3"></div> <!-- Spacer -->
+            </div>
+
+        </div>
+      </div>
+    </section>
+  <!-- ACADEMIC DEPARTMENTS -->
+  <section class="py-20 bg-white dark:bg-gray-800">
+      <div class="container">
+          <div class="text-center mb-12" data-aos="fade-up">
+              <h2 class="text-3xl font-display font-bold text-royal dark:text-gold mb-4">Academic Departments</h2>
+              <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">We offer comprehensive programmes designed to equip students for the modern world.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <!-- Dept 1 -->
+              <div class="p-6 border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-lg transition group" data-aos="fade-up">
+                  <div class="w-12 h-12 bg-royal/10 dark:bg-gold/10 rounded-full flex items-center justify-center mb-4 text-royal dark:text-gold text-2xl group-hover:bg-gold group-hover:text-royal transition">🔬</div>
+                  <h3 class="text-xl font-bold text-royal dark:text-white mb-2">General Science</h3>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Physics, Chemistry, Biology, and Elective Math. Producing the nation's top doctors and engineers.</p>
+              </div>
+              <!-- Dept 2 -->
+              <div class="p-6 border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="100">
+                  <div class="w-12 h-12 bg-royal/10 dark:bg-gold/10 rounded-full flex items-center justify-center mb-4 text-royal dark:text-gold text-2xl group-hover:bg-gold group-hover:text-royal transition">⚖️</div>
+                  <h3 class="text-xl font-bold text-royal dark:text-white mb-2">General Arts</h3>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Government, History, Literature, and Economics. The training ground for our legal luminaries.</p>
+              </div>
+              <!-- Dept 3 -->
+              <div class="p-6 border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="200">
+                  <div class="w-12 h-12 bg-royal/10 dark:bg-gold/10 rounded-full flex items-center justify-center mb-4 text-royal dark:text-gold text-2xl group-hover:bg-gold group-hover:text-royal transition">📈</div>
+                  <h3 class="text-xl font-bold text-royal dark:text-white mb-2">Business</h3>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Accounting, Business Management, Costing, and Economics. Fostering entrepreneurship.</p>
+              </div>
+              <!-- Dept 4 -->
+              <div class="p-6 border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="300">
+                  <div class="w-12 h-12 bg-royal/10 dark:bg-gold/10 rounded-full flex items-center justify-center mb-4 text-royal dark:text-gold text-2xl group-hover:bg-gold group-hover:text-royal transition">🎨</div>
+                  <h3 class="text-xl font-bold text-royal dark:text-white mb-2">Visual Arts</h3>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">Graphic Design, Textiles, Sculpture, and Picture Making. Unleashing creative potential.</p>
+              </div>
+              <!-- Dept 5 -->
+              <div class="p-6 border border-gray-200 dark:border-gray-700 rounded-xl hover:shadow-lg transition group" data-aos="fade-up" data-aos-delay="400">
+                  <div class="w-12 h-12 bg-royal/10 dark:bg-gold/10 rounded-full flex items-center justify-center mb-4 text-royal dark:text-gold text-2xl group-hover:bg-gold group-hover:text-royal transition">🌱</div>
+                  <h3 class="text-xl font-bold text-royal dark:text-white mb-2">Agriculture</h3>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">General Agriculture, Crop Husbandry, and Chemistry. Supporting Ghana's agricultural backbone.</p>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- CLUBS & SOCIETIES (Swiper) -->
+  <section class="py-20 bg-royal text-white overflow-hidden">
+      <div class="container mb-8">
+          <h2 class="text-3xl font-display font-bold text-gold">Student Life & Clubs</h2>
+      </div>
+
+      <!-- Swiper -->
+      <div class="swiper mySwiper about-carousel px-4">
+          <div class="swiper-wrapper">
+              <div class="swiper-slide bg-white/10 p-6 rounded-xl border border-white/20 backdrop-blur-md">
+                  <h3 class="text-xl font-bold text-gold mb-2">🤖 Robotics Club</h3>
+                  <p class="text-sm text-gray-300">Consistent National Champions, pioneering STEM innovation.</p>
+              </div>
+              <div class="swiper-slide bg-white/10 p-6 rounded-xl border border-white/20 backdrop-blur-md">
+                  <h3 class="text-xl font-bold text-gold mb-2">🗣️ Debaters Club</h3>
+                  <p class="text-sm text-gray-300">Articulate and persuasive, shaping the next generation of speakers.</p>
+              </div>
+              <div class="swiper-slide bg-white/10 p-6 rounded-xl border border-white/20 backdrop-blur-md">
+                  <h3 class="text-xl font-bold text-gold mb-2">👮 Cadet Corps</h3>
+                  <p class="text-sm text-gray-300">Discipline, drill, and leadership. The pride of school parades.</p>
+              </div>
+              <div class="swiper-slide bg-white/10 p-6 rounded-xl border border-white/20 backdrop-blur-md">
+                  <h3 class="text-xl font-bold text-gold mb-2">📖 Scripture Union</h3>
+                  <p class="text-sm text-gray-300">Fostering spiritual growth and moral uprightness on campus.</p>
+              </div>
+              <div class="swiper-slide bg-white/10 p-6 rounded-xl border border-white/20 backdrop-blur-md">
+                  <h3 class="text-xl font-bold text-gold mb-2">🌍 GUNSA</h3>
+                  <p class="text-sm text-gray-300">Ghana United Nations Students & Youth Association.</p>
+              </div>
+          </div>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination mt-8"></div>
+      </div>
+  </section>
+  <!-- HALLS OF RESIDENCE (UPDATED: THE 8 HALLS) -->
+    <section class="py-24 bg-soft dark:bg-gray-900 relative">
+        <div class="container relative z-10">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl font-display font-bold text-royal dark:text-gold mb-4">Halls of Residence</h2>
+                <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">The eight pillars of brotherhood. Fostering community, discipline, and the Bleoo spirit.</p>
+            </div>
+
+            <!-- Grid: 1 col mobile, 2 col tablet, 4 col desktop (Perfect for 8 items) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+                <!-- 1. Alema Hall -->
+                <div class="info-card group p-6 rounded-2xl border-t-4 border-gold bg-white dark:bg-gray-800 hover:shadow-2xl transition-all" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-gold/10 rounded-lg text-gold group-hover:bg-gold group-hover:text-royal transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-3a1 1 0 011-1h2a1 1 0 011 1v3m-5-6h6m-6 0H4m12 0h4m-6-6h6m-6 0H4"></path></svg>
+                        </div>
+                        <span class="text-3xl font-bold text-gray-200 dark:text-gray-700">01</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-royal dark:text-white mb-2">Alema Hall</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-xs">Named after G.N. Alema, one of the founding fathers.</p>
+                </div>
+
+                <!-- 2. Awuletey Hall -->
+                <div class="info-card group p-6 rounded-2xl border-t-4 border-indigo-600 bg-white dark:bg-gray-800 hover:shadow-2xl transition-all" data-aos="fade-up" data-aos-delay="150">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-indigo-600/10 rounded-lg text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                        </div>
+                        <span class="text-3xl font-bold text-gray-200 dark:text-gray-700">02</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-royal dark:text-white mb-2">Awuletey Hall</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-xs">Named after S.N. Awuletey, a founding father of the Academy.</p>
+                </div>
+
+                <!-- 3. Ellen Hall -->
+                <div class="info-card group p-6 rounded-2xl border-t-4 border-red-600 bg-white dark:bg-gray-800 hover:shadow-2xl transition-all" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-red-600/10 rounded-lg text-red-600 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        </div>
+                        <span class="text-3xl font-bold text-gray-200 dark:text-gray-700">03</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-royal dark:text-white mb-2">Ellen Hall</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-xs">Named after Ellen House, the very first building of the school in James Town.</p>
+                </div>
+
+                <!-- 4. Halm-Addo Hall -->
+                <div class="info-card group p-6 rounded-2xl border-t-4 border-yellow-500 bg-white dark:bg-gray-800 hover:shadow-2xl transition-all" data-aos="fade-up" data-aos-delay="250">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-yellow-500/10 rounded-lg text-yellow-600 group-hover:bg-yellow-500 group-hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        </div>
+                        <span class="text-3xl font-bold text-gray-200 dark:text-gray-700">04</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-royal dark:text-white mb-2">Halm-Addo Hall</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-xs">Named after J.A. Halm-Addo, one of the visionaries who started it all.</p>
+                </div>
+
+                <!-- 5. Nana Akuako Sarpong Hall -->
+                <div class="info-card group p-6 rounded-2xl border-t-4 border-emerald-600 bg-white dark:bg-gray-800 hover:shadow-2xl transition-all" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-emerald-600/10 rounded-lg text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <span class="text-3xl font-bold text-gray-200 dark:text-gray-700">05</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-royal dark:text-white mb-2">Nana Akuako Sarpong</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-xs">A modern hall named after the prominent alumnus and traditional ruler.</p>
+                </div>
+
+                <!-- 6. Peter Ala Adjetey Hall -->
+                <div class="info-card group p-6 rounded-2xl border-t-4 border-purple-600 bg-white dark:bg-gray-800 hover:shadow-2xl transition-all" data-aos="fade-up" data-aos-delay="350">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-purple-600/10 rounded-lg text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 21v-8a2 2 0 012-2h14a2 2 0 012 2v8M3 13V6a2 2 0 012-2h14a2 2 0 012 2v7m-9 4h6m-3-6v12"></path></svg>
+                        </div>
+                        <span class="text-3xl font-bold text-gray-200 dark:text-gray-700">06</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-royal dark:text-white mb-2">Peter Ala Adjetey</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-xs">Honoring the Rt. Hon. Peter Ala Adjetey, former Speaker of Parliament.</p>
+                </div>
+
+                <!-- 7. Nana Wereko Ampem II Hall -->
+                <div class="info-card group p-6 rounded-2xl border-t-4 border-cyan-600 bg-white dark:bg-gray-800 hover:shadow-2xl transition-all" data-aos="fade-up" data-aos-delay="400">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-cyan-600/10 rounded-lg text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <span class="text-3xl font-bold text-gray-200 dark:text-gray-700">07</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-royal dark:text-white mb-2">Nana Wereko Ampem II</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-xs">Named after the distinguished alumnus and traditional ruler.</p>
+                </div>
+
+                <!-- 8. Nana Awuah Darko Ampem Hall -->
+                <div class="info-card group p-6 rounded-2xl border-t-4 border-rose-600 bg-white dark:bg-gray-800 hover:shadow-2xl transition-all" data-aos="fade-up" data-aos-delay="450">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-rose-600/10 rounded-lg text-rose-600 group-hover:bg-rose-600 group-hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                        </div>
+                        <span class="text-3xl font-bold text-gray-200 dark:text-gray-700">08</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-royal dark:text-white mb-2">Nana Awuah Darko</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-xs">One of the newer residential halls supporting the growing student population.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
 
   <!-- FOOTER -->
   <footer class="site-footer">
@@ -167,8 +472,23 @@
   </button>
 
   <!-- SCRIPTS -->
+  <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="./js/script.js"></script>
+
+  <!-- SENIOR DEV DEBUG MODULE -->
+  <script>
+    (function() {
+      console.group('%c 🚀 Senior Dev Mode: About Page ', 'background: #002147; color: #FDBE11; font-weight: bold; padding: 4px; border-radius: 4px;');
+      // Check Swiper (Critical for new layout)
+      if (typeof Swiper !== 'undefined') {
+          console.log('%c ✅ Swiper Library detected.', 'color: green');
+      } else {
+          console.error('%c ❌ Swiper missing! Carousel will break.', 'font-weight: bold;');
+      }
+      console.groupEnd();
+    })();
+  </script>
 </body>
 </html>
