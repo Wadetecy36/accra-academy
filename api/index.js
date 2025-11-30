@@ -146,5 +146,10 @@ app.get('/api', (req, res) => {
     res.send("Accra Academy API is Running 🟢");
 });
 
+// Debug Endpoint
+app.get('/api/debug', (req, res) => {
+    res.json({ status: "Online", message: "Vercel + Express is working!" });
+});
+
 // EXPORT APP (Critical for Vercel)
 module.exports = app;
