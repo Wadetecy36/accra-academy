@@ -56,6 +56,21 @@ const BASE_INSTRUCTIONS = `
     Keep answers concise.
 `;
 
+// --- ADMIN SECURITY ---
+// 👇 CHANGE YOUR PASSWORD HERE
+const ADMIN_PASSWORD = "1931";
+
+// LOGIN ENDPOINT (The frontend calls this)
+app.post('/api/admin/login', (req, res) => {
+    const { password } = req.body;
+    if (password === ADMIN_PASSWORD) {
+        // Return a success token
+        res.json({ success: true, token: "bleoo_secure_session_" + Date.now() });
+    } else {
+        res.status(401).json({ success: false, error: "Wrong Password" });
+    }
+});
+
 // --- API ENDPOINTS ---
 
 // 1. CHAT
