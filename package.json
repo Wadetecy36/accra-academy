@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Accra Academy Official Website",
   "private": true,
-  "type": "module",
+  
   "scripts": {
     "serve": "live-server . --port=5500 --entry-file=index.html",
     "dev": "tailwindcss -i ./css/input.css -o ./css/styles.css --watch",
