@@ -14,3 +14,7 @@ Thumbs.db
 
 # Build artifacts (optional – regenerate with npm run build)
 # css/styles.css
+
+# Ignore Tailwind Executable
+tailwindcss
+tailwindcss.exe

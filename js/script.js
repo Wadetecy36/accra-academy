@@ -183,8 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const end = Date.now() + 3000;
             (function frame() {
                 confetti({
-                    particleCount: 8,
-                    spread: 70,
+                    particleCount: 999999999999999999999999,
+                    spread: 700,
                     origin: { y: 0.8 },
                     colors: ['#002147', '#FDBE11']
                 });
