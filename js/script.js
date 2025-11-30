@@ -281,8 +281,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.getElementById('chat-input');
     const chatMessages = document.getElementById('chat-messages');
 
-    // POINT TO YOUR LOCAL SERVER
-    const API_URL = 'http://localhost:3000/api/chat';
+    // SENIOR DEV FIX: Use relative path for production compatibility
+    const API_URL = '/api/chat';
 
     // Load History
     let chatHistory = JSON.parse(localStorage.getItem('bleoo_chat_history')) || [];
