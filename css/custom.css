@@ -45,6 +45,17 @@ body {
 .dark body { color: var(--text-primary); }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
 
+<<<<<<< HEAD
+=======
+/* --- ACCESSIBILITY --- */
+.skip-link {
+    position: absolute; top: -40px; left: 0;
+    background: var(--gold); color: var(--royal);
+    padding: 0.5rem 1rem; z-index: 100; font-weight: 700;
+}
+.skip-link:focus { top: 0; }
+
+>>>>>>> df4ad1f461de39843b1724cc64d8944373fdff0b
 /* --- HEADER (Navbar) --- */
 .site-header {
     position: fixed; top: 0; width: 100%; z-index: 50;
@@ -104,11 +115,55 @@ body {
     border-color: var(--gold);
     box-shadow: 0 10px 40px -5px rgba(253, 190, 17, 0.3);
 }
-.feature-card h3 { font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--royal); }
-.dark-mode .feature-card h3 { color: var(--gold); }
-.feature-card .icon svg { width: 40px; height: 40px; margin-bottom: 1rem; color: var(--royal); transition: transform 0.3s ease; }
-.dark-mode .feature-card .icon svg { color: var(--gold); }
-.feature-card:hover .icon svg { transform: scale(1.1); color: var(--gold); }
+
+/* =========================================
+   FEATURE CARDS (Explore Campus) DARK MODE
+   ========================================= */
+
+/* Base Light Mode Styles (Keep existing, ensure these defaults) */
+.feature-card {
+    background: rgba(255, 255, 255, 0.7); /* White Glass */
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: var(--royal);
+    transition: all 0.3s ease;
+}
+
+.feature-card h3 {
+    color: var(--royal);
+}
+
+.feature-card p {
+    color: #475569; /* Slate 600 */
+}
+
+.feature-card .icon svg {
+    color: var(--royal);
+}
+
+/* --- DARK MODE OVERRIDES (The Fix) --- */
+.dark .feature-card {
+    background: rgba(30, 41, 59, 0.7); /* Dark Slate Glass */
+    border-color: rgba(255, 255, 255, 0.1); /* Subtle white border */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}
+
+.dark .feature-card:hover {
+    background: rgba(30, 41, 59, 1); /* Solid dark on hover */
+    border-color: var(--gold); /* Gold border on hover */
+    transform: translateY(-5px);
+}
+
+.dark .feature-card h3 {
+    color: var(--gold); /* Gold Titles in Dark Mode */
+}
+
+.dark .feature-card p {
+    color: #cbd5e1; /* Light Slate text (Readable) */
+}
+
+.dark .feature-card .icon svg {
+    color: var(--gold); /* Icons turn Gold */
+}
 
 /* --- GALLERY CAROUSEL (SWIPER) --- */
 .gallery-section { position: relative; overflow: hidden; }
