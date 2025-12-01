@@ -39,13 +39,14 @@
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <!-- HEADER -->
-  <header class="site-header">
-    <div class="container flex justify-between items-center py-3">
-        <div class="brand flex items-center gap-4">
-            <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest w-12 h-12">
-            <div class="brand-text">
-                <h1 class="school-name text-2xl font-bold text-royal dark:text-gold">Accra Academy</h1>
-                <p class="school-motto text-sm text-gray-600 dark:text-gray-400">Esse Quam Videri</p>
+  <!-- HEADER -->
+  <header class="site-header fixed top-0 w-full z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
+    <div class="container mx-auto px-4 md:px-6 flex justify-between items-center h-16 md:h-20">
+        <div class="brand flex items-center gap-3">
+            <img src="./assets/crest.png" alt="Crest" class="w-10 h-10 md:w-12 md:h-12 object-contain">
+            <div class="brand-text leading-tight">
+                <h1 class="text-lg md:text-2xl font-bold text-royal dark:text-gold font-display">Accra Academy</h1>
+                <p class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest hidden sm:block">Esse Quam Videri</p>
             </div>
         </div>
 
@@ -70,18 +71,15 @@
   </header>
 
   <!-- HERO -->
-  <section class="relative py-32 md:py-48 bg-royal text-white overflow-hidden">
-    <div class="absolute inset-0 opacity-20" style="background-image: url('./assets/entrance.webp'); background-size: cover; background-position: center;"></div>
-    <div class="absolute inset-0 bg-gradient-to-b from-royal/90 via-royal/80 to-royal/95"></div>
-
-    <div class="container relative z-10 text-center">
-      <img src="assets/crest.png" alt="Crest" class="h-24 w-24 mx-auto mb-6 drop-shadow-[0_0_15px_rgba(253,190,17,0.5)]" data-aos="zoom-in" fetchpriority="high">
-      <h1 class="text-5xl md:text-7xl font-display font-bold mb-4 text-gold tracking-tight">Our Heritage</h1>
-      <div class="h-1 w-24 bg-gold mx-auto mb-6 rounded-full"></div>
-      <p class="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto italic font-light" data-aos="fade-up" data-aos-delay="100">"The first private academy in the Gold Coast established by indigenous investors."</p>
-    </div>
-  </section>
-
+  < <section class="relative pt-28 pb-16 bg-royal text-white overflow-hidden">
+      <div class="absolute inset-0 opacity-20 bg-cover bg-center" style="background-image: url('./assets/entrance.webp');"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-royal/90 to-royal/95"></div>
+      <div class="container mx-auto px-4 relative z-10 text-center">
+        <img src="./assets/crest.png" class="h-20 w-20 mx-auto mb-4 drop-shadow-lg">
+        <h1 class="text-3xl md:text-5xl font-display font-bold mb-2 text-gold">Our Heritage</h1>
+        <p class="text-gray-300 max-w-xl mx-auto text-sm">"The first private academy in the Gold Coast established by indigenous investors."</p>
+      </div>
+    </section>
   <!-- THE BIG FOUR (FOUNDERS) -->
   <section class="py-20 bg-white dark:bg-gray-800">
       <div class="container">
@@ -107,8 +105,9 @@
       </div>
   </section>
   <!-- HISTORY TIMELINE (REMASTERED) -->
-    <section id="history" class="py-24 bg-soft dark:bg-gray-900 relative overflow-hidden">
-
+  <section class="py-16 bg-soft dark:bg-gray-900">
+      <div class="container mx-auto px-4">
+        <div class="relative max-w-4xl mx-auto">
       <!-- Background Watermark -->
       <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-5 pointer-events-none">
           <h2 class="text-[20rem] font-bold text-royal dark:text-white absolute -top-20 -left-20 rotate-12">1931</h2>
@@ -214,6 +213,8 @@
 
         </div>
       </div>
+    </div>
+    </div>
     </section>
   <!-- ACADEMIC DEPARTMENTS -->
   <section class="py-20 bg-white dark:bg-gray-800">
@@ -432,7 +433,7 @@
                     <li><a href="./portal.html">Student Portal</a></li>
                     <li><a href="#">Handbook</a></li>
                     <li><a href="./calendar.html">Calendar</a></li>
-                    <li><a href="#">Events</a></li>
+                    <li><a href="./news.html">Events</a></li>
                 </ul>
             </div>
 

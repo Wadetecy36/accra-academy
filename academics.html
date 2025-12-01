@@ -10,6 +10,8 @@
   <!-- TAILWIND -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
+    import * as tailwind from "dotenv";
+
     tailwind.config = {
       darkMode: 'class',
       theme: {
@@ -49,17 +51,16 @@
 </head>
 
 <body class="min-h-screen bg-soft dark:bg-gray-900 transition-colors duration-300 font-body">
-
-  <!-- HEADER -->
-  <header class="site-header sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
-    <div class="container flex justify-between items-center py-3">
-        <div class="brand flex items-center gap-4">
-            <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest w-12 h-12">
-            <div class="brand-text">
-                <h1 class="school-name text-2xl font-bold text-royal dark:text-gold font-display">Accra Academy</h1>
-                <p class="school-motto text-sm text-gray-600 dark:text-gray-400">Esse Quam Videri</p>
-            </div>
-        </div>
+    <!-- HEADER -->
+    <header class="site-header fixed top-0 w-full z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
+      <div class="container mx-auto px-4 md:px-6 flex justify-between items-center h-16 md:h-20">
+          <div class="brand flex items-center gap-3">
+              <img src="./assets/crest.png" alt="Crest" class="w-10 h-10 md:w-12 md:h-12 object-contain">
+              <div class="brand-text leading-tight">
+                  <h1 class="text-lg md:text-2xl font-bold text-royal dark:text-gold font-display">Accra Academy</h1>
+                  <p class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest hidden sm:block">Esse Quam Videri</p>
+              </div>
+          </div>
         <nav class="navlinks hidden md:flex gap-8 text-lg font-medium">
             <a href="./index.html" class="hover:text-gold transition">Home</a>
             <a href="./about.html" class="hover:text-gold transition">About</a>
@@ -78,13 +79,14 @@
   </header>
 
   <!-- CINEMATIC HERO -->
-  <section class="relative h-[80vh] bg-royal text-white overflow-hidden flex items-center">
+  <section class="pt-28 pb-16 bg-royal text-white relative">
+
     <!-- Parallax Background -->
     <div class="absolute inset-0 bg-fixed" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1920&auto=format&fit=crop'); background-size: cover; background-position: center;"></div>
     <div class="absolute inset-0 bg-gradient-to-r from-royal via-royal/90 to-royal/40"></div>
 
-    <div class="container relative z-10 px-6">
-      <div class="max-w-4xl" data-aos="fade-up">
+    <div class="container mx-auto px-4 text-center">
+        <div class="max-w-4xl" data-aos="fade-up">
           <div class="flex items-center gap-4 mb-4">
               <div class="h-1 w-16 bg-gold"></div>
               <span class="text-gold font-bold tracking-[0.2em] uppercase text-sm">Academic Excellence</span>
@@ -119,7 +121,7 @@
   </section>
 
   <!-- INTERACTIVE DEPARTMENTS (THE SHOWSTOPPER) -->
-  <section id="departments" class="py-28 bg-soft dark:bg-gray-900 relative">
+  <section id="departments" class="py-16 bg-soft dark:bg-gray-900 mx-auto px-4">
       <!-- Background Elements -->
       <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent"></div>
 
@@ -380,7 +382,7 @@
                     <li><a href="./portal.html">Student Portal</a></li>
                     <li><a href="#">Handbook</a></li>
                     <li><a href="./calendar.html">Calendar</a></li>
-                    <li><a href="#">Events</a></li>
+                    <li><a href="./news.html">Events</a></li>
                 </ul>
             </div>
             <div class="footer-col">

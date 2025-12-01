@@ -2,10 +2,14 @@
 /*  api/index.js – VERCEL SERVERLESS BACKEND                     */
 /* ============================================================= */
 
+const Parser = require('rss-parser'); // <--- ADD THIS
+const parser = new Parser();          // <--- ADD THIS
+
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const path = require('path');
 // Note: 'node-fetch' import remains the same
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
@@ -13,6 +17,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+// This points up one folder (..) to find index.html
+app.use(express.static(path.join(__dirname, '../')));
+
 
 // --- DATABASE CONNECTION (Optimized for Serverless) ---
 const MONGO_URI = process.env.MONGO_URI;
@@ -156,6 +163,25 @@ app.delete('/api/knowledge/:id', async (req, res) => {
     }
 });
 
+// --- NEWS ENDPOINT ---
+app.get('/api/news', async (req, res) => {
+    try {
+        const FEED_URL = 'https://news.google.com/rss/search?q=Accra+Academy&hl=en-GH&gl=GH&ceid=GH:en';
+        const feed = await parser.parseURL(FEED_URL);
+
+        const newsItems = feed.items.slice(0, 10).map(item => ({
+            title: item.title,
+            link: item.link,
+            pubDate: item.pubDate,
+            source: item.source || "News Source",
+            snippet: item.contentSnippet || "Click to read full story."
+        }));
+        res.json(newsItems);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch news" });
+    }
+});
+
 // DEFAULT HANDLER (For Testing)
 app.get('/api', (req, res) => {
     res.send("Accra Academy API is Running 🟢");
@@ -168,3 +194,14 @@ app.get('/api/debug', (req, res) => {
 
 // EXPORT APP (Critical for Vercel)
 module.exports = app;
+
+
+// 2. Start the Server for Local Development (Laptop)
+// This condition checks: "Is this file being run directly by the terminal?"
+if (require.main === module) {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`🚀 Server running locally on http://localhost:${PORT}`);
+        console.log(`📂 Serving static files from: ${path.join(__dirname, '../')}`);
+    });
+}

@@ -1,10 +1,24 @@
 Topic,Category,Content
 Halls of Residence,Student Life,"Accra Academy has 8 Halls of Residence: 1. Alema Hall 2. Awuletey Hall 3. Ellen Hall 4. Halm Addo Hall 5. Nana Akuako Sarpong Hall 6. Rt. Hon. Peter Ala Adjetey Hall (Nana Otoafom Bekoe) 7. Nana Wereko Ampem II Hall 8. Nana Awuah Darko Ampem Hall."
-Alema Hall,Student Life,"Named after G.N. Alema, one of the founding fathers."
+Alema Hall,Student Life,"."
 Awuletey Hall,Student Life,"Named after S.N. Awuletey, a founding father."
-Ellen Hall,Student Life,"Named after Ellen House, the first building of the school in James Town."
-Halm Addo Hall,Student Life,"Named after J.A. Halm-Addo, a founding father."
+Ellen Hall,Student Life,"."
+Halm Addo Hall,Student Life,"."
 Nana Akuako Sarpong Hall,Student Life,"A modern hall named after the prominent alumnus and traditional ruler."
-Peter Ala Adjetey Hall,Student Life,"Named after the Rt. Hon. Peter Ala Adjetey, former Speaker of Parliament and distinguished Bleoobi."
-Nana Wereko Ampem II Hall,Student Life,"Named after the distinguished alumnus and traditional ruler."
+
+
 Nana Awuah Darko Ampem Hall,Student Life,"One of the newer residential halls on campus."
+
+
+
+  Topic: "Houses and Halls",
+        Category: "Student Life",
+        Content: `The school has residential halls named after founders and prominent figures:
+        1. Alema Hall(Named after G.N. Alema, one of the founding fathers)
+        2. Halm-Addo Hall(Named after J.A. Halm-Addo, a founding father)
+        3. Ellen Hall (Named after Ellen House, the first building of the school in James Town)
+        4. Wilson Tei Hall (also known as Willie 'T'Hall)
+        5. Awuletey Hall (Named after S.N. Awuletey, a founding father)
+        6. Nana Wereko Ampem II Hall(Named after the distinguished alumnus and traditional ruler)
+        7. Peter Ala Adjetey Hall,Student Life,"Named after the Rt. Hon. Peter Ala Adjetey(Speaker of Parliament and distinguished Bleoobi)
+        

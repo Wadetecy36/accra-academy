@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (clicks === 5) {
           console.log('🎉 BLEOO SPIRIT UNLOCKED!');
           crest.style.transition = 'all 1s ease';
-          crest.style.transform = 'scale(1.8) rotate(360deg)';
+          crest.style.transform = 'scale(99) rotate(999999deg)';
           alert('BLEOO SPIRIT UNLOCKED! 🟡🔵');
 
           setTimeout(() => {
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const end = Date.now() + 3000;
             (function frame() {
                 confetti({
-                    particleCount: 999999999999999999999999,
+                    particleCount: 9,
                     spread: 700,
                     origin: { y: 0.8 },
                     colors: ['#002147', '#FDBE11']

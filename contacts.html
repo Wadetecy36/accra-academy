@@ -29,16 +29,16 @@
 
 <body class="min-h-screen bg-soft dark:bg-gray-900 transition-colors duration-300">
 
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container flex justify-between items-center py-3">
-        <div class="brand flex items-center gap-4">
-            <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest w-12 h-12">
-            <div class="brand-text">
-                <h1 class="school-name text-2xl font-bold text-royal dark:text-gold">Accra Academy</h1>
-                <p class="school-motto text-sm text-gray-600 dark:text-gray-400">Esse Quam Videri</p>
-            </div>
-        </div>
+    <!-- HEADER -->
+    <header class="site-header fixed top-0 w-full z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
+      <div class="container mx-auto px-4 md:px-6 flex justify-between items-center h-16 md:h-20">
+          <div class="brand flex items-center gap-3">
+              <img src="./assets/crest.png" alt="Crest" class="w-10 h-10 md:w-12 md:h-12 object-contain">
+              <div class="brand-text leading-tight">
+                  <h1 class="text-lg md:text-2xl font-bold text-royal dark:text-gold font-display">Accra Academy</h1>
+                  <p class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest hidden sm:block">Esse Quam Videri</p>
+              </div>
+          </div>
 
         <nav class="navlinks hidden md:flex gap-8 text-lg font-medium">
             <a href="./index.html" class="hover:text-gold transition">Home</a>
@@ -56,28 +56,11 @@
     </div>
   </header>
 
-  <section class="pt-40 pb-16 container">
+  <section class="pt-28 pb-16 container mx-auto px-4">
       <h1 class="text-4xl font-bold text-royal dark:text-gold mb-10 text-center font-display">Get in Touch</h1>
 
       <div class="grid md:grid-cols-2 gap-10">
-          <!-- Form -->
-
-          <form class="feature-card" action="https://formspree.io/f/xrbvojar" method="POST">
-            <label class="block mb-4">
-                <span class="text-gray-700 dark:text-gray-300">Name</span>
-                <input type="text" name="name" class="w-full p-3 border rounded mt-1 dark:bg-gray-800 dark:text-white" required>
-            </label>
-            <label class="block mb-4">
-                <span class="text-gray-700 dark:text-gray-300">Email</span>
-                <input type="email" name="email" class="w-full p-3 border rounded mt-1 dark:bg-gray-800 dark:text-white" required>
-            </label>
-            <label class="block mb-4">
-                <span class="text-gray-700 dark:text-gray-300">Message</span>
-                <textarea name="message" rows="4" class="w-full p-3 border rounded mt-1 dark:bg-gray-800 dark:text-white" required></textarea>
-            </label>
-            <button type="submit" class="btn primary w-full mt-4">Send Message</button>
-          </form>
-
+        <!-- Form -->
          <form id="contact-form" class="feature-card" action="https://formspree.io/f/xrbvojar" method="POST">
   <!-- Add honeypot -->
   <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">

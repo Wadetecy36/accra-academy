@@ -2,6 +2,10 @@
 /*  css/custom.css – CLEAN, MERGED & VALIDATED                   */
 /* ============================================================= */
 
+/* ============================================================= */
+/*  css/custom.css – FIXED DARK MODE SELECTOR                    */
+/* ============================================================= */
+
 :root {
     --royal: #002147;
     --gold:  #FDBE11;
@@ -18,7 +22,8 @@
     --footer-link: #cbd5e1;
 }
 
-.dark-mode {
+/* 🔧 FIX: Changed from .dark-mode to .dark to match Tailwind/JS */
+.dark {
     --bg-body: var(--bg-dark);
     --glass-bg: rgba(30, 41, 59, 0.6);
     --glass-border: 1px solid rgba(255, 255, 255, 0.1);
@@ -34,29 +39,24 @@ body {
     font-weight: 300;
     background: var(--bg-body);
     color: #0F172A;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
-.dark-mode body { color: var(--text-primary); }
+.dark body { color: var(--text-primary); }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
 
-/* --- ACCESSIBILITY --- */
-.skip-link {
-    position: absolute; top: -40px; left: 0;
-    background: var(--gold); color: var(--royal);
-    padding: 0.5rem 1rem; z-index: 100; font-weight: 700;
-}
-.skip-link:focus { top: 0; }
-
-/* --- HEADER --- */
+/* --- HEADER (Navbar) --- */
 .site-header {
     position: fixed; top: 0; width: 100%; z-index: 50;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.85); /* Light mode bg */
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
-.dark-mode .site-header {
-    background: rgba(15, 23, 42, 0.85);
+
+/* 🔧 FIX: This now correctly targets the navbar when dark mode is on */
+.dark .site-header {
+    background: rgba(15, 23, 42, 0.9); /* Dark mode bg (Dark Blue) */
     border-color: rgba(255,255,255,0.05);
 }
 

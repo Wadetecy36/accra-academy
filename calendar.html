@@ -53,16 +53,16 @@
 
 <body class="min-h-screen bg-soft dark:bg-gray-900 transition-colors duration-300 font-body">
 
-  <!-- HEADER -->
-  <header class="site-header sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
-    <div class="container flex justify-between items-center py-3">
-        <div class="brand flex items-center gap-4">
-            <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest w-12 h-12">
-            <div class="brand-text">
-                <h1 class="school-name text-2xl font-bold text-royal dark:text-gold font-display">Accra Academy</h1>
-                <p class="school-motto text-sm text-gray-600 dark:text-gray-400">Esse Quam Videri</p>
-            </div>
-        </div>
+    <!-- HEADER -->
+    <header class="site-header fixed top-0 w-full z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
+      <div class="container mx-auto px-4 md:px-6 flex justify-between items-center h-16 md:h-20">
+          <div class="brand flex items-center gap-3">
+              <img src="./assets/crest.png" alt="Crest" class="w-10 h-10 md:w-12 md:h-12 object-contain">
+              <div class="brand-text leading-tight">
+                  <h1 class="text-lg md:text-2xl font-bold text-royal dark:text-gold font-display">Accra Academy</h1>
+                  <p class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest hidden sm:block">Esse Quam Videri</p>
+              </div>
+          </div>
         <nav class="navlinks hidden md:flex gap-8 text-lg font-medium">
             <a href="./index.html" class="hover:text-gold transition">Home</a>
             <a href="./about.html" class="hover:text-gold transition">About</a>
@@ -98,10 +98,10 @@
       <div class="container">
 
           <!-- TABS -->
-          <div class="flex flex-wrap justify-center gap-4 mb-12" data-aos="fade-up">
-              <button class="cal-tab active px-8 py-3 rounded-full font-bold shadow-md bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 transition" onclick="showSchedule('shs3', this)">SHS 3 (Final Year)</button>
-              <button class="cal-tab px-8 py-3 rounded-full font-bold shadow-md bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 transition" onclick="showSchedule('shs2', this)">SHS 2</button>
-              <button class="cal-tab px-8 py-3 rounded-full font-bold shadow-md bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 transition" onclick="showSchedule('shs1', this)">SHS 1 (Freshers)</button>
+          <div class="flex overflow-x-auto gap-3 mb-8 pb-2 scrollbar-hide snap-x px-4">
+              <button class="cal-tab active px-6 py-2 whitespace-nowrap rounded-full font-bold bg-royal text-gold snap-center shrink-0">SHS 3</button>
+              <button class="cal-tab px-6 py-2 whitespace-nowrap rounded-full font-bold bg-white text-gray-500 border border-gray-200 snap-center shrink-0">SHS 2</button>
+              <button class="cal-tab px-6 py-2 whitespace-nowrap rounded-full font-bold bg-white text-gray-500 border border-gray-200 snap-center shrink-0">SHS 1</button>
           </div>
 
           <!-- SHS 3 SCHEDULE -->
