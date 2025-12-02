@@ -1,104 +1,136 @@
-# Accra Academy - Full-Stack AI Website
+# Accra Academy – Full-Stack AI Website
 
-A modern, full-stack web application for Accra Academy, featuring a **RAG-powered AI Chatbot** (Google Gemini 2.5), a **Real-time News Feed**, and a secured **Admin Dashboard** for data management.
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Status](https://img.shields.io/badge/Status-Active-blue)
+![Node](https://img.shields.io/badge/Node-18%2B-orange)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB%20Atlas-green)
+![Gemini](https://img.shields.io/badge/AI-Google%20Gemini%202.5-purple)
 
-## 🚀 Features
+A modern, full-stack web platform built for **Accra Academy**, featuring a powerful **RAG-powered AI Chatbot**, a dynamic **News Feed**, and a secure **Admin Dashboard** for knowledge management.
 
-### Frontend (Client)
-*   **Modern UI:** Built with HTML5, Tailwind CSS (CDN), and Swiper.js.
-*   **Interactive Gallery:** Masonry grid with filtering and cinematic lightbox.
-*   **AI Chat Widget:** Floating assistant that remembers conversation context.
-*   **Real-time News:** Fetches live updates about the school via Google News RSS.
+---
 
-### Backend (Server)
-*   **Node.js & Express:** Serves the static site and handles API requests.
-*   **MongoDB Atlas:** Stores chat logs and the AI's "Knowledge Base" (RAG).
-*   **Google Gemini 2.5 Flash:** Powers the chatbot intelligence.
-*   **Admin Dashboard:**
-    *   View live chat logs.
-    *   Add/Delete facts from the AI's brain (No-code CMS).
-    *   Bulk upload data via CSV.
+## 📑 Table of Contents
+- [Features Overview](#-features-overview)
+- [Project Structure](#-project-structure)
+- [Setup Guide](#️-setup-guide)
+- [Admin Dashboard](#-admin-dashboard)
+- [Deployment](#️-deployment)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+---
+
+## 🚀 Features Overview
+
+### Frontend
+- Modern responsive UI using Tailwind CSS (CDN)
+- AI Chat Widget (Google Gemini 2.5 Flash)
+- Masonry gallery with filtering + animated lightbox
+- Live Google News RSS integration
+
+### Backend
+- Node.js + Express REST API
+- MongoDB Atlas for Knowledge Base + logs
+- Google Gemini RAG intelligence
+- Admin Dashboard for CMS-like management
 
 ---
 
 ## 📂 Project Structure
-
 ```text
 accra-academy-website/
-│   .gitignore           # Ignores node_modules & .env
-│   index.html           # Homepage (Chatbot integrated)
-│   about.html           # History & Timeline
-│   admin.html           # 🔒 Secure Admin Dashboard
-│   news.html            # Live RSS News Feed
-│   gallery.html         # Interactive Gallery
-│   package.json         # Root config
+│   .gitignore
+│   index.html
+│   about.html
+│   admin.html
+│   news.html
+│   gallery.html
+│   package.json
 │
-├───assets/              # Images (WebP format recommended)
-│
-├───css/
-│       custom.css       # Custom styles & animations
-│
-├───js/
-│       script.js        # Frontend logic (Chat UI, Swiper, AOS)
-│
-└───server/              # 🧠 THE BACKEND
-        server.js        # Express API (Chat, Logs, News)
-        seed.js          # Database Seeder script
-        package.json     # Backend dependencies
-        .env             # Secrets (API Keys - DO NOT COMMIT)
-🛠️ Setup Guide
-1. Prerequisites
-Node.js (v18 or higher) installed.
-MongoDB Atlas account (Free tier).
-Google AI Studio API Key.
-2. Installation
-Clone the repository and install dependencies for the backend.
-code
-Bash
-# Go to the server directory
-cd server
+├── assets/
+├── css/
+│     custom.css
+├── js/
+│     script.js
+└── server/
+      server.js
+      seed.js
+      package.json
+      .env
+```
 
-# Install packages (Express, Mongoose, RSS-Parser, etc.)
+---
+
+## 🛠️ Setup Guide
+
+### 1. Requirements
+- Node.js 18+
+- MongoDB Atlas
+- Google Gemini API Key
+
+### 2. Installation
+```bash
+cd server
 npm install
-3. Configuration (.env)
-Create a file named .env inside the server/ folder and add your credentials:
-code
-Env
-GEMINI_API_KEY=your_google_gemini_key_here
-MONGO_URI=mongodb+srv://<user>:<password>@cluster0.xyz.mongodb.net/accra_academy?retryWrites=true&w=majority
-4. Database Seeding (Optional)
-To populate the database with initial facts (Anthem, Founders, History), run the seeder script once.
-code
-Bash
-# Inside server/ folder
+```
+
+### 3. Configure Environment Variables
+Create `.env` inside `/server`:
+
+```env
+GEMINI_API_KEY=your_key
+MONGO_URI=mongodb+srv://<user>:<pass>@cluster.mongodb.net/accra_academy
+```
+
+### 4. Seed Database (optional)
+```bash
 node seed.js
-5. Running the Application
-Start the unified server. This serves both the API and the Frontend.
-code
-Bash
-# Inside server/ folder
+```
+
+### 5. Run App
+```bash
 node server.js
-The app will run at: http://localhost:3000
-🔐 Admin Dashboard
-Access the command center to monitor chats and update the AI.
-URL: http://localhost:3000/admin.html
-Default Password: bleoo1931
-☁️ Deployment
-Option A: Render (Easiest)
-Push code to GitHub.
-Create a Web Service on Render connected to the repo.
-Build Command: cd server && npm install
-Start Command: node server/server.js
-Add Environment Variables (MONGO_URI, GEMINI_API_KEY) in Render settings.
-Option B: Vercel (Fastest)
-Ensure vercel.json exists in root.
-Deploy using Vercel CLI or Dashboard.
-Add Environment Variables in Vercel project settings.
-🤝 Contributing
-Fork the repository.
-Create a feature branch (git checkout -b feature/AmazingFeature).
-Commit changes (git commit -m 'Add AmazingFeature').
-Push to branch (git push origin feature/AmazingFeature).
-Open a Pull Request.
-📄 License
-Distributed under the MIT License.
+```
+App runs at: **http://localhost:3000**
+
+---
+
+## 🔐 Admin Dashboard
+- URL: `http://localhost:3000/admin.html`
+- Default Password: **bleoo1931**
+
+---
+
+## ☁️ Deployment
+
+### Render Deployment
+Build:
+```bash
+cd server && npm install
+```
+Start:
+```bash
+node server/server.js
+```
+
+Environment Variables:
+- GEMINI_API_KEY
+- MONGO_URI
+
+### Vercel Deployment
+Use if backend is hosted externally.
+
+---
+
+## 🤝 Contributing
+```bash
+git checkout -b feature/MyFeature
+git commit -m "Add MyFeature"
+git push origin feature/MyFeature
+```
+
+---
+
+## 📄 License
+MIT License
