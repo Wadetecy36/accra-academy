@@ -1,40 +1,28 @@
 /* ============================================================= */
-/*  api/index.js – VERCEL SERVERLESS BACKEND                     */
+/*  server/server.js – HARDENED PRODUCTION VERSION               */
 /* ============================================================= */
-
-const Parser = require('rss-parser'); // <--- ADD THIS
-const parser = new Parser();          // <--- ADD THIS
 
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
-// Note: 'node-fetch' import remains the same
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
+// MIDDLEWARE (Critical for POST requests)
 app.use(cors());
 app.use(express.json());
-// This points up one folder (..) to find index.html
+app.use(express.urlencoded({ extended: true })); // Handles form data
 app.use(express.static(path.join(__dirname, '../')));
 
-
-// --- DATABASE CONNECTION (Optimized for Serverless) ---
+// --- DATABASE CONNECTION ---
 const MONGO_URI = process.env.MONGO_URI;
-let isConnected = false; // Cache connection
-
-const connectToDB = async () => {
-    if (isConnected) return;
-    try {
-        await mongoose.connect(MONGO_URI);
-        isConnected = true;
-        console.log("✅ MongoDB Atlas Connected");
-    } catch (err) {
-        console.error("❌ DB Error:", err);
-    }
-};
+mongoose.connect(MONGO_URI)
+  .then(() => console.log("✅ MongoDB Atlas Connected"))
+  .catch(err => console.error("❌ DB Connection Error:", err));
 
 // --- SCHEMAS ---
 const ChatLogSchema = new mongoose.Schema({
@@ -42,18 +30,18 @@ const ChatLogSchema = new mongoose.Schema({
     botReply: String,
     timestamp: { type: Date, default: Date.now }
 });
-// Check if model exists before compiling (Fixes "OverwriteModelError")
-const ChatLog = mongoose.models.ChatLog || mongoose.model('ChatLog', ChatLogSchema);
+const ChatLog = mongoose.model('ChatLog', ChatLogSchema);
 
 const KnowledgeSchema = new mongoose.Schema({
     topic: String,
     content: String,
     category: String
 });
-const Knowledge = mongoose.models.Knowledge || mongoose.model('Knowledge', KnowledgeSchema);
+const Knowledge = mongoose.model('Knowledge', KnowledgeSchema);
 
 // --- AI CONFIG ---
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+// Using Gemini 2.5 Flash as determined earlier
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 const BASE_INSTRUCTIONS = `
@@ -63,29 +51,14 @@ const BASE_INSTRUCTIONS = `
     Keep answers concise.
 `;
 
-// --- ADMIN SECURITY ---
-// 👇 CHANGE YOUR PASSWORD HERE
-const ADMIN_PASSWORD = "1931";
-
-// LOGIN ENDPOINT (The frontend calls this)
-app.post('/api/admin/login', (req, res) => {
-    const { password } = req.body;
-    if (password === ADMIN_PASSWORD) {
-        // Return a success token
-        res.json({ success: true, token: "bleoo_secure_session_" + Date.now() });
-    } else {
-        res.status(401).json({ success: false, error: "Wrong Password" });
-    }
-});
-
 // --- API ENDPOINTS ---
 
-// 1. CHAT
+// 1. CHAT (Public)
 app.post('/api/chat', async (req, res) => {
-    await connectToDB();
     try {
         const { message, history } = req.body;
 
+        // Fetch Knowledge
         const facts = await Knowledge.find({});
         const knowledgeBaseString = facts.map(f => `[${f.topic}]: ${f.content}`).join('\n');
 
@@ -94,7 +67,7 @@ app.post('/api/chat', async (req, res) => {
             === KNOWLEDGE BASE ===
             ${knowledgeBaseString}
             ======================
-            HISTORY: ${history.map(m => `${m.sender}: ${m.text}`).join('\n')}
+            HISTORY: ${history ? history.map(m => `${m.sender}: ${m.text}`).join('\n') : ''}
             QUESTION: ${message}
         `;
 
@@ -109,52 +82,63 @@ app.post('/api/chat', async (req, res) => {
 
         const botReply = data.candidates[0].content.parts[0].text;
 
+        // Save Log
         await new ChatLog({ userMessage: message, botReply: botReply }).save();
+
         res.json({ reply: botReply });
 
     } catch (error) {
-        console.error("AI Error:", error.message);
-        res.status(500).json({ error: "Service unavailable." });
+        console.error("Chat Error:", error.message);
+        res.status(500).json({ error: "AI Error" });
     }
 });
 
-// 2. ADMIN LOGS
+// 2. GET LOGS (Admin)
 app.get('/api/logs', async (req, res) => {
-    await connectToDB();
     try {
+        // Sort by timestamp descending (newest first)
         const logs = await ChatLog.find().sort({ timestamp: -1 }).limit(50);
         res.json(logs);
     } catch (error) {
-        res.status(500).json({ error: "DB Error" });
+        console.error("Log Fetch Error:", error);
+        res.status(500).json({ error: "DB Error fetching logs" });
     }
 });
 
-// 3. KNOWLEDGE GET
+// 3. GET KNOWLEDGE (Admin)
 app.get('/api/knowledge', async (req, res) => {
-    await connectToDB();
     try {
         const data = await Knowledge.find().sort({ category: 1 });
         res.json(data);
     } catch (error) {
-        res.status(500).json({ error: "DB Error" });
+        console.error("Knowledge Fetch Error:", error);
+        res.status(500).json({ error: "DB Error fetching knowledge" });
     }
 });
 
-// 4. KNOWLEDGE ADD
+// 4. ADD KNOWLEDGE (Admin/CSV)
 app.post('/api/knowledge', async (req, res) => {
-    await connectToDB();
     try {
+        console.log("📝 Receiving New Fact:", req.body); // Debug Log
         const { topic, category, content } = req.body;
-        await new Knowledge({ topic, category, content }).save();
-        res.json({ success: true });
+
+        if (!topic || !content) {
+            return res.status(400).json({ error: "Topic and Content are required" });
+        }
+
+        const newFact = new Knowledge({ topic, category, content });
+        await newFact.save();
+
+        console.log("✅ Fact Saved!");
+        res.json({ success: true, message: "Saved" });
     } catch (error) {
-        res.status(500).json({ error: "Save failed" });
+        console.error("Save Error:", error);
+        res.status(500).json({ error: "Failed to save to DB" });
     }
 });
 
-// 5. KNOWLEDGE DELETE
+// 5. DELETE KNOWLEDGE (Admin)
 app.delete('/api/knowledge/:id', async (req, res) => {
-    await connectToDB();
     try {
         await Knowledge.findByIdAndDelete(req.params.id);
         res.json({ success: true });
@@ -163,45 +147,10 @@ app.delete('/api/knowledge/:id', async (req, res) => {
     }
 });
 
-// --- NEWS ENDPOINT ---
-app.get('/api/news', async (req, res) => {
-    try {
-        const FEED_URL = 'https://news.google.com/rss/search?q=Accra+Academy&hl=en-GH&gl=GH&ceid=GH:en';
-        const feed = await parser.parseURL(FEED_URL);
-
-        const newsItems = feed.items.slice(0, 10).map(item => ({
-            title: item.title,
-            link: item.link,
-            pubDate: item.pubDate,
-            source: item.source || "News Source",
-            snippet: item.contentSnippet || "Click to read full story."
-        }));
-        res.json(newsItems);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to fetch news" });
-    }
-});
-
-// DEFAULT HANDLER (For Testing)
-app.get('/api', (req, res) => {
-    res.send("Accra Academy API is Running 🟢");
-});
-
-// Debug Endpoint
-app.get('/api/debug', (req, res) => {
-    res.json({ status: "Online", message: "Vercel + Express is working!" });
-});
-
-// EXPORT APP (Critical for Vercel)
-module.exports = app;
-
-
-// 2. Start the Server for Local Development (Laptop)
-// This condition checks: "Is this file being run directly by the terminal?"
+// Start
 if (require.main === module) {
-    const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
-        console.log(`🚀 Server running locally on http://localhost:${PORT}`);
-        console.log(`📂 Serving static files from: ${path.join(__dirname, '../')}`);
+        console.log(`🚀 Server running on http://localhost:${PORT}`);
     });
 }
+module.exports = app;
