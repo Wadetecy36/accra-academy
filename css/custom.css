@@ -273,6 +273,46 @@ body {
 #lightbox:not(.hidden) { backdrop-filter: blur(10px); }
 
 /* =========================================
+   5. VERTICAL TIMELINE ARCHITECTURE
+   ========================================= */
+
+/* The Central Line */
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: rgba(253, 190, 17, 0.3); /* Gold tint */
+    border-radius: 4px;
+    z-index: 0;
+}
+
+/* The Glowing Node */
+.timeline-dot {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 24px;
+    background: var(--royal);
+    border: 4px solid var(--gold);
+    border-radius: 50%;
+    z-index: 10;
+    box-shadow: 0 0 15px rgba(253, 190, 17, 0.6);
+}
+
+/* Mobile Adjustments (Collapse to single column) */
+@media (max-width: 768px) {
+    .timeline-line { left: 20px; }
+    .timeline-dot { left: 20px; }
+    .timeline-card { margin-left: 50px !important; width: auto !important; }
+    .timeline-item { justify-content: flex-start !important; }
+    .timeline-item.right { flex-direction: row !important; }
+    .timeline-date { position: static !important; margin-bottom: 0.5rem; display: block; }
+}
+
+/* =========================================
    SENIOR DEV: POLISH & DEBUG
    ========================================= */
 ::-webkit-scrollbar { width: 10px; }

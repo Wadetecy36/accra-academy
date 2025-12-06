@@ -104,119 +104,97 @@
           </div>
       </div>
   </section>
-  <!-- HISTORY TIMELINE (REMASTERED) -->
-  <section class="py-16 bg-soft dark:bg-gray-900">
-      <div class="container mx-auto px-4">
-        <div class="relative max-w-4xl mx-auto">
-      <!-- Background Watermark -->
-      <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-5 pointer-events-none">
-          <h2 class="text-[20rem] font-bold text-royal dark:text-white absolute -top-20 -left-20 rotate-12">1931</h2>
-      </div>
+  <!-- HISTORY TIMELINE (Glass Mode) -->
+   <section id="history" class="py-24 section-glass relative overflow-hidden">
+     <div class="container mx-auto px-4 relative z-10">
 
-      <div class="container relative z-10">
-        <div class="text-center mb-20" data-aos="fade-down">
-            <span class="text-gold font-bold tracking-[0.2em] uppercase text-sm">Our Journey</span>
-            <h2 class="text-4xl md:text-5xl font-display font-bold text-royal dark:text-white mt-2">A Timeline of <span class="text-gold">Glory</span></h2>
-        </div>
+         <div class="text-center mb-16" data-aos="fade-up">
+             <span class="text-gold font-bold tracking-widest uppercase text-sm">Our Journey</span>
+             <h2 class="text-4xl md:text-5xl font-display font-bold text-royal dark:text-white mt-2">Through the Decades</h2>
+         </div>
 
-        <div class="relative max-w-5xl mx-auto">
-            <!-- The Vertical Spine (Gradient Line) -->
-            <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-royal via-gold to-royal dark:from-white dark:via-gold dark:to-white transform md:-translate-x-1/2 rounded-full"></div>
+         <div class="relative max-w-5xl mx-auto">
+             <!-- Central Line -->
+             <div class="timeline-line"></div>
 
-            <!-- EVENT 1: 1931 (Left on Desktop) -->
-            <div class="mb-16 flex flex-col md:flex-row items-center justify-between w-full group">
-                <div class="hidden md:block w-5/12"></div> <!-- Spacer -->
+             <!-- EVENT 1: 1931 (Left) -->
+             <div class="timeline-item flex items-center justify-end w-full mb-12 relative">
+                 <!-- Dot -->
+                 <div class="timeline-dot"></div>
+                 <!-- Content -->
+                 <div class="timeline-card w-5/12 pr-12 relative" data-aos="fade-right">
+                     <span class="timeline-date absolute top-0 -right-24 text-gold font-bold text-4xl font-display hidden md:block">1931</span>
+                     <div class="p-6 rounded-2xl bg-white/40 dark:bg-white/5 backdrop-blur-md border border-white/20 shadow-xl hover:border-gold/50 transition duration-300 group">
+                         <div class="mb-4 overflow-hidden rounded-lg h-40">
+                             <img src="./assets/founders.webp" alt="Founders" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+                         </div>
+                         <h3 class="text-xl font-bold text-royal dark:text-white mb-2">The Foundation</h3>
+                         <p class="text-sm text-gray-700 dark:text-gray-300">
+                             Founded on July 20th by the "Big Four" (Dr. K.G. Konuah, G.N. Alema, J.A. Halm-Addo, S.N. Awuletey) in Ellen House, James Town. Starting with just 19 students.
+                         </p>
+                     </div>
+                 </div>
+             </div>
 
-                <!-- Center Dot -->
-                <div class="absolute left-4 md:left-1/2 transform -translate-x-[10px] md:-translate-x-1/2 z-20">
-                    <div class="w-6 h-6 bg-royal dark:bg-white border-4 border-gold rounded-full timeline-dot shadow-lg" data-aos="zoom-in"></div>
-                </div>
+             <!-- EVENT 2: 1961 (Right) -->
+             <div class="timeline-item flex items-center justify-start w-full mb-12 relative right">
+                 <div class="timeline-dot"></div>
+                 <div class="timeline-card w-5/12 pl-12 relative" data-aos="fade-left">
+                     <span class="timeline-date absolute top-0 -left-24 text-gold font-bold text-4xl font-display hidden md:block">1961</span>
+                     <div class="p-6 rounded-2xl bg-white/40 dark:bg-white/5 backdrop-blur-md border border-white/20 shadow-xl hover:border-gold/50 transition duration-300 group">
+                         <div class="mb-4 overflow-hidden rounded-lg h-40">
+                             <img src="./assets/entrance.webp" alt="Bubuashie" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+                         </div>
+                         <h3 class="text-xl font-bold text-royal dark:text-white mb-2">The Great Migration</h3>
+                         <p class="text-sm text-gray-700 dark:text-gray-300">
+                             The school moved from the cramped quarters of James Town to its current spacious campus at Bubuashie, paving the way for modern infrastructure.
+                         </p>
+                     </div>
+                 </div>
+             </div>
 
-                <!-- Content Card -->
-                <div class="w-full md:w-5/12 pl-12 md:pl-0 md:pr-12 md:text-right" data-aos="fade-right">
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border-l-4 md:border-l-0 md:border-r-4 border-gold hover:-translate-y-2 transition-transform duration-300">
-                        <h3 class="text-5xl font-bold text-royal/10 dark:text-white/10 absolute top-4 right-6 md:right-auto md:left-6 select-none">1931</h3>
-                        <span class="inline-block px-3 py-1 bg-royal/10 text-royal dark:bg-gold/20 dark:text-gold rounded-full text-xs font-bold mb-3">The Genesis</span>
-                        <h4 class="text-2xl font-bold text-royal dark:text-white mb-2">Ellen House</h4>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                            The vision comes to life. Accra Academy is founded with 19 students in James Town. The motto <em>"Esse Quam Videri"</em> is etched into history.
-                        </p>
-                    </div>
-                </div>
-            </div>
+             <!-- EVENT 3: 2003 (Left) -->
+             <div class="timeline-item flex items-center justify-end w-full mb-12 relative">
+                 <div class="timeline-dot"></div>
+                 <div class="timeline-card w-5/12 pr-12 relative" data-aos="fade-right">
+                     <span class="timeline-date absolute top-0 -right-24 text-gold font-bold text-4xl font-display hidden md:block">2003</span>
+                     <div class="p-6 rounded-2xl bg-white/40 dark:bg-white/5 backdrop-blur-md border border-white/20 shadow-xl hover:border-gold/50 transition duration-300 group">
+                         <h3 class="text-xl font-bold text-royal dark:text-white mb-2">Continental Recognition</h3>
+                         <p class="text-sm text-gray-700 dark:text-gray-300">
+                             Ranked as the <strong>8th Best High School in Africa</strong> by the Africa Almanac, cementing our status as a premier institution on the continent.
+                         </p>
+                     </div>
+                 </div>
+             </div>
 
-            <!-- EVENT 2: 1950 (Right on Desktop) -->
-            <div class="mb-16 flex flex-col md:flex-row items-center justify-between w-full group">
-                <!-- Content Card -->
-                <div class="w-full md:w-5/12 pl-12 md:pl-12 md:text-left order-2 md:order-1" data-aos="fade-left">
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border-l-4 border-gold hover:-translate-y-2 transition-transform duration-300">
-                        <h3 class="text-5xl font-bold text-royal/10 dark:text-white/10 absolute top-4 right-6 select-none">1950</h3>
-                        <span class="inline-block px-3 py-1 bg-royal/10 text-royal dark:bg-gold/20 dark:text-gold rounded-full text-xs font-bold mb-3">Recognition</span>
-                        <h4 class="text-2xl font-bold text-royal dark:text-white mb-2">Government Assistance</h4>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                            A pivotal moment. We became a Government-Assisted School, a testament to the high academic standards set by the founders.
-                        </p>
-                    </div>
-                </div>
+             <!-- EVENT 4: Present (Right) -->
+             <div class="timeline-item flex items-center justify-start w-full relative right">
+                 <div class="timeline-dot bg-gold border-royal"></div> <!-- Special Dot -->
+                 <div class="timeline-card w-5/12 pl-12 relative" data-aos="fade-left">
+                     <span class="timeline-date absolute top-0 -left-28 text-gold font-bold text-4xl font-display hidden md:block">Today</span>
+                     <div class="p-6 rounded-2xl bg-white/40 dark:bg-white/5 backdrop-blur-md border border-white/20 shadow-xl hover:border-gold/50 transition duration-300 group">
+                         <div class="mb-4 overflow-hidden rounded-lg h-40">
+                             <!-- Swiper for Modern Era -->
+                             <div class="swiper mySwiper w-full h-full">
+                                 <div class="swiper-wrapper">
+                                     <div class="swiper-slide"><img src="./assets/modern1.webp" class="w-full h-full object-cover"></div>
+                                     <div class="swiper-slide"><img src="./assets/modern2.webp" class="w-full h-full object-cover"></div>
+                                 </div>
+                             </div>
+                         </div>
+                         <h3 class="text-xl font-bold text-royal dark:text-white mb-2">Leading Innovation</h3>
+                         <p class="text-sm text-gray-700 dark:text-gray-300">
+                             Pioneering robotics, artificial intelligence clubs, and owning the first Astro-turf sports complex among Ghanaian high schools.
+                         </p>
+                     </div>
+                 </div>
+             </div>
 
-                <!-- Center Dot -->
-                <div class="absolute left-4 md:left-1/2 transform -translate-x-[10px] md:-translate-x-1/2 z-20 order-1 md:order-2">
-                    <div class="w-6 h-6 bg-royal dark:bg-white border-4 border-gold rounded-full timeline-dot shadow-lg" data-aos="zoom-in" data-aos-delay="100"></div>
-                </div>
+         </div>
+     </div>
+   </section>
 
-                <div class="hidden md:block w-5/12 order-3"></div> <!-- Spacer -->
-            </div>
-
-            <!-- EVENT 3: 1961 (Left on Desktop) -->
-            <div class="mb-16 flex flex-col md:flex-row items-center justify-between w-full group">
-                <div class="hidden md:block w-5/12"></div> <!-- Spacer -->
-
-                <!-- Center Dot -->
-                <div class="absolute left-4 md:left-1/2 transform -translate-x-[10px] md:-translate-x-1/2 z-20">
-                    <div class="w-6 h-6 bg-royal dark:bg-white border-4 border-gold rounded-full timeline-dot shadow-lg" data-aos="zoom-in" data-aos-delay="200"></div>
-                </div>
-
-                <!-- Content Card -->
-                <div class="w-full md:w-5/12 pl-12 md:pl-0 md:pr-12 md:text-right" data-aos="fade-right">
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border-l-4 md:border-l-0 md:border-r-4 border-gold hover:-translate-y-2 transition-transform duration-300">
-                        <h3 class="text-5xl font-bold text-royal/10 dark:text-white/10 absolute top-4 right-6 md:right-auto md:left-6 select-none">1961</h3>
-                        <span class="inline-block px-3 py-1 bg-royal/10 text-royal dark:bg-gold/20 dark:text-gold rounded-full text-xs font-bold mb-3">The Expansion</span>
-                        <h4 class="text-2xl font-bold text-royal dark:text-white mb-2">Little Legon</h4>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                            The Great Migration to Bubuashie. The expansive, modern campus earned the nickname "Little Legon," setting the stage for sports and academic dominance.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- EVENT 4: 2003 (Right on Desktop) -->
-            <div class="mb-16 flex flex-col md:flex-row items-center justify-between w-full group">
-                <!-- Content Card -->
-                <div class="w-full md:w-5/12 pl-12 md:pl-12 md:text-left order-2 md:order-1" data-aos="fade-left">
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border-l-4 border-gold hover:-translate-y-2 transition-transform duration-300">
-                        <h3 class="text-5xl font-bold text-royal/10 dark:text-white/10 absolute top-4 right-6 select-none">2003</h3>
-                        <span class="inline-block px-3 py-1 bg-royal/10 text-royal dark:bg-gold/20 dark:text-gold rounded-full text-xs font-bold mb-3">Global Stage</span>
-                        <h4 class="text-2xl font-bold text-royal dark:text-white mb-2">Top 10 in Africa</h4>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                            The Africa Almanac ranked Accra Academy as the 8th Best High School in Africa, cementing its status as a continental giant in education.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Center Dot -->
-                <div class="absolute left-4 md:left-1/2 transform -translate-x-[10px] md:-translate-x-1/2 z-20 order-1 md:order-2">
-                    <div class="w-6 h-6 bg-royal dark:bg-white border-4 border-gold rounded-full timeline-dot shadow-lg" data-aos="zoom-in" data-aos-delay="300"></div>
-                </div>
-
-                <div class="hidden md:block w-5/12 order-3"></div> <!-- Spacer -->
-            </div>
-
-        </div>
-      </div>
-    </div>
-    </div>
-    </section>
-  <!-- ACADEMIC DEPARTMENTS -->
+   <!-- ACADEMIC DEPARTMENTS -->
   <section class="py-20 bg-white dark:bg-gray-800">
       <div class="container">
           <div class="text-center mb-12" data-aos="fade-up">
