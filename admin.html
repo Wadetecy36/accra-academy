@@ -4,755 +4,311 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bleoo Command Center</title>
-
-    <!-- FONTS -->
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
-    <!-- TAILWIND -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
-                extend: {
-                    colors: { royal: '#002147', gold: '#FDBE11', dark: '#020617' },
-                    fontFamily: { display: ['Merriweather', 'serif'], body: ['Inter', 'sans-serif'] }
-                }
+                extend: { colors: { royal: '#002147', gold: '#FDBE11', dark: '#020617' }, fontFamily: { mono: ['Consolas', 'Monaco', 'monospace'] } }
             }
         }
     </script>
-    <!-- Chart.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- CUSTOM STYLES -->
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3 { font-family: 'Merriweather', serif; }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #00152e; }
-        ::-webkit-scrollbar-thumb { background: #1e3a8a; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #FDBE11; }
-
-        /* Glassmorphism Classes */
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .glass-input {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            transition: all 0.3s ease;
-        }
-        .glass-input:focus {
-            border-color: #FDBE11;
-            background: rgba(0, 0, 0, 0.5);
-            outline: none;
-            box-shadow: 0 0 15px rgba(253, 190, 17, 0.1);
-        }
-
-        /* Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .glass-panel { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
+        .glass-input { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: white; transition: 0.3s; }
+        .glass-input:focus { border-color: #FDBE11; outline: none; }
+        .tab-btn.active { border-bottom: 3px solid #FDBE11; color: #FDBE11; background: rgba(253,190,17,0.05); }
+        .shake { animation: shake 0.4s ease-in-out; border-color: #ef4444 !important; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
         .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-        .shake { animation: shake 0.3s ease-in-out; border-color: #ef4444 !important; }
-
-        /* Tab Active State */
-        .tab-btn.active {
-            background: rgba(253, 190, 17, 0.1);
-            color: #FDBE11;
-            border-bottom: 2px solid #FDBE11;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="bg-dark text-gray-100 min-h-screen overflow-x-hidden selection:bg-gold selection:text-royal">
+<body class="bg-dark text-gray-100 font-sans min-h-screen">
 
-    <!-- ==========================
-         1. LOGIN OVERLAY (The Guard)
-         ========================== -->
-    <div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center">
-        <!-- Background Image with Heavy Blur -->
-        <div class="absolute inset-0 bg-[url('./assets/entrance.webp')] bg-cover bg-center"></div>
-        <div class="absolute inset-0 bg-royal/80 backdrop-blur-md"></div>
-
-        <!-- Login Card -->
-        <div class="relative z-10 w-full max-w-md p-10 glass-panel rounded-2xl shadow-2xl transform transition-all" id="login-card">
-            <div class="text-center mb-8">
-                <div class="w-20 h-20 mx-auto mb-4 bg-white/5 rounded-full flex items-center justify-center border border-white/10 shadow-[0_0_30px_rgba(253,190,17,0.2)]">
-                    <img src="./assets/crest.png" class="w-12 h-12 object-contain">
-                </div>
-                <h1 class="text-3xl font-bold text-white tracking-wide">COMMAND CENTER</h1>
-                <p class="text-xs text-gold uppercase tracking-[0.2em] mt-2">Authorized Access Only</p>
-            </div>
-
-            <form id="login-form" class="space-y-6">
-                <div class="relative">
-                    <input type="password" id="admin-pass" class="w-full glass-input rounded-lg px-4 py-4 text-center tracking-[0.5em] text-xl placeholder-gray-600" placeholder="••••••" required autofocus>
-                </div>
-
-                <button type="submit" class="w-full bg-gradient-to-r from-gold to-yellow-500 text-royal font-bold py-4 rounded-lg hover:shadow-[0_0_20px_rgba(253,190,17,0.4)] transition transform hover:scale-[1.02]">
-                    AUTHENTICATE
-                </button>
+    <!-- LOGIN -->
+    <div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center bg-[url('./assets/entrance.webp')] bg-cover">
+        <div class="absolute inset-0 bg-royal/90 backdrop-blur-sm"></div>
+        <div id="login-card" class="relative glass-panel p-10 rounded-2xl w-full max-w-md text-center shadow-2xl">
+            <img src="./assets/crest.png" class="w-20 mx-auto mb-4">
+            <h1 class="text-2xl font-bold tracking-widest text-white">COMMAND CENTER</h1>
+            <form id="login-form" class="mt-8 space-y-4">
+                <input type="password" id="admin-pass" class="w-full glass-input rounded px-4 py-3 text-center text-xl tracking-[5px]" placeholder="••••" required autofocus>
+                <button class="w-full bg-gold text-royal font-bold py-3 rounded hover:bg-yellow-400 transition">ACCESS</button>
             </form>
-
-            <div id="login-msg" class="text-center text-xs text-red-400 mt-6 min-h-[1rem] font-bold tracking-wide"></div>
-
-            <div class="mt-8 text-center border-t border-white/5 pt-4">
-                <a href="./index.html" class="text-gray-500 text-xs hover:text-white transition flex items-center justify-center gap-2">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                    Return to Public Site
-                </a>
-            </div>
+            <p id="login-msg" class="text-red-400 text-xs mt-4 h-4"></p>
+            <a href="index.html" class="block mt-6 text-gray-500 text-xs hover:text-white">← Return to Site</a>
         </div>
     </div>
 
-    <!-- ==========================
-         2. DASHBOARD INTERFACE
-         ========================== -->
-    <div id="dashboard-content" class="hidden min-h-screen flex flex-col">
-
-        <!-- Top Navigation -->
-        <nav class="glass-panel sticky top-0 z-50 border-b-0 border-b-white/5">
+    <!-- DASHBOARD -->
+    <div id="dashboard-content" class="hidden min-h-screen pb-20">
+        <nav class="glass-panel sticky top-0 z-50 border-b-0">
             <div class="container mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="flex items-center gap-3">
-                    <img src="./assets/crest.png" class="w-8 h-8">
-                    <h1 class="text-lg font-bold tracking-wider text-white">BLEOO <span class="text-gold">ADMIN</span></h1>
+                    <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]"></div>
+                    <h1 class="text-xl font-bold tracking-wider">BLEOO <span class="text-gold">ADMIN</span></h1>
                 </div>
-
-                <!-- Tabs -->
-                <div class="flex bg-black/30 p-1 rounded-lg">
-                    <button onclick="switchTab('logs')" id="tab-logs" class="tab-btn active px-6 py-2 rounded-md text-sm font-bold transition-all text-gray-400 hover:text-white">CHAT LOGS</button>
-                    <button onclick="switchTab('brain')" id="tab-brain" class="tab-btn px-6 py-2 rounded-md text-sm font-bold transition-all text-gray-400 hover:text-white">BRAIN</button>
-                    <button onclick="switchTab('students')" id="tab-students" class="tab-btn px-6 py-2 rounded-md text-sm font-bold transition-all text-gray-400 hover:text-white">STUDENTS</button>
-                    <!-- NEW BUTTON -->
-                    <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn px-6 py-2 rounded-md text-sm font-bold transition-all text-gray-400 hover:text-white">ANALYTICS</button>
+                <div class="flex bg-black/30 p-1 rounded-lg gap-1">
+                    <button onclick="switchTab('logs')" id="tab-logs" class="tab-btn active px-4 py-2 rounded text-xs font-bold transition">LOGS</button>
+                    <button onclick="switchTab('brain')" id="tab-brain" class="tab-btn px-4 py-2 rounded text-xs font-bold transition text-gray-400">BRAIN</button>
+                    <button onclick="switchTab('students')" id="tab-students" class="tab-btn px-4 py-2 rounded text-xs font-bold transition text-gray-400">STUDENTS</button>
+                    <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn px-4 py-2 rounded text-xs font-bold transition text-gray-400">ANALYTICS</button>
                 </div>
-
-                <button onclick="logout()" class="text-xs font-bold text-red-400 hover:text-red-300 border border-red-500/30 px-3 py-1 rounded uppercase tracking-wider hover:bg-red-500/10 transition">
-                    Disconnect
-                </button>
+                <button onclick="logout()" class="text-xs text-red-400 hover:text-red-300 font-bold border border-red-900 px-3 py-1 rounded">LOGOUT</button>
             </div>
         </nav>
 
-        <!-- Main Content -->
-        <main class="container mx-auto px-4 md:px-6 py-8 flex-grow">
-            <!-- VIEW 1: CHAT LOGS (Filtered) -->
+        <main class="container mx-auto px-4 py-8">
+
+            <!-- VIEW 1: LOGS -->
             <div id="view-logs" class="animate-fade-in max-w-5xl mx-auto">
-                <div class="flex flex-col md:flex-row justify-between items-end md:items-center mb-6 gap-4">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-6 gap-4">
                     <div>
-                        <h2 class="text-2xl font-bold text-white">Live Intelligence Feed</h2>
-                        <p class="text-xs text-gray-400 mt-1">Real-time monitoring of AI interactions.</p>
+                        <h2 class="text-2xl font-bold text-white">Intelligence Feed</h2>
+                        <p class="text-xs text-gray-400">Real-time interactions</p>
                     </div>
-
-                    <div class="flex gap-3">
-                        <!-- TIME FILTER -->
+                    <div class="flex gap-2">
+                        <!-- Search Input -->
                         <div class="relative">
-                            <select id="logs-filter" onchange="fetchLogs()" class="appearance-none bg-gray-800 border border-gray-600 text-white py-2 pl-4 pr-10 rounded-lg text-xs font-bold focus:border-gold outline-none cursor-pointer hover:bg-gray-700 transition">
-                                <option value="all">ALL TIME</option>
-                                <option value="24h">LAST 24 HOURS</option>
-                                <option value="7d">LAST 7 DAYS</option>
-                                <option value="30d">LAST 30 DAYS</option>
-                            </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gold">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </div>
+                            <input type="text" id="logs-search" onkeyup="searchLogs(this.value)" placeholder="Search keywords..." class="glass-input py-2 pl-4 pr-8 rounded-lg text-xs w-40">
+                            <div class="absolute inset-y-0 right-2 flex items-center text-gray-500">🔍</div>
                         </div>
-
-                        <button onclick="fetchLogs()" class="px-4 py-2 glass-input rounded-lg text-xs font-bold hover:bg-white/5 transition flex items-center gap-2 border border-gray-600">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                            REFRESH
-                        </button>
+                        <!-- Date Filter -->
+                        <select id="logs-filter" onchange="fetchLogs()" class="glass-input py-2 px-3 rounded-lg text-xs font-bold cursor-pointer">
+                            <option value="all">All Time</option>
+                            <option value="24h">24 Hours</option>
+                            <option value="7d">7 Days</option>
+                        </select>
+                        <button onclick="fetchLogs()" class="px-3 py-2 glass-input rounded-lg text-xs font-bold hover:bg-white/10">↻</button>
                     </div>
                 </div>
-
-                <!-- Chat Stream -->
-                <div id="logs-container" class="space-y-4">
-                    <!-- Logs injected via JS -->
-                </div>
+                <div id="logs-container" class="grid gap-3"></div>
             </div>
-            <!-- VIEW 2: KNOWLEDGE BASE (BRAIN) -->
+
+            <!-- VIEW 2: BRAIN -->
             <div id="view-brain" class="hidden animate-fade-in">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-
-                    <!-- Left Column: Input Tools (4 Columns) -->
-                    <div class="lg:col-span-4 space-y-6">
-
-                        <!-- Manual Entry Card -->
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <div class="space-y-6">
                         <div class="glass-panel p-6 rounded-xl">
-                            <h3 class="text-gold font-bold mb-4 flex items-center gap-2">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                New Fact
-                            </h3>
-                            <form id="brain-form" class="space-y-4">
-                                <input type="text" id="k-topic" placeholder="Topic (e.g. 2025 Headmaster)" class="w-full glass-input rounded p-3 text-sm" required>
-                                <div class="relative">
-                                    <select id="k-category" class="w-full glass-input rounded p-3 text-sm appearance-none cursor-pointer">
-                                        <option>General</option>
-                                        <option>History</option>
-                                        <option>Academics</option>
-                                        <option>Sports</option>
-                                        <option>Events</option>
-                                    </select>
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">▼</div>
-                                </div>
-                                <textarea id="k-content" rows="4" placeholder="Enter the detailed fact here..." class="w-full glass-input rounded p-3 text-sm" required></textarea>
-                                <button class="w-full bg-royal border border-gold text-gold font-bold py-3 rounded hover:bg-gold hover:text-royal transition">SAVE TO DATABASE</button>
+                            <h3 class="text-gold font-bold mb-4">Add Knowledge</h3>
+                            <form id="brain-form" class="space-y-3">
+                                <input id="k-topic" class="w-full glass-input rounded p-2 text-sm" placeholder="Topic" required>
+                                <select id="k-category" class="w-full glass-input rounded p-2 text-sm"><option>General</option><option>History</option><option>Academics</option></select>
+                                <textarea id="k-content" class="w-full glass-input rounded p-2 text-sm" rows="3" placeholder="Fact..." required></textarea>
+                                <button class="w-full bg-royal border border-gold text-gold font-bold py-2 rounded hover:bg-gold hover:text-royal transition">SAVE</button>
                             </form>
                         </div>
-                        <!-- ANNOUNCEMENT CONTROL -->
-                        <div class="glass-panel p-6 rounded-xl mb-6 border-l-4 border-l-red-500">
-                            <h3 class="text-red-400 font-bold mb-4 flex items-center gap-2">
-                                📢 Live Broadcast
-                            </h3>
+
+                        <!-- Announcement -->
+                        <div class="glass-panel p-6 rounded-xl border-l-4 border-red-500">
+                            <h3 class="text-red-400 font-bold mb-4">Broadcast</h3>
                             <form id="announce-form" class="space-y-3">
-                                <input type="text" id="announce-text" placeholder="e.g. School reopens Jan 15th..." class="w-full glass-input rounded p-3 text-sm" required>
+                                <input id="announce-text" class="w-full glass-input rounded p-2 text-sm" placeholder="Ticker Message..." required>
                                 <div class="flex gap-2">
-                                    <button type="submit" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-2 rounded text-xs transition">BROADCAST</button>
-                                    <button type="button" onclick="clearAnnounce()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 rounded text-xs">CLEAR</button>
+                                    <button class="flex-1 bg-red-600 text-white font-bold py-2 rounded text-xs hover:bg-red-500">SEND</button>
+                                    <button type="button" onclick="clearAnnounce()" class="bg-gray-700 text-white px-3 rounded text-xs">CLEAR</button>
                                 </div>
                             </form>
                         </div>
-                        <!-- CSV Upload Card -->
-                        <div class="glass-panel p-6 rounded-xl border-t-4 border-t-blue-500 relative overflow-hidden group">
-                            <div class="absolute inset-0 bg-blue-500/5 group-hover:bg-blue-500/10 transition"></div>
-                            <h3 class="text-blue-400 font-bold mb-2 flex items-center gap-2 relative z-10">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                                Bulk Upload (CSV)
-                            </h3>
-                            <p class="text-xs text-gray-400 mb-4 relative z-10">Headers: <code class="text-blue-300">Topic,Category,Content</code></p>
-
-                            <input type="file" id="csvInput" accept=".csv" class="hidden" onchange="handleCSV(this)">
-                            <label for="csvInput" class="relative z-10 block w-full border-2 border-dashed border-blue-500/30 hover:border-blue-400 text-blue-300 py-6 rounded-lg text-center cursor-pointer transition hover:bg-blue-500/10">
-                                <span class="text-2xl block mb-1">📂</span>
-                                <span class="text-xs font-bold uppercase tracking-wider">Drop CSV Here</span>
-                            </label>
-                            <div id="csv-status" class="mt-3 text-xs text-center text-gray-400 min-h-[1.5em]"></div>
-                        </div>
-
                     </div>
-
-                    <!-- Right Column: Database List (8 Columns) -->
-                    <div class="lg:col-span-8">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-bold">Knowledge Database</h3>
-                            <span id="k-count" class="bg-gold/10 text-gold px-3 py-1 rounded text-xs font-mono border border-gold/20">Syncing...</span>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-[600px] overflow-y-auto pr-2" id="knowledge-list">
-                            <!-- Injected JS -->
-                        </div>
-                    </div>
+                    <div class="lg:col-span-2 space-y-3 h-[600px] overflow-y-auto pr-2" id="knowledge-list"></div>
                 </div>
             </div>
 
             <!-- VIEW 3: STUDENTS -->
             <div id="view-students" class="hidden animate-fade-in">
+                <div class="flex justify-between mb-4">
+                    <h2 class="text-xl font-bold">Student Database</h2>
+                    <button onclick="downloadStudentCSV()" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded text-xs font-bold">EXPORT EXCEL</button>
+                </div>
                 <div class="glass-panel rounded-xl overflow-hidden">
-                    <div class="p-6 border-b border-white/5 flex justify-between items-center bg-royal/30">
-                        <h2 class="text-xl font-bold text-white">Registered Students</h2>
-                        <button onclick="downloadStudentCSV()" class="bg-green-600 hover:bg-green-500 text-white px-5 py-2 rounded text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            Download Excel
-                        </button>
-                    </div>
-
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm text-gray-400">
-                            <thead class="bg-black/20 text-gold text-xs uppercase font-bold tracking-wider">
-                                <tr>
-                                    <th class="p-5">Student Name</th>
-                                    <th class="p-5">Index Number</th>
-                                    <th class="p-5">Program</th>
-                                    <th class="p-5">House</th>
-                                    <th class="p-5 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="student-list" class="divide-y divide-white/5">
-                                <!-- Student rows -->
-                            </tbody>
-                        </table>
-                    </div>
+                    <table class="w-full text-left text-sm text-gray-400">
+                        <thead class="bg-black/20 text-gold text-xs uppercase"><tr><th class="p-4">Name</th><th class="p-4">Index</th><th class="p-4">Class</th><th class="p-4">Action</th></tr></thead>
+                        <tbody id="student-list" class="divide-y divide-white/5"></tbody>
+                    </table>
                 </div>
-            </div><!-- VIEW 4: ANALYTICS (With Date Filter) -->
+            </div>
+
+            <!-- VIEW 4: STATS -->
             <div id="view-stats" class="hidden animate-fade-in">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-xl font-bold text-white">System Performance</h2>
-
-                    <!-- TIME FILTER DROPDOWN -->
-                    <div class="relative">
-                        <select id="time-range" onchange="loadStats()" class="appearance-none bg-gray-800 border border-gray-600 text-white py-2 pl-4 pr-10 rounded-lg text-sm focus:border-gold outline-none cursor-pointer hover:bg-gray-700 transition">
-                            <option value="24h">Last 24 Hours</option>
-                            <option value="7d">Last 7 Days</option>
-                            <option value="30d">Last 30 Days</option>
-                            <option value="all">All Time</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gold">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        </div>
-                    </div>
-                </div>
-
+                <h2 class="text-xl font-bold text-white mb-6">Analytics</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Chart Container -->
-                    <div class="glass-panel p-6 rounded-xl relative">
-                        <h3 class="text-gold font-bold mb-4 text-xs uppercase tracking-widest flex items-center gap-2">
-                            <span id="chart-title">Activity</span>
-                        </h3>
-                        <div class="h-64">
-                            <canvas id="trafficChart"></canvas>
-                        </div>
+                    <div class="glass-panel p-6 rounded-xl h-64">
+                        <canvas id="trafficChart"></canvas>
                     </div>
-
-                    <!-- KPI Cards (Dynamic) -->
-                    <div class="space-y-6">
-                        <div class="glass-panel p-6 rounded-xl flex items-center justify-between border-l-4 border-blue-500">
-                            <div>
-                                <p class="text-gray-400 text-xs uppercase">Interactions (Selected Period)</p>
-                                <h4 class="text-3xl font-bold text-white" id="stat-total">--</h4>
-                            </div>
-                            <div class="text-4xl">💬</div>
-                        </div>
-
-                        <div class="glass-panel p-6 rounded-xl flex items-center justify-between border-l-4 border-green-500">
-                            <div>
-                                <p class="text-gray-400 text-xs uppercase">Knowledge Base Size</p>
-                                <h4 class="text-3xl font-bold text-white" id="stat-brain">--</h4>
-                            </div>
-                            <div class="text-4xl">🧠</div>
-                        </div>
-
-                        <div class="glass-panel p-6 rounded-xl flex items-center justify-between border-l-4 border-purple-500">
-                            <div>
-                                <p class="text-gray-400 text-xs uppercase">Students Registered</p>
-                                <h4 class="text-3xl font-bold text-white" id="stat-students">--</h4>
-                            </div>
-                            <div class="text-4xl">🎓</div>
-                        </div>
+                    <div class="space-y-4">
+                        <div class="glass-panel p-4 rounded-xl border-l-4 border-blue-500 flex justify-between"><span>Interactions</span><span class="text-2xl font-bold text-white" id="stat-total">--</span></div>
+                        <div class="glass-panel p-4 rounded-xl border-l-4 border-green-500 flex justify-between"><span>Knowledge Nodes</span><span class="text-2xl font-bold text-white" id="stat-brain">--</span></div>
+                        <div class="glass-panel p-4 rounded-xl border-l-4 border-purple-500 flex justify-between"><span>Students</span><span class="text-2xl font-bold text-white" id="stat-students">--</span></div>
                     </div>
                 </div>
             </div>
+
         </main>
     </div>
 
-    <!-- LOGIC SCRIPT -->
     <script>
-        // API Base (Relative for Production)
         const API_BASE = '/api';
         let studentData = [];
+        let trafficChart = null;
 
-        // --- AUTHENTICATION ---
-        const loginScreen = document.getElementById('login-screen');
-        const dashboard = document.getElementById('dashboard-content');
-        const loginCard = document.getElementById('login-card');
-        const loginMsg = document.getElementById('login-msg');
-
-        // Check Session
-        if (sessionStorage.getItem('bleoo_token')) {
-            showDashboard();
-        }
+        if (sessionStorage.getItem('bleoo_token')) showDashboard();
 
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const password = document.getElementById('admin-pass').value;
-            loginMsg.innerText = "Verifying...";
-
+            const pass = document.getElementById('admin-pass').value;
             try {
                 const res = await fetch(`${API_BASE}/admin/login`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password })
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pass })
                 });
                 const data = await res.json();
-
-                if (data.success) {
-                    sessionStorage.setItem('bleoo_token', data.token);
-                    showDashboard();
-                } else {
-                    throw new Error("Invalid Credentials");
-                }
-            } catch (err) {
-                loginCard.classList.add('shake');
-                loginMsg.innerText = "ACCESS DENIED";
-                setTimeout(() => { loginCard.classList.remove('shake'); loginMsg.innerText = ""; }, 800);
+                if (data.success) { sessionStorage.setItem('bleoo_token', data.token); showDashboard(); }
+                else throw 1;
+            } catch {
+                document.getElementById('login-card').classList.add('shake');
+                document.getElementById('login-msg').innerText = "ACCESS DENIED";
+                setTimeout(() => document.getElementById('login-card').classList.remove('shake'), 500);
             }
         });
 
         function showDashboard() {
-            loginScreen.classList.add('hidden');
-            dashboard.classList.remove('hidden');
-            fetchLogs();
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard-content').classList.remove('hidden');
+            switchTab('logs');
         }
+        function logout() { sessionStorage.removeItem('bleoo_token'); location.reload(); }
 
-        function logout() {
-            if(confirm("Terminate Session?")) {
-                sessionStorage.removeItem('bleoo_token');
-                location.reload();
-            }
-        }
-
-        // --- TABS ---
         function switchTab(tab) {
-            ['logs', 'brain', 'students'].forEach(t => {
+            ['logs', 'brain', 'students', 'stats'].forEach(t => {
                 document.getElementById('view-' + t).classList.add('hidden');
                 document.getElementById('tab-' + t).classList.remove('active', 'text-gold');
                 document.getElementById('tab-' + t).classList.add('text-gray-400');
             });
             document.getElementById('view-' + tab).classList.remove('hidden');
-            const activeBtn = document.getElementById('tab-' + tab);
-            activeBtn.classList.add('active', 'text-gold');
-            activeBtn.classList.remove('text-gray-400');
+            document.getElementById('tab-' + tab).classList.add('active', 'text-gold');
 
+            if(tab === 'logs') fetchLogs();
             if(tab === 'brain') fetchKnowledge();
             if(tab === 'students') fetchStudents();
             if(tab === 'stats') loadStats();
         }
-        // --- 1. CHAT LOGS (Filtered & Sentiment Aware) ---
-           async function fetchLogs() {
-               const container = document.getElementById('logs-container');
-               const filter = document.getElementById('logs-filter').value;
 
-               // Show loading state (non-destructive)
-               if (container.innerHTML.trim() === "") {
-                   container.innerHTML = `<div class="text-center py-10 text-gold animate-pulse">Establishing Secure Uplink...</div>`;
-               }
+        // --- LOGS (Search + Filter + Sentiment) ---
+        let searchTimeout;
+        function searchLogs(q) { clearTimeout(searchTimeout); searchTimeout = setTimeout(() => fetchLogs(q), 500); }
 
-               try {
-                   // Fetch data from backend
-                   const res = await fetch(`${API_BASE}/logs`);
-                   const allData = await res.json();
+        async function fetchLogs(query = '') {
+            const container = document.getElementById('logs-container');
+            const filter = document.getElementById('logs-filter').value;
 
-                   // --- CLIENT SIDE FILTERING ---
-                   const now = new Date();
-                   const filteredData = allData.filter(log => {
-                       const logDate = new Date(log.timestamp);
-                       const diffTime = Math.abs(now - logDate);
-                       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            if(!query && container.innerHTML.trim()==='') container.innerHTML = `<div class="text-center text-gold animate-pulse">Syncing...</div>`;
 
-                       if (filter === '24h') return diffTime < (24 * 60 * 60 * 1000); // 24 hours in ms
-                       if (filter === '7d') return diffDays <= 7;
-                       if (filter === '30d') return diffDays <= 30;
-                       return true; // 'all'
-                   });
+            try {
+                // Use new search endpoint
+                let url = `${API_BASE}/logs?limit=100`;
+                if(query) url += `&search=${encodeURIComponent(query)}`;
 
-                   // --- EMPTY STATE ---
-                   if (filteredData.length === 0) {
-                       container.innerHTML = `
-                           <div class="text-center py-12 border-2 border-dashed border-gray-700 rounded-xl">
-                               <p class="text-gray-500 text-sm">No interactions found in this time period.</p>
-                               <button onclick="document.getElementById('logs-filter').value='all'; fetchLogs()" class="text-gold text-xs mt-2 hover:underline">View All History</button>
-                           </div>`;
-                       return;
-                   }
+                const res = await fetch(url);
+                const allData = await res.json();
 
-                   // --- RENDER WITH SENTIMENT BADGES ---
-                   container.innerHTML = filteredData.map(log => {
-                       // Sentiment Color Logic
-                       let sentimentColor = 'text-gray-500 border-gray-600';
-                       let sentimentBg = '';
+                // Date Filter Client Side
+                const now = new Date();
+                const filteredData = allData.filter(log => {
+                    const diff = now - new Date(log.timestamp);
+                    if(filter === '24h') return diff < 86400000;
+                    if(filter === '7d') return diff < 604800000;
+                    return true;
+                });
 
-                       if (log.sentiment === 'Positive') {
-                           sentimentColor = 'text-green-400 border-green-500/50';
-                           sentimentBg = 'bg-green-500/10';
-                       }
-                       if (log.sentiment === 'Negative') {
-                           sentimentColor = 'text-red-400 border-red-500/50';
-                           sentimentBg = 'bg-red-500/10';
-                       }
-                       if (log.sentiment === 'Neutral') {
-                           sentimentColor = 'text-blue-300 border-blue-500/50';
-                           sentimentBg = 'bg-blue-500/10';
-                       }
+                if(filteredData.length === 0) { container.innerHTML = `<p class="text-center text-gray-500">No logs found.</p>`; return; }
 
-                       return `
-                       <div class="glass-panel p-5 rounded-xl border-l-4 border-l-gold hover:bg-white/5 transition group animate-fade-in relative">
-                           <!-- Sentiment Badge -->
-                           <div class="absolute top-4 right-4 px-2 py-1 rounded text-[10px] uppercase font-bold border ${sentimentColor} ${sentimentBg}">
-                               ${log.sentiment || 'Neutral'}
-                           </div>
+                container.innerHTML = filteredData.map(log => {
+                    let color = 'border-gray-700 text-gray-500';
+                    if(log.sentiment === 'Positive') color = 'border-green-500 text-green-400 bg-green-900/20';
+                    if(log.sentiment === 'Negative') color = 'border-red-500 text-red-400 bg-red-900/20';
 
-                           <div class="flex justify-between items-center mb-3">
-                               <span class="bg-gold/10 text-gold text-[10px] px-2 py-1 rounded uppercase tracking-wide font-bold flex items-center gap-2">
-                                   <span class="w-1.5 h-1.5 rounded-full bg-gold"></span> USER QUERY
-                               </span>
-                               <span class="text-xs text-gray-500 font-mono mr-20">${new Date(log.timestamp).toLocaleString()}</span>
-                           </div>
-                           <p class="text-white text-sm mb-4 font-medium pl-1">"${log.userMessage}"</p>
+                    return `
+                    <div class="glass-panel p-4 rounded border-l-4 border-l-gold relative group">
+                        <span class="absolute top-2 right-2 text-[10px] px-2 rounded border ${color}">${log.sentiment || 'Neutral'}</span>
+                        <div class="flex justify-between text-[10px] text-gray-500 mb-1">
+                            <span>USER</span><span>${new Date(log.timestamp).toLocaleString()}</span>
+                        </div>
+                        <div class="text-white text-sm mb-2 font-medium">"${log.userMessage}"</div>
+                        <div class="pl-3 border-l border-gray-700 text-blue-300 text-xs">${log.botReply}</div>
+                    </div>`;
+                }).join('');
+            } catch(e) { container.innerHTML = `<div class="text-red-500 text-center">Connection Error</div>`; }
+        }
 
-                           <div class="pl-4 border-l-2 border-gray-700 ml-1">
-                               <span class="text-[10px] text-blue-400 uppercase tracking-wide font-bold mb-1 block">AI RESPONSE</span>
-                               <p class="text-gray-400 text-xs leading-relaxed font-mono">${log.botReply}</p>
-                           </div>
-                       </div>
-                       `;
-                   }).join('');
-
-               } catch (e) {
-                   console.error(e);
-                   container.innerHTML = `<div class="text-center text-red-500 p-4 border border-red-900 rounded bg-red-900/10">Connection Failed to Database</div>`;
-               }
-           }
-        // --- 2. KNOWLEDGE (Brain) ---
+        // --- KNOWLEDGE ---
         async function fetchKnowledge() {
             const list = document.getElementById('knowledge-list');
-            try {
-                const res = await fetch(`${API_BASE}/knowledge`);
-                const data = await res.json();
-                document.getElementById('k-count').innerText = data.length + " Nodes";
-
-                list.innerHTML = data.map(k => `
-                    <div class="glass-panel p-4 rounded-lg relative group transition hover:border-gold/50">
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <span class="text-[10px] bg-blue-900/50 text-blue-200 px-2 py-0.5 rounded border border-blue-500/30 uppercase">${k.category}</span>
-                                <h4 class="font-bold text-white mt-2">${k.topic}</h4>
-                            </div>
-                            <button onclick="deleteItem('knowledge', '${k._id}')" class="text-gray-600 hover:text-red-500 transition opacity-0 group-hover:opacity-100">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                            </button>
-                        </div>
-                        <p class="text-xs text-gray-400 mt-2 line-clamp-3">${k.content}</p>
-                    </div>
-                `).join('');
-            } catch(e) {}
+            const data = await (await fetch(`${API_BASE}/knowledge`)).json();
+            document.getElementById('k-count').innerText = data.length + " Syncing...";
+            list.innerHTML = data.map(k => `
+                <div class="bg-gray-800 p-3 rounded flex justify-between items-center group border border-gray-700">
+                    <div><span class="text-[10px] bg-blue-900 text-blue-200 px-1 rounded mr-2">${k.category}</span><span class="text-sm font-bold text-gray-300">${k.topic}</span><p class="text-xs text-gray-500 truncate w-64">${k.content}</p></div>
+                    <button onclick="del('knowledge','${k._id}')" class="text-red-500 opacity-0 group-hover:opacity-100">×</button>
+                </div>`).join('');
         }
 
-        // Manual Add
-        document.getElementById('brain-form').addEventListener('submit', async (e) => {
+        document.getElementById('brain-form').onsubmit = async e => {
             e.preventDefault();
-            const btn = e.target.querySelector('button');
-            const originalText = btn.innerText;
-            btn.innerText = "SAVING...";
+            await fetch(`${API_BASE}/knowledge`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({topic:document.getElementById('k-topic').value, category:document.getElementById('k-category').value, content:document.getElementById('k-content').value}) });
+            e.target.reset(); fetchKnowledge();
+        };
 
-            await fetch(`${API_BASE}/knowledge`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    topic: document.getElementById('k-topic').value,
-                    category: document.getElementById('k-category').value,
-                    content: document.getElementById('k-content').value
-                })
-            });
-            e.target.reset();
-            fetchKnowledge();
-            btn.innerText = "SAVED!";
-            setTimeout(() => btn.innerText = originalText, 1000);
-        });
+        // --- ANNOUNCEMENTS ---
+        document.getElementById('announce-form').onsubmit = async e => {
+            e.preventDefault();
+            await fetch(`${API_BASE}/announcement`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({text:document.getElementById('announce-text').value}) });
+            alert("Broadcast Sent!"); e.target.reset();
+        };
+        async function clearAnnounce() { if(confirm("Clear?")) await fetch(`${API_BASE}/announcement`, {method:'DELETE'}); }
 
-        // CSV Logic
-        function handleCSV(input) {
-            const file = input.files[0];
-            if (!file) return;
-            const status = document.getElementById('csv-status');
-            status.innerHTML = `<span class="text-gold animate-pulse">Parsing data matrix...</span>`;
-
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                const lines = e.target.result.split('\n');
-                let count = 0;
-                for(let i=1; i<lines.length; i++) {
-                    const row = lines[i].trim();
-                    if(!row) continue;
-                    // Handles quoted CSV content roughly
-                    const parts = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || row.split(',');
-
-                    if(parts && parts.length >= 3) {
-                        const topic = parts[0].replace(/"/g, "").trim();
-                        const category = parts[1].replace(/"/g, "").trim();
-                        const content = parts.slice(2).join(',').replace(/"/g, "").trim();
-
-                        await fetch(`${API_BASE}/knowledge`, {
-                            method: 'POST', headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ topic, category, content })
-                        });
-                        count++;
-                    }
-                }
-                status.innerHTML = `<span class="text-green-400">✅ Upload Complete: ${count} facts added.</span>`;
-                fetchKnowledge();
-                input.value = "";
-            };
-            reader.readAsText(file);
-        }
-
-
-        // --- 3. STUDENTS ---
+        // --- STUDENTS ---
         async function fetchStudents() {
-            const list = document.getElementById('student-list');
-            try {
-                const res = await fetch(`${API_BASE}/students`);
-                studentData = await res.json();
-
-                if(studentData.length === 0) {
-                    list.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No student records found.</td></tr>`;
-                    return;
-                }
-
-                list.innerHTML = studentData.map(s => `
-                    <tr class="hover:bg-white/5 transition border-b border-gray-800">
-                        <td class="p-5 font-bold text-white">${s.fullName}</td>
-                        <td class="p-5 font-mono text-gold">${s.indexNumber}</td>
-                        <td class="p-5 text-gray-400">${s.year} - ${s.program}</td>
-                        <td class="p-5 text-gray-400">${s.house}</td>
-                        <td class="p-5 text-right">
-                            <button onclick="deleteItem('students', '${s._id}')" class="text-gray-600 hover:text-red-500 transition px-3 py-1 rounded hover:bg-white/10">Delete</button>
-                        </td>
-                    </tr>
-                `).join('');
-            } catch (e) {}
+            studentData = await (await fetch(`${API_BASE}/students`)).json();
+            document.getElementById('student-list').innerHTML = studentData.map(s => `
+                <tr class="hover:bg-white/5 border-b border-gray-800"><td class="p-4 font-bold text-white">${s.fullName}</td><td class="p-4 text-gold font-mono">${s.indexNumber}</td><td class="p-4 text-xs text-gray-400">${s.year}</td><td class="p-4"><button onclick="del('students','${s._id}')" class="text-red-400 text-xs">DEL</button></td></tr>
+            `).join('');
         }
 
-        async function deleteItem(type, id) {
-            if(confirm("Confirm deletion? This action is irreversible.")) {
-                await fetch(`${API_BASE}/${type}/${id}`, { method: 'DELETE' });
-                if(type === 'knowledge') fetchKnowledge(); else fetchStudents();
-            }
-        }
+        async function del(type, id) { if(confirm('Delete?')) { await fetch(`${API_BASE}/${type}/${id}`, {method:'DELETE'}); type==='knowledge'?fetchKnowledge():fetchStudents(); } }
 
         function downloadStudentCSV() {
-            if(!studentData.length) return alert("Database empty.");
-            const headers = ["Name,Index Number,Year,Program,House,Registered"];
-            const rows = studentData.map(s => `"${s.fullName}","${s.indexNumber}","${s.year}","${s.program}","${s.house}","${new Date(s.timestamp).toLocaleDateString()}"`);
-            const blob = new Blob([headers.concat(rows).join("\n")], { type: "text/csv" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a"); a.href = url; a.download = `bleoo_students_${Date.now()}.csv`; a.click();
+            if(!studentData.length) return alert('No data');
+            const csv = ["Name,Index,Year,Program,House"].concat(studentData.map(s => `"${s.fullName}","${s.indexNumber}","${s.year}","${s.program}","${s.house}"`)).join('\n');
+            const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'})); a.download = 'students.csv'; a.click();
         }
 
-        // Inside your <script> tag:
-
-        document.getElementById('announce-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const text = document.getElementById('announce-text').value;
-            await fetch(`${API_BASE}/announcement`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text })
-            });
-            alert("Broadcast Sent! Check homepage.");
-            e.target.reset();
-        });
-
-        async function clearAnnounce() {
-            if(confirm("Remove current announcement?")) {
-                await fetch(`${API_BASE}/announcement`, { method: 'DELETE' });
-                alert("Broadcast Cleared.");
-            }
-        }
-
-        // --- 4. ADVANCED ANALYTICS LOGIC ---
-    let trafficChart = null;
-
-    async function loadStats() {
-        const range = document.getElementById('time-range').value;
-        const chartTitle = document.getElementById('chart-title');
-
-        // Update Title UI
-        const titles = { '24h': 'Hourly Traffic', '7d': 'Daily Traffic', '30d': 'Monthly Trend', 'all': 'All Time History' };
-        chartTitle.innerText = titles[range];
-
-        try {
-            // 1. Fetch All Data
-            const allLogs = await (await fetch(`${API_BASE}/logs`)).json();
+        // --- ANALYTICS ---
+        async function loadStats() {
+            const logs = await (await fetch(`${API_BASE}/logs?limit=500`)).json(); // Fetch more for stats
             const facts = await (await fetch(`${API_BASE}/knowledge`)).json();
             const students = await (await fetch(`${API_BASE}/students`)).json();
 
-            // 2. Filter Logs based on Time Range
-            const now = new Date();
-            const filteredLogs = allLogs.filter(log => {
-                const logDate = new Date(log.timestamp);
-                const diffTime = Math.abs(now - logDate);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-                if (range === '24h') return diffTime < (24 * 60 * 60 * 1000);
-                if (range === '7d') return diffDays <= 7;
-                if (range === '30d') return diffDays <= 30;
-                return true; // 'all'
-            });
-
-            // 3. Update KPIs
-            document.getElementById('stat-total').innerText = filteredLogs.length;
+            document.getElementById('stat-total').innerText = logs.length;
             document.getElementById('stat-brain').innerText = facts.length;
             document.getElementById('stat-students').innerText = students.length;
 
-            // 4. Group Data for Charting
-            // If 24h -> Group by Hour (10:00, 11:00)
-            // If >24h -> Group by Date (Nov 28, Nov 29)
-            const groupedData = {};
+            const hours = {};
+            logs.forEach(l => { const h = new Date(l.timestamp).getHours()+":00"; hours[h] = (hours[h]||0)+1; });
 
-            filteredLogs.forEach(log => {
-                const date = new Date(log.timestamp);
-                let key;
-
-                if (range === '24h') {
-                    // Hour format: "14:00"
-                    key = date.getHours().toString().padStart(2, '0') + ":00";
-                } else {
-                    // Date format: "Nov 28"
-                    key = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                }
-
-                groupedData[key] = (groupedData[key] || 0) + 1;
-            });
-
-            // Fill in gaps? (Optional: Senior touch)
-            // For now, let's just sort the existing keys so time flows left-to-right
-            const labels = Object.keys(groupedData).reverse(); // Reverse because logs come new->old
-            const dataPoints = labels.map(l => groupedData[l]);
-
-            // 5. Render/Update Chart
-            const ctx = document.getElementById('trafficChart').getContext('2d');
-
-            if (trafficChart) trafficChart.destroy();
-
-            trafficChart = new Chart(ctx, {
+            if(trafficChart) trafficChart.destroy();
+            trafficChart = new Chart(document.getElementById('trafficChart'), {
                 type: 'line',
                 data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Interactions',
-                        data: dataPoints,
-                        borderColor: '#FDBE11',
-                        backgroundColor: (context) => {
-                            const ctx = context.chart.ctx;
-                            const gradient = ctx.createLinearGradient(0, 0, 0, 200);
-                            gradient.addColorStop(0, 'rgba(253, 190, 17, 0.5)');
-                            gradient.addColorStop(1, 'rgba(253, 190, 17, 0)');
-                            return gradient;
-                        },
-                        borderWidth: 3,
-                        pointBackgroundColor: '#002147',
-                        pointBorderColor: '#FDBE11',
-                        tension: 0.4,
-                        fill: true
-                    }]
+                    labels: Object.keys(hours).sort(),
+                    datasets: [{ label:'Chats', data:Object.values(hours), borderColor:'#FDBE11', backgroundColor:'rgba(253,190,17,0.1)', fill:true, tension:0.4 }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { color: 'rgba(255,255,255,0.05)' },
-                            ticks: { color: '#94a3b8', stepSize: 1 }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: '#94a3b8', font: { size: 10 } }
-                        }
-                    }
-                }
+                options: { plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true, grid:{color:'rgba(255,255,255,0.05)'}}, x:{grid:{display:false}}} }
             });
-
-        } catch (e) {
-            console.error("Analytics Error", e);
         }
-    }
     </script>
 </body>
 </html>

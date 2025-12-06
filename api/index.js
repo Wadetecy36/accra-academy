@@ -1,5 +1,5 @@
 /* ============================================================= */
-/*  server/server.js – THE "ULTIMATE" BACKEND                    */
+/*  server/server.js – PRODUCTION MASTER (SECURE + SMART)        */
 /* ============================================================= */
 
 require('dotenv').config();
@@ -7,7 +7,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
-const rateLimit = require('express-rate-limit'); // <--- NEW SECURITY
+const rateLimit = require('express-rate-limit');
 const Parser = require('rss-parser');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
@@ -16,13 +16,10 @@ const parser = new Parser();
 const PORT = process.env.PORT || 3000;
 
 // --- 1. SECURITY: RATE LIMITING ---
-// Prevents spam. Limits IP to 20 requests per 15 mins for Chat.
 const chatLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 20,
-    message: { error: "Too many requests. Please try again later." },
-    standardHeaders: true,
-    legacyHeaders: false,
+    max: 50, // Allow 50 chats per 15 mins per IP
+    message: { error: "Rate limit exceeded. Please wait." }
 });
 
 // MIDDLEWARE
@@ -30,7 +27,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../')));
 
-// --- DATABASE CACHING ---
+// --- DATABASE CONNECTION ---
 const MONGO_URI = process.env.MONGO_URI;
 let isConnected = false;
 
@@ -45,55 +42,58 @@ const connectDB = async () => {
     }
 };
 
-// --- SCHEMAS (Updated with Sentiment) ---
-const ChatLog = mongoose.model('ChatLog', new mongoose.Schema({
+// --- SCHEMAS ---
+
+// Chat Log (With Auto-Delete & Sentiment)
+const ChatLogSchema = new mongoose.Schema({
     userMessage: String,
     botReply: String,
-    sentiment: { type: String, default: 'Neutral' }, // <--- NEW INTELLIGENCE
+    sentiment: { type: String, default: 'Neutral' },
     timestamp: { type: Date, default: Date.now }
-}));
+});
+// TTL Index: Delete logs after 30 days (2592000 seconds)
+ChatLogSchema.index({ timestamp: 1 }, { expireAfterSeconds: 2592000 });
+const ChatLog = mongoose.model('ChatLog', ChatLogSchema);
 
 const Knowledge = mongoose.model('Knowledge', new mongoose.Schema({
     topic: String, content: String, category: String
 }));
 
+// Student (With Validation)
 const Student = mongoose.model('Student', new mongoose.Schema({
-    fullName: String,
-    indexNumber: { type: String, unique: true },
-    program: String, house: String, year: String,
+    fullName: { type: String, required: true, trim: true },
+    indexNumber: { type: String, unique: true, required: true, trim: true },
+    program: String,
+    house: String,
+    year: String,
     timestamp: { type: Date, default: Date.now }
 }));
 
 const Announcement = mongoose.model('Announcement', new mongoose.Schema({
-    text: String,
-    isActive: { type: Boolean, default: true },
-    createdAt: { type: Date, default: Date.now }
+    text: String, isActive: { type: Boolean, default: true }, createdAt: { type: Date, default: Date.now }
 }));
 
 // --- AI CONFIG ---
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-// Updated Instructions to ask for Sentiment Tags
 const BASE_INSTRUCTIONS = `
     You are the 'Bleoo Assistant' for Accra Academy.
     Objective: Answer based strictly on the KNOWLEDGE BASE.
-    If unknown, suggest 'info@accraacademy.edu.gh'.
 
-    IMPORTANT: Start your response with a sentiment tag: [Positive], [Neutral], or [Negative].
-    Example: "[Positive] Great to hear! The anthem is..."
+    IMPORTANT: Analyze user sentiment. Start response with a tag: [Positive], [Neutral], or [Negative].
+    Example: "[Positive] That is great news! The anthem is..."
     Keep answers concise.
 `;
 
 // --- API ENDPOINTS ---
 
-// 1. CHAT (RAG + Sentiment + Rate Limit)
+// 1. CHAT (Smart)
 app.post('/api/chat', chatLimiter, async (req, res) => {
     await connectDB();
     try {
         const { message, history } = req.body;
 
-        // Fetch Knowledge
         const facts = await Knowledge.find({});
         const knowledgeBaseString = facts.map(f => `[${f.topic}]: ${f.content}`).join('\n');
 
@@ -117,22 +117,15 @@ app.post('/api/chat', chatLimiter, async (req, res) => {
 
         let rawText = data.candidates[0].content.parts[0].text;
 
-        // 🧠 EXTRACT SENTIMENT
+        // Extract Sentiment
         let sentiment = "Neutral";
         const sentimentMatch = rawText.match(/^\[(Positive|Negative|Neutral)\]/i);
-
         if (sentimentMatch) {
-            sentiment = sentimentMatch[1]; // e.g. "Positive"
-            rawText = rawText.replace(/^\[.*?\]\s*/, ''); // Remove tag from reply shown to user
+            sentiment = sentimentMatch[1];
+            rawText = rawText.replace(/^\[.*?\]\s*/, '');
         }
 
-        // Save Enriched Log
-        await new ChatLog({
-            userMessage: message,
-            botReply: rawText,
-            sentiment: sentiment
-        }).save();
-
+        await new ChatLog({ userMessage: message, botReply: rawText, sentiment }).save();
         res.json({ reply: rawText });
 
     } catch (error) {
@@ -141,32 +134,36 @@ app.post('/api/chat', chatLimiter, async (req, res) => {
     }
 });
 
-// 2. NEWS
-app.get('/api/news', async (req, res) => {
+// 2. LOGS (Searchable)
+app.get('/api/logs', async (req, res) => {
+    await connectDB();
     try {
-        const feed = await parser.parseURL('https://news.google.com/rss/search?q=Accra+Academy&hl=en-GH&gl=GH&ceid=GH:en');
-        const news = feed.items.slice(0, 10).map(i => ({
-            title: i.title, link: i.link, pubDate: i.pubDate, source: i.source, snippet: i.contentSnippet
-        }));
-        res.json(news);
-    } catch (e) { res.status(500).json({ error: "News Error" }); }
-});
+        const { search, limit } = req.query;
+        let query = {};
 
-// 3. ADMIN LOGIN (Secure)
-app.post('/api/admin/login', (req, res) => {
-    // Compare against .env variable
-    if (req.body.password === process.env.ADMIN_PASSWORD) {
-        res.json({ success: true, token: 'admin-ok' });
-    } else {
-        res.status(401).json({ success: false });
+        if (search) {
+            query = {
+                $or: [
+                    { userMessage: { $regex: search, $options: 'i' } },
+                    { botReply: { $regex: search, $options: 'i' } }
+                ]
+            };
+        }
+
+        const logs = await ChatLog.find(query)
+            .sort({ timestamp: -1 })
+            .limit(parseInt(limit) || 50);
+
+        res.json(logs);
+    } catch (error) {
+        res.status(500).json({ error: "DB Error" });
     }
 });
 
-// 4. ADMIN: LOGS & KNOWLEDGE
-app.get('/api/logs', async (req, res) => {
-    await connectDB();
-    // Increased limit for Analytics
-    res.json(await ChatLog.find().sort({ timestamp: -1 }).limit(1000));
+// 3. ADMIN / KNOWLEDGE / STUDENTS (Standard)
+app.post('/api/admin/login', (req, res) => {
+    if (req.body.password === process.env.ADMIN_PASSWORD) res.json({ success: true, token: 'admin-ok' });
+    else res.status(401).json({ success: false });
 });
 
 app.get('/api/knowledge', async (req, res) => {
@@ -186,13 +183,12 @@ app.delete('/api/knowledge/:id', async (req, res) => {
     res.json({ success: true });
 });
 
-// 5. STUDENTS
 app.post('/api/students', async (req, res) => {
     await connectDB();
     try {
         await new Student(req.body).save();
         res.json({ success: true });
-    } catch (e) { res.status(e.code === 11000 ? 400 : 500).json({ error: e.code === 11000 ? "Duplicate Index" : "Error" }); }
+    } catch (e) { res.status(400).json({ error: e.code === 11000 ? "Duplicate Index Number" : "Error" }); }
 });
 
 app.get('/api/students', async (req, res) => {
@@ -206,7 +202,17 @@ app.delete('/api/students/:id', async (req, res) => {
     res.json({ success: true });
 });
 
-// 6. ANNOUNCEMENTS
+// 4. NEWS & ANNOUNCEMENTS
+app.get('/api/news', async (req, res) => {
+    try {
+        const feed = await parser.parseURL('https://news.google.com/rss/search?q=Accra+Academy&hl=en-GH&gl=GH&ceid=GH:en');
+        const news = feed.items.slice(0, 10).map(i => ({
+            title: i.title, link: i.link, pubDate: i.pubDate, source: i.source, snippet: i.contentSnippet
+        }));
+        res.json(news);
+    } catch (e) { res.status(500).json({ error: "News Error" }); }
+});
+
 app.get('/api/announcement', async (req, res) => {
     await connectDB();
     const latest = await Announcement.findOne({ isActive: true }).sort({ createdAt: -1 });
