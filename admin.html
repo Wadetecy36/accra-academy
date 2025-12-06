@@ -414,67 +414,91 @@
             if(tab === 'students') fetchStudents();
             if(tab === 'stats') loadStats();
         }
-        // --- 1. CHAT LOGS (Filtered) ---
-        async function fetchLogs() {
-            const container = document.getElementById('logs-container');
-            const filter = document.getElementById('logs-filter').value;
+        // --- 1. CHAT LOGS (Filtered & Sentiment Aware) ---
+           async function fetchLogs() {
+               const container = document.getElementById('logs-container');
+               const filter = document.getElementById('logs-filter').value;
 
-            // Show loading state (non-destructive)
-            if(container.innerHTML.trim() === "") {
-                container.innerHTML = `<div class="text-center py-10 text-gold animate-pulse">Establishing Secure Uplink...</div>`;
-            }
+               // Show loading state (non-destructive)
+               if (container.innerHTML.trim() === "") {
+                   container.innerHTML = `<div class="text-center py-10 text-gold animate-pulse">Establishing Secure Uplink...</div>`;
+               }
 
-            try {
-                // Fetch data from backend
-                const res = await fetch(`${API_BASE}/logs`);
-                const allData = await res.json();
+               try {
+                   // Fetch data from backend
+                   const res = await fetch(`${API_BASE}/logs`);
+                   const allData = await res.json();
 
-                // --- CLIENT SIDE FILTERING ---
-                const now = new Date();
-                const filteredData = allData.filter(log => {
-                    const logDate = new Date(log.timestamp);
-                    const diffTime = Math.abs(now - logDate);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                   // --- CLIENT SIDE FILTERING ---
+                   const now = new Date();
+                   const filteredData = allData.filter(log => {
+                       const logDate = new Date(log.timestamp);
+                       const diffTime = Math.abs(now - logDate);
+                       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-                    if (filter === '24h') return diffTime < (24 * 60 * 60 * 1000); // 24 hours in ms
-                    if (filter === '7d') return diffDays <= 7;
-                    if (filter === '30d') return diffDays <= 30;
-                    return true; // 'all'
-                });
+                       if (filter === '24h') return diffTime < (24 * 60 * 60 * 1000); // 24 hours in ms
+                       if (filter === '7d') return diffDays <= 7;
+                       if (filter === '30d') return diffDays <= 30;
+                       return true; // 'all'
+                   });
 
-                // --- EMPTY STATE ---
-                if(filteredData.length === 0) {
-                    container.innerHTML = `
-                        <div class="text-center py-12 border-2 border-dashed border-gray-700 rounded-xl">
-                            <p class="text-gray-500 text-sm">No interactions found in this time period.</p>
-                            <button onclick="document.getElementById('logs-filter').value='all'; fetchLogs()" class="text-gold text-xs mt-2 hover:underline">View All History</button>
-                        </div>`;
-                    return;
-                }
+                   // --- EMPTY STATE ---
+                   if (filteredData.length === 0) {
+                       container.innerHTML = `
+                           <div class="text-center py-12 border-2 border-dashed border-gray-700 rounded-xl">
+                               <p class="text-gray-500 text-sm">No interactions found in this time period.</p>
+                               <button onclick="document.getElementById('logs-filter').value='all'; fetchLogs()" class="text-gold text-xs mt-2 hover:underline">View All History</button>
+                           </div>`;
+                       return;
+                   }
 
-                // --- RENDER ---
-                container.innerHTML = filteredData.map(log => `
-                    <div class="glass-panel p-5 rounded-xl border-l-4 border-l-gold hover:bg-white/5 transition group animate-fade-in">
-                        <div class="flex justify-between items-center mb-3">
-                            <span class="bg-gold/10 text-gold text-[10px] px-2 py-1 rounded uppercase tracking-wide font-bold flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-gold"></span> USER QUERY
-                            </span>
-                            <span class="text-xs text-gray-500 font-mono">${new Date(log.timestamp).toLocaleString()}</span>
-                        </div>
-                        <p class="text-white text-sm mb-4 font-medium pl-1">"${log.userMessage}"</p>
+                   // --- RENDER WITH SENTIMENT BADGES ---
+                   container.innerHTML = filteredData.map(log => {
+                       // Sentiment Color Logic
+                       let sentimentColor = 'text-gray-500 border-gray-600';
+                       let sentimentBg = '';
 
-                        <div class="pl-4 border-l-2 border-gray-700 ml-1">
-                            <span class="text-[10px] text-blue-400 uppercase tracking-wide font-bold mb-1 block">AI RESPONSE</span>
-                            <p class="text-gray-400 text-xs leading-relaxed font-mono">${log.botReply}</p>
-                        </div>
-                    </div>
-                `).join('');
+                       if (log.sentiment === 'Positive') {
+                           sentimentColor = 'text-green-400 border-green-500/50';
+                           sentimentBg = 'bg-green-500/10';
+                       }
+                       if (log.sentiment === 'Negative') {
+                           sentimentColor = 'text-red-400 border-red-500/50';
+                           sentimentBg = 'bg-red-500/10';
+                       }
+                       if (log.sentiment === 'Neutral') {
+                           sentimentColor = 'text-blue-300 border-blue-500/50';
+                           sentimentBg = 'bg-blue-500/10';
+                       }
 
-            } catch (e) {
-                console.error(e);
-                container.innerHTML = `<div class="text-center text-red-500 p-4 border border-red-900 rounded bg-red-900/10">Connection Failed to Database</div>`;
-            }
-        }
+                       return `
+                       <div class="glass-panel p-5 rounded-xl border-l-4 border-l-gold hover:bg-white/5 transition group animate-fade-in relative">
+                           <!-- Sentiment Badge -->
+                           <div class="absolute top-4 right-4 px-2 py-1 rounded text-[10px] uppercase font-bold border ${sentimentColor} ${sentimentBg}">
+                               ${log.sentiment || 'Neutral'}
+                           </div>
+
+                           <div class="flex justify-between items-center mb-3">
+                               <span class="bg-gold/10 text-gold text-[10px] px-2 py-1 rounded uppercase tracking-wide font-bold flex items-center gap-2">
+                                   <span class="w-1.5 h-1.5 rounded-full bg-gold"></span> USER QUERY
+                               </span>
+                               <span class="text-xs text-gray-500 font-mono mr-20">${new Date(log.timestamp).toLocaleString()}</span>
+                           </div>
+                           <p class="text-white text-sm mb-4 font-medium pl-1">"${log.userMessage}"</p>
+
+                           <div class="pl-4 border-l-2 border-gray-700 ml-1">
+                               <span class="text-[10px] text-blue-400 uppercase tracking-wide font-bold mb-1 block">AI RESPONSE</span>
+                               <p class="text-gray-400 text-xs leading-relaxed font-mono">${log.botReply}</p>
+                           </div>
+                       </div>
+                       `;
+                   }).join('');
+
+               } catch (e) {
+                   console.error(e);
+                   container.innerHTML = `<div class="text-center text-red-500 p-4 border border-red-900 rounded bg-red-900/10">Connection Failed to Database</div>`;
+               }
+           }
         // --- 2. KNOWLEDGE (Brain) ---
         async function fetchKnowledge() {
             const list = document.getElementById('knowledge-list');

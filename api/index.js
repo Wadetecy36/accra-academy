@@ -1,5 +1,5 @@
 /* ============================================================= */
-/*  server/server.js – HARDENED PRODUCTION VERSION               */
+/*  server/server.js – THE "ULTIMATE" BACKEND                    */
 /* ============================================================= */
 
 require('dotenv').config();
@@ -7,6 +7,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
+const rateLimit = require('express-rate-limit'); // <--- NEW SECURITY
 const Parser = require('rss-parser');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
@@ -14,12 +15,22 @@ const app = express();
 const parser = new Parser();
 const PORT = process.env.PORT || 3000;
 
+// --- 1. SECURITY: RATE LIMITING ---
+// Prevents spam. Limits IP to 20 requests per 15 mins for Chat.
+const chatLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 20,
+    message: { error: "Too many requests. Please try again later." },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
 // MIDDLEWARE
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../')));
 
-// --- DATABASE CACHING (Vercel Fix) ---
+// --- DATABASE CACHING ---
 const MONGO_URI = process.env.MONGO_URI;
 let isConnected = false;
 
@@ -34,46 +45,55 @@ const connectDB = async () => {
     }
 };
 
-// --- SCHEMAS ---
+// --- SCHEMAS (Updated with Sentiment) ---
 const ChatLog = mongoose.model('ChatLog', new mongoose.Schema({
     userMessage: String,
     botReply: String,
+    sentiment: { type: String, default: 'Neutral' }, // <--- NEW INTELLIGENCE
     timestamp: { type: Date, default: Date.now }
 }));
 
 const Knowledge = mongoose.model('Knowledge', new mongoose.Schema({
-    topic: String,
-    content: String,
-    category: String
+    topic: String, content: String, category: String
 }));
 
 const Student = mongoose.model('Student', new mongoose.Schema({
     fullName: String,
     indexNumber: { type: String, unique: true },
-    program: String,
-    house: String,
-    year: String,
+    program: String, house: String, year: String,
     timestamp: { type: Date, default: Date.now }
+}));
+
+const Announcement = mongoose.model('Announcement', new mongoose.Schema({
+    text: String,
+    isActive: { type: Boolean, default: true },
+    createdAt: { type: Date, default: Date.now }
 }));
 
 // --- AI CONFIG ---
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
+// Updated Instructions to ask for Sentiment Tags
 const BASE_INSTRUCTIONS = `
     You are the 'Bleoo Assistant' for Accra Academy.
-    Objective: Answer based strictly on the provided KNOWLEDGE BASE.
+    Objective: Answer based strictly on the KNOWLEDGE BASE.
     If unknown, suggest 'info@accraacademy.edu.gh'.
+
+    IMPORTANT: Start your response with a sentiment tag: [Positive], [Neutral], or [Negative].
+    Example: "[Positive] Great to hear! The anthem is..."
     Keep answers concise.
 `;
 
 // --- API ENDPOINTS ---
 
-// 1. CHAT (RAG)
-app.post('/api/chat', async (req, res) => {
+// 1. CHAT (RAG + Sentiment + Rate Limit)
+app.post('/api/chat', chatLimiter, async (req, res) => {
     await connectDB();
     try {
         const { message, history } = req.body;
+
+        // Fetch Knowledge
         const facts = await Knowledge.find({});
         const knowledgeBaseString = facts.map(f => `[${f.topic}]: ${f.content}`).join('\n');
 
@@ -95,10 +115,26 @@ app.post('/api/chat', async (req, res) => {
         const data = await response.json();
         if (data.error) throw new Error(data.error.message);
 
-        const botReply = data.candidates[0].content.parts[0].text;
-        await new ChatLog({ userMessage: message, botReply: botReply }).save();
+        let rawText = data.candidates[0].content.parts[0].text;
 
-        res.json({ reply: botReply });
+        // 🧠 EXTRACT SENTIMENT
+        let sentiment = "Neutral";
+        const sentimentMatch = rawText.match(/^\[(Positive|Negative|Neutral)\]/i);
+
+        if (sentimentMatch) {
+            sentiment = sentimentMatch[1]; // e.g. "Positive"
+            rawText = rawText.replace(/^\[.*?\]\s*/, ''); // Remove tag from reply shown to user
+        }
+
+        // Save Enriched Log
+        await new ChatLog({
+            userMessage: message,
+            botReply: rawText,
+            sentiment: sentiment
+        }).save();
+
+        res.json({ reply: rawText });
+
     } catch (error) {
         console.error("Chat Error:", error.message);
         res.status(500).json({ error: "AI Service Disrupted" });
@@ -116,14 +152,20 @@ app.get('/api/news', async (req, res) => {
     } catch (e) { res.status(500).json({ error: "News Error" }); }
 });
 
-// 3. ADMIN & KNOWLEDGE
+// 3. ADMIN LOGIN (Secure)
 app.post('/api/admin/login', (req, res) => {
-    if (req.body.password === 'bleoo1931') res.json({ success: true, token: 'admin-ok' });
-    else res.status(401).json({ success: false });
+    // Compare against .env variable
+    if (req.body.password === process.env.ADMIN_PASSWORD) {
+        res.json({ success: true, token: 'admin-ok' });
+    } else {
+        res.status(401).json({ success: false });
+    }
 });
 
+// 4. ADMIN: LOGS & KNOWLEDGE
 app.get('/api/logs', async (req, res) => {
     await connectDB();
+    // Increased limit for Analytics
     res.json(await ChatLog.find().sort({ timestamp: -1 }).limit(1000));
 });
 
@@ -144,13 +186,13 @@ app.delete('/api/knowledge/:id', async (req, res) => {
     res.json({ success: true });
 });
 
-// 4. STUDENTS
+// 5. STUDENTS
 app.post('/api/students', async (req, res) => {
     await connectDB();
     try {
         await new Student(req.body).save();
         res.json({ success: true });
-    } catch (e) { res.status(e.code === 11000 ? 400 : 500).json({ error: e.code === 11000 ? "Duplicate Index Number" : "Error" }); }
+    } catch (e) { res.status(e.code === 11000 ? 400 : 500).json({ error: e.code === 11000 ? "Duplicate Index" : "Error" }); }
 });
 
 app.get('/api/students', async (req, res) => {
@@ -164,33 +206,20 @@ app.delete('/api/students/:id', async (req, res) => {
     res.json({ success: true });
 });
 
-// --- ANNOUNCEMENT SYSTEM ---
-const AnnouncementSchema = new mongoose.Schema({
-    text: String,
-    isActive: { type: Boolean, default: true },
-    createdAt: { type: Date, default: Date.now }
-});
-const Announcement = mongoose.model('Announcement', AnnouncementSchema);
-
-// 1. Get Latest Active Announcement (Public)
+// 6. ANNOUNCEMENTS
 app.get('/api/announcement', async (req, res) => {
     await connectDB();
-    // Get the most recent active one
     const latest = await Announcement.findOne({ isActive: true }).sort({ createdAt: -1 });
-    res.json(latest || { text: "" }); // Return empty if none
+    res.json(latest || { text: "" });
 });
 
-// 2. Post New Announcement (Admin)
 app.post('/api/announcement', async (req, res) => {
     await connectDB();
-    // Optional: Turn off all old ones first so only one shows
     await Announcement.updateMany({}, { isActive: false });
-
     await new Announcement({ text: req.body.text }).save();
     res.json({ success: true });
 });
 
-// 3. Clear Announcements (Admin)
 app.delete('/api/announcement', async (req, res) => {
     await connectDB();
     await Announcement.updateMany({}, { isActive: false });
@@ -199,6 +228,6 @@ app.delete('/api/announcement', async (req, res) => {
 
 // START
 if (require.main === module) {
-    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+    app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
 }
 module.exports = app;
