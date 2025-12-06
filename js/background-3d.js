@@ -1,34 +1,45 @@
 /* ============================================================= */
-/*  js/background-3d.js – THE ACCRA ACADEMY HOLOGRAM             */
+/*  js/background-3d.js – ROBUST ERROR HANDLING                  */
 /* ============================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('canvas-container');
     if (!container) return;
 
-    // 1. SCENE SETUP
-    const scene = new THREE.Scene();
+    // --- 1. SAFETY CHECK: Can we run 3D? ---
+    if (!window.WebGLRenderingContext) {
+        console.warn("⚠️ WebGL not supported. 3D Background disabled.");
+        return; // Stop here, fall back to CSS background
+    }
 
-    // Camera config
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5;
+    let scene, camera, renderer, crestMesh, particlesMesh;
 
-    // Renderer config (Transparent background)
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    container.appendChild(renderer.domElement);
+    try {
+        // --- 2. SCENE SETUP ---
+        scene = new THREE.Scene();
 
-    // 2. THE CREST (Mesh)
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        // Try to initialize renderer. If this fails, the catch block handles it.
+        renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+    } catch (e) {
+        console.error("❌ WebGL Crash:", e.message);
+        // Fallback: Ensure container is hidden so static BG shows
+        container.style.display = 'none';
+        return;
+    }
+
+    // --- 3. THE CREST (Mesh) ---
     const textureLoader = new THREE.TextureLoader();
-    let crestMesh;
 
     // Load your specific crest image
     textureLoader.load('./assets/crest.png', (texture) => {
-        // Geometry: Plane (Width, Height)
         const geometry = new THREE.PlaneGeometry(3.5, 3.5);
-
-        // Material: Reacts to light, transparent
         const material = new THREE.MeshStandardMaterial({
             map: texture,
             transparent: true,
@@ -41,23 +52,20 @@ document.addEventListener('DOMContentLoaded', () => {
         scene.add(crestMesh);
     });
 
-    // 3. LIGHTING (Cinematic)
-    // Ambient Light (Soft base)
+    // --- 4. LIGHTING ---
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
 
-    // Point Light (The "Gold" shine)
-    const pointLight = new THREE.PointLight(0xFDBE11, 2, 100); // Gold Color
+    const pointLight = new THREE.PointLight(0xFDBE11, 2, 100);
     pointLight.position.set(2, 2, 5);
     scene.add(pointLight);
 
-    // 4. PARTICLES (The "Bleoo Spirit" Dust)
+    // --- 5. PARTICLES ---
     const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 200; // Number of floating specks
+    const particlesCount = 200;
     const posArray = new Float32Array(particlesCount * 3);
 
     for(let i = 0; i < particlesCount * 3; i++) {
-        // Random positions around the crest
         posArray[i] = (Math.random() - 0.5) * 15;
     }
 
@@ -65,20 +73,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const particlesMaterial = new THREE.PointsMaterial({
         size: 0.05,
-        color: 0xFDBE11, // Gold dust
+        color: 0xFDBE11,
         transparent: true,
         opacity: 0.8
     });
 
-    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particlesMesh);
 
-    // 5. INTERACTIVITY (Mouse Parallax)
+    // --- 6. INTERACTIVITY ---
     let mouseX = 0;
     let mouseY = 0;
-    let targetX = 0;
-    let targetY = 0;
-
     const windowHalfX = window.innerWidth / 2;
     const windowHalfY = window.innerHeight / 2;
 
@@ -87,14 +92,13 @@ document.addEventListener('DOMContentLoaded', () => {
         mouseY = (event.clientY - windowHalfY);
     });
 
-    // Handle Window Resize
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
-    // 6. ANIMATION LOOP
+    // --- 7. ANIMATION LOOP ---
     const clock = new THREE.Clock();
 
     function animate() {
@@ -103,24 +107,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const elapsedTime = clock.getElapsedTime();
 
         if (crestMesh) {
-            // Automatic gentle floating
+            // Floating
             crestMesh.position.y = Math.sin(elapsedTime * 0.5) * 0.2;
 
-            // Mouse Interaction (Parallax Tilt)
-            targetX = mouseX * 0.001;
-            targetY = mouseY * 0.001;
+            // Mouse Parallax
+            const targetX = mouseX * 0.001;
+            const targetY = mouseY * 0.001;
 
-            // Smooth interpolation (Ease-out)
             crestMesh.rotation.y += 0.05 * (targetX - crestMesh.rotation.y);
             crestMesh.rotation.x += 0.05 * (targetY - crestMesh.rotation.x);
 
-            // Background slow spin independent of mouse
+            // Slow Spin
             crestMesh.rotation.z = Math.sin(elapsedTime * 0.2) * 0.05;
         }
 
         // Rotate Particles
-        particlesMesh.rotation.y = elapsedTime * 0.05;
-        particlesMesh.rotation.x = elapsedTime * 0.02;
+        if (particlesMesh) {
+            particlesMesh.rotation.y = elapsedTime * 0.05;
+            particlesMesh.rotation.x = elapsedTime * 0.02;
+        }
 
         renderer.render(scene, camera);
     }
