@@ -299,208 +299,108 @@
             /* =================================================================
            10. AI CHATBOT LOGIC (VOICE, CHIPS, & MEMORY ENABLED)
            ================================================================= */
-            const chatToggle = document.getElementById('chat-toggle');
-            const closeChat = document.getElementById('close-chat');
-            const chatWindow = document.getElementById('chat-window');
-            const chatForm = document.getElementById('chat-form');
-            const chatInput = document.getElementById('chat-input');
-            const chatMessages = document.getElementById('chat-messages');
-            const voiceBtn = document.getElementById('voice-btn');
-            const chipBtns = document.querySelectorAll('.chip-btn');
+             const chatToggle = document.getElementById('chat-toggle');
+    const chatWindow = document.getElementById('chat-window');
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const chatMessages = document.getElementById('chat-messages');
+    const voiceBtn = document.getElementById('voice-btn');
 
-            // CONFIGURATION
-            const API_URL = '/api/chat'; // Relative path to backend
-            let chatHistory = JSON.parse(localStorage.getItem('bleoo_chat_history')) || [];
-            let isVoiceActive = false; // Track if user used voice input
+    // Config
+    const API_URL = '/api/chat';
+    let chatHistory = JSON.parse(localStorage.getItem('bleoo_chat_history')) || [];
 
-            // --- SPEECH RECOGNITION SETUP ---
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            let recognition;
+    // Voice Setup (Web Speech)
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition;
+    if(SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.lang = 'en-GB'; // Ghanaian/British English
+        recognition.onstart = () => { if(voiceBtn) voiceBtn.classList.add('text-red-500','animate-pulse'); chatInput.placeholder="Listening..."; };
+        recognition.onend = () => { if(voiceBtn) voiceBtn.classList.remove('text-red-500','animate-pulse'); chatInput.placeholder="Type message..."; };
+        recognition.onresult = e => {
+            chatInput.value = e.results[0][0].transcript;
+            chatForm.dispatchEvent(new Event('submit'));
+        };
+        if(voiceBtn) voiceBtn.onclick = () => recognition.start();
+    } else if(voiceBtn) { voiceBtn.style.display = 'none'; }
 
-            if (SpeechRecognition) {
-                recognition = new SpeechRecognition();
-                recognition.continuous = false;
-                recognition.lang = 'en-GB'; // British/Ghanaian English preference
-                recognition.interimResults = false;
+    // TTS Setup (StreamElements - High Quality)
+    function speak(text) {
+        if(window.currAudio) window.currAudio.pause();
+        const clean = text.replace(/[*#]/g, '').trim();
+        if(!clean) return;
+        window.currAudio = new Audio(`https://api.streamelements.com/kappa/v2/speech?voice=Amy&text=${encodeURIComponent(clean)}`);
+        window.currAudio.play().catch(()=>{});
+    }
 
-                recognition.onstart = () => {
-                    voiceBtn.classList.add('text-red-500', 'animate-pulse');
-                    chatInput.placeholder = "Listening...";
-                };
+    if (chatToggle && chatWindow) {
+        // Load History
+        chatHistory.forEach(m => addMsg(m.text, m.sender));
 
-                recognition.onend = () => {
-                    voiceBtn.classList.remove('text-red-500', 'animate-pulse');
-                    chatInput.placeholder = "Type a message...";
-                };
+        chatToggle.onclick = () => {
+            chatWindow.classList.remove('hidden');
+            setTimeout(() => chatWindow.classList.toggle('opacity-0'), 10);
+            setTimeout(() => chatWindow.classList.toggle('translate-y-10'), 10);
+        };
+        document.getElementById('close-chat').onclick = () => {
+            chatWindow.classList.add('opacity-0', 'translate-y-10');
+            setTimeout(() => chatWindow.classList.add('hidden'), 300);
+        };
 
-                recognition.onresult = (event) => {
-                    const transcript = event.results[0][0].transcript;
-                    chatInput.value = transcript;
-                    isVoiceActive = true; // User used voice, so AI should reply with voice
-                    chatForm.dispatchEvent(new Event('submit')); // Auto-submit
-                };
-            } else {
-                if(voiceBtn) voiceBtn.style.display = 'none'; // Hide if not supported
-            }
-
-            // --- MAIN LOGIC ---
-            if (chatToggle && chatWindow) {
-                // Load History
-                chatHistory.forEach(msg => addMessageToUI(msg.text, msg.sender));
-
-                // Toggle UI
-                const toggleChat = () => {
-                    if (chatWindow.classList.contains('hidden')) {
-                        chatWindow.classList.remove('hidden');
-                        setTimeout(() => chatWindow.classList.remove('translate-y-10', 'opacity-0', 'scale-95'), 10);
-                    } else {
-                        chatWindow.classList.add('translate-y-10', 'opacity-0', 'scale-95');
-                        setTimeout(() => chatWindow.classList.add('hidden'), 300);
-                    }
-                };
-
-                chatToggle.addEventListener('click', toggleChat);
-                closeChat.addEventListener('click', toggleChat);
-
-                // Voice Button Click
-                if (voiceBtn && recognition) {
-                    voiceBtn.addEventListener('click', () => {
-                        recognition.start();
-                    });
-                }
-
-                // Chip Clicks (Suggestions)
-                chipBtns.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        chatInput.value = btn.innerText;
-                        isVoiceActive = false; // Reset voice flag for chips
-                        chatForm.dispatchEvent(new Event('submit'));
-                    });
-                });
-
-                // Submit Handler
-                chatForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const message = chatInput.value.trim();
-                    if (!message) return;
-
-                    // UI Updates
-                    saveMessage(message, 'user');
-                    addMessageToUI(message, 'user');
-                    chatInput.value = '';
-
-                    const loadingId = addLoadingIndicator();
-
-                    try {
-                        // Send to Server
-                        const response = await fetch(API_URL, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                message: message,
-                                history: chatHistory.slice(-5)
-                            })
-                        });
-
-                        const data = await response.json();
-                        removeMessage(loadingId);
-
-                        if (data.error) {
-                            addMessageToUI("Server Error: " + data.error, 'bot');
-                        } else {
-                            const botText = data.reply;
-                            saveMessage(botText, 'bot');
-                            addMessageToUI(botText, 'bot');
-
-                            // 🔊 VOICE OUTPUT (TTS)
-                            // Only speak if user used voice or clicked "Sing the Anthem"
-                            if (isVoiceActive || message.toLowerCase().includes('anthem')) {
-                                speakText(botText);
-                            }
-                            isVoiceActive = false; // Reset for next turn
-                        }
-
-                    } catch (error) {
-                        removeMessage(loadingId);
-                        addMessageToUI("Connection failed. Ensure server is running.", 'bot');
-                    }
-                });
-            }
-
-            // --- HELPERS ---
-
-            // --- HIGH-QUALITY TTS (StreamElements API) ---
-            function speakText(text) {
-                // 1. Stop any current audio
-                if (window.currentAudio) {
-                    window.currentAudio.pause();
-                    window.currentAudio = null;
-                }
-
-                // 2. Clean the text
-                // Remove Markdown (*), emojis, and long pauses
-                const cleanText = text.replace(/[*#]/g, '').replace(/[\u{1F600}-\u{1F6FF}]/gu, '').trim();
-
-                if (!cleanText) return;
-
-                // 3. Select Voice
-                // "Amy" = British Female (Very clear, suitable for GH context)
-                // "Brian" = British Male (The famous calm AI voice)
-                // "Salli" = US Female
-                const voice = "Amy";
-
-                // 4. Construct API URL
-                // We use encodeURIComponent to safely put the text in the URL
-                const audioUrl = `https://api.streamelements.com/kappa/v2/speech?voice=${voice}&text=${encodeURIComponent(cleanText)}`;
-
-                // 5. Play Audio
-                window.currentAudio = new Audio(audioUrl);
-                window.currentAudio.play().catch(e => console.error("Audio Play Error:", e));
-
-                // Visual Feedback (Optional: Pulse the mic button while speaking)
-                if(voiceBtn) voiceBtn.classList.add('text-gold', 'animate-pulse');
-
-                window.currentAudio.onended = () => {
-                    if(voiceBtn) voiceBtn.classList.remove('text-gold', 'animate-pulse');
-                };
-            }
-
-            function saveMessage(text, sender) {
-                chatHistory.push({ text, sender });
-                localStorage.setItem('bleoo_chat_history', JSON.stringify(chatHistory));
-            }
-
-            function addMessageToUI(text, sender) {
-                const div = document.createElement('div');
-                div.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`;
-
-                // Convert Markdown bold (**text**) to HTML bold (<b>text</b>) basic support
-                const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-
-                const bubble = document.createElement('div');
-                bubble.className = sender === 'user'
-                    ? 'bg-royal text-white rounded-2xl rounded-tr-none p-3 max-w-[85%] text-sm shadow-md'
-                    : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-tl-none p-3 max-w-[85%] text-sm text-gray-700 dark:text-gray-300 shadow-sm';
-
-                bubble.innerHTML = formattedText;
-                div.appendChild(bubble);
-                chatMessages.appendChild(div);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-
-            function addLoadingIndicator() {
-                const id = 'loading-' + Date.now();
-                const div = document.createElement('div');
-                div.id = id;
-                div.className = 'flex justify-start';
-                div.innerHTML = `<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-tl-none p-4 shadow-sm flex gap-1"><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div></div>`;
-                chatMessages.appendChild(div);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-                return id;
-            }
-
-            function removeMessage(id) {
-                const el = document.getElementById(id);
-                if (el) el.remove();
-            }
+        // Chips
+        document.querySelectorAll('.chip-btn').forEach(btn => {
+            btn.onclick = () => { chatInput.value = btn.innerText; chatForm.dispatchEvent(new Event('submit')); };
         });
+
+        chatForm.onsubmit = async e => {
+            e.preventDefault();
+            const msg = chatInput.value.trim();
+            if(!msg) return;
+
+            addMsg(msg, 'user');
+            chatHistory.push({text:msg, sender:'user'});
+            localStorage.setItem('bleoo_chat_history', JSON.stringify(chatHistory));
+            chatInput.value = '';
+
+            const loadId = addLoader();
+
+            try {
+                const res = await fetch(API_URL, {
+                    method:'POST', headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({ message: msg, history: chatHistory.slice(-5) })
+                });
+                const data = await res.json();
+                document.getElementById(loadId).remove();
+
+                const reply = data.reply || "Server Error";
+                addMsg(reply, 'bot');
+                chatHistory.push({text:reply, sender:'bot'});
+                localStorage.setItem('bleoo_chat_history', JSON.stringify(chatHistory));
+
+                // Speak if voice was used or anthem requested
+                if(msg.toLowerCase().includes('anthem') || recognition) speak(reply);
+
+            } catch (err) {
+                document.getElementById(loadId).remove();
+                addMsg("Connection Failed", 'bot');
+            }
+        };
+    }
+
+    function addMsg(text, sender) {
+        const d = document.createElement('div');
+        d.className = `flex ${sender==='user'?'justify-end':'justify-start'} animate-fade-in`;
+        d.innerHTML = `<div class="${sender==='user'?'bg-royal text-white':'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200'} p-3 rounded-2xl max-w-[85%] text-sm shadow-sm">${text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')}</div>`;
+        chatMessages.appendChild(d);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function addLoader() {
+        const id = 'l-'+Date.now();
+        const d = document.createElement('div'); d.id=id;
+        d.innerHTML = `<div class="flex gap-1 p-4 bg-white dark:bg-gray-800 rounded-2xl w-fit"><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.2s"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.4s"></div></div>`;
+        chatMessages.appendChild(d); chatMessages.scrollTop = chatMessages.scrollHeight;
+        return id;
+    }
+});

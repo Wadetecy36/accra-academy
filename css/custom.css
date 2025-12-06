@@ -1,9 +1,5 @@
 /* ============================================================= */
-/*  css/custom.css – CLEAN, MERGED & VALIDATED                   */
-/* ============================================================= */
-
-/* ============================================================= */
-/*  css/custom.css – FIXED DARK MODE SELECTOR                    */
+/*  css/custom.css – FINAL MERGED VERSION (3D + GLASS + DARK)    */
 /* ============================================================= */
 
 :root {
@@ -17,12 +13,12 @@
     --glass-blur: blur(12px);
     --shadow-soft: 0 10px 30px -10px rgba(0, 33, 71, 0.1);
     --shadow-hover: 0 20px 40px -5px rgba(0, 33, 71, 0.2);
-    --footer-bg: linear-gradient(180deg, #0f1724 0%, #081829 100%);
+    --footer-bg: rgba(15, 23, 42, 0.95);
     --footer-text: #e0e7ff;
     --footer-link: #cbd5e1;
 }
 
-/* 🔧 FIX: Changed from .dark-mode to .dark to match Tailwind/JS */
+/* DARK MODE VARS */
 .dark {
     --bg-body: var(--bg-dark);
     --glass-bg: rgba(30, 41, 59, 0.6);
@@ -34,17 +30,35 @@
 
 html { scroll-behavior: smooth; }
 
+/* 1. BODY TRANSPARENCY (Crucial for 3D Background) */
 body {
     font-family: 'Merriweather', serif;
     font-weight: 300;
-    background: var(--bg-body);
     color: #0F172A;
-    transition: background 0.3s ease, color 0.3s ease;
+    /* We make the background transparent so the canvas behind it shows through */
+    background: transparent !important;
+    background-color: #0f172a; /* Fallback */
+    transition: color 0.3s ease;
 }
 
 .dark body { color: var(--text-primary); }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
 
+/* 2. GLASS SECTION UTILITY (New Feature) */
+/* Apply this class to <section> tags to make them readable over 3D bg */
+.section-glass {
+    background: rgba(255, 255, 255, 0.85); /* Opaque enough for text */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    position: relative;
+    z-index: 10;
+    border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+.dark .section-glass {
+    background: rgba(2, 6, 23, 0.7); /* Darker glass for night mode */
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
 
 /* --- ACCESSIBILITY --- */
 .skip-link {
@@ -54,20 +68,18 @@ body {
 }
 .skip-link:focus { top: 0; }
 
-
-/* --- HEADER (Navbar) --- */
+/* --- HEADER --- */
 .site-header {
     position: fixed; top: 0; width: 100%; z-index: 50;
-    background: rgba(255, 255, 255, 0.85); /* Light mode bg */
+    background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(0,0,0,0.05);
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* 🔧 FIX: This now correctly targets the navbar when dark mode is on */
 .dark .site-header {
-    background: rgba(15, 23, 42, 0.9); /* Dark mode bg (Dark Blue) */
+    background: rgba(15, 23, 42, 0.9);
     border-color: rgba(255,255,255,0.05);
 }
 
@@ -110,62 +122,25 @@ body {
     box-shadow: var(--shadow-soft); cursor: pointer;
     position: relative; overflow: hidden;
 }
-.dark-mode .feature-card { border-color: rgba(255, 255, 255, 0.1); }
+.dark .feature-card {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(30, 41, 59, 0.6);
+}
 .feature-card:hover, .info-card:hover {
     border-color: var(--gold);
     box-shadow: 0 10px 40px -5px rgba(253, 190, 17, 0.3);
 }
 
-/* =========================================
-   FEATURE CARDS (Explore Campus) DARK MODE
-   ========================================= */
+/* Card Text Colors */
+.feature-card h3 { font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--royal); }
+.dark .feature-card h3 { color: var(--gold); }
+.feature-card p { color: #475569; }
+.dark .feature-card p { color: #cbd5e1; }
+.feature-card .icon svg { width: 40px; height: 40px; margin-bottom: 1rem; color: var(--royal); transition: transform 0.3s ease; }
+.dark .feature-card .icon svg { color: var(--gold); }
+.feature-card:hover .icon svg { transform: scale(1.1); color: var(--gold); }
 
-/* Base Light Mode Styles (Keep existing, ensure these defaults) */
-.feature-card {
-    background: rgba(255, 255, 255, 0.7); /* White Glass */
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    color: var(--royal);
-    transition: all 0.3s ease;
-}
-
-.feature-card h3 {
-    color: var(--royal);
-}
-
-.feature-card p {
-    color: #475569; /* Slate 600 */
-}
-
-.feature-card .icon svg {
-    color: var(--royal);
-}
-
-/* --- DARK MODE OVERRIDES (The Fix) --- */
-.dark .feature-card {
-    background: rgba(30, 41, 59, 0.7); /* Dark Slate Glass */
-    border-color: rgba(255, 255, 255, 0.1); /* Subtle white border */
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-}
-
-.dark .feature-card:hover {
-    background: rgba(30, 41, 59, 1); /* Solid dark on hover */
-    border-color: var(--gold); /* Gold border on hover */
-    transform: translateY(-5px);
-}
-
-.dark .feature-card h3 {
-    color: var(--gold); /* Gold Titles in Dark Mode */
-}
-
-.dark .feature-card p {
-    color: #cbd5e1; /* Light Slate text (Readable) */
-}
-
-.dark .feature-card .icon svg {
-    color: var(--gold); /* Icons turn Gold */
-}
-
-/* --- GALLERY CAROUSEL (SWIPER) --- */
+/* --- GALLERY CAROUSEL --- */
 .gallery-section { position: relative; overflow: hidden; }
 
 .swiper-slide {
@@ -173,17 +148,12 @@ body {
     box-shadow: 0 10px 20px rgba(0,0,0,0.15);
     transition: transform 0.3s ease;
 }
-
 .swiper-slide img {
-    width: 100%; height: auto;
-    aspect-ratio: 16 / 10;
+    width: 100%; height: auto; aspect-ratio: 16 / 10;
     object-fit: cover; object-position: top center;
     transition: transform 0.5s ease;
 }
-
-@media (max-width: 768px) {
-    .swiper-slide img { aspect-ratio: 4 / 3; }
-}
+@media (max-width: 768px) { .swiper-slide img { aspect-ratio: 4 / 3; } }
 .swiper-slide:hover img { transform: scale(1.1); }
 
 :root { --swiper-theme-color: var(--gold) !important; --swiper-navigation-size: 25px !important; }
@@ -199,6 +169,7 @@ body {
 .site-footer {
     background: var(--footer-bg); color: var(--footer-text);
     padding: 4rem 0 2rem; border-top: 1px solid rgba(255,204,0,0.1); margin-top: 4rem;
+    position: relative; z-index: 20; /* Ensure footer sits above 3D bg */
 }
 .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem; margin-bottom: 3rem; }
 .footer-col { padding: 0.6rem; }
@@ -237,11 +208,11 @@ body {
 #scrollTop:hover { transform: scale(1.1); }
 #scrollTop.show { opacity: 1; transform: translateY(0); }
 
-/* Responsive Grid Adjustments */
+/* Responsive */
 @media (max-width: 900px) {
     .navlinks, .mobile-btn { display: none; }
     .mobile-btn { display: block; }
-    .hero-cards, .features-grid, .footer-grid { grid-template-columns: 1fr; }
+    .hero-cards, .mv-grid, .features-grid, .stats-grid, .footer-grid { grid-template-columns: 1fr; }
     .footer-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 520px) {
@@ -256,20 +227,15 @@ body {
 .legacy-card {
     background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 2rem;
-    transition: all 0.4s ease;
-    position: relative;
-    overflow: hidden;
+    border-radius: 16px; padding: 2rem;
+    transition: all 0.4s ease; position: relative; overflow: hidden;
 }
-
 .legacy-card:hover {
     background: linear-gradient(145deg, rgba(0, 33, 71, 0.9), rgba(0, 20, 40, 1));
     border-color: var(--gold);
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(253, 190, 17, 0.15);
 }
-
 .legacy-number {
     position: absolute; top: -20px; right: -10px; font-size: 6rem; font-weight: 900;
     color: rgba(255, 255, 255, 0.03); font-family: 'Merriweather', serif; transition: color 0.3s ease; z-index: 0;
@@ -313,7 +279,7 @@ body {
 /* Filter Buttons */
 .filter-btn.active { background-color: var(--gold) !important; color: var(--royal) !important; border-color: var(--gold) !important; }
 .filter-btn { background-color: white; color: #4b5563; }
-.dark-mode .filter-btn { background-color: #1f2937; color: #d1d5db; }
+.dark .filter-btn { background-color: #1f2937; color: #d1d5db; }
 
 /* Lightbox */
 #lightbox { transition: opacity 0.3s ease, backdrop-filter 0.3s ease; }
@@ -330,54 +296,4 @@ body {
 ::selection { background: var(--gold); color: var(--royal); }
 
 body.debug-layout * { outline: 1px solid rgba(255, 0, 0, 0.3) !important; }
-body.debug-layout img { outline: 2px solid blue !important; }
-
-
-/* --- AWARD WINNING ACADEMICS --- */
-.dept-tab {
-    cursor: pointer;
-    font-size: 1rem;
-    position: relative;
-    overflow: hidden;
-}
-.dept-tab::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; width: 100%; height: 3px;
-    background: var(--gold);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-    transform-origin: right;
-}
-.dept-tab:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
-}
-.dept-tab.active::after {
-    transform: scaleX(1);
-}
-
-/* --- TIMELINE ANIMATIONS --- */
-.timeline-dot {
-    position: relative;
-    z-index: 10;
-}
-.timeline-dot::before {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border-radius: 50%;
-    background: var(--gold);
-    opacity: 0.4;
-    animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-}
-@keyframes pulse-ring {
-    0% { transform: scale(0.8); opacity: 0.5; }
-    100% { transform: scale(2.5); opacity: 0; }
-}
-
-
-
-.contact-form {
-    font-size: 10px ;
-}
+    body.debug-layout img { outline: 2px solid blue !important; }

@@ -14,12 +14,12 @@ const app = express();
 const parser = new Parser();
 const PORT = process.env.PORT || 3000;
 
-// --- MIDDLEWARE ---
+// MIDDLEWARE
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../')));
 
-// --- OPTIMIZED DB CONNECTION (Fixes Vercel Slowness) ---
+// --- DATABASE CACHING (Vercel Fix) ---
 const MONGO_URI = process.env.MONGO_URI;
 let isConnected = false;
 
@@ -28,36 +28,33 @@ const connectDB = async () => {
     try {
         const db = await mongoose.connect(MONGO_URI, { bufferCommands: false });
         isConnected = db.connections[0].readyState;
-        console.log("✅ MongoDB Connected (Cached)");
+        console.log("✅ MongoDB Connected");
     } catch (error) {
         console.error("❌ DB Error:", error);
     }
 };
 
 // --- SCHEMAS ---
-const ChatLogSchema = new mongoose.Schema({
+const ChatLog = mongoose.model('ChatLog', new mongoose.Schema({
     userMessage: String,
     botReply: String,
     timestamp: { type: Date, default: Date.now }
-});
-const ChatLog = mongoose.model('ChatLog', ChatLogSchema);
+}));
 
-const KnowledgeSchema = new mongoose.Schema({
+const Knowledge = mongoose.model('Knowledge', new mongoose.Schema({
     topic: String,
     content: String,
     category: String
-});
-const Knowledge = mongoose.model('Knowledge', KnowledgeSchema);
+}));
 
-const StudentSchema = new mongoose.Schema({
+const Student = mongoose.model('Student', new mongoose.Schema({
     fullName: String,
     indexNumber: { type: String, unique: true },
     program: String,
     house: String,
     year: String,
     timestamp: { type: Date, default: Date.now }
-});
-const Student = mongoose.model('Student', StudentSchema);
+}));
 
 // --- AI CONFIG ---
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -65,8 +62,8 @@ const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemi
 
 const BASE_INSTRUCTIONS = `
     You are the 'Bleoo Assistant' for Accra Academy.
-    Objective: Answer questions based strictly on the provided KNOWLEDGE BASE.
-    If the answer is not in the knowledge base, suggest contacting 'info@accraacademy.edu.gh'.
+    Objective: Answer based strictly on the provided KNOWLEDGE BASE.
+    If unknown, suggest 'info@accraacademy.edu.gh'.
     Keep answers concise.
 `;
 
@@ -77,7 +74,6 @@ app.post('/api/chat', async (req, res) => {
     await connectDB();
     try {
         const { message, history } = req.body;
-
         const facts = await Knowledge.find({});
         const knowledgeBaseString = facts.map(f => `[${f.topic}]: ${f.content}`).join('\n');
 
@@ -109,52 +105,36 @@ app.post('/api/chat', async (req, res) => {
     }
 });
 
-// 2. NEWS FEED (Google RSS)
+// 2. NEWS
 app.get('/api/news', async (req, res) => {
     try {
-        const FEED_URL = 'https://news.google.com/rss/search?q=Accra+Academy&hl=en-GH&gl=GH&ceid=GH:en';
-        const feed = await parser.parseURL(FEED_URL);
-        const newsItems = feed.items.slice(0, 10).map(item => ({
-            title: item.title,
-            link: item.link,
-            pubDate: item.pubDate,
-            source: item.source || "News Source",
-            snippet: item.contentSnippet || "Click to read full story."
+        const feed = await parser.parseURL('https://news.google.com/rss/search?q=Accra+Academy&hl=en-GH&gl=GH&ceid=GH:en');
+        const news = feed.items.slice(0, 10).map(i => ({
+            title: i.title, link: i.link, pubDate: i.pubDate, source: i.source, snippet: i.contentSnippet
         }));
-        res.json(newsItems);
-    } catch (error) {
-        res.status(500).json({ error: "News Feed Error" });
-    }
+        res.json(news);
+    } catch (e) { res.status(500).json({ error: "News Error" }); }
 });
 
-// 3. ADMIN: LOGIN
+// 3. ADMIN & KNOWLEDGE
 app.post('/api/admin/login', (req, res) => {
-    const { password } = req.body;
-    // Hardcoded password for now - Change 'bleoo1931' to whatever you want
-    if (password === 'bleoo1931') {
-        res.json({ success: true, token: 'admin-session-valid' });
-    } else {
-        res.status(401).json({ success: false, error: 'Invalid Password' });
-    }
+    if (req.body.password === 'bleoo1931') res.json({ success: true, token: 'admin-ok' });
+    else res.status(401).json({ success: false });
 });
 
-// 4. ADMIN: LOGS & KNOWLEDGE
 app.get('/api/logs', async (req, res) => {
     await connectDB();
-    const logs = await ChatLog.find().sort({ timestamp: -1 }).limit(50);
-    res.json(logs);
+    res.json(await ChatLog.find().sort({ timestamp: -1 }).limit(50));
 });
 
 app.get('/api/knowledge', async (req, res) => {
     await connectDB();
-    const data = await Knowledge.find().sort({ category: 1 });
-    res.json(data);
+    res.json(await Knowledge.find().sort({ category: 1 }));
 });
 
 app.post('/api/knowledge', async (req, res) => {
     await connectDB();
-    const { topic, category, content } = req.body;
-    await new Knowledge({ topic, category, content }).save();
+    await new Knowledge(req.body).save();
     res.json({ success: true });
 });
 
@@ -164,23 +144,18 @@ app.delete('/api/knowledge/:id', async (req, res) => {
     res.json({ success: true });
 });
 
-// 5. STUDENT PORTAL
+// 4. STUDENTS
 app.post('/api/students', async (req, res) => {
     await connectDB();
     try {
         await new Student(req.body).save();
         res.json({ success: true });
-    } catch (err) {
-        // Code 11000 = Duplicate Key (Index Number)
-        if (err.code === 11000) res.status(400).json({ error: "Index Number already exists" });
-        else res.status(500).json({ error: "Registration Failed" });
-    }
+    } catch (e) { res.status(e.code === 11000 ? 400 : 500).json({ error: e.code === 11000 ? "Duplicate Index Number" : "Error" }); }
 });
 
 app.get('/api/students', async (req, res) => {
     await connectDB();
-    const students = await Student.find().sort({ timestamp: -1 });
-    res.json(students);
+    res.json(await Student.find().sort({ timestamp: -1 }));
 });
 
 app.delete('/api/students/:id', async (req, res) => {
@@ -189,10 +164,8 @@ app.delete('/api/students/:id', async (req, res) => {
     res.json({ success: true });
 });
 
-// Start Server (Compatible with Vercel)
+// START
 if (require.main === module) {
-    app.listen(PORT, () => {
-        console.log(`🚀 Server running on http://localhost:${PORT}`);
-    });
+    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 }
 module.exports = app;
