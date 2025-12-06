@@ -27,12 +27,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css">
-
+  <!-- THREE.JS (3D Engine) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <!-- CUSTOM CSS -->
   <link href="./css/custom.css" rel="stylesheet">
 </head>
 
 <body class="min-h-screen bg-soft dark:bg-gray-900 transition-colors duration-300" id="main-content">
+    <div id="canvas-container" class="fixed inset-0 z-[-1] pointer-events-none opacity-40 grayscale-[0.2]"></div>
 
     <!-- HEADER -->
       <header class="site-header sticky top-0 z-50 transition-all duration-300">
@@ -414,6 +416,10 @@
           <svg class="w-7 h-7 hidden group-hover:block transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
       </button>
   </div>
+
+  <!-- 3D Background Logic -->
+  <script src="./js/background-3d.js"></script>
+  <script src="./js/script.js"></script>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js">
   </script>
