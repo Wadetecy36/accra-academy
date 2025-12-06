@@ -429,19 +429,40 @@
 
             // --- HELPERS ---
 
+            // --- HIGH-QUALITY TTS (StreamElements API) ---
             function speakText(text) {
-                if ('speechSynthesis' in window) {
-                    // Cancel previous speech
-                    window.speechSynthesis.cancel();
-
-                    // Clean text (remove asterisks or markdown sometimes returned by AI)
-                    const cleanText = text.replace(/[*#]/g, '');
-
-                    const utterance = new SpeechSynthesisUtterance(cleanText);
-                    utterance.pitch = 1;
-                    utterance.rate = 1.1; // Slightly faster for natural feel
-                    window.speechSynthesis.speak(utterance);
+                // 1. Stop any current audio
+                if (window.currentAudio) {
+                    window.currentAudio.pause();
+                    window.currentAudio = null;
                 }
+
+                // 2. Clean the text
+                // Remove Markdown (*), emojis, and long pauses
+                const cleanText = text.replace(/[*#]/g, '').replace(/[\u{1F600}-\u{1F6FF}]/gu, '').trim();
+
+                if (!cleanText) return;
+
+                // 3. Select Voice
+                // "Amy" = British Female (Very clear, suitable for GH context)
+                // "Brian" = British Male (The famous calm AI voice)
+                // "Salli" = US Female
+                const voice = "Amy";
+
+                // 4. Construct API URL
+                // We use encodeURIComponent to safely put the text in the URL
+                const audioUrl = `https://api.streamelements.com/kappa/v2/speech?voice=${voice}&text=${encodeURIComponent(cleanText)}`;
+
+                // 5. Play Audio
+                window.currentAudio = new Audio(audioUrl);
+                window.currentAudio.play().catch(e => console.error("Audio Play Error:", e));
+
+                // Visual Feedback (Optional: Pulse the mic button while speaking)
+                if(voiceBtn) voiceBtn.classList.add('text-gold', 'animate-pulse');
+
+                window.currentAudio.onended = () => {
+                    if(voiceBtn) voiceBtn.classList.remove('text-gold', 'animate-pulse');
+                };
             }
 
             function saveMessage(text, sender) {
