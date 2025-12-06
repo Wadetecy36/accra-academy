@@ -3,79 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Portal | Login</title>
+    <title>Student Portal - Accra Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = { theme: { extend: { colors: { royal: '#002147', gold: '#FDBE11' } } } }
-    </script>
+    <script>tailwind.config = { theme: { extend: { colors: { royal: '#002147', gold: '#FDBE11' } } } }</script>
 </head>
-<body class="bg-gray-100 h-screen flex items-center justify-center bg-[url('./assets/pattern.png')]">
-
-    <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md relative overflow-hidden">
-        <!-- Decor -->
-        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-royal to-gold"></div>
-
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md border-t-4 border-gold">
         <div class="text-center mb-8">
-            <img src="./assets/crest.png" class="w-20 mx-auto mb-4">
-            <h1 class="text-2xl font-bold text-royal">Student Portal</h1>
-            <p class="text-gray-500 text-sm">Secure Access Gateway</p>
+            <img src="./assets/crest.png" alt="Crest" class="w-16 h-16 mx-auto mb-4">
+            <h1 class="text-2xl font-bold text-royal">Student Registration</h1>
+            <p class="text-gray-500 text-sm">Update your academic profile</p>
         </div>
-
-        <form id="login-form" class="space-y-6">
-            <div>
-                <label class="block text-sm font-bold text-gray-700 mb-1">Student ID</label>
-                <input type="text" id="sid" placeholder="e.g. 2025001" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-royal outline-none" required>
+        <form id="student-form" class="space-y-4">
+            <div><label class="block text-sm font-bold text-gray-700 mb-1">Full Name</label><input type="text" id="fullName" class="w-full border rounded-lg p-3 outline-none focus:ring-1 focus:ring-royal" required></div>
+            <div><label class="block text-sm font-bold text-gray-700 mb-1">Index Number</label><input type="text" id="indexNumber" class="w-full border rounded-lg p-3 outline-none focus:ring-1 focus:ring-royal" required></div>
+            <div class="grid grid-cols-2 gap-4">
+                <div><label class="block text-sm font-bold text-gray-700 mb-1">Class</label><select id="year" class="w-full border rounded-lg p-3"><option>Form 1</option><option>Form 2</option><option>Form 3</option></select></div>
+                <div><label class="block text-sm font-bold text-gray-700 mb-1">Program</label><select id="program" class="w-full border rounded-lg p-3"><option>Science</option><option>Arts</option><option>Business</option><option>Visual Arts</option></select></div>
             </div>
-            <div>
-                <label class="block text-sm font-bold text-gray-700 mb-1">Password</label>
-                <input type="password" id="pass" placeholder="••••••••" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-royal outline-none" required>
-            </div>
-            <div id="error-msg" class="text-red-500 text-sm text-center hidden"></div>
-
-            <button type="submit" class="w-full bg-royal text-gold font-bold py-3 rounded-lg hover:bg-blue-900 transition shadow-lg">
-                ACCESS DASHBOARD
-            </button>
+            <div><label class="block text-sm font-bold text-gray-700 mb-1">House</label><select id="house" class="w-full border rounded-lg p-3"><option>Alema</option><option>Halm-Addo</option><option>Ellen</option><option>Plange</option><option>Konuah</option><option>Awuletey</option></select></div>
+            <button type="submit" class="w-full bg-royal text-white font-bold py-3 rounded-lg hover:bg-opacity-90">Submit</button>
         </form>
-        <div class="mt-6 text-center">
-            <a href="./index.html" class="text-gray-400 text-xs hover:text-royal">← Back to Website</a>
+        <p id="status-msg" class="text-center text-sm mt-4 font-bold"></p>
         </div>
-    </div>
-
     <script>
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
+        const API_URL = '/api/students'; // Relative path for production
+        document.getElementById('student-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button');
-            const err = document.getElementById('error-msg');
-
-            btn.innerHTML = "Authenticating...";
-            btn.disabled = true;
-            err.classList.add('hidden');
-
-            const studentId = document.getElementById('sid').value;
-            const password = document.getElementById('pass').value;
+            btn.disabled = true; btn.innerText = "Processing...";
 
             try {
-                const res = await fetch('http://localhost:3000/api/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ studentId, password })
+                const res = await fetch(API_URL, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fullName: document.getElementById('fullName').value,
+                        indexNumber: document.getElementById('indexNumber').value,
+                        year: document.getElementById('year').value,
+                        program: document.getElementById('program').value,
+                        house: document.getElementById('house').value,
+                    })
                 });
-
                 const data = await res.json();
-
+                const msg = document.getElementById('status-msg');
                 if (data.success) {
-                    // Save Student Data to Session
-                    sessionStorage.setItem('bleoo_user', JSON.stringify(data.student));
-                    window.location.href = 'dashboard.html';
+                    msg.className = "text-center text-sm mt-4 font-bold text-green-600";
+                    msg.innerText = "✅ Successfully Registered!";
+                    e.target.reset();
                 } else {
-                    throw new Error(data.error);
+                    msg.className = "text-center text-sm mt-4 font-bold text-red-600";
+                    msg.innerText = "❌ " + (data.error || "Failed");
                 }
-            } catch (error) {
-                err.innerText = error.message || "Connection Error";
-                err.classList.remove('hidden');
-                btn.innerHTML = "ACCESS DASHBOARD";
-                btn.disabled = false;
-            }
+            } catch (err) { alert("Connection Error"); }
+            btn.disabled = false; btn.innerText = "Submit";
         });
     </script>
 </body>

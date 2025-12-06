@@ -6,315 +6,200 @@
     <title>Bleoo Command Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { royal: '#002147', gold: '#FDBE11', soft: '#F0F4F8' },
-                    fontFamily: { mono: ['Consolas', 'Monaco', 'monospace'] }
-                }
-            }
-        }
+        tailwind.config = { theme: { extend: { colors: { royal: '#002147', gold: '#FDBE11' }, fontFamily: { mono: ['Consolas', 'Monaco', 'monospace'] } } } }
     </script>
     <style>
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #FDBE11; }
-
-        .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
+        .glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
         .tab-btn.active { border-bottom: 3px solid #FDBE11; color: #FDBE11; background: rgba(253, 190, 17, 0.05); }
-
-        /* Shake Animation for wrong password */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
         .shake { animation: shake 0.4s ease-in-out; border-color: #ef4444 !important; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans min-h-screen">
 
-    <!-- ==========================
-         LOGIN OVERLAY (The Guard)
-         ========================== -->
-    <div id="login-screen" class="fixed inset-0 z-[100] bg-[url('./assets/entrance.webp')] bg-cover bg-center flex items-center justify-center">
-        <!-- Blur Overlay -->
-        <div class="absolute inset-0 bg-gray-900/80 backdrop-blur-xl"></div>
-
-        <!-- Login Card -->
-        <div class="relative z-10 w-full max-w-md p-8 glass rounded-2xl shadow-2xl transform transition-all scale-100" id="login-card">
-            <div class="text-center mb-8">
-                <img src="./assets/crest.png" class="w-20 h-20 mx-auto mb-4 drop-shadow-[0_0_15px_rgba(253,190,17,0.5)]">
-                <h1 class="text-2xl font-bold text-white tracking-widest">RESTRICTED ACCESS</h1>
-                <p class="text-xs text-gray-400 mt-2 uppercase tracking-wide">Authorized Personnel Only</p>
-            </div>
-
-            <form id="login-form" class="space-y-6">
-                <div>
-                    <label class="block text-xs font-bold text-gold mb-2 uppercase">Access Code</label>
-                    <input type="password" id="admin-pass" class="w-full bg-black/40 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-gold transition text-center tracking-widest text-lg" placeholder="••••" required autofocus>
-                </div>
-
-                <button type="submit" class="w-full bg-gold text-royal font-bold py-3 rounded-lg hover:bg-yellow-400 transition shadow-lg transform hover:scale-[1.02]">
-                    AUTHENTICATE
-                </button>
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center bg-royal">
+        <div class="glass p-8 rounded-2xl shadow-2xl w-full max-w-sm text-center">
+            <h1 class="text-2xl font-bold text-gold tracking-widest mb-6">ADMIN ACCESS</h1>
+            <form id="login-form">
+                <input type="password" id="admin-pass" class="w-full bg-black/30 border border-gray-600 rounded px-4 py-3 mb-4 text-center focus:border-gold outline-none" placeholder="Enter Code" required>
+                <button type="submit" class="w-full bg-gold text-royal font-bold py-2 rounded">LOGIN</button>
             </form>
-
-            <div id="login-msg" class="text-center text-xs text-red-400 mt-4 h-4"></div>
-
-            <div class="mt-8 text-center">
-                <a href="index.html" class="text-gray-500 text-sm hover:text-white transition">← Return to Website</a>
-            </div>
+            <p id="login-msg" class="text-xs text-red-400 mt-4 h-4"></p>
         </div>
     </div>
 
-    <!-- ==========================
-         DASHBOARD CONTENT (Hidden)
-         ========================== -->
+    <!-- DASHBOARD -->
     <div id="dashboard-content" class="hidden min-h-screen pb-20">
-
-        <!-- NAV -->
-        <nav class="bg-royal border-b border-gray-800 sticky top-0 z-50 shadow-xl">
+        <nav class="bg-royal border-b border-gray-800 sticky top-0 z-50">
             <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]"></div>
-                    <h1 class="text-xl font-bold tracking-wider">BLEOO <span class="text-gold">ADMIN</span></h1>
+                <h1 class="text-xl font-bold">BLEOO <span class="text-gold">ADMIN</span></h1>
+                <div class="flex gap-2 text-xs md:text-sm font-bold">
+                    <button onclick="switchTab('logs')" id="tab-logs" class="tab-btn active px-4 py-2 rounded transition">LOGS</button>
+                    <button onclick="switchTab('brain')" id="tab-brain" class="tab-btn px-4 py-2 rounded transition text-gray-400">BRAIN</button>
+                    <button onclick="switchTab('students')" id="tab-students" class="tab-btn px-4 py-2 rounded transition text-gray-400">STUDENTS</button>
                 </div>
-                <div class="flex gap-1 md:gap-4 text-xs md:text-sm font-bold bg-black/20 p-1 rounded-lg">
-                    <button onclick="switchTab('logs')" id="tab-logs" class="tab-btn active px-4 py-2 rounded transition">CHAT LOGS</button>
-                    <button onclick="switchTab('brain')" id="tab-brain" class="tab-btn px-4 py-2 rounded transition text-gray-400 hover:text-white">KNOWLEDGE BASE</button>
-                </div>
-                <button onclick="logout()" class="text-xs text-gray-400 hover:text-red-400 transition uppercase font-bold">Log Out</button>
+                <button onclick="logout()" class="text-xs text-gray-400 hover:text-white">EXIT</button>
             </div>
         </nav>
 
-        <!-- MAIN AREA -->
-        <main class="container mx-auto px-4 md:px-6 py-8">
-
-            <!-- VIEW 1: CHAT LOGS -->
+        <main class="container mx-auto px-4 py-8">
+            <!-- LOGS -->
             <div id="view-logs" class="animate-fade-in">
-                <div class="flex flex-col md:flex-row justify-between items-end md:items-center mb-6 gap-4">
-                    <div>
-                        <h2 class="text-2xl font-bold text-white">Live Interactions</h2>
-                        <p class="text-xs text-gray-400 mt-1">Real-time database feed</p>
-                    </div>
-                    <button onclick="fetchLogs()" class="px-4 py-2 bg-gray-800 border border-gray-600 rounded hover:bg-gray-700 text-sm flex items-center gap-2 transition">
-                        🔄 Refresh
-                    </button>
-                </div>
-                <div id="logs-container" class="grid gap-4 max-w-4xl mx-auto">
-                    <!-- Logs injected here -->
-                </div>
+                <button onclick="fetchLogs()" class="mb-4 px-3 py-1 bg-gray-800 text-xs rounded border border-gray-600">Refresh</button>
+                <div id="logs-container" class="grid gap-3 max-w-4xl mx-auto"></div>
             </div>
 
-            <!-- VIEW 2: KNOWLEDGE BASE -->
+            <!-- KNOWLEDGE BASE -->
             <div id="view-brain" class="hidden animate-fade-in">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Controls -->
-                    <div class="space-y-6">
-                        <div class="glass p-6 rounded-xl">
-                            <h2 class="text-lg font-bold mb-4 text-gold">Add Fact</h2>
-                            <form id="brain-form" class="space-y-3">
-                                <input type="text" id="k-topic" placeholder="Topic" class="w-full bg-gray-800/50 border border-gray-700 rounded p-2 text-sm text-white focus:border-gold outline-none" required>
-                                <select id="k-category" class="w-full bg-gray-800/50 border border-gray-700 rounded p-2 text-sm text-gray-300 outline-none">
-                                    <option>General</option>
-                                    <option>History</option>
-                                    <option>Academics</option>
-                                    <option>Sports</option>
-                                    <option>Events</option>
-                                </select>
-                                <textarea id="k-content" rows="4" placeholder="Content..." class="w-full bg-gray-800/50 border border-gray-700 rounded p-2 text-sm text-white focus:border-gold outline-none" required></textarea>
-                                <button type="submit" class="w-full bg-gold text-royal font-bold py-2 rounded hover:bg-yellow-400 transition">SAVE</button>
-                            </form>
-                        </div>
-                        <div class="glass p-6 rounded-xl border-t-4 border-t-blue-500">
-                            <h2 class="text-lg font-bold mb-2 text-blue-400">CSV Import</h2>
-                            <input type="file" id="csvInput" accept=".csv" class="hidden" onchange="handleCSV(this)">
-                            <label for="csvInput" class="block w-full text-center border-2 border-dashed border-gray-600 hover:border-blue-400 hover:text-blue-400 text-gray-500 py-4 rounded-lg cursor-pointer transition text-sm">
-                                Select CSV File
-                            </label>
-                            <div id="csv-status" class="mt-2 text-xs text-center text-gray-400"></div>
-                        </div>
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <div class="glass p-6 rounded-xl h-fit">
+                        <h2 class="text-gold font-bold mb-4">Add Knowledge</h2>
+                        <form id="brain-form" class="space-y-3">
+                            <input type="text" id="k-topic" placeholder="Topic" class="w-full bg-gray-800 p-2 rounded border border-gray-600" required>
+                            <select id="k-category" class="w-full bg-gray-800 p-2 rounded border border-gray-600">
+                                <option>General</option><option>History</option><option>Academics</option>
+                            </select>
+                            <textarea id="k-content" rows="3" placeholder="Fact..." class="w-full bg-gray-800 p-2 rounded border border-gray-600" required></textarea>
+                            <button class="w-full bg-gold text-royal font-bold py-2 rounded">SAVE</button>
+                        </form>
                     </div>
-                    <!-- List -->
-                    <div class="lg:col-span-2">
-                        <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-xl font-bold">Database Records</h2>
-                            <span id="k-count" class="bg-gray-800 px-3 py-1 rounded text-xs font-mono">0</span>
-                        </div>
-                        <div class="space-y-3 h-[600px] overflow-y-auto pr-2 custom-scroll" id="knowledge-list"></div>
-                    </div>
+                    <div class="lg:col-span-2 space-y-3" id="knowledge-list"></div>
                 </div>
             </div>
 
+            <!-- STUDENTS -->
+            <div id="view-students" class="hidden animate-fade-in">
+                <div class="flex justify-between mb-4">
+                    <h2 class="text-xl font-bold">Student Database</h2>
+                    <button onclick="downloadStudentCSV()" class="bg-green-600 text-white px-4 py-2 rounded text-xs font-bold">EXPORT EXCEL</button>
+                </div>
+                <div class="glass rounded-xl overflow-hidden">
+                    <table class="w-full text-left text-sm text-gray-300">
+                        <thead class="bg-black/30 text-gold text-xs uppercase">
+                            <tr><th class="p-4">Name</th><th class="p-4">Index</th><th class="p-4">Class</th><th class="p-4">Action</th></tr>
+                        </thead>
+                        <tbody id="student-list" class="divide-y divide-gray-800"></tbody>
+                    </table>
+                </div>
+            </div>
         </main>
     </div>
 
     <script>
-        const API_BASE = '/api'; // Relative for Vercel
+        const API_BASE = '/api';
+        let studentData = [];
 
-        // --- AUTHENTICATION LOGIC ---
-        const loginScreen = document.getElementById('login-screen');
-        const dashboard = document.getElementById('dashboard-content');
-        const loginForm = document.getElementById('login-form');
-        const loginCard = document.getElementById('login-card');
-        const loginMsg = document.getElementById('login-msg');
+        // Auth
+        if (sessionStorage.getItem('bleoo_token')) showDashboard();
 
-        // Check Session on Load
-        if (sessionStorage.getItem('bleoo_token')) {
-            showDashboard();
-        }
-
-        loginForm.addEventListener('submit', async (e) => {
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const password = document.getElementById('admin-pass').value;
-
-            // Call the Vercel API Endpoint
-            try {
-                const res = await fetch(`${API_BASE}/admin/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password: password })
-                });
-
-                const data = await res.json();
-
-                if (data.success) {
-                    sessionStorage.setItem('bleoo_token', data.token);
-                    showDashboard();
-                } else {
-                    throw new Error("Invalid Password");
-                }
-            } catch (err) {
-                // Shake Animation
-                loginCard.classList.add('shake');
-                loginMsg.innerText = "ACCESS DENIED: INCORRECT CODE";
-                setTimeout(() => {
-                    loginCard.classList.remove('shake');
-                    loginMsg.innerText = "";
-                }, 500);
+            const pass = document.getElementById('admin-pass').value;
+            const res = await fetch(`${API_BASE}/admin/login`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pass })
+            });
+            const data = await res.json();
+            if (data.success) {
+                sessionStorage.setItem('bleoo_token', data.token);
+                showDashboard();
+            } else {
+                const msg = document.getElementById('login-msg');
+                msg.innerText = "Invalid Password";
+                setTimeout(() => msg.innerText = "", 2000);
             }
         });
 
         function showDashboard() {
-            loginScreen.classList.add('hidden');
-            dashboard.classList.remove('hidden');
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard-content').classList.remove('hidden');
             fetchLogs();
-            fetchKnowledge();
         }
+        function logout() { sessionStorage.removeItem('bleoo_token'); location.reload(); }
 
-        function logout() {
-            sessionStorage.removeItem('bleoo_token');
-            location.reload();
-        }
-
-        // --- TABS ---
+        // Tabs
         function switchTab(tab) {
-            document.getElementById('view-logs').classList.add('hidden');
-            document.getElementById('view-brain').classList.add('hidden');
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active', 'text-gold'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.add('text-gray-400'));
-
+            ['logs', 'brain', 'students'].forEach(t => {
+                document.getElementById('view-' + t).classList.add('hidden');
+                document.getElementById('tab-' + t).classList.remove('active', 'text-gold');
+                document.getElementById('tab-' + t).classList.add('text-gray-400');
+            });
             document.getElementById('view-' + tab).classList.remove('hidden');
             document.getElementById('tab-' + tab).classList.add('active', 'text-gold');
+
+            if(tab === 'brain') fetchKnowledge();
+            if(tab === 'students') fetchStudents();
         }
 
-        // --- LOGS ---
+        // Logs
         async function fetchLogs() {
-            const container = document.getElementById('logs-container');
-            container.innerHTML = `<div class="text-center text-gold animate-pulse">Syncing logs...</div>`;
-            try {
-                const res = await fetch(`${API_BASE}/logs`);
-                const data = await res.json();
-                if(data.length === 0) { container.innerHTML = "<p class='text-center text-gray-500'>No logs yet.</p>"; return; }
-
-                container.innerHTML = data.map(log => `
-                    <div class="glass p-5 rounded-xl border border-gray-800 hover:border-gray-600 transition">
-                        <div class="flex justify-between text-[10px] uppercase text-gray-500 mb-2">
-                            <span>User</span>
-                            <span>${new Date(log.timestamp).toLocaleString()}</span>
-                        </div>
-                        <div class="bg-gray-800/50 p-3 rounded-lg text-sm text-white mb-2">"${log.userMessage}"</div>
-                        <div class="pl-4 border-l border-blue-500 text-sm text-gray-400">${log.botReply}</div>
-                    </div>
-                `).join('');
-            } catch (e) { container.innerHTML = `<div class="text-center text-red-400">Connection Error</div>`; }
+            const res = await fetch(`${API_BASE}/logs`);
+            const data = await res.json();
+            document.getElementById('logs-container').innerHTML = data.map(l => `
+                <div class="glass p-4 rounded border border-gray-700">
+                    <div class="text-[10px] text-gray-500 mb-1">${new Date(l.timestamp).toLocaleString()}</div>
+                    <div class="text-white mb-1">User: ${l.userMessage}</div>
+                    <div class="text-gold text-sm">AI: ${l.botReply}</div>
+                </div>
+            `).join('');
         }
 
-        // --- KNOWLEDGE BASE ---
+        // Knowledge
         async function fetchKnowledge() {
-            const list = document.getElementById('knowledge-list');
-            try {
-                const res = await fetch(`${API_BASE}/knowledge`);
-                const data = await res.json();
-                document.getElementById('k-count').innerText = data.length;
-
-                list.innerHTML = data.map(k => `
-                    <div class="bg-gray-800 p-3 rounded border border-gray-700 flex justify-between group">
-                        <div>
-                            <span class="text-[10px] bg-royal text-gold px-1 rounded uppercase">${k.category}</span>
-                            <h4 class="font-bold text-sm inline ml-2 text-white">${k.topic}</h4>
-                            <p class="text-xs text-gray-400 mt-1 line-clamp-1">${k.content}</p>
-                        </div>
-                        <button onclick="deleteFact('${k._id}')" class="text-red-500 opacity-0 group-hover:opacity-100 px-2">✕</button>
-                    </div>
-                `).join('');
-            } catch (e) {}
+            const res = await fetch(`${API_BASE}/knowledge`);
+            const data = await res.json();
+            document.getElementById('knowledge-list').innerHTML = data.map(k => `
+                <div class="bg-gray-800 p-3 rounded flex justify-between items-center group">
+                    <div><span class="text-xs text-gold border border-gold px-1 rounded mr-2">${k.category}</span>${k.topic}</div>
+                    <button onclick="deleteItem('knowledge', '${k._id}')" class="text-red-500 opacity-0 group-hover:opacity-100">✕</button>
+                </div>
+            `).join('');
         }
 
         document.getElementById('brain-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            await uploadFact(
-                document.getElementById('k-topic').value,
-                document.getElementById('k-category').value,
-                document.getElementById('k-content').value
-            );
-            e.target.reset();
+            await fetch(`${API_BASE}/knowledge`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    topic: document.getElementById('k-topic').value,
+                    category: document.getElementById('k-category').value,
+                    content: document.getElementById('k-content').value
+                })
+            });
+            e.target.reset(); fetchKnowledge();
         });
 
-        async function uploadFact(topic, category, content) {
-            await fetch(`${API_BASE}/knowledge`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ topic, category, content })
-            });
-            fetchKnowledge();
+        // Students
+        async function fetchStudents() {
+            const res = await fetch(`${API_BASE}/students`);
+            studentData = await res.json();
+            document.getElementById('student-list').innerHTML = studentData.map(s => `
+                <tr class="hover:bg-white/5">
+                    <td class="p-4 font-bold">${s.fullName}</td>
+                    <td class="p-4 font-mono text-gold">${s.indexNumber}</td>
+                    <td class="p-4 text-xs text-gray-400">${s.year} - ${s.program}</td>
+                    <td class="p-4"><button onclick="deleteItem('students', '${s._id}')" class="text-red-400">Del</button></td>
+                </tr>
+            `).join('');
         }
 
-        async function deleteFact(id) {
-            if(confirm("Delete?")) {
-                await fetch(`${API_BASE}/knowledge/${id}`, { method: 'DELETE' });
-                fetchKnowledge();
+        async function deleteItem(type, id) {
+            if(confirm("Delete this?")) {
+                await fetch(`${API_BASE}/${type}/${id}`, { method: 'DELETE' });
+                if(type === 'knowledge') fetchKnowledge(); else fetchStudents();
             }
         }
 
-        // --- CSV ---
-        function handleCSV(input) {
-            const file = input.files[0];
-            if (!file) return;
-            const status = document.getElementById('csv-status');
-            status.innerText = "Processing...";
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                const lines = e.target.result.split('\n');
-                let count = 0;
-                for(let i=1; i<lines.length; i++) {
-                    const row = lines[i].trim();
-                    if(!row) continue;
-                    const parts = row.split(','); // Simple split
-                    if(parts.length >= 3) {
-                        // Re-join content in case of commas
-                        const content = parts.slice(2).join(',').trim();
-                        await uploadFact(parts[0].trim(), parts[1].trim(), content);
-                        count++;
-                        status.innerText = `Adding ${count}...`;
-                    }
-                }
-                status.innerText = `✅ Added ${count} items.`;
-                input.value = "";
-            };
-            reader.readAsText(file);
+        function downloadStudentCSV() {
+            if(studentData.length === 0) return alert("No data");
+            const headers = ["Name,Index,Year,Program,House"];
+            const rows = studentData.map(s => `"${s.fullName}","${s.indexNumber}","${s.year}","${s.program}","${s.house}"`);
+            const blob = new Blob([headers.concat(rows).join("\n")], { type: "text/csv" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a"); a.href = url; a.download = "students.csv"; a.click();
         }
     </script>
 </body>

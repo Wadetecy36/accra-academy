@@ -7,22 +7,32 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
+const Parser = require('rss-parser');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 const app = express();
+const parser = new Parser();
 const PORT = process.env.PORT || 3000;
 
-// MIDDLEWARE (Critical for POST requests)
+// --- MIDDLEWARE ---
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // Handles form data
 app.use(express.static(path.join(__dirname, '../')));
 
-// --- DATABASE CONNECTION ---
+// --- OPTIMIZED DB CONNECTION (Fixes Vercel Slowness) ---
 const MONGO_URI = process.env.MONGO_URI;
-mongoose.connect(MONGO_URI)
-  .then(() => console.log("✅ MongoDB Atlas Connected"))
-  .catch(err => console.error("❌ DB Connection Error:", err));
+let isConnected = false;
+
+const connectDB = async () => {
+    if (isConnected) return;
+    try {
+        const db = await mongoose.connect(MONGO_URI, { bufferCommands: false });
+        isConnected = db.connections[0].readyState;
+        console.log("✅ MongoDB Connected (Cached)");
+    } catch (error) {
+        console.error("❌ DB Error:", error);
+    }
+};
 
 // --- SCHEMAS ---
 const ChatLogSchema = new mongoose.Schema({
@@ -39,9 +49,18 @@ const KnowledgeSchema = new mongoose.Schema({
 });
 const Knowledge = mongoose.model('Knowledge', KnowledgeSchema);
 
+const StudentSchema = new mongoose.Schema({
+    fullName: String,
+    indexNumber: { type: String, unique: true },
+    program: String,
+    house: String,
+    year: String,
+    timestamp: { type: Date, default: Date.now }
+});
+const Student = mongoose.model('Student', StudentSchema);
+
 // --- AI CONFIG ---
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-// Using Gemini 2.5 Flash as determined earlier
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 const BASE_INSTRUCTIONS = `
@@ -53,12 +72,12 @@ const BASE_INSTRUCTIONS = `
 
 // --- API ENDPOINTS ---
 
-// 1. CHAT (Public)
+// 1. CHAT (RAG)
 app.post('/api/chat', async (req, res) => {
+    await connectDB();
     try {
         const { message, history } = req.body;
 
-        // Fetch Knowledge
         const facts = await Knowledge.find({});
         const knowledgeBaseString = facts.map(f => `[${f.topic}]: ${f.content}`).join('\n');
 
@@ -81,73 +100,96 @@ app.post('/api/chat', async (req, res) => {
         if (data.error) throw new Error(data.error.message);
 
         const botReply = data.candidates[0].content.parts[0].text;
-
-        // Save Log
         await new ChatLog({ userMessage: message, botReply: botReply }).save();
 
         res.json({ reply: botReply });
-
     } catch (error) {
         console.error("Chat Error:", error.message);
-        res.status(500).json({ error: "AI Error" });
+        res.status(500).json({ error: "AI Service Disrupted" });
     }
 });
 
-// 2. GET LOGS (Admin)
+// 2. NEWS FEED (Google RSS)
+app.get('/api/news', async (req, res) => {
+    try {
+        const FEED_URL = 'https://news.google.com/rss/search?q=Accra+Academy&hl=en-GH&gl=GH&ceid=GH:en';
+        const feed = await parser.parseURL(FEED_URL);
+        const newsItems = feed.items.slice(0, 10).map(item => ({
+            title: item.title,
+            link: item.link,
+            pubDate: item.pubDate,
+            source: item.source || "News Source",
+            snippet: item.contentSnippet || "Click to read full story."
+        }));
+        res.json(newsItems);
+    } catch (error) {
+        res.status(500).json({ error: "News Feed Error" });
+    }
+});
+
+// 3. ADMIN: LOGIN
+app.post('/api/admin/login', (req, res) => {
+    const { password } = req.body;
+    // Hardcoded password for now - Change 'bleoo1931' to whatever you want
+    if (password === 'bleoo1931') {
+        res.json({ success: true, token: 'admin-session-valid' });
+    } else {
+        res.status(401).json({ success: false, error: 'Invalid Password' });
+    }
+});
+
+// 4. ADMIN: LOGS & KNOWLEDGE
 app.get('/api/logs', async (req, res) => {
-    try {
-        // Sort by timestamp descending (newest first)
-        const logs = await ChatLog.find().sort({ timestamp: -1 }).limit(50);
-        res.json(logs);
-    } catch (error) {
-        console.error("Log Fetch Error:", error);
-        res.status(500).json({ error: "DB Error fetching logs" });
-    }
+    await connectDB();
+    const logs = await ChatLog.find().sort({ timestamp: -1 }).limit(50);
+    res.json(logs);
 });
 
-// 3. GET KNOWLEDGE (Admin)
 app.get('/api/knowledge', async (req, res) => {
-    try {
-        const data = await Knowledge.find().sort({ category: 1 });
-        res.json(data);
-    } catch (error) {
-        console.error("Knowledge Fetch Error:", error);
-        res.status(500).json({ error: "DB Error fetching knowledge" });
-    }
+    await connectDB();
+    const data = await Knowledge.find().sort({ category: 1 });
+    res.json(data);
 });
 
-// 4. ADD KNOWLEDGE (Admin/CSV)
 app.post('/api/knowledge', async (req, res) => {
-    try {
-        console.log("📝 Receiving New Fact:", req.body); // Debug Log
-        const { topic, category, content } = req.body;
-
-        if (!topic || !content) {
-            return res.status(400).json({ error: "Topic and Content are required" });
-        }
-
-        const newFact = new Knowledge({ topic, category, content });
-        await newFact.save();
-
-        console.log("✅ Fact Saved!");
-        res.json({ success: true, message: "Saved" });
-    } catch (error) {
-        console.error("Save Error:", error);
-        res.status(500).json({ error: "Failed to save to DB" });
-    }
+    await connectDB();
+    const { topic, category, content } = req.body;
+    await new Knowledge({ topic, category, content }).save();
+    res.json({ success: true });
 });
 
-// 5. DELETE KNOWLEDGE (Admin)
 app.delete('/api/knowledge/:id', async (req, res) => {
+    await connectDB();
+    await Knowledge.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+});
+
+// 5. STUDENT PORTAL
+app.post('/api/students', async (req, res) => {
+    await connectDB();
     try {
-        await Knowledge.findByIdAndDelete(req.params.id);
+        await new Student(req.body).save();
         res.json({ success: true });
-    } catch (error) {
-        res.status(500).json({ error: "Delete failed" });
+    } catch (err) {
+        // Code 11000 = Duplicate Key (Index Number)
+        if (err.code === 11000) res.status(400).json({ error: "Index Number already exists" });
+        else res.status(500).json({ error: "Registration Failed" });
     }
 });
 
-// Start
+app.get('/api/students', async (req, res) => {
+    await connectDB();
+    const students = await Student.find().sort({ timestamp: -1 });
+    res.json(students);
+});
+
+app.delete('/api/students/:id', async (req, res) => {
+    await connectDB();
+    await Student.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+});
+
+// Start Server (Compatible with Vercel)
 if (require.main === module) {
     app.listen(PORT, () => {
         console.log(`🚀 Server running on http://localhost:${PORT}`);
