@@ -20,7 +20,8 @@
             }
         }
     </script>
-
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- CUSTOM STYLES -->
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -132,6 +133,8 @@
                     <button onclick="switchTab('logs')" id="tab-logs" class="tab-btn active px-6 py-2 rounded-md text-sm font-bold transition-all text-gray-400 hover:text-white">CHAT LOGS</button>
                     <button onclick="switchTab('brain')" id="tab-brain" class="tab-btn px-6 py-2 rounded-md text-sm font-bold transition-all text-gray-400 hover:text-white">BRAIN</button>
                     <button onclick="switchTab('students')" id="tab-students" class="tab-btn px-6 py-2 rounded-md text-sm font-bold transition-all text-gray-400 hover:text-white">STUDENTS</button>
+                    <!-- NEW BUTTON -->
+                    <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn px-6 py-2 rounded-md text-sm font-bold transition-all text-gray-400 hover:text-white">ANALYTICS</button>
                 </div>
 
                 <button onclick="logout()" class="text-xs font-bold text-red-400 hover:text-red-300 border border-red-500/30 px-3 py-1 rounded uppercase tracking-wider hover:bg-red-500/10 transition">
@@ -266,7 +269,47 @@
                     </div>
                 </div>
             </div>
+            <!-- VIEW 4: ANALYTICS -->
+            <div id="view-stats" class="hidden animate-fade-in">
+                <h2 class="text-xl font-bold text-white mb-6">System Performance</h2>
 
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Chart 1: Traffic Volume -->
+                    <div class="glass-panel p-6 rounded-xl">
+                        <h3 class="text-gold font-bold mb-4 text-sm uppercase tracking-widest">Chat Activity (Last 24 Hours)</h3>
+                        <div class="h-64">
+                            <canvas id="trafficChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- KPI Cards -->
+                    <div class="space-y-6">
+                        <div class="glass-panel p-6 rounded-xl flex items-center justify-between border-l-4 border-blue-500">
+                            <div>
+                                <p class="text-gray-400 text-xs uppercase">Total Interactions</p>
+                                <h4 class="text-3xl font-bold text-white" id="stat-total">--</h4>
+                            </div>
+                            <div class="text-4xl">💬</div>
+                        </div>
+
+                        <div class="glass-panel p-6 rounded-xl flex items-center justify-between border-l-4 border-green-500">
+                            <div>
+                                <p class="text-gray-400 text-xs uppercase">Knowledge Base Size</p>
+                                <h4 class="text-3xl font-bold text-white" id="stat-brain">--</h4>
+                            </div>
+                            <div class="text-4xl">🧠</div>
+                        </div>
+
+                        <div class="glass-panel p-6 rounded-xl flex items-center justify-between border-l-4 border-purple-500">
+                            <div>
+                                <p class="text-gray-400 text-xs uppercase">Students Registered</p>
+                                <h4 class="text-3xl font-bold text-white" id="stat-students">--</h4>
+                            </div>
+                            <div class="text-4xl">🎓</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -339,6 +382,7 @@
 
             if(tab === 'brain') fetchKnowledge();
             if(tab === 'students') fetchStudents();
+            if(tab === 'stats') loadStats();
         }
 
         // --- 1. CHAT LOGS (New Design) ---
@@ -454,6 +498,72 @@
                 input.value = "";
             };
             reader.readAsText(file);
+        }
+
+        // --- 4. ANALYTICS LOGIC ---
+        let trafficChart = null;
+
+        async function loadStats() {
+            // 1. Fetch all data counts
+            const logs = await (await fetch(`${API_BASE}/logs`)).json();
+            const facts = await (await fetch(`${API_BASE}/knowledge`)).json();
+            const students = await (await fetch(`${API_BASE}/students`)).json();
+
+            // 2. Update KPI Cards
+            document.getElementById('stat-total').innerText = logs.length;
+            document.getElementById('stat-brain').innerText = facts.length;
+            document.getElementById('stat-students').innerText = students.length;
+
+            // 3. Process Logs for Chart (Group by Hour)
+            const hours = {};
+            logs.forEach(log => {
+                const date = new Date(log.timestamp);
+                const hour = date.getHours() + ":00";
+                hours[hour] = (hours[hour] || 0) + 1;
+            });
+
+            const labels = Object.keys(hours).sort(); // Times
+            const data = labels.map(h => hours[h]);   // Counts
+
+            // 4. Render Chart
+            const ctx = document.getElementById('trafficChart').getContext('2d');
+
+            // Destroy old chart if exists to prevent glitching
+            if (trafficChart) trafficChart.destroy();
+
+            trafficChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Messages',
+                        data: data,
+                        borderColor: '#FDBE11', // Gold
+                        backgroundColor: 'rgba(253, 190, 17, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4, // Smooth curves
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: '#94a3b8' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8' }
+                        }
+                    }
+                }
+            });
         }
 
         // --- 3. STUDENTS ---
