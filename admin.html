@@ -89,35 +89,77 @@
                 <div id="logs-container" class="grid gap-3"></div>
             </div>
 
-            <!-- VIEW 2: BRAIN -->
-            <div id="view-brain" class="hidden animate-fade-in">
-                <div class="grid lg:grid-cols-3 gap-8">
-                    <div class="space-y-6">
-                        <div class="glass-panel p-6 rounded-xl">
-                            <h3 class="text-gold font-bold mb-4">Add Knowledge</h3>
-                            <form id="brain-form" class="space-y-3">
-                                <input id="k-topic" class="w-full glass-input rounded p-2 text-sm" placeholder="Topic" required>
-                                <select id="k-category" class="w-full glass-input rounded p-2 text-sm"><option>General</option><option>History</option><option>Academics</option></select>
-                                <textarea id="k-content" class="w-full glass-input rounded p-2 text-sm" rows="3" placeholder="Fact..." required></textarea>
-                                <button class="w-full bg-royal border border-gold text-gold font-bold py-2 rounded hover:bg-gold hover:text-royal transition">SAVE</button>
-                            </form>
-                        </div>
+            <!-- VIEW 2: BRAIN (Enhanced) -->
+                        <div id="view-brain" class="hidden animate-fade-in">
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                        <!-- Announcement -->
-                        <div class="glass-panel p-6 rounded-xl border-l-4 border-red-500">
-                            <h3 class="text-red-400 font-bold mb-4">Broadcast</h3>
-                            <form id="announce-form" class="space-y-3">
-                                <input id="announce-text" class="w-full glass-input rounded p-2 text-sm" placeholder="Ticker Message..." required>
-                                <div class="flex gap-2">
-                                    <button class="flex-1 bg-red-600 text-white font-bold py-2 rounded text-xs hover:bg-red-500">SEND</button>
-                                    <button type="button" onclick="clearAnnounce()" class="bg-gray-700 text-white px-3 rounded text-xs">CLEAR</button>
+                                <!-- LEFT COLUMN: Inputs -->
+                                <div class="space-y-6">
+
+                                    <!-- 1. Manual Entry (Existing) -->
+                                    <div class="glass-panel p-6 rounded-xl border-l-4 border-gold">
+                                        <h3 class="text-white font-bold mb-4 flex items-center gap-2">
+                                            <span>✍️</span> Manual Entry
+                                        </h3>
+                                        <form id="brain-form" class="space-y-3">
+                                            <input id="k-topic" class="w-full glass-input rounded p-3 text-sm bg-black/20" placeholder="Topic (e.g. 2025 Headmaster)" required>
+                                            <select id="k-category" class="w-full glass-input rounded p-3 text-sm bg-black/20 text-gray-300">
+                                                <option>General</option>
+                                                <option>History</option>
+                                                <option>Academics</option>
+                                                <option>Sports</option>
+                                                <option>Events</option>
+                                            </select>
+                                            <textarea id="k-content" class="w-full glass-input rounded p-3 text-sm bg-black/20" rows="3" placeholder="The fact goes here..." required></textarea>
+                                            <button class="w-full bg-gold text-royal font-bold py-3 rounded hover:bg-yellow-400 transition shadow-lg">SAVE NODE</button>
+                                        </form>
+                                    </div>
+
+                                    <!-- 2. CSV Import (New) -->
+                                    <div class="glass-panel p-6 rounded-xl border-l-4 border-blue-500">
+                                        <h3 class="text-white font-bold mb-2 flex items-center gap-2">
+                                            <span>📂</span> Bulk Import (CSV)
+                                        </h3>
+                                        <p class="text-xs text-gray-400 mb-4">Format: <code class="bg-black/30 px-1 rounded">Topic,Category,Content</code></p>
+
+                                        <input type="file" id="csvInput" accept=".csv" class="hidden" onchange="handleCSV(this)">
+                                        <label for="csvInput" class="block w-full text-center border-2 border-dashed border-gray-600 hover:border-blue-400 hover:text-blue-400 text-gray-500 py-4 rounded-lg cursor-pointer transition text-sm bg-black/10">
+                                            Click to Upload CSV
+                                        </label>
+                                        <div id="csv-status" class="mt-2 text-xs text-center text-blue-300 h-4"></div>
+                                    </div>
+
+                                    <!-- 3. Broadcast (Existing) -->
+                                    <div class="glass-panel p-6 rounded-xl border-l-4 border-red-500">
+                                        <h3 class="text-red-400 font-bold mb-4">Live Broadcast</h3>
+                                        <form id="announce-form" class="space-y-3">
+                                            <input id="announce-text" class="w-full glass-input rounded p-3 text-sm bg-black/20" placeholder="Ticker Message..." required>
+                                            <div class="flex gap-2">
+                                                <button class="flex-1 bg-red-600 text-white font-bold py-2 rounded text-xs hover:bg-red-500">SEND</button>
+                                                <button type="button" onclick="clearAnnounce()" class="bg-gray-800 text-gray-400 px-3 rounded text-xs border border-gray-600">CLEAR</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                            </form>
+
+                                <!-- RIGHT COLUMN: Database List (New) -->
+                                <div class="lg:col-span-2">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <h2 class="text-xl font-bold text-white">Knowledge Database</h2>
+                                        <span id="k-count" class="bg-royal border border-gold/30 text-gold px-3 py-1 rounded-full text-xs font-mono">0 Nodes</span>
+                                    </div>
+
+                                    <!-- Scrollable List -->
+                                    <div class="glass-panel rounded-xl overflow-hidden h-[800px] relative">
+                                        <div class="absolute inset-0 overflow-y-auto p-4 space-y-3 custom-scroll" id="knowledge-list">
+                                            <!-- Items injected via JS -->
+                                            <div class="text-center mt-20 text-gray-500 animate-pulse">Syncing with Brain...</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-                    </div>
-                    <div class="lg:col-span-2 space-y-3 h-[600px] overflow-y-auto pr-2" id="knowledge-list"></div>
-                </div>
-            </div>
 
             <!-- VIEW 3: STUDENTS -->
             <div id="view-students" class="hidden animate-fade-in">
@@ -285,7 +327,90 @@
             const csv = ["Name,Index,Year,Program,House"].concat(studentData.map(s => `"${s.fullName}","${s.indexNumber}","${s.year}","${s.program}","${s.house}"`)).join('\n');
             const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'})); a.download = 'students.csv'; a.click();
         }
+        // --- CSV PARSER (Client Side) ---
+        function handleCSV(input) {
+            const file = input.files[0];
+            if (!file) return;
 
+            const reader = new FileReader();
+            const status = document.getElementById('csv-status');
+
+            status.innerHTML = "Parsing file...";
+
+            reader.onload = async (e) => {
+                const text = e.target.result;
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+
+                let successCount = 0;
+                status.innerHTML = `Processing ${lines.length} lines...`;
+
+                // Loop starting from 1 to skip Header row (Topic,Category,Content)
+                for (let i = 1; i < lines.length; i++) {
+                    // Handle basic CSV splitting
+                    const cols = lines[i].split(',');
+
+                    if(cols.length >= 3) {
+                        const topic = cols[0].trim();
+                        const category = cols[1].trim();
+                        // Join rest in case content has commas
+                        const content = cols.slice(2).join(',').trim();
+
+                        if(topic && content) {
+                            await uploadFact(topic, category, content);
+                            successCount++;
+                        }
+                    }
+                }
+                status.innerHTML = `✅ Complete! ${successCount} facts added.`;
+                fetchKnowledge(); // Refresh the list
+                input.value = ''; // Reset input
+            };
+            reader.readAsText(file);
+        }
+
+        // --- HELPER: Upload Single Fact ---
+        async function uploadFact(topic, category, content) {
+            await fetch(`${API_BASE}/knowledge`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ topic, category, content })
+            });
+        }
+
+        // --- RENDER LIST ---
+        async function fetchKnowledge() {
+            const list = document.getElementById('knowledge-list');
+            const countBadge = document.getElementById('k-count');
+
+            try {
+                const res = await fetch(`${API_BASE}/knowledge`);
+                const data = await res.json();
+
+                countBadge.innerText = data.length + " Nodes";
+
+                if(data.length === 0) {
+                    list.innerHTML = `<div class="text-center text-gray-500 mt-10">Database is empty.</div>`;
+                    return;
+                }
+
+                list.innerHTML = data.map(k => `
+                    <div class="bg-black/30 p-4 rounded-lg border border-gray-700 hover:border-gold/50 transition group relative">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-[10px] font-bold bg-blue-900/50 text-blue-200 px-2 py-0.5 rounded uppercase tracking-wide border border-blue-500/30">${k.category}</span>
+                                <h3 class="font-bold text-gray-100 text-sm">${k.topic}</h3>
+                            </div>
+                            <button onclick="del('knowledge','${k._id}')" class="text-gray-600 hover:text-red-500 transition p-1 opacity-0 group-hover:opacity-100" title="Delete Fact">
+                                🗑️
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-2 leading-relaxed">${k.content}</p>
+                    </div>
+                `).join('');
+            } catch(e) {
+                console.error(e);
+            }
+        }
         // --- ANALYTICS ---
         async function loadStats() {
             const logs = await (await fetch(`${API_BASE}/logs?limit=500`)).json(); // Fetch more for stats
