@@ -51,6 +51,11 @@ accra-academy-website/
 ├── assets/
 ├── css/
 │     custom.css
+│     input.css
+│     style.css
+├── csv/
+│     hall_data.csv
+│     calendar_data.csv
 ├── js/
 │     script.js
 └── server/

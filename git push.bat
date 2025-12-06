@@ -10,6 +10,6 @@ git push
 echo.
 echo   PUSHED SUCCESSFULLY!
 echo   Live: https://Wadetecy36.github.io/accra-academy-website
-echo   Live: https://
+echo   Live: https://accra-academy.vercel.app/
 echo.
 pause

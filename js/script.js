@@ -2,42 +2,66 @@
 /*  js/script.js – SENIOR DEV MODE: CLEAN & CONFLICT-FREE        */
 /* ============================================================= */
 
+        /* ============================================ */
+        /*              Table of Contents               */
+        /* ============================================ */
+        /*     0.      Mobile Menu Toggle               */
+        /*     1.      3D Tilt Effects                  */
+        /*     2.      Dark Mode Toggle                 */
+        /*     3.      Gallery Swiper(Responsive)       */
+        /*     4.      About Page Carousel              */
+        /*     5.      Scroll To Top                    */
+        /*     6.      Easter Egg                       */
+        /*     7.      Init AOS                         */
+        /*     8.      Achievements Counter             */
+        /*     9.      Image Fallback                   */
+        /*     10.     AI Chatbot Logic                 */
+        /* ============================================ */
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // SENIOR DEV: Initialization Log
     console.log('%c 🔧 DOMContentLoaded: Initializing Scripts... ', 'background: #002147; color: #FDBE11; font-weight: bold;');
 
     /* =========================================
-       0. MOBILE MENU TOGGLE
+       0. MOBILE MENU TOGGLE (REFINED)
        ========================================= */
-    const mobileBtn = document.querySelector('.mobile-btn');
-    const navLinks = document.querySelector('.navlinks');
+    const mobileBtn = document.getElementById('mobile-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-    if (mobileBtn && navLinks) {
+    if (mobileBtn && mobileMenu) {
         mobileBtn.addEventListener('click', () => {
-            // Toggle visibility
-            navLinks.classList.toggle('hidden');
-            navLinks.classList.toggle('flex');
+            // Toggle Hidden Class
+            const isHidden = mobileMenu.classList.contains('hidden');
 
-            // Add mobile styling classes dynamically
-            if (navLinks.classList.contains('flex')) {
-                navLinks.classList.add('flex-col', 'absolute', 'top-16', 'left-0', 'w-full', 'bg-white', 'dark:bg-gray-900', 'p-6', 'shadow-xl', 'border-b', 'border-gold');
-                mobileBtn.textContent = '✕'; // Change icon to Close
-                console.log('📱 Mobile Menu: OPEN');
+            if (isHidden) {
+                // OPEN MENU
+                mobileMenu.classList.remove('hidden');
+                // Change Icon to 'X'
+                mobileBtn.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
             } else {
-                navLinks.classList.remove('flex-col', 'absolute', 'top-16', 'left-0', 'w-full', 'bg-white', 'dark:bg-gray-900', 'p-6', 'shadow-xl', 'border-b', 'border-gold');
-                mobileBtn.textContent = '☰'; // Change icon back to Menu
-                console.log('📱 Mobile Menu: CLOSED');
+                // CLOSE MENU
+                mobileMenu.classList.add('hidden');
+                // Change Icon back to Hamburger
+                mobileBtn.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>';
             }
         });
-    } else {
-        console.warn('⚠️ Mobile Menu elements not found in DOM.');
+
+        // Close menu when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileBtn.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>';
+            });
+        });
     }
 
 
-    /* =========================================
-       1. 3D TILT EFFECT FOR CARDS
-       ========================================= */
+         /* =========================================
+                1. 3D TILT EFFECT FOR CARDS
+            ========================================= */
     const cards = document.querySelectorAll('.feature-card, .info-card');
 
     if (cards.length > 0) {
@@ -183,8 +207,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const end = Date.now() + 3000;
             (function frame() {
                 confetti({
-                    particleCount: 999999999999,
-                    spread: 700,
+                    particleCount: 8,
+                    spread: 7,
                     origin: { y: 0.8 },
                     colors: ['#002147', '#FDBE11']
                 });
