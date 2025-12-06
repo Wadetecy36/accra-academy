@@ -124,7 +124,7 @@ app.post('/api/admin/login', (req, res) => {
 
 app.get('/api/logs', async (req, res) => {
     await connectDB();
-    res.json(await ChatLog.find().sort({ timestamp: -1 }).limit(50));
+    res.json(await ChatLog.find().sort({ timestamp: -1 }).limit(1000));
 });
 
 app.get('/api/knowledge', async (req, res) => {

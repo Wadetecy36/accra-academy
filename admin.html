@@ -268,25 +268,41 @@
                         </table>
                     </div>
                 </div>
-            </div>
-            <!-- VIEW 4: ANALYTICS -->
+            </div><!-- VIEW 4: ANALYTICS (With Date Filter) -->
             <div id="view-stats" class="hidden animate-fade-in">
-                <h2 class="text-xl font-bold text-white mb-6">System Performance</h2>
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-white">System Performance</h2>
+
+                    <!-- TIME FILTER DROPDOWN -->
+                    <div class="relative">
+                        <select id="time-range" onchange="loadStats()" class="appearance-none bg-gray-800 border border-gray-600 text-white py-2 pl-4 pr-10 rounded-lg text-sm focus:border-gold outline-none cursor-pointer hover:bg-gray-700 transition">
+                            <option value="24h">Last 24 Hours</option>
+                            <option value="7d">Last 7 Days</option>
+                            <option value="30d">Last 30 Days</option>
+                            <option value="all">All Time</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gold">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Chart 1: Traffic Volume -->
-                    <div class="glass-panel p-6 rounded-xl">
-                        <h3 class="text-gold font-bold mb-4 text-sm uppercase tracking-widest">Chat Activity (Last 24 Hours)</h3>
+                    <!-- Chart Container -->
+                    <div class="glass-panel p-6 rounded-xl relative">
+                        <h3 class="text-gold font-bold mb-4 text-xs uppercase tracking-widest flex items-center gap-2">
+                            <span id="chart-title">Activity</span>
+                        </h3>
                         <div class="h-64">
                             <canvas id="trafficChart"></canvas>
                         </div>
                     </div>
 
-                    <!-- KPI Cards -->
+                    <!-- KPI Cards (Dynamic) -->
                     <div class="space-y-6">
                         <div class="glass-panel p-6 rounded-xl flex items-center justify-between border-l-4 border-blue-500">
                             <div>
-                                <p class="text-gray-400 text-xs uppercase">Total Interactions</p>
+                                <p class="text-gray-400 text-xs uppercase">Interactions (Selected Period)</p>
                                 <h4 class="text-3xl font-bold text-white" id="stat-total">--</h4>
                             </div>
                             <div class="text-4xl">💬</div>
@@ -500,71 +516,6 @@
             reader.readAsText(file);
         }
 
-        // --- 4. ANALYTICS LOGIC ---
-        let trafficChart = null;
-
-        async function loadStats() {
-            // 1. Fetch all data counts
-            const logs = await (await fetch(`${API_BASE}/logs`)).json();
-            const facts = await (await fetch(`${API_BASE}/knowledge`)).json();
-            const students = await (await fetch(`${API_BASE}/students`)).json();
-
-            // 2. Update KPI Cards
-            document.getElementById('stat-total').innerText = logs.length;
-            document.getElementById('stat-brain').innerText = facts.length;
-            document.getElementById('stat-students').innerText = students.length;
-
-            // 3. Process Logs for Chart (Group by Hour)
-            const hours = {};
-            logs.forEach(log => {
-                const date = new Date(log.timestamp);
-                const hour = date.getHours() + ":00";
-                hours[hour] = (hours[hour] || 0) + 1;
-            });
-
-            const labels = Object.keys(hours).sort(); // Times
-            const data = labels.map(h => hours[h]);   // Counts
-
-            // 4. Render Chart
-            const ctx = document.getElementById('trafficChart').getContext('2d');
-
-            // Destroy old chart if exists to prevent glitching
-            if (trafficChart) trafficChart.destroy();
-
-            trafficChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Messages',
-                        data: data,
-                        borderColor: '#FDBE11', // Gold
-                        backgroundColor: 'rgba(253, 190, 17, 0.1)',
-                        borderWidth: 2,
-                        tension: 0.4, // Smooth curves
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { color: 'rgba(255,255,255,0.1)' },
-                            ticks: { color: '#94a3b8' }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: '#94a3b8' }
-                        }
-                    }
-                }
-            });
-        }
 
         // --- 3. STUDENTS ---
         async function fetchStudents() {
@@ -627,6 +578,116 @@
                 alert("Broadcast Cleared.");
             }
         }
+
+        // --- 4. ADVANCED ANALYTICS LOGIC ---
+    let trafficChart = null;
+
+    async function loadStats() {
+        const range = document.getElementById('time-range').value;
+        const chartTitle = document.getElementById('chart-title');
+
+        // Update Title UI
+        const titles = { '24h': 'Hourly Traffic', '7d': 'Daily Traffic', '30d': 'Monthly Trend', 'all': 'All Time History' };
+        chartTitle.innerText = titles[range];
+
+        try {
+            // 1. Fetch All Data
+            const allLogs = await (await fetch(`${API_BASE}/logs`)).json();
+            const facts = await (await fetch(`${API_BASE}/knowledge`)).json();
+            const students = await (await fetch(`${API_BASE}/students`)).json();
+
+            // 2. Filter Logs based on Time Range
+            const now = new Date();
+            const filteredLogs = allLogs.filter(log => {
+                const logDate = new Date(log.timestamp);
+                const diffTime = Math.abs(now - logDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                if (range === '24h') return diffTime < (24 * 60 * 60 * 1000);
+                if (range === '7d') return diffDays <= 7;
+                if (range === '30d') return diffDays <= 30;
+                return true; // 'all'
+            });
+
+            // 3. Update KPIs
+            document.getElementById('stat-total').innerText = filteredLogs.length;
+            document.getElementById('stat-brain').innerText = facts.length;
+            document.getElementById('stat-students').innerText = students.length;
+
+            // 4. Group Data for Charting
+            // If 24h -> Group by Hour (10:00, 11:00)
+            // If >24h -> Group by Date (Nov 28, Nov 29)
+            const groupedData = {};
+
+            filteredLogs.forEach(log => {
+                const date = new Date(log.timestamp);
+                let key;
+
+                if (range === '24h') {
+                    // Hour format: "14:00"
+                    key = date.getHours().toString().padStart(2, '0') + ":00";
+                } else {
+                    // Date format: "Nov 28"
+                    key = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                }
+
+                groupedData[key] = (groupedData[key] || 0) + 1;
+            });
+
+            // Fill in gaps? (Optional: Senior touch)
+            // For now, let's just sort the existing keys so time flows left-to-right
+            const labels = Object.keys(groupedData).reverse(); // Reverse because logs come new->old
+            const dataPoints = labels.map(l => groupedData[l]);
+
+            // 5. Render/Update Chart
+            const ctx = document.getElementById('trafficChart').getContext('2d');
+
+            if (trafficChart) trafficChart.destroy();
+
+            trafficChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Interactions',
+                        data: dataPoints,
+                        borderColor: '#FDBE11',
+                        backgroundColor: (context) => {
+                            const ctx = context.chart.ctx;
+                            const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+                            gradient.addColorStop(0, 'rgba(253, 190, 17, 0.5)');
+                            gradient.addColorStop(1, 'rgba(253, 190, 17, 0)');
+                            return gradient;
+                        },
+                        borderWidth: 3,
+                        pointBackgroundColor: '#002147',
+                        pointBorderColor: '#FDBE11',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#94a3b8', stepSize: 1 }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8', font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+
+        } catch (e) {
+            console.error("Analytics Error", e);
+        }
+    }
     </script>
 </body>
 </html>
