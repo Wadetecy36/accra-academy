@@ -164,6 +164,39 @@ app.delete('/api/students/:id', async (req, res) => {
     res.json({ success: true });
 });
 
+// --- ANNOUNCEMENT SYSTEM ---
+const AnnouncementSchema = new mongoose.Schema({
+    text: String,
+    isActive: { type: Boolean, default: true },
+    createdAt: { type: Date, default: Date.now }
+});
+const Announcement = mongoose.model('Announcement', AnnouncementSchema);
+
+// 1. Get Latest Active Announcement (Public)
+app.get('/api/announcement', async (req, res) => {
+    await connectDB();
+    // Get the most recent active one
+    const latest = await Announcement.findOne({ isActive: true }).sort({ createdAt: -1 });
+    res.json(latest || { text: "" }); // Return empty if none
+});
+
+// 2. Post New Announcement (Admin)
+app.post('/api/announcement', async (req, res) => {
+    await connectDB();
+    // Optional: Turn off all old ones first so only one shows
+    await Announcement.updateMany({}, { isActive: false });
+
+    await new Announcement({ text: req.body.text }).save();
+    res.json({ success: true });
+});
+
+// 3. Clear Announcements (Admin)
+app.delete('/api/announcement', async (req, res) => {
+    await connectDB();
+    await Announcement.updateMany({}, { isActive: false });
+    res.json({ success: true });
+});
+
 // START
 if (require.main === module) {
     app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

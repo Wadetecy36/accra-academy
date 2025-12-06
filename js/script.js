@@ -20,7 +20,7 @@
 
 
 
-        document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
 
             // SENIOR DEV: Initialization Log
             console.log('%c 🔧 DOMContentLoaded: Initializing Scripts... ', 'background: #002147; color: #FDBE11; font-weight: bold;');
@@ -402,5 +402,23 @@
         d.innerHTML = `<div class="flex gap-1 p-4 bg-white dark:bg-gray-800 rounded-2xl w-fit"><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.2s"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.4s"></div></div>`;
         chatMessages.appendChild(d); chatMessages.scrollTop = chatMessages.scrollHeight;
         return id;
+    }
+
+    /* --- LIVE ANNOUNCEMENTS --- */
+    const bar = document.getElementById('announcement-bar');
+    const text = document.getElementById('announcement-text');
+
+    if (bar && text) {
+        fetch('/api/announcement')
+            .then(res => res.json())
+            .then(data => {
+                if (data.text) {
+                    text.innerText = data.text;
+                    bar.classList.remove('hidden');
+                }
+            })
+            .catch(e => console.log("Announcement Error:", e));
+
+        window.closeAnnouncement = () => bar.style.display = 'none';
     }
 });

@@ -284,3 +284,11 @@ body {
 
 body.debug-layout * { outline: 1px solid rgba(255, 0, 0, 0.3) !important; }
 body.debug-layout img { outline: 2px solid blue !important; }
+
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+.animate-marquee {
+    animation: marquee 15s linear infinite;
+}

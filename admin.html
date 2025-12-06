@@ -106,7 +106,7 @@
             <div id="login-msg" class="text-center text-xs text-red-400 mt-6 min-h-[1rem] font-bold tracking-wide"></div>
 
             <div class="mt-8 text-center border-t border-white/5 pt-4">
-                <a href="index.html" class="text-gray-500 text-xs hover:text-white transition flex items-center justify-center gap-2">
+                <a href="./index.html" class="text-gray-500 text-xs hover:text-white transition flex items-center justify-center gap-2">
                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                     Return to Public Site
                 </a>
@@ -191,7 +191,19 @@
                                 <button class="w-full bg-royal border border-gold text-gold font-bold py-3 rounded hover:bg-gold hover:text-royal transition">SAVE TO DATABASE</button>
                             </form>
                         </div>
-
+                        <!-- ANNOUNCEMENT CONTROL -->
+                        <div class="glass-panel p-6 rounded-xl mb-6 border-l-4 border-l-red-500">
+                            <h3 class="text-red-400 font-bold mb-4 flex items-center gap-2">
+                                📢 Live Broadcast
+                            </h3>
+                            <form id="announce-form" class="space-y-3">
+                                <input type="text" id="announce-text" placeholder="e.g. School reopens Jan 15th..." class="w-full glass-input rounded p-3 text-sm" required>
+                                <div class="flex gap-2">
+                                    <button type="submit" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-2 rounded text-xs transition">BROADCAST</button>
+                                    <button type="button" onclick="clearAnnounce()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 rounded text-xs">CLEAR</button>
+                                </div>
+                            </form>
+                        </div>
                         <!-- CSV Upload Card -->
                         <div class="glass-panel p-6 rounded-xl border-t-4 border-t-blue-500 relative overflow-hidden group">
                             <div class="absolute inset-0 bg-blue-500/5 group-hover:bg-blue-500/10 transition"></div>
@@ -484,6 +496,26 @@
             const blob = new Blob([headers.concat(rows).join("\n")], { type: "text/csv" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a"); a.href = url; a.download = `bleoo_students_${Date.now()}.csv`; a.click();
+        }
+
+        // Inside your <script> tag:
+
+        document.getElementById('announce-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = document.getElementById('announce-text').value;
+            await fetch(`${API_BASE}/announcement`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            alert("Broadcast Sent! Check homepage.");
+            e.target.reset();
+        });
+
+        async function clearAnnounce() {
+            if(confirm("Remove current announcement?")) {
+                await fetch(`${API_BASE}/announcement`, { method: 'DELETE' });
+                alert("Broadcast Cleared.");
+            }
         }
     </script>
 </body>

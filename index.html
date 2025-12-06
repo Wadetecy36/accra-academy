@@ -38,6 +38,19 @@
 <!-- SENIOR DEV FIX: Removed solid bg classes so 3D background shows through -->
 <body class="min-h-screen transition-colors duration-300" id="main-content">
 
+    <!-- LIVE ANNOUNCEMENT BAR (Hidden by default) -->
+    <div id="announcement-bar" class="hidden bg-gold text-royal font-bold text-sm py-2 relative z-50 overflow-hidden border-b border-royal/10">
+        <div class="container mx-auto flex items-center gap-4">
+            <span class="bg-royal text-gold text-[10px] px-2 py-0.5 rounded uppercase tracking-wider animate-pulse">LATEST</span>
+            <div class="whitespace-nowrap overflow-hidden w-full">
+                <p id="announcement-text" class="inline-block animate-marquee pl-full">
+                    <!-- Text injected via JS -->
+                </p>
+            </div>
+            <button onclick="closeAnnouncement()" class="text-royal hover:text-white transition">&times;</button>
+        </div>
+    </div>
+
     <!-- 3D BACKGROUND CANVAS -->
     <div id="canvas-container" class="fixed inset-0 z-[-1] pointer-events-none"></div>
 
