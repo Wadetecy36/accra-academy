@@ -20,388 +20,466 @@
 
 
 
-document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
 
-    // SENIOR DEV: Initialization Log
-    console.log('%c 🔧 DOMContentLoaded: Initializing Scripts... ', 'background: #002147; color: #FDBE11; font-weight: bold;');
+            // SENIOR DEV: Initialization Log
+            console.log('%c 🔧 DOMContentLoaded: Initializing Scripts... ', 'background: #002147; color: #FDBE11; font-weight: bold;');
 
-    /* =========================================
+            /* =========================================
        0. MOBILE MENU TOGGLE (REFINED)
        ========================================= */
-    const mobileBtn = document.getElementById('mobile-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+            const mobileBtn = document.getElementById('mobile-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
 
-    if (mobileBtn && mobileMenu) {
-        mobileBtn.addEventListener('click', () => {
-            // Toggle Hidden Class
-            const isHidden = mobileMenu.classList.contains('hidden');
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    // Toggle Hidden Class
+                    const isHidden = mobileMenu.classList.contains('hidden');
 
-            if (isHidden) {
-                // OPEN MENU
-                mobileMenu.classList.remove('hidden');
-                // Change Icon to 'X'
-                mobileBtn.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
-            } else {
-                // CLOSE MENU
-                mobileMenu.classList.add('hidden');
-                // Change Icon back to Hamburger
-                mobileBtn.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>';
+                    if (isHidden) {
+                        // OPEN MENU
+                        mobileMenu.classList.remove('hidden');
+                        // Change Icon to 'X'
+                        mobileBtn.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+                    } else {
+                        // CLOSE MENU
+                        mobileMenu.classList.add('hidden');
+                        // Change Icon back to Hamburger
+                        mobileBtn.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>';
+                    }
+                });
+
+                // Close menu when clicking a link
+                mobileMenu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        mobileBtn.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>';
+                    });
+                });
             }
-        });
-
-        // Close menu when clicking a link
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                mobileBtn.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>';
-            });
-        });
-    }
 
 
-         /* =========================================
+            /* =========================================
                 1. 3D TILT EFFECT FOR CARDS
             ========================================= */
-    const cards = document.querySelectorAll('.feature-card, .info-card');
+            const cards = document.querySelectorAll('.feature-card, .info-card');
 
-    if (cards.length > 0) {
-        cards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                // Max tilt 10 degrees
-                const rotateX = ((y - centerY) / centerY) * -10;
-                const rotateY = ((x - centerX) / centerX) * 10;
+            if (cards.length > 0) {
+                cards.forEach(card => {
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        // Max tilt 10 degrees
+                        const rotateX = ((y - centerY) / centerY) * -10;
+                        const rotateY = ((x - centerX) / centerX) * 10;
 
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-            });
+                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+                    });
 
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-            });
-        });
-    }
+                    card.addEventListener('mouseleave', () => {
+                        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+                    });
+                });
+            }
 
-    /* =========================================
+            /* =========================================
        2. DARK MODE TOGGLE
        ========================================= */
-    const themeToggle = document.getElementById('theme-toggle');
-    const html = document.documentElement;
+            const themeToggle = document.getElementById('theme-toggle');
+            const html = document.documentElement;
 
-    // Check saved theme
-    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        html.classList.add('dark');
-        console.log('🌙 Dark Mode: Active (System/Storage)');
-    } else {
-        console.log('☀️ Light Mode: Active');
-    }
+            // Check saved theme
+            if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                html.classList.add('dark');
+                console.log('🌙 Dark Mode: Active (System/Storage)');
+            } else {
+                console.log('☀️ Light Mode: Active');
+            }
 
-    if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            html.classList.toggle('dark');
-            const isDark = html.classList.contains('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            themeToggle.setAttribute('aria-pressed', isDark);
-            console.log(`🌗 Theme toggled to: ${isDark ? 'Dark' : 'Light'}`);
-        });
-    }
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    html.classList.toggle('dark');
+                    const isDark = html.classList.contains('dark');
+                    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                    themeToggle.setAttribute('aria-pressed', isDark);
+                    console.log(`🌗 Theme toggled to: ${isDark ? 'Dark' : 'Light'}`);
+                });
+            }
 
-    /* =========================================
+            /* =========================================
        3. GALLERY SWIPER (RESPONSIVE)
        ========================================= */
-    if (document.querySelector('.mySwiper')) {
-        if (typeof Swiper === 'undefined') {
-            console.error('❌ Swiper JS not detected. Gallery will not work.');
-        } else {
-            var swiper = new Swiper(".mySwiper", {
-                slidesPerView: 1,
-                spaceBetween: 30,
-                loop: true,
-                grabCursor: true,
-                autoplay: {
-                    delay: 3500,
-                    disableOnInteraction: false,
-                    pauseOnMouseEnter: true,
-                },
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
-                    dynamicBullets: true,
-                },
-                breakpoints: {
-                    640: { slidesPerView: 2, spaceBetween: 20 },
-                    1024: { slidesPerView: 3, spaceBetween: 30 },
-                },
-            });
-            console.log('✅ Swiper Initialized');
-        }
-    }
+            if (document.querySelector('.mySwiper')) {
+                if (typeof Swiper === 'undefined') {
+                    console.error('❌ Swiper JS not detected. Gallery will not work.');
+                } else {
+                    var swiper = new Swiper(".mySwiper", {
+                        slidesPerView: 1,
+                        spaceBetween: 30,
+                        loop: true,
+                        grabCursor: true,
+                        autoplay: {
+                            delay: 3500,
+                            disableOnInteraction: false,
+                            pauseOnMouseEnter: true,
+                        },
+                        navigation: {
+                            nextEl: ".swiper-button-next",
+                            prevEl: ".swiper-button-prev",
+                        },
+                        pagination: {
+                            el: ".swiper-pagination",
+                            clickable: true,
+                            dynamicBullets: true,
+                        },
+                        breakpoints: {
+                            640: { slidesPerView: 2, spaceBetween: 20 },
+                            1024: { slidesPerView: 3, spaceBetween: 30 },
+                        },
+                    });
+                    console.log('✅ Swiper Initialized');
+                }
+            }
 
-    /* =========================================
+            /* =========================================
        4. ABOUT PAGE CAROUSEL (MANUAL)
        ========================================= */
-    const slides = document.querySelectorAll('.carousel-item');
-    if (slides.length > 0) {
-        let slideIndex = 0;
-        showSlides(slideIndex);
+            const slides = document.querySelectorAll('.carousel-item');
+            if (slides.length > 0) {
+                let slideIndex = 0;
+                showSlides(slideIndex);
 
-        window.plusSlides = function(n) {
-            showSlides(slideIndex += n);
-        }
+                window.plusSlides = function(n) {
+                    showSlides(slideIndex += n);
+                }
 
-        function showSlides(n) {
-            if (n >= slides.length) slideIndex = 0;
-            if (n < 0) slideIndex = slides.length - 1;
-            slides.forEach(slide => slide.classList.remove('active'));
-            slides[slideIndex].classList.add('active');
-        }
-        setInterval(() => plusSlides(1), 6000);
-        console.log(`🎞️ Custom Carousel started with ${slides.length} slides.`);
-    }
+                function showSlides(n) {
+                    if (n >= slides.length) slideIndex = 0;
+                    if (n < 0) slideIndex = slides.length - 1;
+                    slides.forEach(slide => slide.classList.remove('active'));
+                    slides[slideIndex].classList.add('active');
+                }
+                setInterval(() => plusSlides(1), 6000);
+                console.log(`🎞️ Custom Carousel started with ${slides.length} slides.`);
+            }
 
-    /* =========================================
+            /* =========================================
        5. SCROLL TO TOP & COPYRIGHT
        ========================================= */
-    const scrollBtn = document.getElementById('scrollTop');
-    if (scrollBtn) {
-        window.addEventListener('scroll', () => {
-            scrollBtn.classList.toggle('show', window.scrollY > 500);
-        });
-        scrollBtn.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
-    }
+            const scrollBtn = document.getElementById('scrollTop');
+            if (scrollBtn) {
+                window.addEventListener('scroll', () => {
+                    scrollBtn.classList.toggle('show', window.scrollY > 500);
+                });
+                scrollBtn.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
+            }
 
-    const yearSpan = document.getElementById('yr');
-    if (yearSpan) yearSpan.innerText = new Date().getFullYear();
+            const yearSpan = document.getElementById('yr');
+            if (yearSpan) yearSpan.innerText = new Date().getFullYear();
 
-    /* =========================================
+            /* =========================================
        6. EASTER EGG
        ========================================= */
-    let clicks = 0;
-    const crest = document.querySelector('.footer-brand img');
+            let clicks = 0;
+            const crest = document.querySelector('.footer-brand img');
 
-    if (crest) {
-      crest.addEventListener('click', () => {
-        clicks++;
-        crest.style.transform = `scale(${1 + (clicks * 0.1)})`;
+            if (crest) {
+                crest.addEventListener('click', () => {
+                    clicks++;
+                    crest.style.transform = `scale(${1 + (clicks * 0.1)})`;
 
-        if (clicks === 5) {
-          console.log('🎉 BLEOO SPIRIT UNLOCKED!');
-          crest.style.transition = 'all 1s ease';
-          crest.style.transform = 'scale(1.8) rotate(360deg)';
-          alert('BLEOO SPIRIT UNLOCKED! 🟡🔵'); 
+                    if (clicks === 5) {
+                        console.log('🎉 BLEOO SPIRIT UNLOCKED!');
+                        crest.style.transition = 'all 1s ease';
+                        crest.style.transform = 'scale(1.8) rotate(360deg)';
+                        alert('BLEOO SPIRIT UNLOCKED! 🟡🔵');
 
-          setTimeout(() => {
-              crest.style.transition = '';
-              crest.style.transform = '';
-              clicks = 0;
-          }, 1000);
+                        setTimeout(() => {
+                            crest.style.transition = '';
+                            crest.style.transform = '';
+                            clicks = 0;
+                        }, 1000);
 
-          if(typeof confetti === 'function') {
-            const end = Date.now() + 3000;
-            (function frame() {
-                confetti({
-                    particleCount: 8,
-                    spread: 7,
-                    origin: { y: 0.8 },
-                    colors: ['#002147', '#FDBE11']
+                        if(typeof confetti === 'function') {
+                            const end = Date.now() + 3000;
+                            (function frame() {
+                                confetti({
+                                    particleCount: 8,
+                                    spread: 7,
+                                    origin: { y: 0.8 },
+                                    colors: ['#002147', '#FDBE11']
+                                });
+                                if (Date.now() < end) requestAnimationFrame(frame);
+                            }());
+                        }
+                    }
                 });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
-          }
-        }
-      });
 
-      crest.addEventListener('mouseleave', () => {
-          setTimeout(() => { if(clicks < 5) clicks = 0; crest.style.transform = ''; }, 2000);
-      });
-    }
+                crest.addEventListener('mouseleave', () => {
+                    setTimeout(() => { if(clicks < 5) clicks = 0; crest.style.transform = ''; }, 2000);
+                });
+            }
 
-    /* =========================================
+            /* =========================================
        7. INITIALIZE AOS
        ========================================= */
-    if (window.AOS) {
-        AOS.init({
-            duration: 800,
-            offset: 100,
-            once: true
-        });
-        console.log('✅ AOS Initialized');
-    }
+            if (window.AOS) {
+                AOS.init({
+                    duration: 800,
+                    offset: 100,
+                    once: true
+                });
+                console.log('✅ AOS Initialized');
+            }
 
-    /* =========================================
+            /* =========================================
        8. ACHIEVEMENTS COUNTER
        ========================================= */
-    const counters = document.querySelectorAll('.counter');
-    const speed = 200;
+            const counters = document.querySelectorAll('.counter');
+            const speed = 200;
 
-    if (counters.length > 0) {
-        const startCounting = (entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const counter = entry.target;
-                    const target = +counter.getAttribute('data-target');
-                    console.log(`📈 Counter started for: ${target}`);
+            if (counters.length > 0) {
+                const startCounting = (entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const counter = entry.target;
+                            const target = +counter.getAttribute('data-target');
+                            console.log(`📈 Counter started for: ${target}`);
 
-                    const updateCount = () => {
-                        const count = +counter.innerText;
-                        const inc = target / speed;
-                        if (count < target) {
-                            counter.innerText = Math.ceil(count + inc);
-                            setTimeout(updateCount, 20);
-                        } else {
-                            counter.innerText = target;
+                            const updateCount = () => {
+                                const count = +counter.innerText;
+                                const inc = target / speed;
+                                if (count < target) {
+                                    counter.innerText = Math.ceil(count + inc);
+                                    setTimeout(updateCount, 20);
+                                } else {
+                                    counter.innerText = target;
+                                }
+                            };
+                            updateCount();
+                            observer.unobserve(counter);
                         }
-                    };
-                    updateCount();
-                    observer.unobserve(counter);
-                }
-            });
-        };
+                    });
+                };
 
-        const counterObserver = new IntersectionObserver(startCounting, {
-            root: null,
-            threshold: 0.5
-        });
-
-        counters.forEach(counter => {
-            counterObserver.observe(counter);
-        });
-    }
-
-    /* =========================================
-       9. IMAGE FALLBACK (Robust)
-       ========================================= */
-    document.querySelectorAll('img').forEach(img => {
-        // Prevent infinite loop if fallback also fails
-        if (!img.hasAttribute('data-fallback-applied')) {
-            img.onerror = function() {
-                console.warn(`🖼️ Image Failed: ${this.src} -> Replaced with placeholder`);
-                this.setAttribute('data-fallback-applied', 'true');
-                this.onerror = null;
-
-                const alt = this.alt || 'Image';
-                const width = this.width || 800;
-                const height = this.height || 450;
-
-                // Use a clean placeholder service
-                this.src = `https://placehold.co/${width}x${height}/002147/FDBE11?text=${encodeURIComponent(alt)}`;
-            };
-        }
-    });
-    /* =========================================
-       10. AI CHATBOT LOGIC (FULL STACK CONNECTED)
-       ========================================= */
-    const chatToggle = document.getElementById('chat-toggle');
-    const closeChat = document.getElementById('close-chat');
-    const chatWindow = document.getElementById('chat-window');
-    const chatForm = document.getElementById('chat-form');
-    const chatInput = document.getElementById('chat-input');
-    const chatMessages = document.getElementById('chat-messages');
-
-    // SENIOR DEV FIX: Use relative path for production compatibility
-    const API_URL = '/api/chat';
-
-    // Load History
-    let chatHistory = JSON.parse(localStorage.getItem('bleoo_chat_history')) || [];
-
-    if (chatToggle && chatWindow) {
-        // Load old messages
-        chatHistory.forEach(msg => addMessageToUI(msg.text, msg.sender));
-
-        const toggleChat = () => {
-            if (chatWindow.classList.contains('hidden')) {
-                chatWindow.classList.remove('hidden');
-                setTimeout(() => chatWindow.classList.remove('translate-y-10', 'opacity-0', 'scale-95'), 10);
-            } else {
-                chatWindow.classList.add('translate-y-10', 'opacity-0', 'scale-95');
-                setTimeout(() => chatWindow.classList.add('hidden'), 300);
-            }
-        };
-
-        chatToggle.addEventListener('click', toggleChat);
-        closeChat.addEventListener('click', toggleChat);
-
-        chatForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const message = chatInput.value.trim();
-            if (!message) return;
-
-            // 1. Show User Message
-            saveMessage(message, 'user');
-            addMessageToUI(message, 'user');
-            chatInput.value = '';
-
-            const loadingId = addLoadingIndicator();
-
-            try {
-                // 2. SEND TO YOUR BACKEND (Not Google)
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message: message,
-                        history: chatHistory.slice(-5) // Context
-                    })
+                const counterObserver = new IntersectionObserver(startCounting, {
+                    root: null,
+                    threshold: 0.5
                 });
 
-                const data = await response.json();
-                removeMessage(loadingId);
+                counters.forEach(counter => {
+                    counterObserver.observe(counter);
+                });
+            }
 
-                if (data.error) {
-                    addMessageToUI("Server Error: " + data.error, 'bot');
-                } else {
-                    const botText = data.reply;
-                    saveMessage(botText, 'bot');
-                    addMessageToUI(botText, 'bot');
+            /* =========================================
+       9. IMAGE FALLBACK (Robust)
+       ========================================= */
+            document.querySelectorAll('img').forEach(img => {
+                // Prevent infinite loop if fallback also fails
+                if (!img.hasAttribute('data-fallback-applied')) {
+                    img.onerror = function() {
+                        console.warn(`🖼️ Image Failed: ${this.src} -> Replaced with placeholder`);
+                        this.setAttribute('data-fallback-applied', 'true');
+                        this.onerror = null;
+
+                        const alt = this.alt || 'Image';
+                        const width = this.width || 800;
+                        const height = this.height || 450;
+
+                        // Use a clean placeholder service
+                        this.src = `https://placehold.co/${width}x${height}/002147/FDBE11?text=${encodeURIComponent(alt)}`;
+                    };
+                }
+            });
+
+            /* =================================================================
+           10. AI CHATBOT LOGIC (VOICE, CHIPS, & MEMORY ENABLED)
+           ================================================================= */
+            const chatToggle = document.getElementById('chat-toggle');
+            const closeChat = document.getElementById('close-chat');
+            const chatWindow = document.getElementById('chat-window');
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('chat-input');
+            const chatMessages = document.getElementById('chat-messages');
+            const voiceBtn = document.getElementById('voice-btn');
+            const chipBtns = document.querySelectorAll('.chip-btn');
+
+            // CONFIGURATION
+            const API_URL = '/api/chat'; // Relative path to backend
+            let chatHistory = JSON.parse(localStorage.getItem('bleoo_chat_history')) || [];
+            let isVoiceActive = false; // Track if user used voice input
+
+            // --- SPEECH RECOGNITION SETUP ---
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            let recognition;
+
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.lang = 'en-GB'; // British/Ghanaian English preference
+                recognition.interimResults = false;
+
+                recognition.onstart = () => {
+                    voiceBtn.classList.add('text-red-500', 'animate-pulse');
+                    chatInput.placeholder = "Listening...";
+                };
+
+                recognition.onend = () => {
+                    voiceBtn.classList.remove('text-red-500', 'animate-pulse');
+                    chatInput.placeholder = "Type a message...";
+                };
+
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    chatInput.value = transcript;
+                    isVoiceActive = true; // User used voice, so AI should reply with voice
+                    chatForm.dispatchEvent(new Event('submit')); // Auto-submit
+                };
+            } else {
+                if(voiceBtn) voiceBtn.style.display = 'none'; // Hide if not supported
+            }
+
+            // --- MAIN LOGIC ---
+            if (chatToggle && chatWindow) {
+                // Load History
+                chatHistory.forEach(msg => addMessageToUI(msg.text, msg.sender));
+
+                // Toggle UI
+                const toggleChat = () => {
+                    if (chatWindow.classList.contains('hidden')) {
+                        chatWindow.classList.remove('hidden');
+                        setTimeout(() => chatWindow.classList.remove('translate-y-10', 'opacity-0', 'scale-95'), 10);
+                    } else {
+                        chatWindow.classList.add('translate-y-10', 'opacity-0', 'scale-95');
+                        setTimeout(() => chatWindow.classList.add('hidden'), 300);
+                    }
+                };
+
+                chatToggle.addEventListener('click', toggleChat);
+                closeChat.addEventListener('click', toggleChat);
+
+                // Voice Button Click
+                if (voiceBtn && recognition) {
+                    voiceBtn.addEventListener('click', () => {
+                        recognition.start();
+                    });
                 }
 
-            } catch (error) {
-                removeMessage(loadingId);
-                addMessageToUI("Is the server running? Check terminal.", 'bot');
-                console.error('Fetch Error:', error);
+                // Chip Clicks (Suggestions)
+                chipBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        chatInput.value = btn.innerText;
+                        isVoiceActive = false; // Reset voice flag for chips
+                        chatForm.dispatchEvent(new Event('submit'));
+                    });
+                });
+
+                // Submit Handler
+                chatForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const message = chatInput.value.trim();
+                    if (!message) return;
+
+                    // UI Updates
+                    saveMessage(message, 'user');
+                    addMessageToUI(message, 'user');
+                    chatInput.value = '';
+
+                    const loadingId = addLoadingIndicator();
+
+                    try {
+                        // Send to Server
+                        const response = await fetch(API_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                message: message,
+                                history: chatHistory.slice(-5)
+                            })
+                        });
+
+                        const data = await response.json();
+                        removeMessage(loadingId);
+
+                        if (data.error) {
+                            addMessageToUI("Server Error: " + data.error, 'bot');
+                        } else {
+                            const botText = data.reply;
+                            saveMessage(botText, 'bot');
+                            addMessageToUI(botText, 'bot');
+
+                            // 🔊 VOICE OUTPUT (TTS)
+                            // Only speak if user used voice or clicked "Sing the Anthem"
+                            if (isVoiceActive || message.toLowerCase().includes('anthem')) {
+                                speakText(botText);
+                            }
+                            isVoiceActive = false; // Reset for next turn
+                        }
+
+                    } catch (error) {
+                        removeMessage(loadingId);
+                        addMessageToUI("Connection failed. Ensure server is running.", 'bot');
+                    }
+                });
+            }
+
+            // --- HELPERS ---
+
+            function speakText(text) {
+                if ('speechSynthesis' in window) {
+                    // Cancel previous speech
+                    window.speechSynthesis.cancel();
+
+                    // Clean text (remove asterisks or markdown sometimes returned by AI)
+                    const cleanText = text.replace(/[*#]/g, '');
+
+                    const utterance = new SpeechSynthesisUtterance(cleanText);
+                    utterance.pitch = 1;
+                    utterance.rate = 1.1; // Slightly faster for natural feel
+                    window.speechSynthesis.speak(utterance);
+                }
+            }
+
+            function saveMessage(text, sender) {
+                chatHistory.push({ text, sender });
+                localStorage.setItem('bleoo_chat_history', JSON.stringify(chatHistory));
+            }
+
+            function addMessageToUI(text, sender) {
+                const div = document.createElement('div');
+                div.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`;
+
+                // Convert Markdown bold (**text**) to HTML bold (<b>text</b>) basic support
+                const formattedText = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+
+                const bubble = document.createElement('div');
+                bubble.className = sender === 'user'
+                    ? 'bg-royal text-white rounded-2xl rounded-tr-none p-3 max-w-[85%] text-sm shadow-md'
+                    : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-tl-none p-3 max-w-[85%] text-sm text-gray-700 dark:text-gray-300 shadow-sm';
+
+                bubble.innerHTML = formattedText;
+                div.appendChild(bubble);
+                chatMessages.appendChild(div);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function addLoadingIndicator() {
+                const id = 'loading-' + Date.now();
+                const div = document.createElement('div');
+                div.id = id;
+                div.className = 'flex justify-start';
+                div.innerHTML = `<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-tl-none p-4 shadow-sm flex gap-1"><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div></div>`;
+                chatMessages.appendChild(div);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                return id;
+            }
+
+            function removeMessage(id) {
+                const el = document.getElementById(id);
+                if (el) el.remove();
             }
         });
-    }
-
-    // --- HELPERS ---
-    function saveMessage(text, sender) {
-        chatHistory.push({ text, sender });
-        localStorage.setItem('bleoo_chat_history', JSON.stringify(chatHistory));
-    }
-
-    function addMessageToUI(text, sender) {
-        const div = document.createElement('div');
-        div.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
-        const bubble = document.createElement('div');
-        bubble.className = sender === 'user'
-            ? 'bg-royal text-white rounded-2xl rounded-tr-none p-3 max-w-[85%] text-sm shadow-md'
-            : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-tl-none p-3 max-w-[85%] text-sm text-gray-700 dark:text-gray-300 shadow-sm';
-        bubble.innerText = text;
-        div.appendChild(bubble);
-        chatMessages.appendChild(div);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    function addLoadingIndicator() {
-        const id = 'loading-' + Date.now();
-        const div = document.createElement('div');
-        div.id = id;
-        div.className = 'flex justify-start';
-        div.innerHTML = `<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-tl-none p-4 shadow-sm flex gap-1"><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div><div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div></div>`;
-        chatMessages.appendChild(div);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        return id;
-    }
-
-    function removeMessage(id) {
-        const el = document.getElementById(id);
-        if (el) el.remove();
-    }
-});
