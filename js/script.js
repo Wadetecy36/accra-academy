@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             (function frame() {
                                 confetti({
                                     particleCount: 8,
-                                    spread: 7,
+                                    spread: 70,
                                     origin: { y: 0.8 },
                                     colors: ['#002147', '#FDBE11']
                                 });
