@@ -95,25 +95,68 @@
   <!-- THE BIG FOUR (Glass) -->
   <section class="py-20 section-glass">
       <div class="container">
-          <div class="grid md:grid-cols-2 gap-12 items-center">
-              <div data-aos="fade-right">
-                  <span class="text-gold font-bold tracking-widest uppercase text-sm mb-2 block">The Visionaries</span>
-                  <h2 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white mb-6">Founded by the "Big Four"</h2>
-                  <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                      On July 20, 1931, four visionary educators—all under the age of 30—established Accra Academy in Ellen House, Mantse Agbonaa. Their mission was to provide affordable, high-quality secondary education to brilliant students who could not afford government schools.
-                  </p>
-                  <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-gray-600 dark:text-gray-400 font-bold text-sm">
-                      <li class="flex items-center gap-2 p-3 bg-white/50 dark:bg-black/20 rounded-lg border border-gray-200 dark:border-gray-700"><div class="w-2 h-2 bg-gold rounded-full"></div> Dr. K.G. Konuah</li>
-                      <li class="flex items-center gap-2 p-3 bg-white/50 dark:bg-black/20 rounded-lg border border-gray-200 dark:border-gray-700"><div class="w-2 h-2 bg-gold rounded-full"></div> G.N. Alema</li>
-                      <li class="flex items-center gap-2 p-3 bg-white/50 dark:bg-black/20 rounded-lg border border-gray-200 dark:border-gray-700"><div class="w-2 h-2 bg-gold rounded-full"></div> J.A. Halm-Addo</li>
-                      <li class="flex items-center gap-2 p-3 bg-white/50 dark:bg-black/20 rounded-lg border border-gray-200 dark:border-gray-700"><div class="w-2 h-2 bg-gold rounded-full"></div> S.N. Awuletey</li>
-                  </ul>
-              </div>
-              <div class="relative group" data-aos="fade-left">
-                  <div class="absolute -inset-2 bg-gold rounded-xl transform rotate-2 group-hover:rotate-1 transition duration-500 opacity-60"></div>
-                  <img src="assets/founders.webp" alt="Founders" class="relative rounded-lg shadow-2xl w-full border-4 border-white dark:border-gray-700 object-cover h-96">
-              </div>
-          </div>
+          <!-- FOUNDERS SECTION (Updated to 4-Image Grid) -->
+       <div class="grid md:grid-cols-2 gap-12 items-center mb-24 relative" data-aos="fade-up">
+
+         <!-- Text Content -->
+         <div class="text-content order-2 md:order-1">
+             <span class="text-gold font-bold tracking-widest uppercase text-sm mb-2 block">The Big Four</span>
+             <h2 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white mb-6">Founding Years (1931)</h2>
+             <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                 Accra Academy was founded on July 20, 1931, by four visionary educators in Mantse Agbonaa.
+             </p>
+             <p class="text-gray-600 dark:text-gray-400 mb-6">
+                 Driven by the desire to provide quality secondary education to students who could not afford the expensive government schools, they established a legacy of resilience and excellence.
+             </p>
+
+             <!-- List of Names -->
+             <ul class="grid grid-cols-1 gap-2 border-l-4 border-gold pl-4">
+                 <li class="font-bold text-royal dark:text-gold">1. Dr. Kofi George Konuah</li>
+                 <li class="font-bold text-royal dark:text-gold">2. Gottfried Narku Alema</li>
+                 <li class="font-bold text-royal dark:text-gold">3. James Akwei Halm-Addo</li>
+                 <li class="font-bold text-royal dark:text-gold">4. Samuel Neils Awuletey</li>
+             </ul>
+         </div>
+
+         <!-- The 4-Image Grid -->
+         <div class="image-content order-1 md:order-2">
+             <div class="grid grid-cols-2 gap-4">
+
+                 <!-- Founder 1 -->
+                 <div class="relative group overflow-hidden rounded-xl shadow-lg">
+                     <img src="./assets/founder1.png" onerror="this.src='https://placehold.co/400x500/002147/FDBE11?text=Dr.+Konuah'" alt="Dr. K.G. Konuah" class="w-full h-48 object-cover transition duration-500 group-hover:scale-110">
+                     <div class="absolute bottom-0 inset-x-0 bg-royal/90 p-2 text-center translate-y-full group-hover:translate-y-0 transition duration-300">
+                         <p class="text-gold text-xs font-bold">Dr. K.G. Konuah</p>
+                     </div>
+                 </div>
+
+                 <!-- Founder 2 -->
+                 <div class="relative group overflow-hidden rounded-xl shadow-lg mt-8">
+                     <img src="./assets/founder2.png" onerror="this.src='https://placehold.co/400x500/002147/FDBE11?text=G.N.+Alema'" alt="G.N. Alema" class="w-full h-48 object-cover transition duration-500 group-hover:scale-110">
+                     <div class="absolute bottom-0 inset-x-0 bg-royal/90 p-2 text-center translate-y-full group-hover:translate-y-0 transition duration-300">
+                         <p class="text-gold text-xs font-bold">G.N. Alema</p>
+                     </div>
+                 </div>
+
+                 <!-- Founder 3 -->
+                 <div class="relative group overflow-hidden rounded-xl shadow-lg">
+                     <img src="./assets/founder3.png" onerror="this.src='https://placehold.co/400x500/002147/FDBE11?text=Halm-Addo'" alt="J.A. Halm-Addo" class="w-full h-48 object-cover transition duration-500 group-hover:scale-110">
+                     <div class="absolute bottom-0 inset-x-0 bg-royal/90 p-2 text-center translate-y-full group-hover:translate-y-0 transition duration-300">
+                         <p class="text-gold text-xs font-bold">J.A. Halm-Addo</p>
+                     </div>
+                 </div>
+
+                 <!-- Founder 4 -->
+                 <div class="relative group overflow-hidden rounded-xl shadow-lg mt-8">
+                     <img src="./assets/founder4.png" onerror="this.src='https://placehold.co/400x500/002147/FDBE11?text=S.N.+Awuletey'" alt="S.N. Awuletey" class="w-full h-48 object-cover transition duration-500 group-hover:scale-110">
+                     <div class="absolute bottom-0 inset-x-0 bg-royal/90 p-2 text-center translate-y-full group-hover:translate-y-0 transition duration-300">
+                         <p class="text-gold text-xs font-bold">S.N. Awuletey</p>
+                     </div>
+                 </div>
+
+             </div>
+         </div>
+       </div>
       </div>
   </section>
 
@@ -218,7 +261,7 @@
                   <p class="text-sm text-gray-500">National Champions in STEM innovation.</p>
               </div>
               <div class="swiper-slide feature-card p-8 text-center">
-                  <h3 class="text-xl font-bold text-gold mb-2">🗣️ Debaters</h3>
+                  <h3 class="text-xl font-bold text-gold mb-2">🗣️ Literary Society</h3>
                   <p class="text-sm text-gray-500">Shaping the next generation of speakers.</p>
               </div>
               <div class="swiper-slide feature-card p-8 text-center">
@@ -267,60 +310,72 @@
         </div>
     </section>
 
-    <!-- FOOTER (Fix: Removed margin-top via !mt-0) -->
-     <footer class="site-footer !mt-0 section-glass">
-       <div class="container">
-           <div class="footer-grid">
-               <div class="footer-col">
-                   <div class="footer-brand">
-                       <h3>Accra Academy</h3>
-                       <p class="footer-motto">Esse Quam Videri</p>
-                       <p class="footer-desc">Pioneering education since 1931.</p>
-                       <img src="./assets/crest.png" alt="Crest" class="crest w-12 h-12">
-                   </div>
-               </div>
-               <div class="footer-col">
-                   <h4 class="footer-title">Quick Links</h4>
-                   <ul class="footer-links">
-                       <li><a href="./about.html">About</a></li>
-                       <li><a href="./academics.html">Academics</a></li>
-                       <li><a href="./gallery.html">Gallery</a></li>
-                       <li><a href="./contacts.html">Contact</a></li>
-                   </ul>
-               </div>
-               <div class="footer-col">
-                   <h4 class="footer-title">Resources</h4>
-                   <ul class="footer-links">
-                       <li><a href="./portal.html">Portal</a></li>
-                       <li><a href="./news.html">News</a></li>
-                       <li><a href="#">Calendar</a></li>
-                   </ul>
-               </div>
-               <div class="footer-col">
-                   <h4 class="footer-title">Contact</h4>
-                   <div class="footer-contact">
-                       <div class="contact-item">
-                           <div class="icon-box">📍</div>
-                           <div class="text-box"><p>Bubuashie, Accra</p></div>
-                       </div>
-                       <div class="contact-item">
-                           <div class="icon-box">📞</div>
-                           <div class="text-box"><p>+233 30 222 2690</p></div>
-                       </div>
-                   </div>
-               </div>
-           </div>
-           <div class="footer-bottom">
-               <p>&copy; <span id="yr"></span> Accra Academy.</p>
-               <div class="footer-social">
-                   <a href="#" class="text-white hover:text-gold">FB</a>
-                   <a href="#" class="text-white hover:text-gold">TW</a>
-                   <a href="#" class="text-white hover:text-gold">IG</a>
-               </div>
-           </div>
-       </div>
-     </footer>
-   
+
+
+  <!-- FOOTER (Glass) -->
+  <footer class="site-footer section-glass">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <h3>Accra Academy</h3>
+                    <p class="footer-motto">Esse Quam Videri</p>
+                    <p class="footer-desc">Pioneering education since 1931, shaping leaders of tomorrow.</p>
+                    <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest">
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-title">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="./about.html">About Us</a></li>
+                    <li><a href="./academics.html">Academics</a></li>
+                    <li><a href="./src.html">Student Council</a></li>
+                    <li><a href="./gallery.html">Gallery</a></li>
+                    <li><a href="./contacts.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-title">Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="./portal.html">Student Portal</a></li>
+                    <li><a href="./handbook.html">Handbook</a></li>
+                    <li><a href="./calendar.html">Calendar</a></li>
+                    <li><a href="./news.html">Events</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-title">Contact Info</h4>
+                <div class="footer-contact">
+                    <div class="contact-item">
+                        <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></div>
+                        <div class="text-box"><span class="label">Location</span><p><a href="https://maps.google.com" target="_blank">Bubuashie, Greater Accra, Ghana</a></p></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></div>
+                        <div class="text-box"><span class="label">Phone</span><p><a href="tel:+233302222690">+233 30 222 2690</a></p></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></div>
+                        <div class="text-box"><span class="label">Email</span><p><a href="mailto:info@accraacademy.edu.gh">info@accraacademy.edu.gh</a></p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; <span id="yr"></span> Accra Academy. All rights reserved.</p>
+            <div class="footer-social">
+                    <a href="https://web.facebook.com/AccraAcademyGH/" aria-label="Facebook" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34"><circle cx="12" cy="12" r="11" /><path fill="white" d="M13 11h2.5l.4-2.6H13V7.5c0-.7.2-1.1 1.2-1.1H16V4h-2.1c-2.5 0-3.6 1.2-3.6 3.3v1.1H9v2.6h1.3v6.9h2.7V11z"/></svg></a>
+                    <a href="https://x.com/accraacademygh" aria-label="Twitter" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34"><circle cx="12" cy="12" r="11" /><path fill="white" d="M17.7 6H15.6l-2.5 3.2L10.8 6H7.9l3.9 5.2L7.6 18h2.1l2.8-3.8 2.6 3.8h2.8l-4-5.5L17.7 6z"/></svg></a>
+                    <a href="https://www.instagram.com/insidebleoo/" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34" class="social-icon"><circle cx="12" cy="12" r="11" /><path fill="white" d="M16 2H8C4.7 2 2 4.7 2 8v8c0 3.3 2.7 6 6 6h8c3.3 0 6-2.7 6-6V8c0-3.3-2.7-6-6-6zM12 17c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5zm5.5-9.6c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z"/></svg></a>
+                </div>
+            </div>
+        </div>
+  </footer>
+  
   <!-- SCROLL TOP -->
   <button id="scrollTop" title="Back to top">
     <svg class="scroll-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>

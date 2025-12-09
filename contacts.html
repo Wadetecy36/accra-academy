@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Contact Us - Accra Academy</title>
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
-
 
   <!-- TAILWIND CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -23,142 +21,197 @@
   </script>
 
   <!-- CUSTOM CSS -->
-
   <link href="./css/custom.css" rel="stylesheet">
 </head>
 
 <body class="min-h-screen bg-soft dark:bg-gray-900 transition-colors duration-300">
 
     <!-- HEADER -->
-    <header class="site-header fixed top-0 w-full z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
-      <div class="container mx-auto px-4 md:px-6 flex justify-between items-center h-16 md:h-20">
-          <div class="brand flex items-center gap-3">
-              <img src="./assets/crest.png" alt="Crest" class="w-10 h-10 md:w-12 md:h-12 object-contain">
-              <div class="brand-text leading-tight">
-                  <h1 class="text-lg md:text-2xl font-bold text-royal dark:text-gold font-display">Accra Academy</h1>
-                  <p class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest hidden sm:block">Esse Quam Videri</p>
-              </div>
-          </div>
+    <header class="site-header sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 h-20 flex justify-between items-center">
 
-        <nav class="navlinks hidden md:flex gap-8 text-lg font-medium">
-            <a href="./index.html" class="hover:text-gold transition">Home</a>
-            <a href="./about.html" class="hover:text-gold transition">About</a>
-            <a href="./academics.html" class="hover:text-gold transition">Academics</a>
-            <a href="./news.html" class="hover:text-gold transition">News</a>
-            <a href="./gallery.html" class="hover:text-gold transition">Gallery</a>
-            <a href="./contacts.html" class="text-gold font-bold">Contact</a>
-        </nav>
+            <!-- 1. BRAND -->
+            <a href="./index.html" class="flex items-center gap-3 group">
+                <img src="./assets/crest.png" alt="Accra Academy Crest" class="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300">
+                <div class="flex flex-col">
+                    <h1 class="text-xl md:text-2xl font-bold text-royal dark:text-gold font-display leading-tight tracking-tight">Accra Academy</h1>
+                    <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-semibold">Esse Quam Videri</p>
+                </div>
+            </a>
 
-        <div class="flex items-center gap-4">
-            <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:ring-2 hover:ring-gold transition-all" aria-label="Toggle dark mode"></button>
-            <button class="mobile-btn md:hidden text-2xl text-royal dark:text-gold">☰</button>
+            <!-- 2. DESKTOP NAV -->
+            <nav class="hidden lg:flex items-center gap-8 text-sm font-bold tracking-wide">
+                <a href="./index.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">HOME</a>
+                <a href="./about.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">ABOUT</a>
+                <a href="./academics.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">ACADEMICS</a>
+                <a href="./news.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">NEWS</a>
+                <a href="./gallery.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">GALLERY</a>
+                <a href="./contacts.html" class="text-royal dark:text-gold border-b-2 border-gold pb-1">CONTACT</a>
+            </nav>
+
+            <!-- 3. CONTROLS -->
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-royal dark:text-gold hover:ring-2 hover:ring-gold transition shadow-sm" aria-label="Toggle dark mode">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+                <button id="mobile-btn" class="lg:hidden p-2 text-royal dark:text-gold focus:outline-none" aria-label="Open Menu">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
         </div>
-    </div>
-  </header>
 
-  <section class="pt-28 pb-16 container mx-auto px-4">
-      <h1 class="text-4xl font-bold text-royal dark:text-gold mb-10 text-center font-display">Get in Touch</h1>
+        <!-- 4. MOBILE MENU -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-t border-gray-200 dark:border-gray-800 shadow-2xl origin-top transition-all duration-300">
+            <nav class="flex flex-col p-6 gap-4 text-center">
+                <a href="./index.html" class="text-gray-600 dark:text-gray-300 hover:text-gold py-2">Home</a>
+                <a href="./about.html" class="text-gray-600 dark:text-gray-300 hover:text-gold py-2">About Us</a>
+                <a href="./academics.html" class="text-gray-600 dark:text-gray-300 hover:text-gold py-2">Academics</a>
+                <a href="./news.html" class="text-gray-600 dark:text-gray-300 hover:text-gold py-2">News</a>
+                <a href="./gallery.html" class="text-gray-600 dark:text-gray-300 hover:text-gold py-2">Gallery</a>
+                <a href="./contacts.html" class="text-royal dark:text-gold font-bold text-lg py-2 border-b border-gray-100 dark:border-gray-800">Contact</a>
+            </nav>
+        </div>
+    </header>
 
-      <div class="grid md:grid-cols-2 gap-10">
+  <!-- HERO / CONTACT SECTION (Now using Royal Background) -->
+  <section class="pt-32 pb-24 bg-royal text-white relative overflow-hidden">
 
+      <!-- Background Elements -->
+      <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: url('./assets/crest.png'); background-repeat: no-repeat; background-position: center; background-size: 800px;"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-transparent to-royal/90"></div>
 
-    <!-- Form -->
-  <form id="contact-form" class="feature-card" action="https://formspree.io/f/xrbvojar" method="POST">
+      <div class="container mx-auto px-4 relative z-10">
+          <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 text-center font-display">
+              Get in <span class="text-gold">Touch</span>
+          </h1>
+          <p class="text-gray-300 text-center max-w-xl mx-auto mb-16">
+              Have questions about admissions, alumni events, or general inquiries? We are here to assist you.
+          </p>
 
-  <!-- Add honeypot -->
-  <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
-  
-  <!-- Your existing fields stay, just add patterns -->
-  <label class="block mb-4">
-    <span class="text-gray-700 dark:text-gray-300">Name</span>
-    <input type="text" name="name" 
-           pattern="[A-Za-z\s]{2,50}" 
-           required 
-           class="w-full p-3 border rounded mt-1 dark:bg-gray-800 dark:text-white">
-  </label>
-  
-  <label class="block mb-4">
-    <span class="text-gray-700 dark:text-gray-300">Email</span>
-    <input type="email" name="email" required 
-           class="w-full p-3 border rounded mt-1 dark:bg-gray-800 dark:text-white">
-  </label>
-  
-  <label class="block mb-4">
-    <span class="text-gray-700 dark:text-gray-300">Message</span>
-    <textarea name="message" rows="4" 
-              minlength="10" 
-              maxlength="1000" 
-              required 
-              class="w-full p-3 border rounded mt-1 dark:bg-gray-800 dark:text-white"></textarea>
-  </label>
-  
-  <button type="submit" id="submit-btn" class="btn primary w-full">Send Message</button>
-  <div id="form-status" class="mt-4 hidden"></div>
-</form>
+          <div class="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto">
 
-<script>
-document.getElementById('contact-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const btn = document.getElementById('submit-btn');
-  const status = document.getElementById('form-status');
-  
-  btn.disabled = true;
-  btn.textContent = 'Sending...';
-  
-  // Rate limit check
-  const lastSubmit = localStorage.getItem('lastFormSubmit');
-  if (lastSubmit && Date.now() - lastSubmit < 60000) {
-    status.textContent = '⏱️ Please wait 1 minute between submissions';
-    status.className = 'mt-4 p-3 bg-red-100 text-red-800 rounded';
-    status.classList.remove('hidden');
-    btn.disabled = false;
-    btn.textContent = 'Send Message';
-    return;
-  }
-  
-  try {
-    const response = await fetch('https://formspree.io/f/xrbvojar', {
-      method: 'POST',
-      body: new FormData(e.target),
-      headers: { 'Accept': 'application/json' }
-    });
-    
-    if (response.ok) {
-      localStorage.setItem('lastFormSubmit', Date.now());
-      status.textContent = '✅ Message sent successfully!';
-      status.className = 'mt-4 p-3 bg-green-100 text-green-800 rounded';
-      status.classList.remove('hidden');
-      e.target.reset();
-    } else {
-      throw new Error('Failed');
-    }
-  } catch (error) {
-    status.textContent = '❌ Error. Please try again.';
-    status.className = 'mt-4 p-3 bg-red-100 text-red-800 rounded';
-    status.classList.remove('hidden');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Send Message';
-  }
-});
-</script>
+            <!-- Form Card -->
+            <form id="contact-form" class="feature-card !bg-white/10 !backdrop-blur-lg !border-white/20" action="https://formspree.io/f/xrbvojar" method="POST">
 
+                <!-- Honeypot -->
+                <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
 
-          <!-- Info -->
-          <div class="feature-card">
-              <h3 class="text-2xl font-bold mb-4 text-royal dark:text-gold">Contact Info</h3>
-              <p class="mb-4 text-gray-600 dark:text-gray-300"><strong>Address:</strong> Bubuashie, Accra</p>
-              <p class="mb-4 text-gray-600 dark:text-gray-300"><strong>Phone:</strong> +233 30 222 2405</p>
-              <p class="mb-4 text-gray-600 dark:text-gray-300"><strong>Email:</strong> <a href="mailto:info@accraacademy.edu.gh" class="text-blue-600 dark:text-gold hover:underline">info@accraacademy.edu.gh</a></p>
+                <div class="mb-4">
+                    <label class="block text-sm font-bold text-gold mb-2">FULL NAME</label>
+                    <input type="text" name="name" pattern="[A-Za-z\s]{2,50}" required
+                           class="w-full p-3 bg-royal/50 border border-royal/50 rounded focus:border-gold focus:ring-1 focus:ring-gold text-white placeholder-gray-400 transition" placeholder="Kwame Mensah">
+                </div>
 
-              <div class="mt-6 h-64 w-full bg-gray-300 rounded-lg overflow-hidden shadow-inner">
-                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127071.0249387849!2d-0.39625250273437496!3d5.5715232000000094!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf99c23fffffff%3A0x647b9cbf8aae1105!2sAccra%20Academy!5e0!3m2!1sen!2sgh!4v1764154421833!5m2!1sen!2sgh" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-              </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-bold text-gold mb-2">EMAIL ADDRESS</label>
+                    <input type="email" name="email" required
+                           class="w-full p-3 bg-royal/50 border border-royal/50 rounded focus:border-gold focus:ring-1 focus:ring-gold text-white placeholder-gray-400 transition" placeholder="name@example.com">
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-bold text-gold mb-2">MESSAGE</label>
+                    <textarea name="message" rows="4" minlength="10" maxlength="1000" required
+                              class="w-full p-3 bg-royal/50 border border-royal/50 rounded focus:border-gold focus:ring-1 focus:ring-gold text-white placeholder-gray-400 transition" placeholder="How can we help you?"></textarea>
+                </div>
+
+                <button type="submit" id="submit-btn" class="btn primary w-full shadow-lg">Send Message</button>
+                <div id="form-status" class="mt-4 hidden text-sm text-center font-bold"></div>
+            </form>
+
+            <!-- Info Card -->
+            <div class="feature-card !bg-white/10 !backdrop-blur-lg !border-white/20">
+                <h3 class="text-2xl font-bold mb-6 text-white border-b border-white/10 pb-4">Contact Info</h3>
+
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-gold/10 rounded-full text-gold">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-gold uppercase tracking-wider">Address</span>
+                            <p class="text-gray-300">Bubuashie, Greater Accra, Ghana</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-gold/10 rounded-full text-gold">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-gold uppercase tracking-wider">Phone</span>
+                            <p class="text-gray-300">+233 30 222 2405</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="p-3 bg-gold/10 rounded-full text-gold">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-gold uppercase tracking-wider">Email</span>
+                            <a href="mailto:info@accraacademy.edu.gh" class="text-gray-300 hover:text-white hover:underline">info@accraacademy.edu.gh</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 h-48 w-full bg-royal rounded-lg overflow-hidden border border-white/20 shadow-lg">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127071.0249387849!2d-0.39625250273437496!3d5.5715232000000094!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf99c23fffffff%3A0x647b9cbf8aae1105!2sAccra%20Academy!5e0!3m2!1sen!2sgh!4v1764154421833!5m2!1sen!2sgh" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+
           </div>
       </div>
   </section>
 
-  <!-- FOOTER (Consistent) -->
+  <!-- FORM LOGIC -->
+  <script>
+    document.getElementById('contact-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      const status = document.getElementById('form-status');
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="animate-pulse">Sending...</span>';
+
+      // Rate limit check
+      const lastSubmit = localStorage.getItem('lastFormSubmit');
+      if (lastSubmit && Date.now() - lastSubmit < 60000) {
+        status.textContent = '⏱️ Please wait 1 minute between submissions';
+        status.className = 'mt-4 p-3 bg-red-500/20 text-red-200 rounded border border-red-500/50';
+        status.classList.remove('hidden');
+        btn.disabled = false;
+        btn.textContent = 'Send Message';
+        return;
+      }
+
+      try {
+        const response = await fetch('https://formspree.io/f/xrbvojar', {
+          method: 'POST',
+          body: new FormData(e.target),
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          localStorage.setItem('lastFormSubmit', Date.now());
+          status.textContent = '✅ Message sent successfully!';
+          status.className = 'mt-4 p-3 bg-green-500/20 text-green-200 rounded border border-green-500/50';
+          status.classList.remove('hidden');
+          e.target.reset();
+        } else {
+          throw new Error('Failed');
+        }
+      } catch (error) {
+        status.textContent = '❌ Connection Error. Please try again.';
+        status.className = 'mt-4 p-3 bg-red-500/20 text-red-200 rounded border border-red-500/50';
+        status.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send Message';
+      }
+    });
+  </script>
+
+  <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container">
         <div class="footer-grid">
@@ -176,6 +229,7 @@ document.getElementById('contact-form').addEventListener('submit', async (e) => 
                 <ul class="footer-links">
                     <li><a href="./about.html">About Us</a></li>
                     <li><a href="./academics.html">Academics</a></li>
+                    <li><a href="./src.html">Student Council</a></li>
                     <li><a href="./gallery.html">Gallery</a></li>
                     <li><a href="./contacts.html">Contact</a></li>
                 </ul>
@@ -185,7 +239,7 @@ document.getElementById('contact-form').addEventListener('submit', async (e) => 
                 <h4 class="footer-title">Resources</h4>
                 <ul class="footer-links">
                     <li><a href="#">Student Portal</a></li>
-                    <li><a href="#">Handbook</a></li>
+                    <li><a href="./handbook.html">Handbook</a></li>
                     <li><a href="#">Calendar</a></li>
                     <li><a href="#">Events</a></li>
                 </ul>
@@ -196,7 +250,7 @@ document.getElementById('contact-form').addEventListener('submit', async (e) => 
                 <div class="footer-contact">
                     <div class="contact-item">
                         <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></div>
-                        <div class="text-box"><span class="label">Location</span><p><a href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127071.0249387849!2d-0.39625250273437496!3d5.5715232000000094!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf99c23fffffff%3A0x647b9cbf8aae1105!2sAccra%20Academy!5e0!3m2!1sen!2sgh!4v1764154421833!5m2!1sen!2sgh">Bubuashie, Greater Accra, Ghana</a></p></div>
+                        <div class="text-box"><span class="label">Location</span><p>Bubuashie, Greater Accra, Ghana</p></div>
                     </div>
                     <div class="contact-item">
                         <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></div>
@@ -220,6 +274,11 @@ document.getElementById('contact-form').addEventListener('submit', async (e) => 
         </div>
     </div>
   </footer>
+
+  <!-- SCROLL TOP -->
+  <button id="scrollTop" title="Back to top">
+    <svg class="scroll-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+  </button>
 
   <!-- SCRIPTS -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
