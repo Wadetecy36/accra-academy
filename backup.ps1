@@ -23,7 +23,7 @@ if (!(Test-Path $BackupPath)) {
 }
 
 # Run Robocopy (Mirror Mode)
-robocopy $SourcePath $BackupPath /MIR /XO /FFT /R:1 /W:1 /XD node_modules .git server\node_modules
+robocopy $SourcePath $BackupPath /MIR /XO /FFT /R:1 /W:1 /XD node_modules .git server\node_modules tailwindcss
 
 Write-Host "[DONE]" -ForegroundColor Green
 Read-Host "Press Enter to close"
