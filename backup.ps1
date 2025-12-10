@@ -1,6 +1,6 @@
 # --- CONFIGURATION ---
 $SourcePath = "C:\Users\Trinity\Desktop\accra-academy-website"
-$BackupPath = "E:\MyBackups\AccraAcademy"
+$BackupPath = "F:\accra-academy-website"
 
 Write-Host "[STARTING BACKUP]" -ForegroundColor Cyan
 
