@@ -6,6 +6,7 @@
   <title>Contact Us - Accra Academy</title>
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
 
+
   <!-- TAILWIND CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -20,11 +21,20 @@
     }
   </script>
 
+
   <!-- CUSTOM CSS -->
   <link href="./css/custom.css" rel="stylesheet">
+
+  <!-- THREE.JS (Required for 3D Background) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
 </head>
 
-<body class="min-h-screen bg-soft dark:bg-gray-900 transition-colors duration-300">
+<!-- SENIOR DEV FIX: Removed solid bg classes so 3D background shows through -->
+<body class="min-h-screen transition-colors duration-300" id="main-content">
+
+   <!-- 3D BACKGROUND CANVAS -->
+    <div id="canvas-container" class="fixed inset-0 z-[-1] pointer-events-none"></div>
 
     <!-- HEADER -->
     <header class="site-header sticky top-0 z-50 transition-all duration-300">
