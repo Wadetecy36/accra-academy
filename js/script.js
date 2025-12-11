@@ -25,21 +25,22 @@ document.addEventListener('DOMContentLoaded', () => {
             // SENIOR DEV: Initialization Log
             console.log('%c 🔧 DOMContentLoaded: Initializing Scripts... ', 'background: #002147; color: #FDBE11; font-weight: bold;');
 
-            /* =========================================
-       0. MOBILE MENU TOGGLE (REFINED)
-       ========================================= */
+             /* =========================================
+                0. MOBILE MENU TOGGLE (REFINED)
+            ========================================= */
             const mobileBtn = document.getElementById('mobile-btn');
             const mobileMenu = document.getElementById('mobile-menu');
 
             if (mobileBtn && mobileMenu) {
                 mobileBtn.addEventListener('click', () => {
-                    // Toggle Hidden Class
+
+                   // Toggle Hidden Class
                     const isHidden = mobileMenu.classList.contains('hidden');
 
-                    if (isHidden) {
-                        // OPEN MENU
+                 if (isHidden) {
+                   // OPEN MENU
                         mobileMenu.classList.remove('hidden');
-                        // Change Icon to 'X'
+                    // Change Icon to 'X'
                         mobileBtn.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
                     } else {
                         // CLOSE MENU
@@ -72,7 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         const y = e.clientY - rect.top;
                         const centerX = rect.width / 2;
                         const centerY = rect.height / 2;
-                        // Max tilt 10 degrees
+
+
+                     // Max tilt 10 degrees
                         const rotateX = ((y - centerY) / centerY) * -10;
                         const rotateY = ((x - centerX) / centerX) * 10;
 
@@ -85,9 +88,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
-            /* =========================================
-       2. DARK MODE TOGGLE
-       ========================================= */
+         /* =========================================
+            2. DARK MODE TOGGLE
+         ========================================= */
             const themeToggle = document.getElementById('theme-toggle');
             const html = document.documentElement;
 
@@ -299,6 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
             /* =================================================================
            10. AI CHATBOT LOGIC (VOICE, CHIPS, & MEMORY ENABLED)
            ================================================================= */
+
              const chatToggle = document.getElementById('chat-toggle');
     const chatWindow = document.getElementById('chat-window');
     const chatForm = document.getElementById('chat-form');
