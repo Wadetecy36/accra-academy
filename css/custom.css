@@ -345,31 +345,40 @@ body.debug-layout img { outline: 2px solid blue !important; }
 }
 
 /* =========================================
-   GOLDEN AURA ANIMATION
+   HERO CREST: GOLDEN GLASS ORB
    ========================================= */
 
-@keyframes gold-aura-pulse {
-    0% {
-        /* Low glow, standard size */
-        filter: drop-shadow(0 0 5px rgba(253, 190, 17, 0.3));
+@keyframes gold-breathe {
+    0%, 100% {
+        /* Subtle glow, lower opacity */
+        box-shadow: 0 0 25px rgba(253, 190, 17, 0.2), 
+                    inset 0 0 10px rgba(253, 190, 17, 0.1);
+        border-color: rgba(253, 190, 17, 0.3);
         transform: scale(1);
     }
     50% {
-        /* High glow (double layered for intensity), slight expansion */
-        filter: drop-shadow(0 0 20px rgba(253, 190, 17, 0.8)) 
-                drop-shadow(0 0 40px rgba(253, 190, 17, 0.4));
-        transform: scale(1.05);
-    }
-    100% {
-        /* Return to start */
-        filter: drop-shadow(0 0 5px rgba(253, 190, 17, 0.3));
-        transform: scale(1);
+        /* Intense glow, expanded aura */
+        box-shadow: 0 0 60px rgba(253, 190, 17, 0.6), 
+                    inset 0 0 20px rgba(253, 190, 17, 0.2);
+        border-color: rgba(253, 190, 17, 0.8);
+        transform: scale(1.02); /* Slight physical expansion */
     }
 }
 
-.crest-aura {
-    /* Apply the animation: 3 seconds loop, smooth easing */
-    animation: gold-aura-pulse 3s infinite ease-in-out;
-    /* Ensure the image doesn't get pixelated during transform */
-    will-change: filter, transform; 
+.crest-glass-orb {
+    /* 1. Glass Physics */
+    background: rgba(255, 255, 255, 0.03); /* Extremely faint fill */
+    backdrop-filter: blur(10px);            /* The frosted effect */
+    -webkit-backdrop-filter: blur(10px);    /* Safari support */
+    
+    /* 2. Shape & Layout */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(253, 190, 17, 0.3); /* Initial gold rim */
+    
+    /* 3. Animation Trigger */
+    animation: gold-breathe 4s ease-in-out infinite;
+    will-change: box-shadow, transform;
 }
