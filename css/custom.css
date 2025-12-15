@@ -22,17 +22,22 @@
     --text-secondary: #94a3b8;
     --footer-bg: #020617;
 }
+html { 
+    scroll-behavior: smooth; 
+    /* ADD THESE LINES BELOW: */
+    background-color: #002147; /* Royal Blue */
+    height: 100%;
+}
 
-html { scroll-behavior: smooth; }
-
-/* 1. BODY TRANSPARENCY (Keeps 3D Background Visible) */
+/* Update Body to ensure it fills space but stays transparent for 3D */
 body {
     font-family: 'Merriweather', serif;
     font-weight: 300;
     color: #0F172A;
-    background: transparent !important;
-    background-color: #0f172a; /* Fallback */
-    transition: color 0.3s ease;
+    background: transparent !important; /* Key for 3D visibility */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .dark body { color: var(--text-primary); }
@@ -152,11 +157,17 @@ body {
 .swiper-button-next:hover, .swiper-button-prev:hover { background: var(--gold); color: var(--royal) !important; transform: scale(1.1); }
 @media (max-width: 640px) { .swiper-button-next, .swiper-button-prev { display: none; } }
 
-/* --- FOOTER --- */
 .site-footer {
-    background: var(--footer-bg); color: var(--footer-text);
-    padding: 4rem 0 2rem; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 4rem;
-    position: relative; z-index: 20;
+    background: var(--footer-bg); 
+    color: var(--footer-text);
+    padding: 4rem 0 2rem; 
+    border-top: 1px solid rgba(255,255,255,0.1);
+    
+    /* CHANGE THIS: */
+    margin-top: -1px; /* Pulls footer up slightly to cover the gap */
+    
+    position: relative; 
+    z-index: 20;
 }
 .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem; margin-bottom: 3rem; }
 .footer-col { padding: 0.6rem; }

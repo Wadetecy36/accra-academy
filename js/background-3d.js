@@ -34,24 +34,32 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // --- 3. THE CREST (Mesh) ---
+  // --- 3. THE CREST (Mesh) ---
     const textureLoader = new THREE.TextureLoader();
 
     // Load your specific crest image
-    textureLoader.load('./assets/crest.png', (texture) => {
-        const geometry = new THREE.PlaneGeometry(3.5, 3.5);
-        const material = new THREE.MeshStandardMaterial({
-            map: texture,
-            transparent: true,
-            side: THREE.DoubleSide,
-            roughness: 0.4,
-            metalness: 0.6
-        });
+    textureLoader.load(
+        './assets/crest.png', // Ensure this file exists!
+        (texture) => {
+            const geometry = new THREE.PlaneGeometry(3.5, 3.5);
+            
+            // CHANGED: Use MeshBasicMaterial so it glows without needing light
+            const material = new THREE.MeshBasicMaterial({
+                map: texture,
+                transparent: true,
+                side: THREE.DoubleSide,
+                // No roughness/metalness needed here
+            });
 
-        crestMesh = new THREE.Mesh(geometry, material);
-        scene.add(crestMesh);
-    });
-
+            crestMesh = new THREE.Mesh(geometry, material);
+            scene.add(crestMesh);
+            console.log("✅ Crest Loaded Successfully");
+        },
+        undefined, // onProgress
+        (err) => {
+            console.error("❌ Error loading Crest image:", err);
+        }
+    );
     // --- 4. LIGHTING ---
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
