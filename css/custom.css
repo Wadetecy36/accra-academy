@@ -343,3 +343,33 @@ body.debug-layout img { outline: 2px solid blue !important; }
 .animate-marquee {
     animation: marquee 15s linear infinite;
 }
+
+/* =========================================
+   GOLDEN AURA ANIMATION
+   ========================================= */
+
+@keyframes gold-aura-pulse {
+    0% {
+        /* Low glow, standard size */
+        filter: drop-shadow(0 0 5px rgba(253, 190, 17, 0.3));
+        transform: scale(1);
+    }
+    50% {
+        /* High glow (double layered for intensity), slight expansion */
+        filter: drop-shadow(0 0 20px rgba(253, 190, 17, 0.8)) 
+                drop-shadow(0 0 40px rgba(253, 190, 17, 0.4));
+        transform: scale(1.05);
+    }
+    100% {
+        /* Return to start */
+        filter: drop-shadow(0 0 5px rgba(253, 190, 17, 0.3));
+        transform: scale(1);
+    }
+}
+
+.crest-aura {
+    /* Apply the animation: 3 seconds loop, smooth easing */
+    animation: gold-aura-pulse 3s infinite ease-in-out;
+    /* Ensure the image doesn't get pixelated during transform */
+    will-change: filter, transform; 
+}

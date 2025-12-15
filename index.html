@@ -101,9 +101,17 @@
   <!-- We removed the solid bg-royal divs so the 3D background shows through -->
   <section class="min-h-screen flex items-center justify-center section-glass text-center px-4" data-aos="fade-up">
     <div class="container relative z-10">
-        <div class="mb-6">
-            <img src="./assets/crest.png" alt="Crest" class="w-24 h-24 md:w-32 md:h-32 mx-auto drop-shadow-2xl" fetchpriority="high">
-        </div>
+      <div class="mb-6">
+    <!-- OLD CODE -->
+    <!-- <img src="./assets/crest.png" alt="Crest" class="w-24 h-24 md:w-32 md:h-32 mx-auto drop-shadow-2xl" fetchpriority="high"> -->
+    
+    <!-- NEW CODE: Added 'crest-aura' class -->
+    <img src="./assets/crest.png" 
+         alt="Crest" 
+         class="w-24 h-24 md:w-32 md:h-32 mx-auto crest-aura" 
+         fetchpriority="high">
+</div>
+
         <h1 class="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-4 leading-tight text-royal dark:text-white">Welcome to <span class="text-gold">Accra Academy</span></h1>
         <p class="text-lg md:text-2xl text-gray-600 dark:text-gray-300 italic mb-10 max-w-2xl mx-auto">"Esse Quam Videri – To Be, Rather Than to Seem"</p>
 
