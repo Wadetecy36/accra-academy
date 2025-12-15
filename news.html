@@ -16,30 +16,52 @@
 <body class="min-h-screen bg-soft dark:bg-gray-900 transition-colors duration-300 flex flex-col">
 
   <!-- STANDARD HEADER -->
-  <!-- HEADER -->
-  <header class="site-header fixed top-0 w-full z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
-    <div class="container mx-auto px-4 md:px-6 flex justify-between items-center h-16 md:h-20">
-        <div class="brand flex items-center gap-3">
-            <img src="./assets/crest.png" alt="Crest" class="w-10 h-10 md:w-12 md:h-12 object-contain">
-            <div class="brand-text leading-tight">
-                <h1 class="text-lg md:text-2xl font-bold text-royal dark:text-gold font-display">Accra Academy</h1>
-                <p class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest hidden sm:block">Esse Quam Videri</p>
+    <header class="site-header sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 h-20 flex justify-between items-center">
+
+            <!-- 1. BRAND -->
+            <a href="./index.html" class="flex items-center gap-3 group">
+                <img src="./assets/crest.png" alt="Accra Academy Crest" class="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300">
+                <div class="flex flex-col">
+                    <h1 class="text-xl md:text-2xl font-bold text-royal dark:text-gold font-display leading-tight tracking-tight">Accra Academy</h1>
+                    <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-semibold">Esse Quam Videri</p>
+                </div>
+            </a>
+
+            <!-- 2. DESKTOP NAV -->
+            <nav class="hidden lg:flex items-center gap-8 text-sm font-bold tracking-wide">
+                <a href="./index.html" class="text-royal dark:text-gold border-b-2 border-gold pb-1">HOME</a>
+                <a href="./about.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">ABOUT</a>
+                <a href="./academics.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">ACADEMICS</a>
+                <a href="./news.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">NEWS</a>
+                <a href="./gallery.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">GALLERY</a>
+                <a href="./contacts.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">CONTACT</a>
+            </nav>
+
+            <!-- 3. CONTROLS -->
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-royal dark:text-gold hover:ring-2 hover:ring-gold transition shadow-sm" aria-label="Toggle dark mode">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+                <button id="mobile-btn" class="lg:hidden p-2 text-royal dark:text-gold focus:outline-none" aria-label="Open Menu">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
             </div>
         </div>
-        <nav class="navlinks hidden md:flex gap-6 text-sm font-bold uppercase tracking-wide">
-            <a href="./index.html" class="hover:text-gold transition">Home</a>
-            <a href="./about.html" class="hover:text-gold transition">About</a>
-            <a href="./academics.html" class="hover:text-gold transition">Academics</a>
-            <a href="./news.html" class="text-gold border-b-2 border-gold">News</a>
-            <a href="./gallery.html" class="hover:text-gold transition">Gallery</a>
-            <a href="./contacts.html" class="hover:text-gold transition">Contact</a>
-        </nav>
-        <div class="flex items-center gap-3">
-            <button id="theme-toggle" class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:text-gold"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg></button>
-            <button class="mobile-btn md:hidden text-2xl text-royal dark:text-gold p-1">☰</button>
+
+        <!-- 4. MOBILE MENU -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-t border-gray-200 dark:border-gray-800 shadow-2xl origin-top transition-all duration-300">
+            <nav class="flex flex-col p-6 gap-4 text-center">
+                <a href="./index.html" class="text-royal dark:text-gold font-bold text-lg py-2 border-b border-gray-100 dark:border-gray-800">Home</a>
+                <a href="./about.html" class="text-gray-600 dark:text-gray-300 hover:text-gold py-2">About Us</a>
+                <a href="./academics.html" class="text-gray-600 dark:text-gray-300 hover:text-gold py-2">Academics</a>
+                <a href="./news.html" class="text-gray-600 dark:text-gray-300 hover:text-gold py-2">News</a>
+                <a href="./gallery.html" class="text-gray-600 dark:text-gray-300 hover:text-gold py-2">Gallery</a>
+                <a href="./contacts.html" class="text-gray-600 dark:text-gray-300 hover:text-gold py-2">Contact</a>
+            </nav>
         </div>
-    </div>
-  </header>
+    </header>
+
 
   <!-- HERO (Added pt-28) -->
   <section class="pt-28 pb-16 bg-royal text-white relative overflow-hidden">
