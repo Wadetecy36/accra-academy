@@ -192,20 +192,19 @@
 <!-- =========================================
        THE BLEOO EXPERIENCE (ZIG-ZAG LAYOUT)
        ========================================= -->
-  <section class="py-24 relative overflow-hidden bg-soft dark:bg-gray-900">
+  <!-- MODIFIED: Uses 'glass-clear' to reveal the 3D background -->
+  <section class="py-24 relative overflow-hidden section-glass glass-clear">
       
-      <!-- Background Decorative Blob -->
-      <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-gold/5 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
+      <!-- No internal background blobs - letting the 3D Canvas shine through -->
 
       <div class="container mx-auto px-4 md:px-6 relative z-10">
           
-          <!-- BLOCK 1: ACADEMICS (Text Left, Image Right) -->
+          <!-- BLOCK 1: ACADEMICS -->
           <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
-              
               <!-- Text Side -->
               <div data-aos="fade-right">
                   <div class="flex items-center gap-3 mb-4">
-                      <span class="w-12 h-1 bg-gold rounded-full"></span>
+                      <span class="w-12 h-1 bg-gold rounded-full shadow-[0_0_10px_#FDBE11]"></span>
                       <span class="text-royal dark:text-gold font-bold uppercase tracking-widest text-sm">Academic Rigor</span>
                   </div>
                   <h2 class="text-3xl md:text-5xl font-display font-bold text-royal dark:text-white mb-6 leading-tight">

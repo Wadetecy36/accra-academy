@@ -382,3 +382,20 @@ body.debug-layout img { outline: 2px solid blue !important; }
     animation: gold-breathe 4s ease-in-out infinite;
     will-change: box-shadow, transform;
 }
+
+/* =========================================
+   TRANSPARENT GLASS MODIFIER (For Parallax)
+   ========================================= */
+.glass-clear {
+    /* Lower opacity (0.6) allows the 3D background to show through */
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(8px) !important; /* Lower blur to see shapes better */
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass-clear {
+    /* Dark mode transparency */
+    background: rgba(2, 6, 23, 0.6) !important; 
+    border-color: rgba(255, 255, 255, 0.05);
+}
