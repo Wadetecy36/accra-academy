@@ -112,20 +112,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
-            /* =========================================
-       3. GALLERY SWIPER (RESPONSIVE)
+           /* =========================================
+       3. GALLERY SWIPER (PANORAMIC CONFIG)
        ========================================= */
             if (document.querySelector('.mySwiper')) {
                 if (typeof Swiper === 'undefined') {
                     console.error('❌ Swiper JS not detected. Gallery will not work.');
                 } else {
                     var swiper = new Swiper(".mySwiper", {
-                        slidesPerView: 1,
-                        spaceBetween: 30,
+                        // 'auto' allows CSS to determine width (critical for the stretched look)
+                        slidesPerView: "auto",
+                        centeredSlides: true,
+                        spaceBetween: 24, // More breathing room between slides
                         loop: true,
                         grabCursor: true,
+                        speed: 800, // Smoother, slower transition
                         autoplay: {
-                            delay: 3500,
+                            delay: 4000,
                             disableOnInteraction: false,
                             pauseOnMouseEnter: true,
                         },
@@ -138,37 +141,15 @@ document.addEventListener('DOMContentLoaded', () => {
                             clickable: true,
                             dynamicBullets: true,
                         },
+                        // Breakpoints are handled by CSS width, but we add safety here
                         breakpoints: {
-                            640: { slidesPerView: 2, spaceBetween: 20 },
-                            1024: { slidesPerView: 3, spaceBetween: 30 },
+                            640: { spaceBetween: 20 },
+                            1024: { spaceBetween: 40 },
                         },
                     });
-                    console.log('✅ Swiper Initialized');
+                    console.log('✅ Swiper Initialized (Panoramic Mode)');
                 }
             }
-
-            /* =========================================
-       4. ABOUT PAGE CAROUSEL (MANUAL)
-       ========================================= */
-            const slides = document.querySelectorAll('.carousel-item');
-            if (slides.length > 0) {
-                let slideIndex = 0;
-                showSlides(slideIndex);
-
-                window.plusSlides = function(n) {
-                    showSlides(slideIndex += n);
-                }
-
-                function showSlides(n) {
-                    if (n >= slides.length) slideIndex = 0;
-                    if (n < 0) slideIndex = slides.length - 1;
-                    slides.forEach(slide => slide.classList.remove('active'));
-                    slides[slideIndex].classList.add('active');
-                }
-                setInterval(() => plusSlides(1), 6000);
-                console.log(`🎞️ Custom Carousel started with ${slides.length} slides.`);
-            }
-
             /* =========================================
        5. SCROLL TO TOP & COPYRIGHT
        ========================================= */
