@@ -97,91 +97,94 @@
         </div>
     </header>
 
- <!-- HERO SECTION -->
+  <!-- HERO (Glass Mode) -->
 <section class="min-h-screen flex items-center justify-center section-glass text-center px-4" data-aos="fade-up">
-    <div class="container relative z-10">
-        <div class="mb-6">
-            <img src="./assets/crest.png" alt="Crest" class="w-24 h-24 md:w-32 md:h-32 mx-auto drop-shadow-2xl" fetchpriority="high">
-        </div>
-        <h1 class="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-4 leading-tight text-royal dark:text-white">
-            Welcome to <span class="text-gold">Accra Academy</span>
-        </h1>
-        <p class="text-lg md:text-2xl text-gray-600 dark:text-gray-300 italic mb-10 max-w-2xl mx-auto">
-            "Esse Quam Videri – To Be, Rather Than to Seem"
-        </p>
+  <div class="container relative z-10">
+      
+      <!-- UPDATED CREST CONTAINER -->
+      <div class="mb-8 flex justify-center">
+          <!-- The Glass Orb Container -->
+          <div class="crest-glass-orb w-32 h-32 md:w-40 md:h-40">
+              <!-- The Crest Image (Slightly smaller to fit inside) -->
+              <img src="./assets/crest.png" 
+                   alt="Crest" 
+                   class="w-20 h-20 md:w-24 md:h-24 object-contain drop-shadow-lg" 
+                   fetchpriority="high">
+          </div>
+      </div>
+      <!-- END UPDATED CONTAINER -->
 
-        <!-- Call to Action Buttons (Main) -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16" data-aos="fade-up" data-aos-delay="200">
+      <h1 class="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-4 leading-tight text-royal dark:text-white">
+          Welcome to <span class="text-gold">Accra Academy</span>
+      </h1>
+      <p class="text-lg md:text-2xl text-gray-600 dark:text-gray-300 italic mb-10 max-w-2xl mx-auto">"Esse Quam Videri – To Be, Rather Than to Seem"</p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <a href="./about.html" class="btn primary w-full sm:w-auto text-center">Discover History</a>
             <a href="./contacts.html" class="btn ghost w-full sm:w-auto text-center text-royal dark:text-white border-royal dark:border-white">Admissions</a>
         </div>
-    </div>
-</section>
 
-<!-- QUOTE SECTION -->
-<section class="py-16 bg-soft dark:bg-gray-800 relative overflow-hidden">
-    <!-- 🖼️ BACKGROUND (OPTIONAL) -->
-    <div class="absolute inset-0 bg-[url('./assets/quote-bg.jpg')] bg-cover bg-center opacity-20 pointer-events-none z-10"></div>
-    <!-- GRADIENT (Enhance Contrast) -->
-    <div class="absolute inset-0 bg-gradient-to-r from-royal/70 to-transparent z-10"></div>
-
-    <div class="container relative z-20 text-center">
-        <blockquote class="text-2xl md:text-3xl italic text-white font-display leading-relaxed max-w-2xl mx-auto" data-aos="fade-up">
-            "Esse Quam Videri." <br> "To Be, Rather Than To Seem."
-        </blockquote>
-        <p class="text-sm text-gray-300 mt-4">-- Accra Academy Motto</p>
-    </div>
-</section>
-
-<!-- EXPLORE CAMPUS (Refactored Grid) -->
-<section class="py-16 section-glass">
-    <div class="container mx-auto px-4 md:px-6">
-        <div class="text-center mb-12" data-aos="fade-up">
-            <h2 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white">Explore Campus</h2>
-            <p class="text-gray-500 mt-2">Discover what makes Bleoo unique.  <a href="./academics.html" class="text-gold hover:underline">Learn about our Programs</a></p>
+        <!-- Info Cards (Glass) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto text-left">
+            <div class="p-6 rounded-2xl bg-white/40 dark:bg-white/5 backdrop-blur-md border border-white/20 hover:bg-white/50 dark:hover:bg-white/10 transition" data-aos="fade-up" data-aos-delay="100">
+                <h3 class="font-bold text-xl text-gold mb-1">Founded 1931</h3>
+                <p class="text-sm text-gray-700 dark:text-gray-300">A legacy of excellence spanning over 90 years.</p>
+            </div>
+            <div class="p-6 rounded-2xl bg-white/40 dark:bg-white/5 backdrop-blur-md border border-white/20 hover:bg-white/50 dark:hover:bg-white/10 transition" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="font-bold text-xl text-gold mb-1">5000+ Students</h3>
+                <p class="text-sm text-gray-700 dark:text-gray-300">Shaping young minds for a brighter future.</p>
+            </div>
+            <div class="p-6 rounded-2xl bg-white/40 dark:bg-white/5 backdrop-blur-md border border-white/20 hover:bg-white/50 dark:hover:bg-white/10 transition" data-aos="fade-up" data-aos-delay="300">
+                <h3 class="font-bold text-xl text-gold mb-1">100+ Staff</h3>
+                <p class="text-sm text-gray-700 dark:text-gray-300">Dedicated educators committed to success.</p>
+            </div>
         </div>
+    </div>
+  </section>
 
-        <div class="features-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <!-- EXPLORE FEATURES (Glass Mode) -->
+  <!-- Replaced bg-soft with section-glass -->
+  <section class="py-20 section-glass">
+    <div class="container mx-auto px-4 md:px-6">
+       <div class="text-center mb-12" data-aos="fade-up">
+           <h2 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white">Explore Campus</h2>
+           <p class="text-gray-500 mt-2">Discover what makes Bleoo unique.</p>
+       </div>
+       <div class="features-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- Feature Cards (CSS handles glass styling) -->
             <a href="./academics.html" class="feature-card group block p-6" data-aos="fade-up" data-aos-delay="100">
                 <div class="icon mb-4 text-royal dark:text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg></div>
-                <h3 class="text-lg font-bold mb-2">Academics</h3>
-                <p class="text-sm">Rigorous programs for leadership.</p>
-                <span class="text-xs text-gold font-bold uppercase">Discover Programs →</span>
+                <h3 class="text-lg font-bold mb-2">Programs</h3>
+                <p class="text-sm">Diverse academic programs building leadership.</p>
             </a>
             <a href="./academics.html" class="feature-card group block p-6" data-aos="fade-up" data-aos-delay="200">
                 <div class="icon mb-4 text-royal dark:text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg></div>
-                <h3 class="text-lg font-bold mb-2">Laboratories</h3>
-                <p class="text-sm">Cutting-edge science labs.</p>
-                <span class="text-xs text-gold font-bold uppercase">Explore Labs →</span>
+                <h3 class="text-lg font-bold mb-2">Science Labs</h3>
+                <p class="text-sm">State-of-the-art labs for hands-on experiments.</p>
             </a>
             <a href="./gallery.html" class="feature-card group block p-6" data-aos="fade-up" data-aos-delay="300">
                 <div class="icon mb-4 text-royal dark:text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg></div>
                 <h3 class="text-lg font-bold mb-2">Sports</h3>
-                <p class="text-sm">World-class sports facilities.</p>
-                <span class="text-xs text-gold font-bold uppercase">See our Sports →</span>
+                <p class="text-sm">World-class training grounds for future champions.</p>
             </a>
             <a href="#" class="feature-card group block p-6" data-aos="fade-up" data-aos-delay="400">
                 <div class="icon mb-4 text-royal dark:text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-3a1 1 0 011-1h2a1 1 0 011 1v3m-5-6h6m-6 0H4m12 0h4m-6-6h6m-6 0H4"></path></svg></div>
-                <h3 class="text-lg font-bold mb-2">Boarding</h3>
-                <p class="text-sm">Safe, supportive boarding houses.</p>
-                <span class="text-xs text-gold font-bold uppercase">Explore Halls →</span>
+                <h3 class="text-lg font-bold mb-2">Halls</h3>
+                <p class="text-sm">Boarding facilities fostering brotherhood.</p>
             </a>
             <a href="./news.html" class="feature-card group block p-6" data-aos="fade-up" data-aos-delay="500">
                 <div class="icon mb-4 text-royal dark:text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg></div>
                 <h3 class="text-lg font-bold mb-2">News</h3>
-                <p class="text-sm">Catch up with school events.</p>
-                <span class="text-xs text-gold font-bold uppercase">Latest News →</span>
+                <p class="text-sm">Stay up to date with school events.</p>
             </a>
             <a href="#" class="feature-card group block p-6" data-aos="fade-up" data-aos-delay="600">
                 <div class="icon mb-4 text-royal dark:text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div>
                 <h3 class="text-lg font-bold mb-2">Clubs</h3>
-                <p class="text-sm">Join diverse student clubs.</p>
-                <span class="text-xs text-gold font-bold uppercase">Discover Clubs →</span>
+                <p class="text-sm">Creativity, teamwork, and leadership.</p>
             </a>
-        </div>
+       </div>
     </div>
-</section>
+  </section>
 
   <!-- LEGACY (Glass Mode) -->
   <section class="py-20 section-glass">
