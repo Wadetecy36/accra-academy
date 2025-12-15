@@ -1,11 +1,10 @@
 /* ============================================================= */
-/*  js/portal.js – SECURE STUDENT DASHBOARD LOGIC                */
+/*  js/portal.js – SECURE DASHBOARD LOGIC (THEME MATCHED)        */
 /* ============================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
     
     // --- CONFIGURATION ---
-    // Since api/index.js routes are mapped to /api in vercel.json
     const API_BASE = '/api'; 
 
     // --- DOM ELEMENTS ---
@@ -57,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 errorBox.classList.remove('hidden');
                 btn.innerText = originalText;
                 btn.disabled = false;
-                // Shake effect on error
+                // Shake effect
                 loginView.classList.add('animate-pulse');
                 setTimeout(() => loginView.classList.remove('animate-pulse'), 500);
             }
@@ -75,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 4. DASHBOARD LOADER ---
     async function loadDashboard(token) {
         try {
-            // Fetch Profile Data
             const res = await fetch(`${API_BASE}/student/profile`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -84,10 +82,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const student = await res.json();
 
-            // SWITCH VIEWS
-            loginView.classList.add('hidden');
-            dashboardView.classList.remove('hidden');
-            logoutBtn.classList.remove('hidden');
+            // ANIMATE TRANSITION
+            loginView.style.opacity = '0';
+            setTimeout(() => {
+                loginView.classList.add('hidden');
+                dashboardView.classList.remove('hidden');
+                logoutBtn.classList.remove('hidden');
+                // Subtle fade in
+                dashboardView.classList.add('animate-fade-in');
+            }, 300);
             
             // Populate UI
             populateUI(student);
@@ -95,66 +98,57 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
             console.error("Dashboard Load Error:", err);
             localStorage.removeItem('bleoo_student_token');
-            if(!loginView.classList.contains('hidden')) return; // Already at login
+            if(!loginView.classList.contains('hidden')) return;
             window.location.reload();
         }
     }
 
     // --- 5. UI POPULATION ---
     function populateUI(s) {
-        // Identity
         document.getElementById('p-name').innerText = s.fullName;
         document.getElementById('p-index').innerText = s.indexNumber;
         document.getElementById('p-prog').innerText = s.program;
         document.getElementById('p-house').innerText = s.house;
-        document.getElementById('p-year').innerText = s.yearOfCompletion;
         document.getElementById('p-class').innerText = s.currentClass;
         
-        // Avatar (Initials)
-        document.getElementById('p-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(s.fullName)}&background=002147&color=FDBE11&bold=true&length=2`;
+        document.getElementById('p-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(s.fullName)}&background=FDBE11&color=002147&bold=true&size=128`;
 
-        // Stats
         document.getElementById('p-gpa').innerText = s.gpa ? s.gpa.toFixed(2) : "0.00";
         document.getElementById('p-attendance').innerText = (s.attendance || 0) + "%";
 
-        // Status Badge Logic
         const currentYear = new Date().getFullYear();
         const statusBadge = document.getElementById('p-status');
         if (s.yearOfCompletion < currentYear) {
             statusBadge.innerText = "ALUMNI";
-            statusBadge.className = "px-3 py-1 bg-gold text-royal text-[10px] font-bold uppercase rounded-full";
+            statusBadge.className = "inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gold text-royal border border-royal";
         }
 
-        // Table & Chart
         if (s.transcript && s.transcript.length > 0) {
             renderTranscript(s.transcript);
             renderChart(s.transcript);
         } else {
-            document.getElementById('results-body').innerHTML = `<tr><td colspan="4" class="p-4 text-center text-gray-400">No academic records found.</td></tr>`;
+            document.getElementById('results-body').innerHTML = `<tr><td colspan="4" class="p-6 text-center text-gray-400 italic">No academic records found for this index number.</td></tr>`;
         }
     }
 
     function renderTranscript(transcript) {
-        // Get latest semester
         const latest = transcript[transcript.length - 1];
         const tbody = document.getElementById('results-body');
-        
         if(!latest) return;
 
-        tbody.innerHTML = latest.courses.map(c => `
-            <tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
-                <td class="p-4">${c.subject}</td>
-                <td class="p-4 font-bold ${getGradeColor(c.grade)}">${c.grade}</td>
-                <td class="p-4 text-gray-500">${c.score}</td>
+        tbody.innerHTML = latest.courses.map((c, index) => `
+            <tr class="border-b border-gray-100 dark:border-gray-700/50 hover:bg-gold/5 transition ${index % 2 === 0 ? 'bg-gray-50/50 dark:bg-white/5' : ''}">
+                <td class="p-4 font-bold text-royal dark:text-gray-200">${c.subject}</td>
+                <td class="p-4 font-black ${getGradeColor(c.grade)}">${c.grade}</td>
+                <td class="p-4 text-gray-500 dark:text-gray-400 font-mono">${c.score}</td>
                 <td class="p-4 text-xs font-bold text-gray-400 uppercase tracking-wide">${getRemark(c.grade)}</td>
             </tr>
         `).join('');
     }
 
+    // THEME MATCHED CHART
     function renderChart(transcript) {
         const ctx = document.getElementById('gradesChart').getContext('2d');
-        
-        // Simple Logic: Calculate average score per semester
         const labels = transcript.map(t => t.semester || 'Sem X');
         const dataPoints = transcript.map(t => {
             if(!t.courses || t.courses.length === 0) return 0;
@@ -162,19 +156,25 @@ document.addEventListener('DOMContentLoaded', () => {
             return (total / t.courses.length).toFixed(1);
         });
 
+        // Gradient for Chart
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(253, 190, 17, 0.5)'); // Gold
+        gradient.addColorStop(1, 'rgba(253, 190, 17, 0.0)');
+
         new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Average Performance',
+                    label: 'GPA Trend',
                     data: dataPoints,
-                    borderColor: '#FDBE11',
-                    backgroundColor: 'rgba(253, 190, 17, 0.1)',
+                    borderColor: '#FDBE11', // Gold
+                    backgroundColor: gradient,
                     borderWidth: 3,
-                    pointBackgroundColor: '#002147',
-                    pointBorderColor: '#fff',
+                    pointBackgroundColor: '#002147', // Royal
+                    pointBorderColor: '#FDBE11',
                     pointRadius: 6,
+                    pointHoverRadius: 8,
                     tension: 0.4,
                     fill: true
                 }]
@@ -184,18 +184,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    y: { beginAtZero: false, min: 40, max: 100, grid: { borderDash: [5, 5] } },
-                    x: { grid: { display: false } }
+                    y: { 
+                        beginAtZero: false, 
+                        min: 40, 
+                        max: 100, 
+                        grid: { color: 'rgba(255,255,255,0.05)', borderDash: [5, 5] },
+                        ticks: { color: '#9ca3af' }
+                    },
+                    x: { 
+                        grid: { display: false },
+                        ticks: { color: '#9ca3af' }
+                    }
                 }
             }
         });
     }
 
-    // Helpers
     function getGradeColor(g) {
-        if (['A1', 'B2', 'B3'].includes(g)) return 'text-green-600';
-        if (['C4', 'C5', 'C6'].includes(g)) return 'text-yellow-600';
-        return 'text-red-600';
+        if (['A1', 'B2', 'B3'].includes(g)) return 'text-green-500';
+        if (['C4', 'C5', 'C6'].includes(g)) return 'text-yellow-500';
+        return 'text-red-500';
     }
 
     function getRemark(g) {

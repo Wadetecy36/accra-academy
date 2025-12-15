@@ -5,167 +5,234 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Student Portal - Accra Academy</title>
   <link rel="icon" href="./favicon.ico">
-  
+
   <!-- TAILWIND -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = { 
-        darkMode: 'class', 
-        theme: { extend: { colors: { royal: '#002147', gold: '#FDBE11', soft: '#F0F4F8' }, fontFamily: { display: ['Merriweather', 'serif'] } } } 
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: { royal: '#002147', gold: '#FDBE11', soft: '#F0F4F8' },
+          fontFamily: { display: ['Merriweather', 'serif'], body: ['Inter', 'sans-serif'] }
+        }
+      }
     }
   </script>
-  
+
   <!-- LIBS -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link href="./css/custom.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Graphing Engine -->
+  
+  <!-- CHART.JS & THREE.JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+      /* Portal Specific Glass Override for Darker Contrast */
+      .portal-glass {
+          background: rgba(255, 255, 255, 0.85);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.5);
+          box-shadow: 0 8px 32px 0 rgba(0, 33, 71, 0.15);
+      }
+      .dark .portal-glass {
+          background: rgba(2, 6, 23, 0.85);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+  </style>
 </head>
 
-<body class="bg-gray-50 dark:bg-gray-900 font-sans min-h-screen flex flex-col transition-colors duration-300">
+<body class="min-h-screen transition-colors duration-300 font-body overflow-x-hidden flex flex-col" id="main-content">
 
-  <!-- NAV -->
-  <header class="bg-royal text-white py-4 px-6 z-50 shadow-lg flex justify-between items-center sticky top-0">
-      <div class="flex items-center gap-3">
-          <img src="./assets/crest.png" class="w-10 h-10 object-contain">
-          <div>
-              <h1 class="font-display font-bold text-lg leading-tight">Student Portal</h1>
-              <p class="text-[10px] text-gold tracking-widest uppercase">Secure Access</p>
+  <!-- 3D BACKGROUND (THE REAL DEAL) -->
+  <div id="canvas-container" class="fixed inset-0 z-[-1] pointer-events-none"></div>
+
+  <!-- HEADER -->
+  <header class="site-header sticky top-0 z-50 transition-all duration-300">
+      <div class="container mx-auto px-4 h-20 flex justify-between items-center">
+          <a href="./index.html" class="flex items-center gap-3 group">
+              <img src="./assets/crest.png" alt="Crest" class="w-10 h-10 object-contain group-hover:scale-110 transition">
+              <div class="flex flex-col">
+                  <h1 class="text-xl font-bold text-royal dark:text-gold font-display leading-tight">Student Portal</h1>
+                  <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-semibold">Secure Access</p>
+              </div>
+          </a>
+          
+          <div class="flex items-center gap-4">
+              <a href="./index.html" class="text-sm font-bold text-gray-500 hover:text-royal dark:text-gray-400 dark:hover:text-gold transition hidden md:block">Back to Home</a>
+              <button id="logout-btn" class="hidden btn primary !py-2 !px-6 !text-xs shadow-lg">LOGOUT</button>
+              
+              <!-- Theme Toggle -->
+              <button id="theme-toggle" class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-royal dark:text-gold hover:ring-2 hover:ring-gold transition shadow-sm">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+              </button>
           </div>
-      </div>
-      <div id="nav-actions" class="flex items-center gap-4">
-          <a href="./index.html" class="text-xs text-gray-300 hover:text-white transition hidden md:block">← Return Home</a>
-          <button id="logout-btn" class="hidden bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-4 py-2 rounded transition border border-red-800">
-              LOGOUT
-          </button>
       </div>
   </header>
 
-  <!-- MAIN CONTAINER -->
-  <main class="flex-grow flex items-center justify-center p-4 relative overflow-hidden">
-      
-      <!-- Background Watermark -->
-      <img src="./assets/crest.png" class="absolute opacity-5 w-[600px] pointer-events-none animate-pulse">
+  <!-- MAIN CONTENT AREA -->
+  <main class="flex-grow flex items-center justify-center p-4 relative z-10">
 
-      <!-- 1. LOGIN VIEW -->
-      <div id="login-view" class="w-full max-w-md bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl border-t-4 border-gold relative z-10">
+      <!-- 1. LOGIN VIEW (Centered Glass Card) -->
+      <div id="login-view" class="w-full max-w-md portal-glass p-10 rounded-3xl shadow-2xl relative overflow-hidden" data-aos="zoom-in">
+          <!-- Decorative Top Bar -->
+          <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-royal via-gold to-royal"></div>
+
           <div class="text-center mb-8">
-              <h2 class="text-2xl font-bold text-royal dark:text-white">Bleoobi Login</h2>
-              <p class="text-gray-500 text-sm mt-1">Access your transcripts and records.</p>
+              <div class="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full mx-auto flex items-center justify-center mb-4 shadow-inner">
+                  <span class="text-4xl">🎓</span>
+              </div>
+              <h2 class="text-3xl font-display font-bold text-royal dark:text-white mb-2">Welcome Back</h2>
+              <p class="text-gray-500 dark:text-gray-400 text-sm">Enter your credentials to access your records.</p>
           </div>
           
-          <form id="login-form" class="space-y-5">
-              <div>
-                  <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Index Number</label>
-                  <input type="text" id="idx" required class="w-full p-3 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-gold outline-none transition font-mono uppercase" placeholder="e.g. 10234001">
-              </div>
-              <div>
-                  <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Password</label>
-                  <input type="password" id="pwd" required class="w-full p-3 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:ring-2 focus:ring-gold outline-none transition" placeholder="••••••••">
+          <form id="login-form" class="space-y-6">
+              <div class="space-y-2">
+                  <label class="text-xs font-bold text-royal dark:text-gold uppercase tracking-wider ml-1">Index Number</label>
+                  <input type="text" id="idx" required class="w-full p-4 rounded-xl bg-white/50 dark:bg-black/20 border border-gray-200 dark:border-gray-700 text-royal dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-gold focus:border-transparent outline-none transition font-mono uppercase tracking-widest" placeholder="10200300">
               </div>
               
-              <div id="login-error" class="hidden text-red-500 text-xs text-center font-bold bg-red-50 p-2 rounded border border-red-200"></div>
+              <div class="space-y-2">
+                  <label class="text-xs font-bold text-royal dark:text-gold uppercase tracking-wider ml-1">Password</label>
+                  <input type="password" id="pwd" required class="w-full p-4 rounded-xl bg-white/50 dark:bg-black/20 border border-gray-200 dark:border-gray-700 text-royal dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-gold focus:border-transparent outline-none transition" placeholder="••••••••">
+              </div>
 
-              <button type="submit" id="login-btn" class="w-full bg-royal text-gold font-bold py-3 rounded-lg hover:bg-blue-900 transition shadow-lg transform hover:-translate-y-1">
+              <div id="login-error" class="hidden p-3 bg-red-100/80 text-red-600 text-xs font-bold rounded-lg text-center border border-red-200"></div>
+
+              <button type="submit" id="login-btn" class="w-full btn primary shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 text-center flex justify-center">
                   Access Portal
               </button>
           </form>
-          <div class="mt-6 text-center border-t border-gray-100 pt-4">
-              <p class="text-xs text-gray-400">Issues logging in? Contact the <a href="./admin.html" class="text-blue-500 hover:underline">IT Department</a>.</p>
+          
+          <div class="mt-8 text-center">
+              <p class="text-xs text-gray-400">Forgot credentials? Contact your House Master.</p>
           </div>
       </div>
 
-      <!-- 2. DASHBOARD VIEW (Hidden by default) -->
-      <div id="dashboard-view" class="hidden w-full max-w-7xl grid grid-cols-1 lg:grid-cols-4 gap-6 relative z-10 pb-10">
+      <!-- 2. DASHBOARD VIEW (Grid Layout) -->
+      <div id="dashboard-view" class="hidden w-full max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-6 pb-12">
           
-          <!-- LEFT: PROFILE CARD -->
-          <div class="lg:col-span-1 space-y-6">
-              <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
-                  <div class="h-24 bg-gradient-to-r from-royal to-blue-900"></div>
-                  <div class="px-6 pb-6 relative">
-                      <img id="p-avatar" src="" class="w-24 h-24 rounded-full border-4 border-white dark:border-gray-800 -mt-12 shadow-md bg-gray-200">
-                      
-                      <div class="mt-4">
-                          <h2 id="p-name" class="text-xl font-bold text-royal dark:text-white leading-tight">Student Name</h2>
-                          <p id="p-index" class="text-sm text-gray-500 font-mono tracking-wide mt-1">INDEX-NO</p>
+          <!-- LEFT SIDEBAR (Profile) -->
+          <div class="lg:col-span-4 space-y-6">
+              <!-- Identity Card -->
+              <div class="portal-glass rounded-3xl overflow-hidden relative group">
+                  <div class="h-32 bg-royal relative overflow-hidden">
+                      <div class="absolute inset-0 bg-[url('./assets/pattern.png')] opacity-10"></div>
+                      <div class="absolute bottom-4 right-4 text-gold/20 text-6xl font-black font-display opacity-50">AA</div>
+                  </div>
+                  
+                  <div class="px-8 pb-8 relative">
+                      <div class="relative -mt-16 mb-4 inline-block">
+                          <img id="p-avatar" src="" class="w-32 h-32 rounded-3xl border-4 border-white dark:border-gray-900 shadow-xl object-cover bg-gray-200">
+                          <span class="absolute bottom-2 -right-2 bg-green-500 w-6 h-6 border-4 border-white dark:border-gray-900 rounded-full"></span>
                       </div>
 
-                      <div class="mt-4 flex flex-wrap gap-2">
-                          <span id="p-status" class="px-3 py-1 bg-green-100 text-green-800 text-[10px] font-bold uppercase rounded-full">Active</span>
-                          <span id="p-house" class="px-3 py-1 bg-blue-100 text-blue-800 text-[10px] font-bold uppercase rounded-full">House</span>
-                      </div>
+                      <h2 id="p-name" class="text-2xl font-display font-bold text-royal dark:text-white leading-tight mb-1">Student Name</h2>
+                      <p id="p-index" class="text-sm font-mono text-gold font-bold tracking-wider mb-6">INDEX-NO</p>
 
-                      <div class="mt-6 border-t border-gray-100 dark:border-gray-700 pt-4 space-y-2">
-                          <div class="flex justify-between text-sm"><span class="text-gray-500">Program</span> <span id="p-prog" class="font-bold text-royal dark:text-gray-300 text-right">...</span></div>
-                          <div class="flex justify-between text-sm"><span class="text-gray-500">Class</span> <span id="p-class" class="font-bold text-royal dark:text-gray-300 text-right">...</span></div>
-                          <div class="flex justify-between text-sm"><span class="text-gray-500">Year</span> <span id="p-year" class="font-bold text-royal dark:text-gray-300 text-right">...</span></div>
+                      <div class="grid grid-cols-2 gap-4 border-t border-gray-100 dark:border-gray-700 pt-6">
+                          <div>
+                              <p class="text-xs text-gray-400 uppercase font-bold">Program</p>
+                              <p id="p-prog" class="font-bold text-royal dark:text-gray-200 text-sm">...</p>
+                          </div>
+                          <div>
+                              <p class="text-xs text-gray-400 uppercase font-bold">House</p>
+                              <p id="p-house" class="font-bold text-royal dark:text-gray-200 text-sm">...</p>
+                          </div>
+                          <div>
+                              <p class="text-xs text-gray-400 uppercase font-bold">Class</p>
+                              <p id="p-class" class="font-bold text-royal dark:text-gray-200 text-sm">...</p>
+                          </div>
+                          <div>
+                              <p class="text-xs text-gray-400 uppercase font-bold">Status</p>
+                              <span id="p-status" class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Active</span>
+                          </div>
                       </div>
                   </div>
               </div>
 
               <!-- Quick Actions -->
-              <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700">
-                  <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Actions</h3>
-                  <div class="space-y-2">
-                      <button class="w-full text-left px-4 py-3 bg-gray-50 dark:bg-gray-700/50 hover:bg-gold/10 hover:text-royal rounded-lg text-sm font-bold transition flex items-center gap-3">
-                          📄 <span>Download Transcript</span>
+              <div class="portal-glass p-6 rounded-3xl">
+                  <h3 class="text-xs font-bold text-gray-400 uppercase mb-4">Quick Actions</h3>
+                  <div class="space-y-3">
+                      <button class="w-full flex items-center justify-between p-4 rounded-xl bg-white/50 dark:bg-white/5 border border-gray-100 dark:border-gray-700 hover:border-gold hover:text-gold transition group">
+                          <span class="font-bold text-sm text-gray-600 dark:text-gray-300 group-hover:text-gold">📄 Download Transcript</span>
+                          <span class="text-gray-400 group-hover:translate-x-1 transition">→</span>
                       </button>
-                      <button class="w-full text-left px-4 py-3 bg-gray-50 dark:bg-gray-700/50 hover:bg-gold/10 hover:text-royal rounded-lg text-sm font-bold transition flex items-center gap-3">
-                          💳 <span>School Fees History</span>
+                      <button class="w-full flex items-center justify-between p-4 rounded-xl bg-white/50 dark:bg-white/5 border border-gray-100 dark:border-gray-700 hover:border-gold hover:text-gold transition group">
+                          <span class="font-bold text-sm text-gray-600 dark:text-gray-300 group-hover:text-gold">💳 Fees History</span>
+                          <span class="text-gray-400 group-hover:translate-x-1 transition">→</span>
                       </button>
                   </div>
               </div>
           </div>
 
-          <!-- RIGHT: ACADEMIC DATA -->
-          <div class="lg:col-span-3 space-y-6">
+          <!-- RIGHT CONTENT (Stats & Data) -->
+          <div class="lg:col-span-8 space-y-6">
               
-              <!-- STATS ROW -->
+              <!-- Stats Cards -->
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div class="bg-royal text-white p-6 rounded-xl shadow-lg relative overflow-hidden">
-                      <div class="absolute right-0 top-0 opacity-10 text-9xl leading-none -mr-4 -mt-4">A</div>
-                      <p class="text-xs text-gold uppercase font-bold tracking-wider mb-1">Cumulative GPA</p>
-                      <h3 id="p-gpa" class="text-4xl font-black">0.00</h3>
-                      <p class="text-xs text-blue-200 mt-2">Top 15% of Class</p>
+                  <div class="portal-glass p-6 rounded-3xl border-l-4 border-gold relative overflow-hidden group hover:-translate-y-1 transition duration-300">
+                      <div class="relative z-10">
+                          <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider">Cumulative GPA</p>
+                          <h3 id="p-gpa" class="text-4xl font-display font-black text-royal dark:text-white mt-1">0.00</h3>
+                      </div>
+                      <div class="absolute right-0 bottom-0 opacity-10 group-hover:opacity-20 transition text-royal dark:text-white">
+                          <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                      </div>
                   </div>
-                  <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border-l-4 border-green-500">
-                      <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">Attendance</p>
-                      <h3 id="p-attendance" class="text-3xl font-bold text-gray-800 dark:text-white">0%</h3>
-                      <p class="text-xs text-gray-400 mt-2">Present Days</p>
+
+                  <div class="portal-glass p-6 rounded-3xl border-l-4 border-green-500 relative overflow-hidden group hover:-translate-y-1 transition duration-300">
+                      <div class="relative z-10">
+                          <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider">Attendance</p>
+                          <h3 id="p-attendance" class="text-4xl font-display font-black text-royal dark:text-white mt-1">0%</h3>
+                      </div>
+                      <div class="absolute right-0 bottom-0 opacity-10 group-hover:opacity-20 transition text-green-500">
+                          <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                      </div>
                   </div>
-                  <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border-l-4 border-gold">
-                      <p class="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">Next Exam</p>
-                      <h3 class="text-xl font-bold text-gray-800 dark:text-white truncate">End of Term 3</h3>
-                      <p class="text-xs text-gray-400 mt-2 text-gold font-bold">14 Days Left</p>
+
+                  <div class="portal-glass p-6 rounded-3xl border-l-4 border-royal dark:border-blue-400 relative overflow-hidden group hover:-translate-y-1 transition duration-300">
+                      <div class="relative z-10">
+                          <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wider">Total Credits</p>
+                          <h3 class="text-4xl font-display font-black text-royal dark:text-white mt-1">142</h3>
+                      </div>
+                      <div class="absolute right-0 bottom-0 opacity-10 group-hover:opacity-20 transition text-royal dark:text-white">
+                          <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                      </div>
                   </div>
               </div>
 
-              <!-- CHART -->
-              <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
-                  <div class="flex justify-between items-center mb-6">
-                      <h3 class="font-bold text-royal dark:text-white">Performance Trend</h3>
-                      <select class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded border-none outline-none">
-                          <option>Last 4 Semesters</option>
-                      </select>
+              <!-- Performance Chart -->
+              <div class="portal-glass p-8 rounded-3xl">
+                  <div class="flex justify-between items-end mb-6">
+                      <div>
+                          <h3 class="text-xl font-bold text-royal dark:text-white">Academic Trend</h3>
+                          <p class="text-xs text-gray-400">Performance over semesters</p>
+                      </div>
                   </div>
                   <div class="h-64 w-full">
                       <canvas id="gradesChart"></canvas>
                   </div>
               </div>
 
-              <!-- TRANSCRIPT TABLE -->
-              <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
-                  <h3 class="font-bold text-royal dark:text-white mb-4">Latest Results</h3>
+              <!-- Detailed Results -->
+              <div class="portal-glass p-8 rounded-3xl overflow-hidden">
+                  <h3 class="text-xl font-bold text-royal dark:text-white mb-6 border-b border-gray-100 dark:border-gray-700 pb-4">Latest Semester Results</h3>
                   <div class="overflow-x-auto">
                       <table class="w-full text-sm text-left">
-                          <thead class="bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-300 uppercase text-xs font-bold">
+                          <thead class="bg-gray-50 dark:bg-white/5 text-xs font-bold uppercase text-gray-500 dark:text-gold">
                               <tr>
                                   <th class="p-4 rounded-l-lg">Subject</th>
                                   <th class="p-4">Grade</th>
                                   <th class="p-4">Score</th>
-                                  <th class="p-4 rounded-r-lg">Interpretation</th>
+                                  <th class="p-4 rounded-r-lg">Remark</th>
                               </tr>
                           </thead>
                           <tbody id="results-body" class="text-gray-700 dark:text-gray-300 font-medium">
-                              <!-- JS INJECTS ROWS HERE -->
+                              <!-- JS Injects Rows -->
                           </tbody>
                       </table>
                   </div>
@@ -176,6 +243,17 @@
 
   </main>
 
+  <!-- SCRIPTS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  
+  <!-- 1. Init AOS -->
+  <script>AOS.init();</script>
+
+  <!-- 2. 3D Background Logic (Reuse your existing robust script) -->
+  <script src="./js/background-3d.js"></script>
+
+  <!-- 3. Portal Logic (Updated for UI) -->
   <script src="./js/portal.js"></script>
+
 </body>
 </html>
