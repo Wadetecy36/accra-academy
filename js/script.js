@@ -467,7 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // 1. Data Source (Same as before)
 const leaderData = [
     {
-        name: "Mr. Emmanuel Ofoe Fiemawhle",
+        name: "Mr. Eric Ebo Sey",
         role: "Headmaster",
         img: "./assets/headmaster.jpg",
         msg: "Accra Academy, established in 1931, is a distinguished educational institution in Accra, Ghana, boasting 226 staff and a student body of 4,381. Evolving from a private institution to a Government-Assisted School in 1950, we prioritize academic excellence, personal growth, and character development. Join us in nurturing future leaders who excel academically and impact the world positively."
