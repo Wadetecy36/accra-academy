@@ -458,6 +458,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
         window.closeAnnouncement = () => bar.style.display = 'none';
     }
+
+    /* =========================================
+       12. SMART AUDIO AUTOPLAY
+       ========================================= */
+    const audio = document.getElementById('bg-music');
+    const musicBtn = document.getElementById('music-toggle');
+    const barsIcon = document.getElementById('music-bars');
+    const offIcon = document.getElementById('music-off');
+
+    if (audio && musicBtn) {
+        // 1. SET LOW VOLUME (Not Loud)
+        audio.volume = 0.3; // 30% Volume
+
+        // 2. TOGGLE UI STATE
+        const updateUI = (isPlaying) => {
+            if (isPlaying) {
+                barsIcon.classList.remove('hidden');
+                offIcon.classList.add('hidden');
+                musicBtn.classList.add('border-gold');
+            } else {
+                barsIcon.classList.add('hidden');
+                offIcon.classList.remove('hidden');
+                musicBtn.classList.remove('border-gold');
+            }
+        };
+
+        // 3. ATTEMPT AUTOPLAY
+        const startAudio = () => {
+            audio.play().then(() => {
+                updateUI(true);
+                // Remove the click listener once it starts
+                document.removeEventListener('click', startAudio);
+            }).catch(error => {
+                console.log("Autoplay blocked by browser. Waiting for interaction.");
+            });
+        };
+
+        // Try immediately
+        startAudio();
+
+        // Fallback: If blocked, start on FIRST click anywhere on page
+        document.addEventListener('click', startAudio, { once: true });
+
+        // 4. MANUAL BUTTON CLICK
+        musicBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Don't trigger the document listener
+            if (audio.paused) {
+                audio.play();
+                updateUI(true);
+            } else {
+                audio.pause();
+                updateUI(false);
+            }
+        });
+    }
 }); // <--- END OF DOMContentLoaded LISTENER
 
 /* =========================================

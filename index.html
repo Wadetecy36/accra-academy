@@ -825,5 +825,26 @@
     // Safe initialization
     if(typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true });
   </script>
+  <!-- =========================================
+     BACKGROUND AUDIO CONTROL
+     ========================================= -->
+<div id="audio-control" class="fixed bottom-6 left-6 z-50 hidden md:flex items-center gap-3 animate-fade-in">
+    <!-- The Hidden Audio Player -->
+    <audio id="bg-music" loop>
+        <source src="./assets/anthem.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- The Toggle Button -->
+    <button id="music-toggle" class="w-12 h-12 rounded-full bg-royal/80 backdrop-blur-md border border-gold/30 text-gold flex items-center justify-center shadow-lg hover:scale-110 transition group overflow-hidden">
+        <!-- Bars Animation (Playing) -->
+        <div id="music-bars" class="flex gap-1 items-end h-4 hidden">
+            <span class="w-1 bg-gold h-full animate-[bounce_1s_infinite]"></span>
+            <span class="w-1 bg-gold h-2/3 animate-[bounce_1.2s_infinite]"></span>
+            <span class="w-1 bg-gold h-3/4 animate-[bounce_0.8s_infinite]"></span>
+        </div>
+        <!-- Muted Icon (Default) -->
+        <svg id="music-off" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
+    </button>
+</div>
 </body>
 </html>
