@@ -770,6 +770,51 @@
       </button>
   </div>
 
+<!-- =========================================
+       LEADER MODAL (REQUIRED FOR POPUP)
+       PASTE THIS RIGHT ABOVE YOUR <script> TAGS
+       ========================================= -->
+  <div id="leader-modal" class="fixed inset-0 z-[9999] hidden flex items-center justify-center px-4 font-sans">
+      
+      <!-- Dark Backdrop -->
+      <div class="absolute inset-0 bg-black/90 backdrop-blur-sm transition-opacity duration-300" onclick="closeLeaderModal()"></div>
+      
+      <!-- The Card -->
+      <div class="relative bg-white dark:bg-gray-900 w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row transform scale-95 opacity-0 transition-all duration-300 border border-gold/20" id="leader-modal-content">
+          
+          <!-- Close X Button -->
+          <button onclick="closeLeaderModal()" class="absolute top-4 right-4 z-50 bg-black/50 hover:bg-red-600 text-white w-10 h-10 rounded-full flex items-center justify-center transition cursor-pointer">✕</button>
+
+          <!-- Image Side (Left) -->
+          <div class="w-full md:w-2/5 h-64 md:h-auto relative">
+              <img id="modal-img" src="" class="absolute inset-0 w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-royal/90 to-transparent md:hidden"></div>
+          </div>
+
+          <!-- Text Side (Right) -->
+          <div class="w-full md:w-3/5 p-8 md:p-12 bg-white dark:bg-gray-900 flex flex-col justify-center relative">
+              
+              <!-- Watermark -->
+              <img src="./assets/crest.png" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 opacity-5 pointer-events-none grayscale">
+
+              <span class="text-gold font-bold tracking-widest uppercase text-xs mb-2">Message from the Office</span>
+              <h2 id="modal-name" class="text-3xl font-display font-bold text-royal dark:text-white mb-1">Name Placeholder</h2>
+              <p id="modal-role" class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-6">Role Placeholder</p>
+              
+              <div class="prose dark:prose-invert max-w-none z-10">
+                  <p id="modal-msg" class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg italic">
+                      ...
+                  </p>
+              </div>
+
+              <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800 flex items-center gap-3">
+                  <div class="h-1 w-10 bg-gold"></div>
+                  <span class="text-xs text-gray-400 font-bold uppercase tracking-widest">Accra Academy Administration</span>
+              </div>
+          </div>
+      </div>
+  </div>
+
   <!-- SCRIPTS -->
   <!-- 3D Logic -->
   <script src="./js/background-3d.js"></script>
