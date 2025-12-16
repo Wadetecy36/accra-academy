@@ -24,6 +24,14 @@
     }
   </script>
 
+<!-- SEO & SOCIAL SHARING -->
+  <meta property="og:title" content="Accra Academy – Esse Quam Videri">
+  <meta property="og:description" content="The premier educational institution in Ghana. Excellence in academics, character, and leadership since 1931.">
+  <meta property="og:image" content="https://accra-academy.vercel.app/assets/crest.png"> <!-- UPGRADE: Use a full banner image here later -->
+  <meta property="og:url" content="https://accra-academy.vercel.app/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
   <!-- FONTS & LIBS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -474,96 +482,82 @@
     </div>
   </section>
 
-
 <!-- =========================================
-       LEADERSHIP & ADMINISTRATION
+       LEADERSHIP SHOWCASE (MASTER-DETAIL VIEW)
        ========================================= -->
-  <section class="py-24 relative bg-soft dark:bg-gray-900" id="leadership">
+  <section class="py-24 bg-soft dark:bg-gray-900 relative" id="leadership">
       
-      <div class="container mx-auto px-4 relative z-10">
+      <div class="container mx-auto px-4 relative z-10 max-w-5xl">
           
-          <div class="text-center mb-16" data-aos="fade-up">
-              <span class="text-gold font-bold tracking-widest uppercase text-sm mb-2 block">Stewardship</span>
-              <h2 class="text-3xl md:text-5xl font-display font-bold text-royal dark:text-white">School Administration</h2>
-              <div class="w-16 h-1 bg-gold mx-auto mt-4 rounded-full"></div>
+          <!-- Section Title -->
+          <div class="text-center mb-12" data-aos="fade-down">
+              <span class="text-gold font-bold tracking-widest uppercase text-sm">Stewardship</span>
+              <h2 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white mt-2">School Administration</h2>
           </div>
 
-          <!-- LEADERS GRID (4 Columns for 4 Heads) -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-
-              <!-- 1. HEADMASTER -->
-              <div class="group relative cursor-pointer" 
-                   onclick="openLeaderModal('Mr. Emmanuel Ofoe Fiemawhle', 'Headmaster', './assets/headmaster.jpg', 'Accra Academy, established in 1931, is a distinguished educational institution in Accra, Ghana, boasting 226 staff and a student body of 4,381. Evolving from a private institution to a Government-Assisted School in 1950, we prioritize academic excellence, personal growth, and character development. With both day and boarding options, our aim is a holistic educational experience for our students. Explore our digital presence for insights into academic programs, extracurricular activities, and community life. Join us in nurturing future leaders who excel academically and impact the world positively. Thanks for visiting; we eagerly anticipate welcoming you to our esteemed community.')"
-                   data-aos="fade-up">
+          <!-- THE MASTER CARD -->
+          <div class="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row min-h-[600px]" data-aos="fade-up">
+              
+              <!-- LEFT: THE IMAGE (Dynamic) -->
+              <div class="w-full md:w-1/2 relative bg-gray-200">
+                  <!-- The Active Image -->
+                  <img id="leader-main-img" src="./assets/headmaster.jpg" 
+                       class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500" 
+                       alt="Leader Portrait">
                   
-                  <div class="aspect-[3/4] overflow-hidden rounded-2xl border-2 border-transparent group-hover:border-gold transition-all duration-300 shadow-xl relative">
-                      <div class="absolute inset-0 bg-royal/0 group-hover:bg-royal/60 transition duration-300 z-10 flex items-center justify-center">
-                          <span class="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition duration-300 bg-gold text-royal font-bold px-6 py-2 rounded-full text-xs shadow-lg uppercase tracking-wide">Read Message</span>
-                      </div>
-                      <img src="./assets/headmaster.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700" alt="Headmaster">
-                  </div>
-                  
-                  <div class="mt-4 text-center">
-                      <h3 class="text-lg font-bold text-royal dark:text-white font-display leading-tight">Mr. Emmanuel Ofoe Fiemawhle</h3>
-                      <p class="text-xs text-gold font-bold uppercase tracking-wider mt-1">Headmaster</p>
-                  </div>
+                  <!-- Overlay Gradient -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-royal/90 via-transparent to-transparent md:hidden"></div>
               </div>
 
-              <!-- 2. ADMINISTRATION -->
-              <div class="group relative cursor-pointer" 
-                   onclick="openLeaderModal('Mr. Paul Kofi Yosu Dadzie', 'Assistant Headmaster (Administration)', './assets/administration.jpg', 'Greetings from Accra Academy! As the Assistant Headmaster Administration, I extend a warm welcome to our esteemed community. At the heart of our institution is a commitment to efficient and supportive administration, ensuring a seamless experience for students and staff alike. Explore the various administrative facets that contribute to the smooth functioning of Accra Academy. From admissions to facilities management, our dedicated team strives for excellence. As you navigate our website, discover the organizational backbone that upholds the vibrant spirit of our academy. Thank you for being part of our journey, and I look forward to a successful collaboration in your academic endeavors.')"
-                   data-aos="fade-up" data-aos-delay="100">
+              <!-- RIGHT: THE CONTENT (Dynamic) -->
+              <div class="w-full md:w-1/2 bg-royal text-white p-8 md:p-12 flex flex-col justify-center relative">
                   
-                  <div class="aspect-[3/4] overflow-hidden rounded-2xl border-2 border-transparent group-hover:border-gold transition-all duration-300 shadow-xl relative">
-                      <div class="absolute inset-0 bg-royal/0 group-hover:bg-royal/60 transition duration-300 z-10 flex items-center justify-center">
-                          <span class="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition duration-300 bg-gold text-royal font-bold px-6 py-2 rounded-full text-xs shadow-lg uppercase tracking-wide">Read Message</span>
-                      </div>
-                      <img src="./assets/administration.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700" alt="Admin Head">
-                  </div>
-                  
-                  <div class="mt-4 text-center">
-                      <h3 class="text-lg font-bold text-royal dark:text-white font-display leading-tight">Mr. Paul Kofi Yosu Dadzie</h3>
-                      <p class="text-xs text-gold font-bold uppercase tracking-wider mt-1">Asst. Head (Admin)</p>
-                  </div>
-              </div>
+                  <!-- Quote Icon -->
+                  <div class="text-gold text-6xl font-serif opacity-30 absolute top-8 right-8">❝</div>
 
-              <!-- 3. ACADEMIC -->
-              <div class="group relative cursor-pointer" 
-                   onclick="openLeaderModal('Mr. Isaac Tweneboah', 'Assistant Headmaster (Academic)', './assets/academics.jpg', 'Welcome to Accra Academy! As the Assistant Headmaster Academic, I am thrilled to embark on this educational journey with you. Our commitment to academic excellence is unwavering, and we strive to create an environment that nurtures not only knowledge but also critical thinking and personal growth. Explore our diverse academic programs, where innovation meets tradition, and discover the pathways to success that we pave for our students. At Accra Academy, we believe in shaping well-rounded individuals equipped for the challenges of the future. Join us in this pursuit of excellence, and let us together build a brighter tomorrow.')"
-                   data-aos="fade-up" data-aos-delay="200">
-                  
-                  <div class="aspect-[3/4] overflow-hidden rounded-2xl border-2 border-transparent group-hover:border-gold transition-all duration-300 shadow-xl relative">
-                      <div class="absolute inset-0 bg-royal/0 group-hover:bg-royal/60 transition duration-300 z-10 flex items-center justify-center">
-                          <span class="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition duration-300 bg-gold text-royal font-bold px-6 py-2 rounded-full text-xs shadow-lg uppercase tracking-wide">Read Message</span>
-                      </div>
-                      <img src="./assets/academics.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700" alt="Academic Head">
-                  </div>
-                  
-                  <div class="mt-4 text-center">
-                      <h3 class="text-lg font-bold text-royal dark:text-white font-display leading-tight">Mr. Isaac Tweneboah</h3>
-                      <p class="text-xs text-gold font-bold uppercase tracking-wider mt-1">Asst. Head (Academic)</p>
-                  </div>
-              </div>
+                  <!-- Dynamic Text -->
+                  <div id="leader-text-container" class="relative z-10 animate-fade-in">
+                      <h2 id="leader-name" class="text-2xl md:text-3xl font-display font-bold mb-1">Mr. Emmanuel Ofoe Fiemawhle</h2>
+                      <p id="leader-role" class="text-gold text-xs font-bold uppercase tracking-widest mb-8">Headmaster</p>
+                      
+                      <div class="h-1 w-12 bg-white/20 mb-8"></div>
 
-              <!-- 4. DOMESTIC -->
-              <div class="group relative cursor-pointer" 
-                   onclick="openLeaderModal('Mr. William Kwame Asun', 'Assistant Headmaster (Domestic/Welfare)', './assets/domestic.jpg', 'Welcome to Accra Academy! I am honored to welcome you as the Assistant Headmaster Domestic/Welfare. Our focus extends beyond the classroom, ensuring a supportive and nurturing environment for every student. From dormitory life to overall well-being, we prioritize the domestic and welfare aspects of your experience. Our dedicated team works tirelessly to create a home away from home, fostering a sense of belonging and safety. Explore the holistic care we provide, enhancing your academic journey with a foundation of comfort and support. Thank you for being part of the Accra Academy family, where your welfare is our utmost priority.')"
-                   data-aos="fade-up" data-aos-delay="300">
-                  
-                  <div class="aspect-[3/4] overflow-hidden rounded-2xl border-2 border-transparent group-hover:border-gold transition-all duration-300 shadow-xl relative">
-                      <div class="absolute inset-0 bg-royal/0 group-hover:bg-royal/60 transition duration-300 z-10 flex items-center justify-center">
-                          <span class="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition duration-300 bg-gold text-royal font-bold px-6 py-2 rounded-full text-xs shadow-lg uppercase tracking-wide">Read Message</span>
-                      </div>
-                      <img src="./assets/domestic.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700" alt="Domestic Head">
+                      <p id="leader-msg" class="text-gray-300 leading-relaxed text-sm md:text-base font-light italic">
+                          Accra Academy, established in 1931, is a distinguished educational institution in Accra...
+                      </p>
                   </div>
-                  
-                  <div class="mt-4 text-center">
-                      <h3 class="text-lg font-bold text-royal dark:text-white font-display leading-tight">Mr. William Kwame Asun</h3>
-                      <p class="text-xs text-gold font-bold uppercase tracking-wider mt-1">Asst. Head (Domestic)</p>
-                  </div>
-              </div>
 
+                  <!-- THUMBNAIL NAVIGATOR -->
+                  <div class="mt-12 pt-8 border-t border-white/10">
+                      <p class="text-xs text-gray-400 font-bold uppercase mb-4">Select Administrator</p>
+                      <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                          
+                          <!-- Thumb 1: Headmaster -->
+                          <button onclick="changeLeader(0)" class="leader-thumb active relative w-14 h-14 rounded-xl overflow-hidden border-2 border-gold transition-all hover:scale-105 shrink-0">
+                              <img src="./assets/headmaster.jpg" class="w-full h-full object-cover">
+                          </button>
+
+                          <!-- Thumb 2: Admin -->
+                          <button onclick="changeLeader(1)" class="leader-thumb relative w-14 h-14 rounded-xl overflow-hidden border-2 border-transparent hover:border-gold/50 transition-all hover:scale-105 opacity-60 hover:opacity-100 shrink-0">
+                              <img src="./assets/administration.jpg" class="w-full h-full object-cover">
+                          </button>
+
+                          <!-- Thumb 3: Academic -->
+                          <button onclick="changeLeader(2)" class="leader-thumb relative w-14 h-14 rounded-xl overflow-hidden border-2 border-transparent hover:border-gold/50 transition-all hover:scale-105 opacity-60 hover:opacity-100 shrink-0">
+                              <img src="./assets/academics.jpg" class="w-full h-full object-cover">
+                          </button>
+
+                          <!-- Thumb 4: Domestic -->
+                          <button onclick="changeLeader(3)" class="leader-thumb relative w-14 h-14 rounded-xl overflow-hidden border-2 border-transparent hover:border-gold/50 transition-all hover:scale-105 opacity-60 hover:opacity-100 shrink-0">
+                              <img src="./assets/domestic.jpg" class="w-full h-full object-cover">
+                          </button>
+
+                      </div>
+                  </div>
+
+              </div>
           </div>
+
       </div>
   </section>
 

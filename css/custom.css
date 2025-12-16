@@ -399,3 +399,43 @@ body.debug-layout img { outline: 2px solid blue !important; }
     background: rgba(2, 6, 23, 0.6) !important; 
     border-color: rgba(255, 255, 255, 0.05);
 }
+
+
+/* =========================================
+   LEADERSHIP ANIMATIONS
+   ========================================= */
+
+/* The Image Transition State */
+#leader-main-img {
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+    opacity: 1;
+    transform: scale(1);
+    will-change: opacity, transform;
+}
+
+/* State when changing (Hidden) */
+#leader-main-img.changing {
+    opacity: 0;
+    transform: scale(1.05); /* Subtle zoom effect */
+}
+
+/* The Text Transition State */
+#leader-text-container {
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* State when changing (Hidden) */
+#leader-text-container.changing {
+    opacity: 0;
+    transform: translateY(10px); /* Slide down slightly */
+}
+/* Hide scrollbar on thumbnails */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

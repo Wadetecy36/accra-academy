@@ -1,5 +1,5 @@
 /* ============================================================= */
-/*  js/background-3d.js – ROBUST ERROR HANDLING                  */
+/*  js/background-3d.js – ROBUST & MOBILE OPTIMIZED              */
 /* ============================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,46 +21,36 @@ document.addEventListener('DOMContentLoaded', () => {
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.z = 5;
 
-        // Try to initialize renderer. If this fails, the catch block handles it.
+        // Renderer with Alpha (Transparency)
         renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap pixel ratio for performance
         container.appendChild(renderer.domElement);
 
     } catch (e) {
         console.error("❌ WebGL Crash:", e.message);
-        // Fallback: Ensure container is hidden so static BG shows
         container.style.display = 'none';
         return;
     }
 
-  // --- 3. THE CREST (Mesh) ---
+    // --- 3. THE CREST (Mesh) ---
     const textureLoader = new THREE.TextureLoader();
 
-    // Load your specific crest image
-    textureLoader.load(
-        './assets/crest.png', // Ensure this file exists!
-        (texture) => {
-            const geometry = new THREE.PlaneGeometry(3.5, 3.5);
-            
-            // CHANGED: Use MeshBasicMaterial so it glows without needing light
-            const material = new THREE.MeshBasicMaterial({
-                map: texture,
-                transparent: true,
-                side: THREE.DoubleSide,
-                // No roughness/metalness needed here
-            });
+    textureLoader.load('./assets/crest.png', (texture) => {
+        const geometry = new THREE.PlaneGeometry(3.5, 3.5);
+        
+        // Use MeshBasicMaterial so it glows without needing external light sources
+        const material = new THREE.MeshBasicMaterial({
+            map: texture,
+            transparent: true,
+            side: THREE.DoubleSide,
+        });
 
-            crestMesh = new THREE.Mesh(geometry, material);
-            scene.add(crestMesh);
-            console.log("✅ Crest Loaded Successfully");
-        },
-        undefined, // onProgress
-        (err) => {
-            console.error("❌ Error loading Crest image:", err);
-        }
-    );
-    // --- 4. LIGHTING ---
+        crestMesh = new THREE.Mesh(geometry, material);
+        scene.add(crestMesh);
+    }, undefined, (err) => console.error("❌ Error loading Crest:", err));
+
+    // --- 4. LIGHTING (Kept for scene ambiance if needed later) ---
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
 
@@ -68,22 +58,27 @@ document.addEventListener('DOMContentLoaded', () => {
     pointLight.position.set(2, 2, 5);
     scene.add(pointLight);
 
-    // --- 5. PARTICLES ---
+    // --- 5. SMART PARTICLES (Performance Optimized) ---
+    const isMobile = window.innerWidth < 768;
+    
+    // Desktop: 300 (Rich), Mobile: 100 (Fast)
+    const particlesCount = isMobile ? 100 : 300; 
+    
     const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 200;
     const posArray = new Float32Array(particlesCount * 3);
 
     for(let i = 0; i < particlesCount * 3; i++) {
-        posArray[i] = (Math.random() - 0.5) * 15;
+        // Spread particles: X (-15 to 15), Y (-15 to 15), Z (-5 to 5)
+        posArray[i] = (Math.random() - 0.5) * 30; 
     }
 
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
     const particlesMaterial = new THREE.PointsMaterial({
-        size: 0.05,
-        color: 0xFDBE11,
+        size: isMobile ? 0.08 : 0.05, // Larger on mobile for visibility
+        color: 0xFDBE11, 
         transparent: true,
-        opacity: 0.8
+        opacity: 0.6
     });
 
     particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
@@ -95,10 +90,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const windowHalfX = window.innerWidth / 2;
     const windowHalfY = window.innerHeight / 2;
 
-    document.addEventListener('mousemove', (event) => {
-        mouseX = (event.clientX - windowHalfX);
-        mouseY = (event.clientY - windowHalfY);
-    });
+    // Only track mouse on desktop to save resources
+    if (!isMobile) {
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - windowHalfX);
+            mouseY = (event.clientY - windowHalfY);
+        });
+    }
 
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -106,27 +104,29 @@ document.addEventListener('DOMContentLoaded', () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
-    // --- 7. ANIMATION LOOP ---
+    // --- 7. ANIMATION LOOP & BATTERY SAVER ---
     const clock = new THREE.Clock();
+    let animationId;
 
     function animate() {
-        requestAnimationFrame(animate);
+        animationId = requestAnimationFrame(animate);
 
         const elapsedTime = clock.getElapsedTime();
 
         if (crestMesh) {
-            // Floating
+            // Gentle Floating
             crestMesh.position.y = Math.sin(elapsedTime * 0.5) * 0.2;
 
-            // Mouse Parallax
-            const targetX = mouseX * 0.001;
-            const targetY = mouseY * 0.001;
-
-            crestMesh.rotation.y += 0.05 * (targetX - crestMesh.rotation.y);
-            crestMesh.rotation.x += 0.05 * (targetY - crestMesh.rotation.x);
-
-            // Slow Spin
-            crestMesh.rotation.z = Math.sin(elapsedTime * 0.2) * 0.05;
+            if (!isMobile) {
+                // Parallax only on Desktop
+                const targetX = mouseX * 0.001;
+                const targetY = mouseY * 0.001;
+                crestMesh.rotation.y += 0.05 * (targetX - crestMesh.rotation.y);
+                crestMesh.rotation.x += 0.05 * (targetY - crestMesh.rotation.x);
+            } else {
+                // Auto-spin on Mobile
+                crestMesh.rotation.y = Math.sin(elapsedTime * 0.2) * 0.1;
+            }
         }
 
         // Rotate Particles
@@ -138,5 +138,16 @@ document.addEventListener('DOMContentLoaded', () => {
         renderer.render(scene, camera);
     }
 
+    // Start Animation
     animate();
+
+    // --- 8. BATTERY SAVER: PAUSE WHEN TAB HIDDEN ---
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            cancelAnimationFrame(animationId); // Pause
+        } else {
+            clock.getDelta(); // Reset clock delta to prevent jump
+            animate(); // Resume
+        }
+    });
 });

@@ -461,58 +461,82 @@ document.addEventListener('DOMContentLoaded', () => {
 }); // <--- END OF DOMContentLoaded LISTENER
 
 /* =========================================
-   11. LEADERSHIP MODAL LOGIC (GLOBAL)
-   This is placed OUTSIDE the listener so 
-   HTML onclick attributes can find it.
+   LEADERSHIP SLIDER LOGIC (SMOOTH ANIMATION)
    ========================================= */
 
-window.openLeaderModal = function(name, role, imgSrc, message) {
-    const modal = document.getElementById('leader-modal');
-    const content = document.getElementById('leader-modal-content');
-
-    // Safety check
-    if (!modal) {
-        console.error("Modal element #leader-modal not found.");
-        return;
+// 1. Data Source (Same as before)
+const leaderData = [
+    {
+        name: "Mr. Emmanuel Ofoe Fiemawhle",
+        role: "Headmaster",
+        img: "./assets/headmaster.jpg",
+        msg: "Accra Academy, established in 1931, is a distinguished educational institution in Accra, Ghana, boasting 226 staff and a student body of 4,381. Evolving from a private institution to a Government-Assisted School in 1950, we prioritize academic excellence, personal growth, and character development. Join us in nurturing future leaders who excel academically and impact the world positively."
+    },
+    {
+        name: "Mr. Paul Kofi Yesu Dadzie",
+        role: "Assistant Headmaster (Administration)",
+        img: "./assets/administration.jpg",
+        msg: "Greetings from Accra Academy! As the Assistant Headmaster Administration, I extend a warm welcome to our esteemed community. At the heart of our institution is a commitment to efficient and supportive administration, ensuring a seamless experience for students and staff alike. From admissions to facilities management, our dedicated team strives for excellence."
+    },
+    {
+        name: "Mr. Isaac Tweneboah",
+        role: "Assistant Headmaster (Academic)",
+        img: "./assets/academics.jpg",
+        msg: "Welcome to Accra Academy! As the Assistant Headmaster Academic, I am thrilled to embark on this educational journey with you. Our commitment to academic excellence is unwavering, and we strive to create an environment that nurtures not only knowledge but also critical thinking and personal growth. Explore our diverse academic programs where innovation meets tradition."
+    },
+    {
+        name: "Mr. William Kwame Asun",
+        role: "Assistant Headmaster (Domestic/Welfare)",
+        img: "./assets/domestic.jpg",
+        msg: "I am honored to welcome you as the Assistant Headmaster Domestic/Welfare. Our focus extends beyond the classroom, ensuring a supportive and nurturing environment for every student. From dormitory life to overall well-being, we prioritize the domestic and welfare aspects of your experience. Thank you for being part of the Accra Academy family."
     }
+];
 
-    // 1. Populate Data
-    document.getElementById('modal-name').innerText = name;
-    document.getElementById('modal-role').innerText = role;
-    document.getElementById('modal-msg').innerText = `"${message}"`; // Adds quotes
-    document.getElementById('modal-img').src = imgSrc;
+// 2. The Animated Change Function
+window.changeLeader = function(index) {
+    const data = leaderData[index];
+    if(!data) return;
 
-    // 2. Show Modal
-    modal.classList.remove('hidden');
+    // Elements
+    const imgEl = document.getElementById('leader-main-img');
+    const nameEl = document.getElementById('leader-name');
+    const roleEl = document.getElementById('leader-role');
+    const msgEl = document.getElementById('leader-msg');
+    const containerText = document.getElementById('leader-text-container');
+    const thumbs = document.querySelectorAll('.leader-thumb');
 
-    // 3. Animate In (Small delay to allow display:block to apply)
+    // Prevent clicking same slide animation spam
+    if(imgEl.src.includes(data.img.replace('./', ''))) return;
+
+    // A. TRIGGER OUT-ANIMATION (Fade Out & Scale)
+    imgEl.classList.add('changing');
+    containerText.classList.add('changing');
+
+    // B. UPDATE THUMBNAILS (Instant feedback)
+    thumbs.forEach((t, i) => {
+        if(i === index) {
+            t.classList.add('border-gold', 'opacity-100', 'scale-110');
+            t.classList.remove('border-transparent', 'opacity-60');
+        } else {
+            t.classList.remove('border-gold', 'opacity-100', 'scale-110');
+            t.classList.add('border-transparent', 'opacity-60');
+        }
+    });
+
+    // C. SWAP CONTENT (Wait 400ms for fade out to finish)
     setTimeout(() => {
-        content.classList.remove('scale-95', 'opacity-0');
-        content.classList.add('scale-100', 'opacity-100');
-    }, 10);
+        // Swap Data
+        imgEl.src = data.img;
+        nameEl.innerText = data.name;
+        roleEl.innerText = data.role;
+        msgEl.innerText = data.msg;
 
-    // 4. Disable Body Scroll
-    document.body.style.overflow = 'hidden';
+        // Wait a tiny bit for browser to register new image (50ms)
+        // Then TRIGGER IN-ANIMATION
+        setTimeout(() => {
+            imgEl.classList.remove('changing');
+            containerText.classList.remove('changing');
+        }, 50);
+
+    }, 400); // Matches CSS transition duration
 };
-
-window.closeLeaderModal = function() {
-    const modal = document.getElementById('leader-modal');
-    const content = document.getElementById('leader-modal-content');
-
-    if (!modal || !content) return;
-
-    // 1. Animate Out
-    content.classList.remove('scale-100', 'opacity-100');
-    content.classList.add('scale-95', 'opacity-0');
-
-    // 2. Hide after animation
-    setTimeout(() => {
-        modal.classList.add('hidden');
-        document.body.style.overflow = 'auto'; // Re-enable scroll
-    }, 300);
-};
-
-// Close on Escape Key
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') window.closeLeaderModal();
-});
