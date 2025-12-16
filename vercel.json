@@ -1,21 +1,17 @@
 {
   "version": 2,
   "routes": [
-    { 
-      "src": "/api/(.*)", 
-      "dest": "/api/index.js" 
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
     },
-    { 
-      "src": "/(.*)", 
-      "dest": "/$1" 
+    {
+      "handle": "filesystem"
     },
-    { 
-      "handle": "error" 
-    },
-    { 
-      "src": "/.*", 
-      "dest": "/404.html", 
-      "status": 404 
+    {
+      "src": "/(.*)",
+      "dest": "/404.html",
+      "status": 404
     }
   ]
 }
