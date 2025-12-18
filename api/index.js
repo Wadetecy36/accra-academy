@@ -26,7 +26,7 @@ const parser = new Parser({
 
 // --- CONFIGURATION ---
 const JWT_SECRET = process.env.JWT_SECRET || 'bleoo_dev_secret';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'bleoo1931';
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 // --- MIDDLEWARE ---
