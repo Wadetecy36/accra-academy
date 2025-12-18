@@ -716,7 +716,7 @@
        AI CHATBOT WIDGET
        ========================================= -->
   <div id="bleoo-chat-widget" class="fixed bottom-24 right-6 z-50 flex flex-col items-end pointer-events-none">
-      <div id="chat-window" class="pointer-events-auto bg-white dark:bg-gray-800 w-80 md:w-96 h-[500px] rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col mb-4 transform translate-y-10 opacity-0 scale-95 transition-all duration-300 origin-bottom-right hidden font-sans">
+      <div id="chat-window" class="pointer-events-auto bg-white dark:bg-gray-800 w-80 md:w-96 h-[500px] rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 flex-col mb-4 transform translate-y-10 opacity-0 scale-95 transition-all duration-300 origin-bottom-right hidden font-sans">
 
 
                      <!-- Header -->
@@ -770,7 +770,7 @@
        LEADER MODAL (REQUIRED FOR POPUP)
        PASTE THIS RIGHT ABOVE YOUR <script> TAGS
        ========================================= -->
-  <div id="leader-modal" class="fixed inset-0 z-[9999] hidden flex items-center justify-center px-4 font-sans">
+  <div id="leader-modal" class="fixed inset-0 z-[9999] flex items-center justify-center px-4 font-sans">
       
       <!-- Dark Backdrop -->
       <div class="absolute inset-0 bg-black/90 backdrop-blur-sm transition-opacity duration-300" onclick="closeLeaderModal()"></div>
@@ -825,7 +825,10 @@
     // Safe initialization
     if(typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true });
   </script>
-  <!-- =========================================
+ 
+ 
+ 
+ <!-- =========================================
      BACKGROUND AUDIO CONTROL
      ========================================= -->
 <div id="audio-control" class="fixed bottom-6 left-6 z-50 hidden md:flex items-center gap-3 animate-fade-in">
@@ -837,7 +840,7 @@
     <!-- The Toggle Button -->
     <button id="music-toggle" class="w-12 h-12 rounded-full bg-royal/80 backdrop-blur-md border border-gold/30 text-gold flex items-center justify-center shadow-lg hover:scale-110 transition group overflow-hidden">
         <!-- Bars Animation (Playing) -->
-        <div id="music-bars" class="flex gap-1 items-end h-4">
+        <div id="music-bars" class="flex gap-1 items-end h-4 ">
             <span class="w-1 bg-gold h-full animate-[bounce_1s_infinite]"></span>
             <span class="w-1 bg-gold h-2/3 animate-[bounce_1.2s_infinite]"></span>
             <span class="w-1 bg-gold h-3/4 animate-[bounce_0.8s_infinite]"></span>
