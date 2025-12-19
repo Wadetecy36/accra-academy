@@ -22,10 +22,21 @@ document.addEventListener('DOMContentLoaded', () => {
         camera.position.z = 5;
 
         // Renderer with Alpha (Transparency)
-        renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap pixel ratio for performance
-        container.appendChild(renderer.domElement);
+renderer = new THREE.WebGLRenderer({
+    alpha: true,      // Enable transparency
+    antialias: true,  // Smooth edges
+    preserveDrawingBuffer: true // Optional: keeps canvas content after render
+});
+
+// Make sure canvas fills the viewport
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap pixel ratio for performance
+
+// Fully transparent background (important for z-index -1)
+renderer.setClearColor(0x000000, 0); 
+
+// Append to container
+container.appendChild(renderer.domElement);
 
     } catch (e) {
         console.error("❌ WebGL Crash:", e.message);

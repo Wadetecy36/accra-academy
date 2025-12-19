@@ -41,6 +41,20 @@ body {
     flex-direction: column;
     position: relative; /* CRITICAL: Establishes stacking context */
 }
+
+#canvas-container {
+    position: fixed;       /* already set by Tailwind inset-0, but safe */
+    top: 0;
+    left: 0;
+    width: 100vw;          /* full viewport width */
+    height: 100vh;         /* full viewport height */
+    pointer-events: none;  /* keep clicks passing through */
+    z-index: -1;           /* behind everything else */
+    background: transparent; /* important for WebGL alpha */
+}
+
+
+
 .dark body { color: var(--text-primary); }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
 
