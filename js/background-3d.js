@@ -162,3 +162,5 @@ container.appendChild(renderer.domElement);
         }
     });
 });
+
+console.log('Canvas container:', document.getElementById('canvas-container'));
