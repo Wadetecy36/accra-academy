@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-}); // <--- END OF DOMContentLoaded LISTENER
+ // <--- END OF DOMContentLoaded LISTENER
 
 /* =========================================
    LEADERSHIP SLIDER LOGIC (SMOOTH ANIMATION)
@@ -594,4 +594,32 @@ window.changeLeader = function(index) {
         }, 50);
 
     }, 400); // Matches CSS transition duration
+
+    /* =========================================
+   11. LEADERSHIP MODAL SAFETY FIX
+   ========================================= */
+
+// Ensure modal is hidden on load
+const leaderModal = document.querySelector('.leader-modal');
+const modalBackdrop = document.querySelector('.modal-backdrop');
+
+if (leaderModal) leaderModal.style.display = 'none';
+if (modalBackdrop) modalBackdrop.style.display = 'none';
+
+document.body.classList.remove('modal-open');
+
+};
+});
+/* =========================================
+   GLOBAL MODAL CLOSE FUNCTION
+   ========================================= */
+
+window.closeLeaderModal = function () {
+    const modal = document.querySelector('.leader-modal');
+    const backdrop = document.querySelector('.modal-backdrop');
+
+    if (modal) modal.style.display = 'none';
+    if (backdrop) backdrop.style.display = 'none';
+
+    document.body.classList.remove('modal-open');
 };
