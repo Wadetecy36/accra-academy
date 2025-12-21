@@ -20,9 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let scene, camera, renderer, crestMesh, particlesMesh;
 
     try {
-        // --- 2. SCENE SETUP ---
-        scene = new THREE.Scene();
-
+      scene = new THREE.Scene();
+scene.background = new THREE.Color(0x001a35); // Match the darker blue
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.z = 5;
 
@@ -34,8 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-// CRITICAL: Transparent background so it doesn't block content
-renderer.setClearColor(0x000000, 0);
+renderer.setClearColor(0x002147, 1); // Royal blue
 
 // Make canvas explicitly transparent
 const canvas = renderer.domElement;
