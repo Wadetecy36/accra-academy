@@ -595,31 +595,31 @@ window.changeLeader = function(index) {
 
     }, 400); // Matches CSS transition duration
 
-    /* =========================================
+   /* =========================================
    11. LEADERSHIP MODAL SAFETY FIX
    ========================================= */
 
-// Ensure modal is hidden on load
-const leaderModal = document.querySelector('.leader-modal');
-const modalBackdrop = document.querySelector('.modal-backdrop');
+// CRITICAL: Hide modal on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('leader-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        console.log('✅ Modal hidden on load');
+    }
+});
 
-if (leaderModal) leaderModal.style.display = 'none';
-if (modalBackdrop) modalBackdrop.style.display = 'none';
-
-document.body.classList.remove('modal-open');
+// Global close function
+window.closeLeaderModal = function() {
+    const modal = document.getElementById('leader-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.classList.add('hidden');
+        modal.classList.remove('flex', 'active');
+    }
+    document.body.classList.remove('modal-open');
+};
 
 };
 });
-/* =========================================
-   GLOBAL MODAL CLOSE FUNCTION
-   ========================================= */
-
-window.closeLeaderModal = function () {
-    const modal = document.querySelector('.leader-modal');
-    const backdrop = document.querySelector('.modal-backdrop');
-
-    if (modal) modal.style.display = 'none';
-    if (backdrop) backdrop.style.display = 'none';
-
-    document.body.classList.remove('modal-open');
-};

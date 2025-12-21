@@ -102,7 +102,7 @@
   <section class="pt-28 pb-16 bg-royal text-white relative">
 
     <!-- Parallax Background -->
-    <div class="absolute inset-0 bg-fixed" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1920&auto=format&fit=crop'); background-size: cover; background-position: center;"></div>
+    <div class="absolute inset-0 bg-fixed" style="background-image: url('./assets/ind.jpg'); background-size: cover; background-position: center;"></div>
     <div class="absolute inset-0 bg-gradient-to-r from-royal via-royal/90 to-royal/40"></div>
 
     <div class="container mx-auto px-4 text-center">
@@ -142,136 +142,218 @@
 
   <!-- INTERACTIVE DEPARTMENTS (THE SHOWSTOPPER) -->
   <section id="departments" class="py-16 bg-soft dark:bg-gray-900 mx-auto px-4">
-      <!-- Background Elements -->
-      <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent"></div>
+<div class="container">
+  <div class="text-center mb-16" data-aos="fade-up">
+    <h2 class="text-4xl md:text-5xl font-display font-bold text-royal dark:text-gold mb-6">
+      Programmes of Study
+    </h2>
+    <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-lg">
+      Navigate through our specialized departments designed to unlock potential across every discipline.
+    </p>
+  </div>
 
-      <div class="container">
-          <div class="text-center mb-16" data-aos="fade-up">
-              <h2 class="text-4xl md:text-5xl font-display font-bold text-royal dark:text-gold mb-6">Programmes of Study</h2>
-              <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-lg">
-                  Navigate through our specialized departments designed to unlock potential across every discipline.
-              </p>
+  <!-- TABS CONTAINER -->
+  <div
+    class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-700"
+    data-aos="fade-up"
+    data-aos-delay="200"
+  >
+    <!-- TAB HEADERS -->
+    <div class="flex flex-wrap border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+      <button
+        class="dept-tab active flex-1 py-6 px-4 text-center font-bold text-gray-500 hover:text-royal transition duration-300 border-b-4 border-transparent focus:outline-none"
+        data-target="science"
+      >
+        🧬 General Science
+      </button>
+      <button
+        class="dept-tab flex-1 py-6 px-4 text-center font-bold text-gray-500 hover:text-royal transition duration-300 border-b-4 border-transparent focus:outline-none"
+        data-target="arts"
+      >
+        ⚖️ General Arts
+      </button>
+      <button
+        class="dept-tab flex-1 py-6 px-4 text-center font-bold text-gray-500 hover:text-royal transition duration-300 border-b-4 border-transparent focus:outline-none"
+        data-target="business"
+      >
+        📈 Business
+      </button>
+      <button
+        class="dept-tab flex-1 py-6 px-4 text-center font-bold text-gray-500 hover:text-royal transition duration-300 border-b-4 border-transparent focus:outline-none"
+        data-target="visual"
+      >
+        🎨 Visual Arts
+      </button>
+      <button
+        class="dept-tab flex-1 py-6 px-4 text-center font-bold text-gray-500 hover:text-royal transition duration-300 border-b-4 border-transparent focus:outline-none"
+        data-target="agric"
+      >
+        🌱 Agriculture
+      </button>
+    </div>
+
+    <!-- TAB CONTENTS -->
+    <div class="p-8 md:p-16 min-h-[500px] relative">
+
+      <!-- 1. SCIENCE -->
+      <div id="science" class="dept-content grid md:grid-cols-2 gap-16 items-center">
+        <div class="space-y-6">
+          <span class="bg-blue-100 text-royal px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+            Flagship Program
+          </span>
+          <h3 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white">
+            Department of Science
+          </h3>
+          <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+            Known for producing top engineers, doctors, and researchers. We emphasize practical laboratory work,
+            robotics, and critical thinking.
+          </p>
+
+          <div class="grid grid-cols-2 gap-4 mt-4">
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Physics</div>
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Chemistry</div>
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Biology</div>
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Elective Math</div>
           </div>
+        </div>
 
-          <!-- TABS CONTAINER -->
-          <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-700" data-aos="fade-up" data-aos-delay="200">
-
-              <!-- Tab Headers -->
-              <div class="flex flex-wrap border-b border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
-                  <button class="dept-tab active flex-1 py-6 px-4 text-center font-bold text-gray-500 hover:text-royal transition duration-300 border-b-4 border-transparent focus:outline-none" data-target="science">
-                      🧬 General Science
-                  </button>
-                  <button class="dept-tab flex-1 py-6 px-4 text-center font-bold text-gray-500 hover:text-royal transition duration-300 border-b-4 border-transparent focus:outline-none" data-target="arts">
-                      ⚖️ General Arts
-                  </button>
-                  <button class="dept-tab flex-1 py-6 px-4 text-center font-bold text-gray-500 hover:text-royal transition duration-300 border-b-4 border-transparent focus:outline-none" data-target="business">
-                      📈 Business
-                  </button>
-                  <button class="dept-tab flex-1 py-6 px-4 text-center font-bold text-gray-500 hover:text-royal transition duration-300 border-b-4 border-transparent focus:outline-none" data-target="visual">
-                      🎨 Visual Arts
-                  </button>
-              </div>
-
-              <!-- Tab Contents -->
-              <div class="p-8 md:p-16 min-h-[500px] relative">
-
-                  <!-- 1. SCIENCE -->
-                  <div id="science" class="dept-content grid md:grid-cols-2 gap-16 items-center">
-                      <div class="space-y-6">
-                          <span class="bg-blue-100 text-royal px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Flagship Program</span>
-                          <h3 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white">Department of Science</h3>
-                          <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-                              Known for producing top engineers, doctors, and researchers. We emphasize practical laboratory work, robotics, and critical thinking.
-                          </p>
-
-                          <div class="grid grid-cols-2 gap-4 mt-4">
-                              <div class="flex items-center gap-3">
-                                  <span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">Physics</span>
-                              </div>
-                              <div class="flex items-center gap-3">
-                                  <span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">Chemistry</span>
-                              </div>
-                              <div class="flex items-center gap-3">
-                                  <span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">Biology</span>
-                              </div>
-                              <div class="flex items-center gap-3">
-                                  <span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">Elective Math</span>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="relative group">
-                          <div class="absolute -inset-4 bg-gold rounded-2xl transform rotate-2 group-hover:rotate-1 transition duration-500"></div>
-                          <img src="./assets/src.jpg" alt="Science Lab" class="relative rounded-xl shadow-2xl w-full h-[400px] object-cover filter grayscale group-hover:grayscale-0 transition duration-500">
-                      </div>
-                  </div>
-
-                  <!-- 2. ARTS -->
-                  <div id="arts" class="dept-content grid md:grid-cols-2 gap-16 items-center hidden">
-                      <div class="space-y-6">
-                          <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Leadership Focus</span>
-                          <h3 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white">Department of General Arts</h3>
-                          <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-                              Fostering future lawyers, politicians, and writers. Our Arts program encourages debate, historical analysis, and linguistic mastery.
-                          </p>
-                          <div class="grid grid-cols-2 gap-4 mt-4">
-                              <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">Government</span></div>
-                              <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">History</span></div>
-                              <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">Literature</span></div>
-                              <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">Economics</span></div>
-                              <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">Music</span></div>
-                          </div>
-                      </div>
-                      <div class="relative group">
-                          <div class="absolute -inset-4 bg-royal rounded-2xl transform -rotate-2 group-hover:rotate-1 transition duration-500"></div>
-                          <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800" alt="Arts Class" class="relative rounded-xl shadow-2xl w-full h-[400px] object-cover filter grayscale group-hover:grayscale-0 transition duration-500">
-                      </div>
-                  </div>
-
-                  <!-- 3. BUSINESS -->
-                  <div id="business" class="dept-content grid md:grid-cols-2 gap-16 items-center hidden">
-                      <div class="space-y-6">
-                          <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Entrepreneurship</span>
-                          <h3 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white">Department of Business</h3>
-                          <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-                              Equipping students with financial literacy. Accra Academy Business students consistently top national rankings in accounting and management.
-                          </p>
-                          <div class="grid grid-cols-2 gap-4 mt-4">
-                              <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">Accounting</span></div>
-                              <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">Management</span></div>
-                              <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">Costing</span></div>
-                              <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">E-Maths</span></div>
-                          </div>
-                      </div>
-                      <div class="relative group">
-                          <div class="absolute -inset-4 bg-green-600 rounded-2xl transform rotate-2 group-hover:rotate-1 transition duration-500"></div>
-                          <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800" alt="Business" class="relative rounded-xl shadow-2xl w-full h-[400px] object-cover filter grayscale group-hover:grayscale-0 transition duration-500">
-                      </div>
-                  </div>
-
-                  <!-- 4. VISUAL ARTS -->
-                  <div id="visual" class="dept-content grid md:grid-cols-2 gap-16 items-center hidden">
-                      <div class="space-y-6">
-                          <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Innovation</span>
-                          <h3 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white">Department of Visual Arts</h3>
-                          <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
-                              Where creativity meets discipline. Our studio sessions cover everything from traditional ceramics to modern graphic design.
-                          </p>
-                          <div class="grid grid-cols-2 gap-4 mt-4">
-                              <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">Graphic Design</span></div>
-                              <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">Ceramics</span></div>
-                              <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">Textiles</span></div>
-                              <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> <span class="dark:text-gray-300">Sculpture</span></div>
-                          </div>
-                      </div>
-                      <div class="relative group">
-                          <div class="absolute -inset-4 bg-purple-600 rounded-2xl transform -rotate-2 group-hover:rotate-1 transition duration-500"></div>
-                          <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800" alt="Visual Arts" class="relative rounded-xl shadow-2xl w-full h-[400px] object-cover filter grayscale group-hover:grayscale-0 transition duration-500">
-                      </div>
-                  </div>
-
-              </div>
-          </div>
+        <div class="relative group">
+          <div class="absolute -inset-4 bg-gold rounded-2xl rotate-2 transition duration-500"></div>
+          <img
+            src="./assets/src.jpg"
+            alt="Science Lab"
+            class="relative rounded-xl shadow-2xl w-full h-[400px] object-cover filter grayscale group-hover:grayscale-0 transition duration-500"
+          />
+        </div>
       </div>
+
+      <!-- 2. ARTS -->
+      <div id="arts" class="dept-content grid md:grid-cols-2 gap-16 items-center hidden">
+        <div class="space-y-6">
+          <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+            Leadership Focus
+          </span>
+          <h3 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white">
+            Department of General Arts
+          </h3>
+          <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+            Fostering future lawyers, politicians, and writers through debate, history, and linguistic mastery.
+          </p>
+
+          <div class="grid grid-cols-2 gap-4 mt-4">
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Government</div>
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> History</div>
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Literature</div>
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Economics</div>
+          </div>
+        </div>
+
+        <div class="relative group">
+          <div class="absolute -inset-4 bg-royal rounded-2xl -rotate-2 transition duration-500"></div>
+          <img
+            src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800"
+            alt="Arts Class"
+            class="relative rounded-xl shadow-2xl w-full h-[400px] object-cover filter grayscale group-hover:grayscale-0 transition duration-500"
+          />
+        </div>
+      </div>
+
+      <!-- 3. BUSINESS -->
+      <div id="business" class="dept-content grid md:grid-cols-2 gap-16 items-center hidden">
+        <div class="space-y-6">
+          <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+            Entrepreneurship
+          </span>
+          <h3 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white">
+            Department of Business
+          </h3>
+          <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+            Equipping students with strong foundations in accounting, management, and finance.
+          </p>
+
+          <div class="grid grid-cols-2 gap-4 mt-4">
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Accounting</div>
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Management</div>
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Costing</div>
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> E-Maths</div>
+          </div>
+        </div>
+
+        <div class="relative group">
+          <div class="absolute -inset-4 bg-green-600 rounded-2xl rotate-2 transition duration-500"></div>
+          <img
+            src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=800"
+            alt="Business Class"
+            class="relative rounded-xl shadow-2xl w-full h-[400px] object-cover filter grayscale group-hover:grayscale-0 transition duration-500"
+          />
+        </div>
+      </div>
+
+      <!-- 4. VISUAL ARTS -->
+      <div id="visual" class="dept-content grid md:grid-cols-2 gap-16 items-center hidden">
+        <div class="space-y-6">
+          <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+            Innovation
+          </span>
+          <h3 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white">
+            Department of Visual Arts
+          </h3>
+          <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+            Where creativity meets discipline, from ceramics to digital design.
+          </p>
+
+          <div class="grid grid-cols-2 gap-4 mt-4">
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Graphic Design</div>
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Ceramics</div>
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Textiles</div>
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Sculpture</div>
+          </div>
+        </div>
+
+        <div class="relative group">
+          <div class="absolute -inset-4 bg-purple-600 rounded-2xl -rotate-2 transition duration-500"></div>
+          <img
+            src="./assets/virt.jpg"
+            alt="Visual Arts"
+            class="relative rounded-xl shadow-2xl w-full h-[400px] object-cover filter grayscale group-hover:grayscale-0 transition duration-500"
+          />
+        </div>
+      </div>
+
+      <!-- 5. AGRICULTURE -->
+      <div id="agric" class="dept-content grid md:grid-cols-2 gap-16 items-center hidden">
+        <div class="space-y-6">
+          <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+            Sustainability
+          </span>
+          <h3 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white">
+            Department of Agriculture
+          </h3>
+          <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+            Training students in modern agriculture, food production, and environmental sustainability.
+          </p>
+
+          <div class="grid grid-cols-2 gap-4 mt-4">
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> General Agriculture</div>
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Crop Husbandry</div>
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Animal Husbandry</div>
+            <div class="flex items-center gap-3"><span class="w-2 h-2 bg-gold rounded-full"></span> Chemistry</div>
+          </div>
+        </div>
+
+        <div class="relative group">
+          <div class="absolute -inset-4 bg-green-500 rounded-2xl rotate-2 transition duration-500"></div>
+          <img
+            src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?q=80&w=800"
+            alt="Agriculture"
+            class="relative rounded-xl shadow-2xl w-full h-[400px] object-cover filter grayscale group-hover:grayscale-0 transition duration-500"
+          />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
   </section>
 
   <!-- ACADEMIC CALENDAR (Timeline) -->

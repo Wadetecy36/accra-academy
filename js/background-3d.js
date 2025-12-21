@@ -2,6 +2,11 @@
 /*  js/background-3d.js – ROBUST & MOBILE OPTIMIZED              */
 /* ============================================================= */
 
+// EMERGENCY: Wait for THREE.js to load
+if (typeof THREE === 'undefined') {
+    console.error('❌ THREE.js not loaded! Check script order.');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('canvas-container');
     if (!container) return;
@@ -21,22 +26,27 @@ document.addEventListener('DOMContentLoaded', () => {
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.z = 5;
 
-        // Renderer with Alpha (Transparency)
-renderer = new THREE.WebGLRenderer({
-    alpha: true,      // Enable transparency
-    antialias: true,  // Smooth edges
-    preserveDrawingBuffer: true // Optional: keeps canvas content after render
+  renderer = new THREE.WebGLRenderer({
+    alpha: true,
+    antialias: true
 });
 
-// Make sure canvas fills the viewport
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap pixel ratio for performance
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-// Fully transparent background (important for z-index -1)
-renderer.setClearColor(0x000000, 0); 
+// CRITICAL: Transparent background so it doesn't block content
+renderer.setClearColor(0x000000, 0);
 
-// Append to container
-container.appendChild(renderer.domElement);
+// Make canvas explicitly transparent
+const canvas = renderer.domElement;
+canvas.style.background = 'transparent';
+canvas.style.position = 'absolute';
+canvas.style.top = '0';
+canvas.style.left = '0';
+canvas.style.width = '100%';
+canvas.style.height = '100%';
+
+container.appendChild(canvas);
 
     } catch (e) {
         console.error("❌ WebGL Crash:", e.message);
@@ -163,4 +173,12 @@ container.appendChild(renderer.domElement);
     });
 });
 
-console.log('Canvas container:', document.getElementById('canvas-container'));
+// Debug: Verify everything loaded
+setTimeout(() => {
+    console.log('🔍 3D Debug Check:', {
+        'THREE.js loaded': typeof THREE !== 'undefined',
+        'Container exists': !!document.getElementById('canvas-container'),
+        'Container visible': document.getElementById('canvas-container')?.style.display !== 'none',
+        'Canvas in DOM': !!document.querySelector('#canvas-container canvas')
+    });
+}, 1000);

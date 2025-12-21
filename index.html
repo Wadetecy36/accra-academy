@@ -40,15 +40,17 @@
   <link href="https://unpkg.com/swiper@11/swiper-bundle.min.css" rel="stylesheet">
 
 
-  // Three.js 
-<script src="./js/background-3d.js"></script>
+  
 
   <!-- CUSTOM CSS -->
   <link href="./css/custom.css" rel="stylesheet">
 </head>
-
-<!-- SENIOR DEV FIX: Removed solid bg classes so 3D background shows through -->
+   <!-- SENIOR DEV FIX: Removed 'bg-soft' to allow 3D canvas visibility -->
 <body class="min-h-screen transition-colors duration-300" id="main-content">
+
+  <!-- 3D BACKGROUND -->
+  <div id="canvas-container" class="fixed inset-0 z-[-1] pointer-events-none"></div>
+
 
     <!-- LIVE ANNOUNCEMENT BAR -->
     <div id="announcement-bar" class="hidden bg-gold text-royal font-bold text-sm py-2 relative z-50 overflow-hidden border-b border-royal/10">
@@ -58,12 +60,10 @@
             <button onclick="closeAnnouncement()" class="text-royal hover:text-white">&times;</button>
         </div>
     </div>
-
-<!-- 3D BACKGROUND CANVAS -->
-<div id="canvas-container" class="fixed inset-0 pointer-events-none" style="z-index: -1;"></div>
     <!-- HEADER -->
     <header class="site-header sticky top-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 h-20 flex justify-between items-center">
+
 
             <!-- 1. BRAND -->
             <a href="./index.html" class="flex items-center gap-3 group">
@@ -250,7 +250,7 @@
                   <!-- Decorative Frame -->
                   <div class="absolute inset-0 border-2 border-gold rounded-3xl transform translate-x-4 translate-y-4 z-0"></div>
                   <div class="relative rounded-3xl overflow-hidden shadow-2xl z-10 group">
-                      <div class="absolute inset-0 bg-royal/20 group-hover:bg-transparent transition duration-500"></div>
+                      <div class=absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent pointer-events-none group-hover:bg-transparent transition duration-500"></div>
                       <img src="./assets/gallery4.webp" alt="Students in Library" class="w-full h-[500px] object-cover transform group-hover:scale-105 transition duration-700">
                   </div>
               </div>
@@ -264,7 +264,7 @@
                   <!-- Decorative Frame -->
                   <div class="absolute inset-0 border-2 border-royal dark:border-white rounded-3xl transform -translate-x-4 translate-y-4 z-0"></div>
                   <div class="relative rounded-3xl overflow-hidden shadow-2xl z-10 group">
-                      <div class="absolute inset-0 bg-royal/20 group-hover:bg-transparent transition duration-500"></div>
+                      <div class=absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent pointer-events-none group-hover:bg-transparent transition duration-500"></div>
                       <img src="./assets/gallery3.webp" alt="Sports Team" class="w-full h-[500px] object-cover transform group-hover:scale-105 transition duration-700">
                       
                       <!-- Floating Badge -->
@@ -583,7 +583,7 @@
                   
                   <!-- Slide 1 -->
                   <div class="swiper-slide !w-[85vw] md:!w-[600px] group relative rounded-2xl overflow-hidden shadow-2xl border border-white/20">
-                      <div class="absolute inset-0 bg-royal/20 group-hover:bg-transparent transition duration-500 z-10"></div>
+                      <div class=absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent pointer-events-none group-hover:bg-transparent transition duration-500 z-10"></div>
                       <img src="./assets/admin.png" class="w-full h-[300px] md:h-[500px] object-cover transform group-hover:scale-110 transition duration-700 ease-out" alt="Campus">
                       <div class="absolute bottom-0 left-0 p-6 z-20 translate-y-4 group-hover:translate-y-0 transition duration-500">
                           <span class="text-gold text-xs font-bold uppercase tracking-wider">Infrastructure</span>
@@ -593,7 +593,7 @@
 
                   <!-- Slide 2 -->
                   <div class="swiper-slide !w-[85vw] md:!w-[600px] group relative rounded-2xl overflow-hidden shadow-2xl border border-white/20">
-                      <div class="absolute inset-0 bg-royal/20 group-hover:bg-transparent transition duration-500 z-10"></div>
+                      <div class=absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent pointer-events-none group-hover:bg-transparent transition duration-500 z-10"></div>
                       <img src="./assets/SRC.png" class="w-full h-[300px] md:h-[500px] object-cover transform group-hover:scale-110 transition duration-700 ease-out" alt="Students">
                       <div class="absolute bottom-0 left-0 p-6 z-20 translate-y-4 group-hover:translate-y-0 transition duration-500">
                           <span class="text-gold text-xs font-bold uppercase tracking-wider">Academics</span>
@@ -603,7 +603,7 @@
 
                   <!-- Slide 3 -->
                   <div class="swiper-slide !w-[85vw] md:!w-[600px] group relative rounded-2xl overflow-hidden shadow-2xl border border-white/20">
-                      <div class="absolute inset-0 bg-royal/20 group-hover:bg-transparent transition duration-500 z-10"></div>
+                      <div class=absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent pointer-events-none group-hover:bg-transparent transition duration-500 z-10"></div>
                       <img src="./assets/sport.jpg" class="w-full h-[300px] md:h-[500px] object-cover transform group-hover:scale-110 transition duration-700 ease-out" alt="Sports">
                       <div class="absolute bottom-0 left-0 p-6 z-20 translate-y-4 group-hover:translate-y-0 transition duration-500">
                           <span class="text-gold text-xs font-bold uppercase tracking-wider">Athletics</span>
@@ -613,7 +613,7 @@
 
                   <!-- Slide 4 -->
                   <div class="swiper-slide !w-[85vw] md:!w-[600px] group relative rounded-2xl overflow-hidden shadow-2xl border border-white/20">
-                      <div class="absolute inset-0 bg-royal/20 group-hover:bg-transparent transition duration-500 z-10"></div>
+                      <div class=absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent pointer-events-none group-hover:bg-transparent transition duration-500 z-10"></div>
                       <img src="./assets/lib.jpg" class="w-full h-[300px] md:h-[500px] object-cover transform group-hover:scale-110 transition duration-700 ease-out" alt="Library">
                       <div class="absolute bottom-0 left-0 p-6 z-20 translate-y-4 group-hover:translate-y-0 transition duration-500">
                           <span class="text-gold text-xs font-bold uppercase tracking-wider">Research</span>
@@ -623,7 +623,7 @@
 
                   <!-- Slide 5 -->
                   <div class="swiper-slide !w-[85vw] md:!w-[600px] group relative rounded-2xl overflow-hidden shadow-2xl border border-white/20">
-                      <div class="absolute inset-0 bg-royal/20 group-hover:bg-transparent transition duration-500 z-10"></div>
+                      <div class=absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-transparent pointer-events-none group-hover:bg-transparent transition duration-500 z-10"></div>
                       <img src="./assets/speech.jpg" class="w-full h-[300px] md:h-[500px] object-cover transform group-hover:scale-110 transition duration-700 ease-out" alt="Events">
                       <div class="absolute bottom-0 left-0 p-6 z-20 translate-y-4 group-hover:translate-y-0 transition duration-500">
                           <span class="text-gold text-xs font-bold uppercase tracking-wider">Events</span>
@@ -770,15 +770,14 @@
        LEADER MODAL (REQUIRED FOR POPUP)
        PASTE THIS RIGHT ABOVE YOUR <script> TAGS
        ========================================= -->
-  <div id="leader-modal" class="fixed inset-0 z-[9999] flex items-center justify-center px-4 font-sans">
+  < id="leader-modal" class="fixed inset-0 z-[9999] hidden opacity-0 items-center justify-center px-4 font-sans pointer-events-none">
       
       <!-- Dark Backdrop -->
       <div class="absolute inset-0 bg-black/90 backdrop-blur-sm transition-opacity duration-300" onclick="closeLeaderModal()"></div>
       
       <!-- The Card -->
       <div class="relative bg-white dark:bg-gray-900 w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row transform scale-95 opacity-0 transition-all duration-300 border border-gold/20" id="leader-modal-content">
-          
-          <!-- Close X Button -->
+            <!-- Close X Button -->
           <button onclick="closeLeaderModal()" class="absolute top-4 right-4 z-50 bg-black/50 hover:bg-red-600 text-white w-10 h-10 rounded-full flex items-center justify-center transition cursor-pointer">✕</button>
 
           <!-- Image Side (Left) -->
@@ -809,13 +808,17 @@
               </div>
           </div>
       </div>
-  </div>
 
-  <!-- SCRIPTS -->
-  <!-- 3D Logic -->
-  <script src="./js/background-3d.js"></script>
-  <!-- Main Logic -->
-  <script src="./js/script.js"></script>
+    </div>
+</div>
+      
+<!-- SCRIPTS -->
+<!-- THREE.JS MUST LOAD FIRST -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- 3D Logic (after THREE.js) -->
+<script src="./js/background-3d.js"></script>
+<!-- Main Logic -->
+<script src="./js/script.js"></script>
   <!-- Libs -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
@@ -838,7 +841,7 @@
     </audio>
 
     <!-- The Toggle Button -->
-    <button id="music-toggle" class="w-12 h-12 rounded-full bg-royal/80 backdrop-blur-md border border-gold/30 text-gold flex items-center justify-center shadow-lg hover:scale-110 transition group overflow-hidden">
+    <button id="music-toggle" class="w-12 h-12 rounded-full bg-royal/80 backdrop-blur-md border border-gold/30 text-gold flex items-center justify-center shadow-lg hover:scale-110 hiddentransition group overflow-hidden">
         <!-- Bars Animation (Playing) -->
         <div id="music-bars" class="flex gap-1 items-end h-4 ">
             <span class="w-1 bg-gold h-full animate-[bounce_1s_infinite]"></span>

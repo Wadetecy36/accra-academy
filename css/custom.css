@@ -15,6 +15,19 @@
     --footer-link: #cbd5e1;
 }
 
+/* CRITICAL: Force hide modal on load */
+#leader-modal {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+#leader-modal.active {
+    display: flex !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
 /* DARK MODE VARS */
 .dark {
     --bg-body: var(--bg-dark);
@@ -42,37 +55,31 @@ body {
     position: relative; /* CRITICAL: Establishes stacking context */
 }
 
-#canvas-container {
-    position: fixed;       /* already set by Tailwind inset-0, but safe */
-    top: 0;
-    left: 0;
-    width: 100vw;          /* full viewport width */
-    height: 100vh;         /* full viewport height */
-    pointer-events: none;  /* keep clicks passing through */
-    z-index: -1;           /* behind everything else */
-    background: transparent; /* important for WebGL alpha */
+html, body {
+    background: transparent !important;
 }
 
+body {
+    position: relative;
+    z-index: 1;
+}
+
+.section-glass {
+    position: relative;
+    background: rgba(255, 255, 255, 0.08); /* LIGHT glass */
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+/* Dark mode: still transparent, not dark */
+.dark .section-glass {
+    background: rgba(255, 255, 255, 0.03) !important;
+}
 
 
 .dark body { color: var(--text-primary); }
 .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
 
-.section-glass {
-    background: rgba(255, 255, 255, 0.85); /* More opaque */
-    position: relative;
-    z-index: 10;
-    border-top: 1px solid rgba(0,0,0,0.05);
-    backdrop-filter: none; /* Remove blur */
-    -webkit-backdrop-filter: none; /* Remove blur on Safari */
-}
-
-.dark .section-glass {
-    background: rgba(2, 6, 23, 0.85); /* More opaque */
-    border-top: 1px solid rgba(255,255,255,0.05);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-}
 
 /* --- ACCESSIBILITY --- */
 .skip-link {
@@ -87,14 +94,13 @@ body {
     position: fixed; 
     top: 0; 
     width: 100%; 
-    z-index: 50;
+    z-index: 50; /* Keep high for header */
     background: rgba(255, 255, 255, 0.98);
     border-bottom: 1px solid rgba(0,0,0,0.05);
     transition: background-color 0.3s ease, border-color 0.3s ease;
-    backdrop-filter: none; /* ADD THIS */
-    -webkit-backdrop-filter: none; /* ADD THIS */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
 }
-
 .dark .site-header {
     background: rgba(15, 23, 42, 0.98);
     border-color: rgba(255,255,255,0.05);
@@ -470,4 +476,65 @@ body.debug-layout img { outline: 2px solid blue !important; }
 .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+/* === 3D BACKGROUND CANVAS (FINAL) === */
+#canvas-container {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -10;          /* PUSH IT FAR BACK */
+    pointer-events: none;
+    overflow: hidden;
+}
+
+#canvas-container canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: transparent !important;
+}
+
+
+/* Simplified Z-Index Stack */
+body {
+    position: relative;
+    z-index: 1;
+}
+
+
+.site-header {
+    z-index: 100;
+    position: relative;
+}
+
+.section-glass {
+    z-index: auto; /* Let it inherit from body */
+    position: relative;
+}
+
+footer {
+    z-index: 10;
+    position: relative;
+}
+
+.section-glass::before,
+.section-glass::after {
+    content: none !important;
+}
+
+
+/* 🚨 PREVENT FULL-PAGE OVERLAYS */
+body::before,
+body::after,
+section::before,
+section::after {
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+.hero,
+.hero * {
+    isolation: isolate;
 }
