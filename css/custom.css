@@ -65,6 +65,31 @@ section:not(.bg-royal):not(.bg-soft) {
     background: transparent !important;
 }
 
+
+/* Override hero section specifically */
+section.min-h-screen.section-glass,
+.hero.section-glass {
+    background: rgba(0, 0, 0, 0.08) !important; /* 8% dark - very subtle */
+    backdrop-filter: blur(4px) !important; /* Light blur */
+    -webkit-backdrop-filter: blur(4px) !important;
+}
+
+/* Dark mode */
+.dark section.min-h-screen.section-glass,
+.dark .hero.section-glass {
+    background: rgba(0, 0, 0, 0.12) !important; /* 12% in dark mode */
+}
+/* The three info cards at the bottom of hero */
+section.min-h-screen .bg-white\/40 {
+    background: rgba(255, 255, 255, 0.12) !important; /* Subtle white tint */
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+.dark section.min-h-screen .dark\:bg-white\/5 {
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
 /* Remove blur from everything EXCEPT sections/header */
 div:not(section):not(header):not(.crest-glass-orb):not(#chat-window) {
     backdrop-filter: none !important;
