@@ -226,10 +226,10 @@ app.post('/api/chat', publicLimiter, async (req, res) => {
     }
 });
 
-// 404
-app.use((req, res) => {
-    res.status(404).json({ error: "Route not found" });
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
 });
+
 
 // Fallback for SPA / normal pages
 app.get('*', (req, res) => {
@@ -237,17 +237,9 @@ app.get('*', (req, res) => {
 });
 
 
-app.get('/health', (req, res) => {
-    res.status(200).send('OK');
+// 404
+app.use((req, res) => {
+    res.status(404).json({ error: "Route not found" });
 });
-
-
-// LOCAL DEV START
-if (require.main === module) {
-    const PORT = process.env.PORT || 5500;
-    app.listen(PORT, () => {
-        console.log(`🚀 Server running locally on http://localhost:${PORT}`);
-    });
-}
 
 module.exports = app;
