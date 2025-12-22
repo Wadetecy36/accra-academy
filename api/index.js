@@ -3,6 +3,7 @@
 /* ============================================================= */
 
 require('dotenv').config();
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -91,6 +92,10 @@ const verifyToken = (req, res, next) => {
         next();
     } catch (err) { res.status(400).json({ error: "Invalid Token" }); }
 };
+
+// Serve static frontend
+app.use(express.static(path.join(__dirname, '../public')));
+
 
 // =================================================================
 // 🚀 API ROUTES
@@ -225,6 +230,17 @@ app.post('/api/chat', publicLimiter, async (req, res) => {
 app.use((req, res) => {
     res.status(404).json({ error: "Route not found" });
 });
+
+// Fallback for SPA / normal pages
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
+
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+});
+
 
 // LOCAL DEV START
 if (require.main === module) {
