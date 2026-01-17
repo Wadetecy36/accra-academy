@@ -9,6 +9,9 @@ const rateLimit = require('express-rate-limit');
 
 const app = express();
 
+// Trust Proxy for Render/Vercel/Heroku
+app.set('trust proxy', 1);
+
 // --- MIDDLEWARE ---
 app.use(helmet());
 app.use(mongoSanitize());
