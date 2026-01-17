@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bleoo Command Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: { colors: { royal: '#002147', gold: '#FDBE11', dark: '#020617' }, fontFamily: { mono: ['Consolas', 'Monaco', 'monospace'] } }
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: 0.3s;
+        }
+
+        .glass-input:focus {
+            border-color: #FDBE11;
+            outline: none;
+        }
+
+        .tab-btn.active {
+            border-bottom: 3px solid #FDBE11;
+            color: #FDBE11;
+            background: rgba(253, 190, 17, 0.05);
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+            border-color: #ef4444 !important;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0)
+            }
+
+            25% {
+                transform: translateX(-5px)
+            }
+
+            75% {
+                transform: translateX(5px)
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-dark text-gray-100 font-sans min-h-screen">
+
+    <!-- LOGIN -->
+    <div id="login-screen"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-[url('./assets/entrance.webp')] bg-cover">
+        <div class="absolute inset-0 bg-royal/90 backdrop-blur-sm"></div>
+        <div id="login-card" class="relative glass-panel p-10 rounded-2xl w-full max-w-md text-center shadow-2xl">
+            <img src="./assets/crest.png" class="w-20 mx-auto mb-4">
+            <h1 class="text-2xl font-bold tracking-widest text-white">COMMAND CENTER</h1>
+            <form id="login-form" class="mt-8 space-y-4">
+                <input type="password" id="admin-pass"
+                    class="w-full glass-input rounded px-4 py-3 text-center text-xl tracking-[5px]" placeholder="••••"
+                    required autofocus>
+                <button
+                    class="w-full bg-gold text-royal font-bold py-3 rounded hover:bg-yellow-400 transition">ACCESS</button>
+            </form>
+            <p id="login-msg" class="text-red-400 text-xs mt-4 h-4"></p>
+            <a href="./index.html" class="block mt-6 text-gray-500 text-xs hover:text-white">← Return to Site</a>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard-content" class="hidden min-h-screen pb-20">
+        <nav class="glass-panel sticky top-0 z-50 border-b-0">
+            <div class="container mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]"></div>
+                    <h1 class="text-xl font-bold tracking-wider">BLEOO <span class="text-gold">ADMIN</span></h1>
+                </div>
+                <div class="flex bg-black/30 p-1 rounded-lg gap-1">
+                    <button onclick="switchTab('logs')" id="tab-logs"
+                        class="tab-btn active px-4 py-2 rounded text-xs font-bold transition">LOGS</button>
+                    <button onclick="switchTab('brain')" id="tab-brain"
+                        class="tab-btn px-4 py-2 rounded text-xs font-bold transition text-gray-400">BRAIN</button>
+                    <button onclick="switchTab('students')" id="tab-students"
+                        class="tab-btn px-4 py-2 rounded text-xs font-bold transition text-gray-400">STUDENTS</button>
+                    <button onclick="switchTab('stats')" id="tab-stats"
+                        class="tab-btn px-4 py-2 rounded text-xs font-bold transition text-gray-400">ANALYTICS</button>
+                </div>
+                <button onclick="logout()"
+                    class="text-xs text-red-400 hover:text-red-300 font-bold border border-red-900 px-3 py-1 rounded">LOGOUT</button>
+            </div>
+        </nav>
+
+        <main class="container mx-auto px-4 py-8">
+
+            <!-- VIEW 1: LOGS -->
+            <div id="view-logs" class="animate-fade-in max-w-5xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-6 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Intelligence Feed</h2>
+                        <p class="text-xs text-gray-400">Real-time interactions</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="logs-search" onkeyup="searchLogs(this.value)"
+                            placeholder="Search keywords..." class="glass-input py-2 pl-4 pr-8 rounded-lg text-xs w-40">
+                        <button onclick="fetchLogs()"
+                            class="px-3 py-2 glass-input rounded-lg text-xs font-bold hover:bg-white/10">↻</button>
+                    </div>
+                </div>
+                <div id="logs-container" class="grid gap-3"></div>
+            </div>
+
+            <!-- VIEW 2: BRAIN -->
+            <div id="view-brain" class="hidden animate-fade-in">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="space-y-6">
+                        <div class="glass-panel p-6 rounded-xl border-l-4 border-gold">
+                            <h3 class="text-white font-bold mb-4">✍️ Manual Entry</h3>
+                            <form id="brain-form" class="space-y-3">
+                                <input id="k-topic" class="w-full glass-input rounded p-3 text-sm bg-black/20"
+                                    placeholder="Topic" required>
+                                <select id="k-category"
+                                    class="w-full glass-input rounded p-3 text-sm bg-black/20 text-gray-300">
+                                    <option>General</option>
+                                    <option>History</option>
+                                    <option>Academics</option>
+                                    <option>Sports</option>
+                                </select>
+                                <textarea id="k-content" class="w-full glass-input rounded p-3 text-sm bg-black/20"
+                                    rows="3" placeholder="Content..." required></textarea>
+                                <button
+                                    class="w-full bg-gold text-royal font-bold py-3 rounded hover:bg-yellow-400 transition shadow-lg">SAVE
+                                    NODE</button>
+                            </form>
+                        </div>
+                        <div class="glass-panel p-6 rounded-xl border-l-4 border-red-500">
+                            <h3 class="text-red-400 font-bold mb-4">Live Broadcast</h3>
+                            <form id="announce-form" class="space-y-3">
+                                <input id="announce-text" class="w-full glass-input rounded p-3 text-sm bg-black/20"
+                                    placeholder="Ticker Message..." required>
+                                <div class="flex gap-2"><button
+                                        class="flex-1 bg-red-600 text-white font-bold py-2 rounded text-xs hover:bg-red-500">SEND</button><button
+                                        type="button" onclick="clearAnnounce()"
+                                        class="bg-gray-800 text-gray-400 px-3 rounded text-xs border border-gray-600">CLEAR</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-2">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xl font-bold text-white">Knowledge Database</h2><span id="k-count"
+                                class="bg-royal border border-gold/30 text-gold px-3 py-1 rounded-full text-xs font-mono">0
+                                Nodes</span>
+                        </div>
+                        <div class="glass-panel rounded-xl overflow-hidden h-[600px] relative">
+                            <div class="absolute inset-0 overflow-y-auto p-4 space-y-3 custom-scroll"
+                                id="knowledge-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 3: STUDENTS (ENHANCED FOR PORTAL) -->
+            <div id="view-students" class="hidden animate-fade-in">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                    <!-- Add Student Form -->
+                    <div class="glass-panel p-6 rounded-xl border-l-4 border-green-500 h-fit">
+                        <h3 class="text-white font-bold mb-4">👤 Enrol Student</h3>
+                        <form id="student-form" class="space-y-3">
+                            <input id="s-name" class="w-full glass-input rounded p-3 text-sm bg-black/20"
+                                placeholder="Full Name" required>
+                            <input id="s-index" class="w-full glass-input rounded p-3 text-sm bg-black/20 uppercase"
+                                placeholder="Index Number" required>
+                            <input id="s-pass" type="text" class="w-full glass-input rounded p-3 text-sm bg-black/20"
+                                placeholder="Password (Default)" required>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input id="s-prog" class="w-full glass-input rounded p-3 text-sm bg-black/20"
+                                    placeholder="Program" required>
+                                <input id="s-house" class="w-full glass-input rounded p-3 text-sm bg-black/20"
+                                    placeholder="House" required>
+                            </div>
+                            <input id="s-year" type="number" class="w-full glass-input rounded p-3 text-sm bg-black/20"
+                                placeholder="Year of Completion (e.g. 2026)" required>
+                            <button
+                                class="w-full bg-green-600 text-white font-bold py-3 rounded hover:bg-green-500 transition shadow-lg">CREATE
+                                ACCOUNT</button>
+                        </form>
+                    </div>
+
+                    <!-- List -->
+                    <div class="lg:col-span-2">
+                        <div class="flex justify-between mb-4">
+                            <h2 class="text-xl font-bold">Student Database</h2>
+                            <button onclick="downloadStudentCSV()"
+                                class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-xs font-bold">EXPORT
+                                EXCEL</button>
+                        </div>
+                        <div class="glass-panel rounded-xl overflow-hidden h-[600px] relative">
+                            <div class="absolute inset-0 overflow-y-auto">
+                                <table class="w-full text-left text-sm text-gray-400">
+                                    <thead class="bg-black/20 text-gold text-xs uppercase sticky top-0 bg-dark z-10">
+                                        <tr>
+                                            <th class="p-4">Name</th>
+                                            <th class="p-4">Index</th>
+                                            <th class="p-4">Program</th>
+                                            <th class="p-4">Year</th>
+                                            <th class="p-4">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="student-list" class="divide-y divide-white/5"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 4: STATS -->
+            <div id="view-stats" class="hidden animate-fade-in">
+                <h2 class="text-xl font-bold text-white mb-6">Analytics</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass-panel p-6 rounded-xl h-64"><canvas id="trafficChart"></canvas></div>
+                    <div class="space-y-4">
+                        <div class="glass-panel p-4 rounded-xl border-l-4 border-blue-500 flex justify-between">
+                            <span>Interactions</span><span class="text-2xl font-bold text-white"
+                                id="stat-total">--</span></div>
+                        <div class="glass-panel p-4 rounded-xl border-l-4 border-green-500 flex justify-between">
+                            <span>Knowledge Nodes</span><span class="text-2xl font-bold text-white"
+                                id="stat-brain">--</span></div>
+                        <div class="glass-panel p-4 rounded-xl border-l-4 border-purple-500 flex justify-between">
+                            <span>Students</span><span class="text-2xl font-bold text-white"
+                                id="stat-students">--</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+        let studentData = [];
+        let trafficChart = null;
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g,
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag]));
+        }
+
+        if (sessionStorage.getItem('bleoo_admin_token')) showDashboard();
+
+        // AUTH
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const pass = document.getElementById('admin-pass').value;
+            try {
+                const res = await fetch(`${API_BASE}/auth/admin/login`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pass })
+                });
+                const data = await res.json();
+                if (data.success) { sessionStorage.setItem('bleoo_admin_token', data.token); showDashboard(); }
+                else throw 1;
+            } catch {
+                document.getElementById('login-card').classList.add('shake');
+                document.getElementById('login-msg').innerText = "ACCESS DENIED";
+                setTimeout(() => document.getElementById('login-card').classList.remove('shake'), 500);
+            }
+        });
+
+        function showDashboard() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard-content').classList.remove('hidden');
+            switchTab('logs');
+        }
+        function logout() { sessionStorage.removeItem('bleoo_admin_token'); location.reload(); }
+
+        // NAVIGATION
+        function switchTab(tab) {
+            ['logs', 'brain', 'students', 'stats'].forEach(t => {
+                document.getElementById('view-' + t).classList.add('hidden');
+                document.getElementById('tab-' + t).classList.remove('active', 'text-gold');
+                document.getElementById('tab-' + t).classList.add('text-gray-400');
+            });
+            document.getElementById('view-' + tab).classList.remove('hidden');
+            document.getElementById('tab-' + tab).classList.add('active', 'text-gold');
+
+            if (tab === 'logs') fetchLogs();
+            if (tab === 'brain') fetchKnowledge();
+            if (tab === 'students') fetchStudents();
+            if (tab === 'stats') loadStats();
+        }
+
+        // LOGS
+        let searchTimeout;
+        function searchLogs(q) { clearTimeout(searchTimeout); searchTimeout = setTimeout(() => fetchLogs(q), 500); }
+        async function fetchLogs(query = '') {
+            const container = document.getElementById('logs-container');
+            if (!query && container.innerHTML.trim() === '') container.innerHTML = `<div class="text-center text-gold animate-pulse">Syncing...</div>`;
+            try {
+                let url = `${API_BASE}/logs?limit=50`;
+                if (query) url += `&search=${encodeURIComponent(query)}`;
+                const res = await fetch(url);
+                const data = await res.json();
+                container.innerHTML = data.map(log => `
+                    <div class="glass-panel p-4 rounded border-l-4 border-l-gold">
+                        <div class="flex justify-between text-[10px] text-gray-500 mb-1"><span>${escapeHTML(log.sentiment || 'Neutral')}</span><span>${new Date(log.timestamp).toLocaleString()}</span></div>
+                        <div class="text-white text-sm mb-2 font-medium">"${escapeHTML(log.userMessage)}"</div>
+                        <div class="pl-3 border-l border-gray-700 text-blue-300 text-xs">${escapeHTML(log.botReply)}</div>
+                    </div>`).join('');
+            } catch (e) { container.innerHTML = `<div class="text-red-500 text-center">Connection Error</div>`; }
+        }
+
+        // KNOWLEDGE & ANNOUNCEMENTS
+        async function fetchKnowledge() {
+            const list = document.getElementById('knowledge-list');
+            const data = await (await fetch(`${API_BASE}/knowledge`)).json();
+            document.getElementById('k-count').innerText = data.length + " Nodes";
+            list.innerHTML = data.map(k => `
+                <div class="bg-gray-800 p-3 rounded flex justify-between items-center group border border-gray-700">
+                    <div><span class="text-[10px] bg-blue-900 text-blue-200 px-1 rounded mr-2">${escapeHTML(k.category)}</span><span class="text-sm font-bold text-gray-300">${escapeHTML(k.topic)}</span><p class="text-xs text-gray-500 truncate w-64">${escapeHTML(k.content)}</p></div>
+                    <button onclick="del('knowledge','${k._id}')" class="text-red-500 opacity-0 group-hover:opacity-100">×</button>
+                </div>`).join('');
+        }
+        document.getElementById('brain-form').onsubmit = async e => {
+            e.preventDefault();
+            await fetch(`${API_BASE}/knowledge`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ topic: document.getElementById('k-topic').value, category: document.getElementById('k-category').value, content: document.getElementById('k-content').value }) });
+            e.target.reset(); fetchKnowledge();
+        };
+        document.getElementById('announce-form').onsubmit = async e => {
+            e.preventDefault();
+            await fetch(`${API_BASE}/announcement`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: document.getElementById('announce-text').value }) });
+            alert("Broadcast Sent!"); e.target.reset();
+        };
+        async function clearAnnounce() { if (confirm("Clear?")) await fetch(`${API_BASE}/announcement`, { method: 'DELETE' }); }
+
+        // STUDENTS (NEW: ADD & LIST)
+        async function fetchStudents() {
+            const res = await fetch(`${API_BASE}/students`);
+            studentData = await res.json();
+            document.getElementById('student-list').innerHTML = studentData.map(s => `
+                <tr class="hover:bg-white/5 border-b border-gray-800"><td class="p-4 font-bold text-white">${escapeHTML(s.fullName)}</td><td class="p-4 text-gold font-mono">${escapeHTML(s.indexNumber)}</td><td class="p-4 text-xs text-gray-400">${escapeHTML(s.program)}</td><td class="p-4 text-xs text-gray-400">${escapeHTML(s.yearOfCompletion)}</td><td class="p-4"><button onclick="del('students','${s._id}')" class="text-red-400 text-xs hover:text-red-300">DEL</button></td></tr>
+            `).join('');
+        }
+
+        document.getElementById('student-form').onsubmit = async e => {
+            e.preventDefault();
+            const payload = {
+                fullName: document.getElementById('s-name').value,
+                indexNumber: document.getElementById('s-index').value,
+                password: document.getElementById('s-pass').value,
+                program: document.getElementById('s-prog').value,
+                house: document.getElementById('s-house').value,
+                yearOfCompletion: parseInt(document.getElementById('s-year').value)
+            };
+
+            const res = await fetch(`${API_BASE}/students`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+            });
+            const json = await res.json();
+            if (json.success) { alert('Student Enrolled!'); e.target.reset(); fetchStudents(); }
+            else { alert('Error: ' + json.error); }
+        };
+
+        async function del(type, id) { if (confirm('Delete?')) { await fetch(`${API_BASE}/${type}/${id}`, { method: 'DELETE' }); type === 'knowledge' ? fetchKnowledge() : fetchStudents(); } }
+        function downloadStudentCSV() {
+            if (!studentData.length) return alert('No data');
+            const csv = ["Name,Index,Program,House,Year"].concat(studentData.map(s => `"${s.fullName}","${s.indexNumber}","${s.program}","${s.house}","${s.yearOfCompletion}"`)).join('\n');
+            const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = 'students.csv'; a.click();
+        }
+
+        // STATS
+        async function loadStats() {
+            const logs = await (await fetch(`${API_BASE}/logs?limit=100`)).json();
+            const facts = await (await fetch(`${API_BASE}/knowledge`)).json();
+            const students = await (await fetch(`${API_BASE}/students`)).json();
+            document.getElementById('stat-total').innerText = logs.length;
+            document.getElementById('stat-brain').innerText = facts.length;
+            document.getElementById('stat-students').innerText = students.length;
+
+            const hours = {}; logs.forEach(l => { const h = new Date(l.timestamp).getHours() + ":00"; hours[h] = (hours[h] || 0) + 1; });
+            if (trafficChart) trafficChart.destroy();
+            trafficChart = new Chart(document.getElementById('trafficChart'), {
+                type: 'line',
+                data: { labels: Object.keys(hours).sort(), datasets: [{ label: 'Activity', data: Object.values(hours), borderColor: '#FDBE11', backgroundColor: 'rgba(253,190,17,0.1)', fill: true, tension: 0.4 }] },
+                options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
+            });
+        }
+    </script>
+</body>
+
+</html>

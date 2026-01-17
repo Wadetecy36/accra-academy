@@ -1,0 +1,785 @@
+/* ============================================================= */
+/*  css/custom.css – SHARP & CLEAR VERSION (NO BLUR)             */
+/* ============================================================= */
+
+:root {
+    --royal: #002147;
+    --gold:  #FDBE11;
+    --soft:  #F7FAFC;
+    --bg-body: linear-gradient(180deg, #F0F9FF 0%, #E0F2FE 100%);
+    --bg-dark: linear-gradient(180deg, #020617 0%, #0F172A 100%);
+    --shadow-soft: 0 10px 30px -10px rgba(0, 33, 71, 0.1);
+    --shadow-hover: 0 20px 40px -5px rgba(0, 33, 71, 0.2);
+    --footer-bg: rgba(15, 23, 42, 0.98);
+    --footer-text: #e0e7ff;
+    --footer-link: #cbd5e1;
+}
+
+/* ============================================================= */
+/*  ADD THIS TO css/custom.css (After the emergency fix)        */
+/*  This restores the royal blue background layer               */
+/* ============================================================= */
+
+/* === RESTORE ROYAL BLUE BACKGROUND === */
+
+/* 1. Set HTML to royal blue (base layer) */
+html {
+    background-color: #001a35 !important; /* Darker royal blue */
+    min-height: 100vh;
+    height: 100%;
+}
+
+/* 2. Keep body transparent so canvas shows through */
+body {
+    background: transparent !important;
+    position: relative;
+    z-index: 1;
+}
+/* Subtle dark tint */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.15); /* 15% dark */
+    z-index: 0;
+    pointer-events: none;
+}
+
+#canvas-container {
+    z-index: 1 !important;
+}
+
+
+/* Balanced dark tint for all sections */
+.section-glass {
+    position: relative;
+    background: rgba(0, 0, 0, 0.18) !important; /* 18% - balanced */
+    backdrop-filter: blur(6px) saturate(1.1) !important;
+    -webkit-backdrop-filter: blur(6px) saturate(1.1) !important;
+}
+
+.dark .section-glass {
+    background: rgba(0, 0, 0, 0.28) !important;
+}
+
+/* Hero section - lighter */
+section.min-h-screen.section-glass {
+    background: rgba(0, 0, 0, 0.12) !important; /* 12% - lighter */
+    backdrop-filter: blur(5px) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
+}
+
+.dark section.min-h-screen.section-glass {
+    background: rgba(0, 0, 0, 0.18) !important;
+}
+/* The three info cards at the bottom of hero */
+section.min-h-screen .bg-white\/40 {
+    background: rgba(255, 255, 255, 0.12) !important; /* Subtle white tint */
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+.dark section.min-h-screen .dark\:bg-white\/5 {
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Remove blur from everything EXCEPT sections/header */
+div:not(section):not(header):not(.crest-glass-orb):not(#chat-window) {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+/* 5. Keep specific sections with their own colors */
+section.bg-royal {
+    background: #002147 !important;
+}
+
+section.bg-soft,
+.bg-soft {
+    background: #F0F4F8 !important;
+}
+
+.dark section.bg-soft,
+.dark .bg-soft {
+    background: #1a202c !important;
+}
+
+/* 6. Leadership section should have its background */
+#leadership {
+    background: #F0F4F8 !important;
+}
+
+.dark #leadership {
+    background: #1a202c !important;
+}
+
+/* === ALTERNATIVE: If you want a gradient instead === */
+/* Uncomment this and comment out the solid color above */
+/*
+html {
+    background: linear-gradient(180deg, #002147 0%, #001529 100%) !important;
+    min-height: 100vh;
+}
+*/
+
+/* === FOR DARK MODE === */
+.dark html {
+    background-color: #001529 !important; /* Darker royal for dark mode */
+}
+/* ============================================================= */
+/*  PASTE THIS AT THE VERY TOP OF css/custom.css                */
+/*  THIS WILL FIX ALL OVERLAY AND TINT ISSUES                   */
+/* ============================================================= */
+
+/* === EMERGENCY NUCLEAR FIX === */
+
+body,
+html,
+#main-content {
+    background: transparent !important;
+}
+
+/* 5. FIX CANVAS (3D Background) */
+#canvas-container {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: -999 !important;
+    pointer-events: none !important;
+    background: transparent !important;
+}
+
+#canvas-container canvas {
+    background: transparent !important;
+}
+
+/* 6. REMOVE PSEUDO-ELEMENT OVERLAYS */
+body::before,
+body::after,
+html::before,
+html::after,
+section::before,
+section::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* 7. ENSURE ALL SECTIONS ARE TRANSPARENT */
+section {
+    background: transparent !important;
+}
+
+/* 8. FIX SPECIFIC SECTIONS THAT SHOULD HAVE COLOR */
+section.bg-royal {
+    background: #002147 !important; /* Keep the royal blue section */
+}
+
+section.bg-soft {
+    background: #F0F4F8 !important; /* Keep soft backgrounds */
+}
+
+.dark section.bg-soft {
+    background: #1a202c !important; /* Dark mode soft */
+}
+
+/* 9. RE-ENABLE BLUR ONLY WHERE NEEDED */
+.site-header {
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+}
+
+.dark .site-header {
+    background: rgba(15, 23, 42, 0.98) !important;
+}
+
+.crest-glass-orb {
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+#chat-window {
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* 10. HERO INFO CARDS - Keep their blur */
+.hero .bg-white\/40,
+.hero .dark\:bg-white\/5 {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+}
+
+/* 11. ENSURE CONTENT IS VISIBLE */
+.container {
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    position: relative !important;
+    z-index: 100 !important;
+}
+
+/* 12. FIX ANY REMAINING DARK BACKGROUNDS */
+[class*="bg-black"] {
+    background: transparent !important;
+}
+
+/* 13. GALLERY SLIDER - Remove dark overlays but keep text visible */
+.swiper-slide .absolute.bottom-0 {
+    background: linear-gradient(to top, rgba(0, 33, 71, 0.8), transparent) !important;
+    padding: 2rem !important;
+}
+
+/* 14. FEATURE CARDS - Ensure they're visible */
+.feature-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark .feature-card {
+    background: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* EMERGENCY: Hide ALL gradient overlays */
+.absolute.inset-0[class*="bg-gradient"],
+div[class*="from-black"],
+div[class*="from-royal"] {
+    display: none !important;
+    opacity: 0 !important;
+}
+
+/* Also remove any remaining blur effects */
+* {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* Re-enable ONLY for header and crest */
+.site-header,
+.crest-glass-orb {
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+
+/* CRITICAL: Force hide modal on load */
+#leader-modal {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+#leader-modal.active {
+    display: flex !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* DARK MODE VARS */
+.dark {
+    --bg-body: var(--bg-dark);
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --footer-bg: #020617;
+}
+html {
+    background-color: #002147; /* Royal Blue fallback */
+    height: 100%;
+}
+
+html, body {
+    isolation: isolate;
+}
+
+body {
+    font-family: 'Merriweather', serif;
+    font-weight: 300;
+    color: #0F172A;
+    background: transparent !important;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* CRITICAL: Establishes stacking context */
+}
+
+html, body {
+    background: transparent !important;
+}
+
+body {
+    position: relative;
+    z-index: 1;
+}
+
+
+.dark body { color: var(--text-primary); }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+
+
+/* --- ACCESSIBILITY --- */
+.skip-link {
+    position: absolute; top: -40px; left: 0;
+    background: var(--gold); color: var(--royal);
+    padding: 0.5rem 1rem; z-index: 100; font-weight: 700;
+}
+.skip-link:focus { top: 0; }
+
+/* --- HEADER --- */
+.site-header {
+    position: fixed; 
+    top: 0; 
+    width: 100%; 
+    z-index: 50; /* Keep high for header */
+    background: rgba(255, 255, 255, 0.98);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+.dark .site-header {
+    background: rgba(15, 23, 42, 0.98);
+    border-color: rgba(255,255,255,0.05);
+    backdrop-filter: none; /* ADD THIS */
+    -webkit-backdrop-filter: none; /* ADD THIS */
+}
+/* --- BUTTONS --- */
+.btn {
+    padding: 14px 40px; border-radius: 50px; font-weight: 700;
+    font-family: 'Inter', sans-serif; text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block; cursor: pointer;
+}
+.btn.primary {
+    background: var(--gold) !important; color: var(--royal) !important;
+    border: 2px solid var(--gold) !important;
+    box-shadow: 0 0 15px rgba(253, 190, 17, 0.4);
+}
+.btn.primary:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 0 30px var(--gold), 0 0 60px rgba(253, 190, 17, 0.6);
+}
+.btn.ghost {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.6); color: white;
+}
+.btn.ghost:hover {
+    background: white; color: var(--royal); border-color: white;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+    transform: translateY(-3px) scale(1.05);
+}
+
+/* --- CARDS & TILT (Sharpened) --- */
+.feature-card, .info-card {
+    background: #ffffff; /* Solid white for maximum sharpness */
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 20px; padding: 2rem;
+    transform-style: preserve-3d; transform: perspective(1000px);
+    transition: transform 0.1s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    position: relative; overflow: hidden;
+}
+.dark .feature-card {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: #1e293b; /* Solid slate */
+}
+.feature-card:hover, .info-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 10px 40px -5px rgba(253, 190, 17, 0.2);
+}
+
+/* Card Text Colors */
+.feature-card h3 { font-weight: 700; font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--royal); }
+.dark .feature-card h3 { color: var(--gold); }
+.feature-card p { color: #475569; }
+.dark .feature-card p { color: #cbd5e1; }
+.feature-card .icon svg { width: 40px; height: 40px; margin-bottom: 1rem; color: var(--royal); transition: transform 0.3s ease; }
+.dark .feature-card .icon svg { color: var(--gold); }
+.feature-card:hover .icon svg { transform: scale(1.1); color: var(--gold); }
+
+/* --- GALLERY CAROUSEL --- */
+.gallery-section { position: relative; overflow: hidden; }
+
+.swiper-slide {
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+}
+.swiper-slide img {
+    width: 100%; height: auto; aspect-ratio: 16 / 10;
+    object-fit: cover; object-position: top center;
+    transition: transform 0.5s ease;
+}
+@media (max-width: 768px) { .swiper-slide img { aspect-ratio: 4 / 3; } }
+.swiper-slide:hover img { transform: scale(1.1); }
+
+:root { --swiper-theme-color: var(--gold) !important; --swiper-navigation-size: 25px !important; }
+.swiper-button-next, .swiper-button-prev {
+    background: var(--royal); padding: 30px; border-radius: 50%;
+    color: var(--gold) !important; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    border: 2px solid var(--gold); transition: all 0.3s ease;
+}
+.swiper-button-next:hover, .swiper-button-prev:hover { background: var(--gold); color: var(--royal) !important; transform: scale(1.1); }
+@media (max-width: 640px) { .swiper-button-next, .swiper-button-prev { display: none; } }
+
+.site-footer {
+    background: var(--footer-bg); 
+    color: var(--footer-text);
+    padding: 4rem 0 2rem; 
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 0 !important; /* ADD THIS */
+    margin-bottom: 0 !important; /* ADD THIS */
+    position: relative; 
+    z-index: 20;
+}
+.footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem; margin-bottom: 3rem; }
+.footer-col { padding: 0.6rem; }
+.footer-brand h3 { font-family: 'Merriweather', serif; font-size: 1.6rem; color: var(--gold); margin-bottom: 0.3rem; }
+.footer-motto { color: #FFD54F; font-size: 1rem; margin-bottom: 0.8rem; font-weight: 600; }
+.footer-title { color: var(--gold); font-weight: 700; margin-bottom: 1.2rem; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1rem; }
+.footer-links a { color: var(--footer-link); text-decoration: none; transition: color 0.3s ease, transform 0.25s ease; }
+.footer-links a:hover { color: var(--gold); transform: translateX(8px); display: inline-block; }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid rgba(255,204,0,0.15); }
+.footer-social { display: flex; gap: 1.8rem; }
+.footer-social a { color: var(--gold); font-size: 1.4rem; transition: transform 0.3s ease; }
+.footer-social a:hover { transform: scale(1.35) rotate(8deg); color: #e6b800; }
+
+.contact-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 1.5rem; }
+.contact-item .icon-box svg { width: 24px; height: 24px; color: var(--gold); margin-top: 3px; }
+.contact-item .text-box { display: flex; flex-direction: column; }
+.contact-item .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 2px; font-weight: 700; }
+.contact-item p, .contact-item a { color: var(--footer-link); font-size: 0.95rem; line-height: 1.4; text-decoration: none; margin: 0; }
+.contact-item a:hover { color: var(--gold); text-decoration: underline; }
+
+/* Easter Egg Crest */
+.footer-brand .crest {
+    width: 40px; height: 40px; border: 2px solid var(--gold); border-radius: 50%;
+    padding: 8px; background: rgba(255, 255, 255, 0.05); cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: inline-block; margin-top: 1rem;
+}
+.footer-brand .crest:hover { transform: scale(1.15) rotate(15deg); background: rgba(253, 190, 17, 0.1); box-shadow: 0 0 15px rgba(253, 190, 17, 0.3); }
+
+/* Fix footer gap */
+.site-footer {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+section:last-of-type {
+    margin-bottom: 0 !important;
+}
+
+html, body {
+    overflow-x: hidden;
+}
+
+/* Scroll Top */
+#scrollTop {
+    position: fixed; bottom: 20px; right: 20px; background: var(--gold); display: flex; align-items: center; justify-content: center;
+    width: 50px; height: 50px; border-radius: 50%; border: none; cursor: pointer; opacity: 0;
+    transform: translateY(20px); transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 90; padding: 0;
+}
+.scroll-icon { width: 24px; height: 24px; object-fit: contain; filter: sepia(100%) hue-rotate(190deg) saturate(500%) brightness(0.7); }
+#scrollTop:hover { transform: scale(1.1); }
+#scrollTop.show { opacity: 1; transform: translateY(0); }
+
+/* Responsive */
+@media (max-width: 900px) {
+    .navlinks, .mobile-btn { display: none; }
+    .mobile-btn { display: block; }
+    .hero-cards, .mv-grid, .features-grid, .stats-grid, .footer-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+    .hero-title { font-size: 2.2rem; }
+    .footer-grid { grid-template-columns: 1fr; text-align: center; }
+    .footer-bottom { flex-direction: column; gap: 1.5rem; }
+}
+
+/* =========================================
+   LEGACY / HISTORY SECTION
+   ========================================= */
+.legacy-card {
+    background: rgba(255,255,255,0.05); /* Very slight tint */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px; padding: 2rem;
+    transition: all 0.4s ease; position: relative; overflow: hidden;
+}
+.legacy-card:hover {
+    background: rgba(0, 33, 71, 0.9);
+    border-color: var(--gold);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(253, 190, 17, 0.15);
+}
+.legacy-number {
+    position: absolute; top: -20px; right: -10px; font-size: 6rem; font-weight: 900;
+    color: rgba(255, 255, 255, 0.03); font-family: 'Merriweather', serif; transition: color 0.3s ease; z-index: 0;
+}
+.legacy-card:hover .legacy-number { color: rgba(253, 190, 17, 0.1); }
+.legacy-icon {
+    width: 50px; height: 50px; background: rgba(253, 190, 17, 0.1); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;
+    color: var(--gold); position: relative; z-index: 1;
+}
+.legacy-content { position: relative; z-index: 1; }
+.legacy-title { color: white; font-family: 'Merriweather', serif; font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+.legacy-desc { color: #94A3B8; font-size: 0.95rem; line-height: 1.6; }
+
+/* =========================================
+   GALLERY MASONRY & LIGHTBOX
+   ========================================= */
+.gallery-grid-masonry { column-count: 1; column-gap: 1.5rem; }
+@media (min-width: 640px) { .gallery-grid-masonry { column-count: 2; } }
+@media (min-width: 1024px) { .gallery-grid-masonry { column-count: 3; } }
+
+.gallery-item {
+    break-inside: avoid; margin-bottom: 1.5rem; border-radius: 16px; overflow: hidden;
+    position: relative; cursor: pointer; border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-soft); transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.gallery-item img { width: 100%; display: block; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+.gallery-item:hover { transform: translateY(-5px); box-shadow: 0 20px 40px -10px rgba(253, 190, 17, 0.3); border-color: var(--gold); }
+.gallery-item:hover img { transform: scale(1.1); }
+
+.overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0, 33, 71, 0.9), transparent 80%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 1.5rem; opacity: 0; transition: opacity 0.3s ease;
+}
+.gallery-item:hover .overlay { opacity: 1; }
+.overlay h4 { color: var(--gold); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; margin-bottom: 0.25rem; }
+.overlay p { color: white; font-family: 'Merriweather', serif; font-size: 1.1rem; }
+
+/* Filter Buttons */
+.filter-btn.active { background-color: var(--gold) !important; color: var(--royal) !important; border-color: var(--gold) !important; }
+.filter-btn { background-color: white; color: #4b5563; }
+.dark .filter-btn { background-color: #1f2937; color: #d1d5db; }
+
+/* Lightbox */
+#lightbox { transition: opacity 0.3s ease, backdrop-filter 0.3s ease; }
+#lightbox:not(.hidden) { backdrop-filter: blur(10px); }
+
+/* =========================================
+   5. VERTICAL TIMELINE ARCHITECTURE
+   ========================================= */
+
+/* The Central Line */
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: rgba(253, 190, 17, 0.3); /* Gold tint */
+    border-radius: 4px;
+    z-index: 0;
+}
+
+/* The Glowing Node */
+.timeline-dot {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 24px;
+    background: var(--royal);
+    border: 4px solid var(--gold);
+    border-radius: 50%;
+    z-index: 10;
+    box-shadow: 0 0 15px rgba(253, 190, 17, 0.6);
+}
+
+/* Mobile Adjustments (Collapse to single column) */
+@media (max-width: 768px) {
+    .timeline-line { left: 20px; }
+    .timeline-dot { left: 20px; }
+    .timeline-card { margin-left: 50px !important; width: auto !important; }
+    .timeline-item { justify-content: flex-start !important; }
+    .timeline-item.right { flex-direction: row !important; }
+    .timeline-date { position: static !important; margin-bottom: 0.5rem; display: block; }
+}
+
+/* =========================================
+   SENIOR DEV: POLISH & DEBUG
+   ========================================= */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--royal); }
+::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 5px; border: 2px solid var(--royal); }
+::-webkit-scrollbar-thumb:hover { background: #e6b800; }
+
+::selection { background: var(--gold); color: var(--royal); }
+
+body.debug-layout * { outline: 1px solid rgba(255, 0, 0, 0.3) !important; }
+body.debug-layout img { outline: 2px solid blue !important; }
+
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+.animate-marquee {
+    animation: marquee 15s linear infinite;
+}
+
+/* =========================================
+   HERO CREST: GOLDEN GLASS ORB
+   ========================================= */
+
+@keyframes gold-breathe {
+    0%, 100% {
+        /* Subtle glow, lower opacity */
+        box-shadow: 0 0 25px rgba(253, 190, 17, 0.2), 
+                    inset 0 0 10px rgba(253, 190, 17, 0.1);
+        border-color: rgba(253, 190, 17, 0.3);
+        transform: scale(1);
+    }
+    50% {
+        /* Intense glow, expanded aura */
+        box-shadow: 0 0 60px rgba(253, 190, 17, 0.6), 
+                    inset 0 0 20px rgba(253, 190, 17, 0.2);
+        border-color: rgba(253, 190, 17, 0.8);
+        transform: scale(1.02); /* Slight physical expansion */
+    }
+}
+
+.crest-glass-orb {
+    /* 1. Glass Physics */
+    background: rgba(255, 255, 255, 0.03); /* Extremely faint fill */
+    backdrop-filter: blur(10px);            /* The frosted effect */
+    -webkit-backdrop-filter: blur(10px);    /* Safari support */
+    
+    /* 2. Shape & Layout */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(253, 190, 17, 0.3); /* Initial gold rim */
+    
+    /* 3. Animation Trigger */
+    animation: gold-breathe 4s ease-in-out infinite;
+    will-change: box-shadow, transform;
+}
+
+/* =========================================
+   TRANSPARENT GLASS MODIFIER (For Parallax)
+   ========================================= */
+.glass-clear {
+    /* Lower opacity (0.6) allows the 3D background to show through */
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(8px) !important; /* Lower blur to see shapes better */
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass-clear {
+    /* Dark mode transparency */
+    background: rgba(2, 6, 23, 0.6) !important; 
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+
+
+/* ===== BACKDROP BLUR SAFETY FIX ===== */
+.crest-glass-orb,
+.glass-clear {
+    backdrop-filter: blur(4px) saturate(1.2);
+    -webkit-backdrop-filter: blur(4px) saturate(1.2);
+}
+
+
+/* =========================================
+   LEADERSHIP ANIMATIONS
+   ========================================= */
+
+/* The Image Transition State */
+#leader-main-img {
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+    opacity: 1;
+    transform: scale(1);
+    will-change: opacity, transform;
+}
+
+/* State when changing (Hidden) */
+#leader-main-img.changing {
+    opacity: 0;
+    transform: scale(1.05); /* Subtle zoom effect */
+}
+
+/* The Text Transition State */
+#leader-text-container {
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* State when changing (Hidden) */
+#leader-text-container.changing {
+    opacity: 0;
+    transform: translateY(10px); /* Slide down slightly */
+}
+/* Hide scrollbar on thumbnails */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* === 3D BACKGROUND CANVAS (FINAL) === */
+#canvas-container {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -10;          /* PUSH IT FAR BACK */
+    pointer-events: none;
+    overflow: hidden;
+}
+
+#canvas-container canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: transparent !important;
+}
+
+
+/* Simplified Z-Index Stack */
+body {
+    position: relative;
+    z-index: 1;
+}
+
+
+.site-header {
+    z-index: 100;
+    position: relative;
+}
+
+
+footer {
+    z-index: 10;
+    position: relative;
+}
+
+
+
+/* 🚨 PREVENT FULL-PAGE OVERLAYS */
+body::before,
+body::after,
+section::before,
+section::after {
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+.hero,
+.hero * {
+    isolation: isolate;
+}

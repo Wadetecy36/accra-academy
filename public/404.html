@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Page Not Found - Accra Academy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { theme: { extend: { colors: { royal: '#002147', gold: '#FDBE11' }, fontFamily: { display: ['Merriweather', 'serif'] } } } }
+  </script>
+  <style>
+      body { background: #002147; color: white; overflow: hidden; }
+      .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+  </style>
+  
+  <!-- THREE.JS (Required for 3D Background) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+</head>
+
+
+<body class="flex items-center justify-center h-screen relative">
+
+ <!-- 3D BACKGROUND CANVAS -->
+    <div id="canvas-container" class="fixed inset-0 z-[-1] pointer-events-none"></div>
+
+  <div class="glass p-12 rounded-3xl text-center max-w-lg relative z-10 mx-4 shadow-2xl">
+      <h1 class="text-8xl font-bold font-display text-gold mb-2">404</h1>
+      <h2 class="text-2xl font-bold mb-6">Detention?</h2>
+      <p class="text-gray-300 mb-8">It seems you have wandered out of bounds. This page does not exist in our archives.</p>
+      
+      <a href="./index.html" class="inline-block bg-gold text-royal font-bold py-3 px-8 rounded-full hover:scale-105 transition transform shadow-lg">
+          Return to Campus
+      </a>
+  </div>
+
+</body>
+</html>

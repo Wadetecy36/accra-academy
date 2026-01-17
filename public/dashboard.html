@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | Accra Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { royal: '#002147', gold: '#FDBE11' } } } }
+    </script>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- TOP NAV -->
+    <nav class="bg-royal text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="./assets/crest.png" class="w-8">
+                <span class="font-bold tracking-wide">STUDENT<span class="text-gold">PORTAL</span></span>
+            </div>
+            <div class="flex items-center gap-4">
+                <span id="nav-name" class="text-sm font-medium hidden md:block">Loading...</span>
+                <button onclick="logout()"
+                    class="text-xs bg-red-600 px-3 py-1.5 rounded hover:bg-red-500">LOGOUT</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="container mx-auto px-6 py-8">
+
+        <!-- Welcome Banner -->
+        <div
+            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Welcome back, <span id="user-name"
+                        class="text-royal">Student</span></h1>
+                <p class="text-gray-500 text-sm mt-1">ID: <span id="user-id">--</span> | <span id="user-class"
+                        class="font-bold">--</span></p>
+            </div>
+            <div class="bg-blue-50 px-6 py-3 rounded-lg text-center">
+                <span class="block text-xs text-gray-500 uppercase font-bold">Current GPA</span>
+                <span id="user-gpa" class="text-3xl font-bold text-royal">0.0</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <!-- ACADEMIC REPORT -->
+            <div class="md:col-span-2 space-y-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h2 class="text-lg font-bold text-royal mb-4 border-b pb-2">Latest Results (Term 1)</h2>
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 text-xs uppercase text-gray-500">
+                            <tr>
+                                <th class="p-3">Subject</th>
+                                <th class="p-3">Grade</th>
+                                <th class="p-3">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="grades-body" class="divide-y divide-gray-100 text-sm">
+                            <!-- Injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SIDEBAR -->
+            <div class="space-y-6">
+                <!-- Profile Card -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h3 class="text-sm font-bold text-gray-400 uppercase mb-4">Student Profile</h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between"><span class="text-gray-500">House</span> <span id="user-house"
+                                class="font-bold text-royal">--</span></div>
+                        <div class="flex justify-between"><span class="text-gray-500">Program</span> <span
+                                id="user-program" class="font-bold">--</span></div>
+                        <div class="flex justify-between"><span class="text-gray-500">Attendance</span> <span
+                                id="user-att" class="text-green-600 font-bold">--</span></div>
+                    </div>
+                </div>
+
+                <!-- Fees Status -->
+                <div class="bg-royal text-white p-6 rounded-xl shadow-lg relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 text-gold opacity-10 text-9xl font-black">¢</div>
+                    <h3 class="text-gold font-bold mb-2">Financial Status</h3>
+                    <p class="text-xs text-blue-200 mb-1">Outstanding Balance</p>
+                    <p id="user-fees" class="text-3xl font-bold">GHS 0.00</p>
+                    <button
+                        class="mt-4 w-full bg-white text-royal text-xs font-bold py-2 rounded hover:bg-gold transition">VIEW
+                        DETAILS</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // 1. CHECK AUTH
+        const userJson = sessionStorage.getItem('bleoo_user');
+        if (!userJson) {
+            window.location.href = 'portal.html';
+        }
+
+        const user = JSON.parse(userJson);
+
+        // 2. POPULATE UI
+        document.getElementById('nav-name').innerText = user.name;
+        document.getElementById('user-name').innerText = user.name.split(' ')[0]; // First name
+        document.getElementById('user-id').innerText = user.studentId;
+        document.getElementById('user-class').innerText = user.class;
+        document.getElementById('user-house').innerText = user.house;
+        document.getElementById('user-program').innerText = user.program;
+        document.getElementById('user-gpa').innerText = user.gpa;
+        document.getElementById('user-att').innerText = user.attendance;
+
+        // Format Currency
+        const fees = new Intl.NumberFormat('en-GH', { style: 'currency', currency: 'GHS' }).format(user.feesOwed);
+        document.getElementById('user-fees').innerText = fees;
+        if (user.feesOwed > 0) {
+            document.getElementById('user-fees').classList.add('text-red-400');
+        }
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>'"]/g,
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag]));
+        }
+
+        // Grades Logic
+        const tbody = document.getElementById('grades-body');
+        tbody.innerHTML = user.grades.map(g => {
+            let statusColor = 'text-green-600 bg-green-50';
+            if (g.grade.includes('C') || g.grade.includes('D')) statusColor = 'text-yellow-600 bg-yellow-50';
+            if (g.grade === 'F9') statusColor = 'text-red-600 bg-red-50';
+
+            return `
+            <tr>
+                <td class="p-3 font-medium">${escapeHTML(g.subject)}</td>
+                <td class="p-3 font-bold">${escapeHTML(g.grade)}</td>
+                <td class="p-3"><span class="px-2 py-1 rounded text-xs font-bold ${statusColor}">${g.grade === 'F9' ? 'FAIL' : 'PASS'}</span></td>
+            </tr>
+            `;
+        }).join('');
+
+        // 3. LOGOUT
+        function logout() {
+            sessionStorage.removeItem('bleoo_user');
+            window.location.href = 'portal.html';
+        }
+    </script>
+</body>
+
+</html>

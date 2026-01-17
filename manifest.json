@@ -1,0 +1,16 @@
+{
+    "name": "Accra Academy",
+    "short_name": "Bleoo",
+    "description": "Esse Quam Videri – Since 1931",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#F7FAFC",
+    "theme_color": "#002E6D",
+    "icons": [
+        {
+            "src": "./assets/crest.webp",
+            "sizes": "512x512",
+            "type": "image/webp"
+        }
+    ]
+}

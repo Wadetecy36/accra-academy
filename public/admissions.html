@@ -1,0 +1,118 @@
+    <!doctype html>
+    <html lang="en" class="scroll-smooth">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta name="description" content="Join the Bleoo Family. Admissions process, requirements, and prospectus for Accra Academy.">
+      <title>Admissions - Accra Academy</title>
+      <link rel="icon" href="/favicon.ico">
+
+      <!-- TAILWIND -->
+      <script src="https://cdn.tailwindcss.com"></script>
+      <script>
+        tailwind.config = {
+          darkMode: 'class',
+          theme: {
+            extend: {
+              colors: {royal: '#002147', gold: '#FDBE11', soft: '#F0F4F8' },
+              fontFamily: { display: ['Merriweather', 'serif'], body: ['Inter', 'sans-serif'] }
+            }
+          }
+        }
+      </script>
+
+      <!-- LIBS -->
+      <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+      <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+      <link href="./css/custom.css" rel="stylesheet">
+      
+      <!-- THREE.JS -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    </head>
+
+    <body class="min-h-screen transition-colors duration-300 font-body flex flex-col" id="main-content">
+
+      <!-- 3D BACKGROUND (ESSENTIAL) -->
+      <div id="canvas-container" class="fixed inset-0 z-[-1] pointer-events-none"></div>
+
+      <!-- HEADER -->
+      <header class="site-header sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 h-20 flex justify-between items-center">
+          <a href="./index.html" class="flex items-center gap-3 group">
+            <img src="./assets/crest.png" alt="Crest" class="w-10 h-10 object-contain group-hover:scale-110 transition">
+            <div class="flex flex-col">
+              <h1 class="text-xl md:text-2xl font-bold text-royal dark:text-gold font-display leading-tight">Accra Academy</h1>
+              <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-semibold">Esse Quam Videri</p>
+            </div>
+          </a>
+          <nav class="hidden lg:flex items-center gap-8 text-sm font-bold tracking-wide">
+            <a href="./index.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">HOME</a>
+            <a href="./about.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">ABOUT</a>
+            <a href="./academics.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">ACADEMICS</a>
+            <a href="./news.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">NEWS</a>
+            <a href="./gallery.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">GALLERY</a>
+            <a href="./contacts.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">CONTACT</a>
+          </nav>
+          <div class="flex items-center gap-4">
+            <button id="theme-toggle" class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-royal dark:text-gold hover:ring-2 hover:ring-gold transition shadow-sm">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+            </button>
+            <button id="mobile-btn" class="lg:hidden p-2 text-royal dark:text-gold focus:outline-none">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+          </div>
+        </div>
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-t border-gray-200 dark:border-gray-800 shadow-2xl origin-top transition-all duration-300">
+          <nav class="flex flex-col p-6 gap-4 text-center border border-red-900">
+            <a href="./index.html" class="text-gray-600 hover:text-gold py-2">Home</a>
+            <a href="./about.html" class="text-gray-600 hover:text-gold py-2">About</a>
+            <a href="./academics.html" class="text-gray-600 hover:text-gold py-2">Academics</a>
+            <a href="./gallery.html" class="text-gray-600 hover:text-gold py-2">Gallery</a>
+            <a href="./contacts.html" class="text-gray-600 hover:text-gold py-2">Contact</a>
+          </nav>
+        </div>
+      </header>
+
+      <!-- HERO (Glass Orb Style) -->
+      <section class="pt-32 pb-20 relative text-center px-4" data-aos="fade-up">
+        <div class="container relative z-10">
+          
+          <!-- Glass Orb Crest -->
+          <div class="mb-8 flex justify-center">
+            <div class="crest-glass-orb w-32 h-32 md:w-40 md:h-40">
+              <img src="./assets/crest.png" alt="Crest" class="w-20 h-20 md:w-24 md:h-24 object-contain drop-shadow-lg" fetchpriority="high">
+            </div>
+          </div>
+
+          <h1 class="text-4xl md:text-6xl font-display font-bold mb-4 text-royal dark:text-white leading-tight">
+            Join the <span class="text-gold">Bleoo</span> Family
+          </h1>
+          <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            Admission into Accra Academy is highly competitive. We seek students who demonstrate academic brilliance, character, and potential for
+          </p>
+        </div>
+      </section>
+
+      <!-- ADMISSIONS PROCESS (Glass Cards) -->
+      <section class="py-20 section-glass relative">
+        <div class="container mx-auto px-4 relative z-10">
+          <div class="text-center mb-16">
+            <span class="text-gold font-bold tracking-widest uppercase text-sm">The roadmap</span>
+            <h2 class="text-3xl font-display font-bold text-royal dark:text-white mt-2">Admission Process</h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Step 1 -->
+            <div class="feature-card p-8 border-t-4 border-gold relative" data-aos="fade-up">
+              <span class="absolute -top-5 left-6 bg-gold text-royal font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-lg text-xl">1</span>
+              <h3 class="text-xl font-bold text-royal dark:text-white mb-3 mt-2">BECE Results</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">
+                Admissions are processed via the CSSPS system based on your Basic Education Certificate Examination performance.
+              </p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="feature-card p-8 border-t-4 border-royal dark:border-blue-500 relative" data-aos="fade-up" data-aos-delay="100">
+              <span class="absolute -top-5 left-6 bg-royal dark:bg-blue-600 text-white font-bold w-10 h-10 rounded-full flex items-center justify-center shadow-lg text-xl">2</span>
+

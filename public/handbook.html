@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Accra Academy Student Handbook & Portal.">
+  <title>Student Portal & Handbook - Accra Academy</title>
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+  <!-- TAILWIND & CONFIG -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            royal: '#002147',
+            gold: '#FDBE11',
+            // Defining specific dark shades for consistency
+            darkbase: '#020617', // Slate 950
+            darkcard: '#0f172a', // Slate 900
+            darkinput: '#1e293b' // Slate 800
+          },
+          fontFamily: { display: ['Merriweather', 'serif'], body: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+  <!-- FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- CUSTOM CSS -->
+  <link href="./css/custom.css" rel="stylesheet">
+  <style>
+     
+        /* Force Dark Scrollbar */
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: #020617; }
+      ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; border: 1px solid #020617; }
+      ::-webkit-scrollbar-thumb:hover { background: #FDBE11; }
+
+      /* Calculator Arrow Fix */
+      .calc-select {
+          background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23FDBE11' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+          background-position: right 0.5rem center;
+          background-repeat: no-repeat;
+          background-size: 1.5em 1.5em;
+          appearance: none;
+      }
+
+      /* Printer Settings (Save Ink) */
+      @media print {
+          body { background-color: white !important; color: black !important; }
+          #prospectus, #prospectus * { visibility: visible; color: black !important; background-color: white !important; border: 1px solid #ccc !important; }
+          #prospectus { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 0; }
+          .site-header, aside, .hero, footer, #theme-toggle, .mobile-btn { display: none !important; }
+          .checkbox-box { border: 1px solid black !important; }
+      }
+  </style>
+</head>
+
+<body class="min-h-screen bg-darkbase text-gray-300 transition-colors duration-300 font-body selection:bg-gold selection:text-royal">
+
+  <!-- HEADER (Dark Glass) -->
+  <header class="site-header sticky top-0 z-50 transition-all duration-300 bg-darkbase/90 backdrop-blur-lg border-b border-gray-800">
+    <div class="container mx-auto px-4 h-20 flex justify-between items-center">
+        <a href="./index.html" class="flex items-center gap-3 group">
+            <img src="./assets/crest.png" alt="Crest" class="w-10 h-10 object-contain group-hover:scale-110 transition drop-shadow-[0_0_8px_rgba(253,190,17,0.3)]">
+            <div class="flex flex-col">
+                <h1 class="text-xl font-bold text-white font-display tracking-tight">Accra Academy</h1>
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold group-hover:text-gold transition">Esse Quam Videri</p>
+            </div>
+        </a>
+        <nav class="hidden lg:flex items-center gap-8 text-sm font-bold tracking-wide text-gray-400">
+            <a href="./index.html" class="hover:text-gold transition hover:-translate-y-0.5">HOME</a>
+            <a href="./about.html" class="hover:text-gold transition hover:-translate-y-0.5">ABOUT</a>
+            <a href="./academics.html" class="hover:text-gold transition hover:-translate-y-0.5">ACADEMICS</a>
+            <a href="./news.html" class="hover:text-gold transition hover:-translate-y-0.5">NEWS</a>
+            <a href="#" class="text-gold border-b-2 border-gold pb-1">HANDBOOK</a>
+            <a href="./contacts.html" class="hover:text-gold transition hover:-translate-y-0.5">CONTACT</a>
+        </nav>
+        <button class="mobile-btn md:hidden text-2xl text-gold hover:text-white transition">☰</button>
+    </div>
+  </header>
+
+  <!-- HERO (Dark Royal) -->
+  <section class="bg-darkbase pt-28 pb-20 relative overflow-hidden border-b border-gray-800">
+      <!-- Background Effects -->
+      <div class="absolute inset-0 bg-[url('./assets/pattern.png')] opacity-[0.03]"></div>
+      <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-royal/20 to-transparent pointer-events-none"></div>
+
+      <div class="container mx-auto px-4 relative z-10">
+          <div class="flex flex-col lg:flex-row items-center justify-between gap-16">
+              <div class="lg:w-1/2 space-y-6">
+                  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-royal/30 border border-royal/50 text-gold text-xs font-bold uppercase tracking-widest">
+                      <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Student Portal
+                  </div>
+                  <h1 class="text-5xl md:text-7xl font-bold font-display leading-tight text-white">
+                      Student <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold to-yellow-200">Handbook</span>
+                  </h1>
+                  <p class="text-gray-400 text-lg leading-relaxed max-w-xl">
+                      The unified digital constitution for the Bleoobi community. Access rules, calculate grades, and download forms in one secure dashboard.
+                  </p>
+
+                  <!-- Dark Search Bar -->
+                  <div class="relative max-w-lg group">
+                      <div class="absolute inset-0 bg-gold/20 blur-xl rounded-full opacity-0 group-focus-within:opacity-100 transition duration-500"></div>
+                      <input type="text" id="rule-search" placeholder="Ask AI: 'What is the punishment for phones?'"
+                             class="relative w-full p-5 pl-14 rounded-2xl text-white bg-darkinput border border-gray-700 focus:border-gold focus:ring-1 focus:ring-gold outline-none shadow-2xl transition-all placeholder-gray-500"
+                             onkeydown="handleSearchEnter(event)">
+                      <svg class="w-6 h-6 text-gray-500 absolute left-5 top-5 group-focus-within:text-gold transition-colors z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                      <div class="absolute right-3 top-3 z-10">
+                          <span class="text-[10px] bg-gray-800 text-gray-400 px-2 py-1 rounded border border-gray-700">Enter ↵</span>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Quick Stats Grid -->
+              <div class="lg:w-1/2 grid grid-cols-2 gap-4 w-full">
+                  <div class="bg-darkcard p-6 rounded-2xl border border-gray-800 hover:border-gold/30 transition group cursor-pointer" onclick="document.getElementById('prospectus').scrollIntoView()">
+                      <div class="text-gold text-4xl font-bold mb-1 group-hover:scale-110 transition-transform origin-left">SHS 1</div>
+                      <div class="text-xs uppercase tracking-wider text-gray-500 group-hover:text-gray-300">Prospectus List</div>
+                  </div>
+                  <div class="bg-darkcard p-6 rounded-2xl border border-gray-800 hover:border-gold/30 transition group cursor-pointer">
+                      <div class="text-gold text-4xl font-bold mb-1 group-hover:scale-110 transition-transform origin-left">6:30</div>
+                      <div class="text-xs uppercase tracking-wider text-gray-500 group-hover:text-gray-300">Breakfast Time</div>
+                  </div>
+                  <div class="bg-gradient-to-r from-gold to-yellow-600 text-royal p-6 rounded-2xl shadow-lg shadow-gold/10 col-span-2 flex items-center justify-between cursor-pointer hover:brightness-110 transition" onclick="document.getElementById('calculator').scrollIntoView()">
+                      <div>
+                          <div class="text-xl font-bold">WASSCE Calculator</div>
+                          <div class="text-xs opacity-80 font-bold">Check your aggregate</div>
+                      </div>
+                      <div class="bg-royal/10 p-2 rounded-full"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- CONTENT LAYOUT -->
+  <div class="container mx-auto px-4 py-16 flex flex-col lg:flex-row gap-12">
+
+      <!-- SIDEBAR -->
+      <aside class="lg:w-1/4">
+          <div class="sticky top-28 space-y-6">
+              <!-- Navigation Card -->
+              <div class="bg-darkcard p-6 rounded-2xl border border-gray-800 shadow-xl">
+                  <h3 class="font-bold text-gold mb-6 uppercase tracking-wider text-xs border-b border-gray-800 pb-4">Table of Contents</h3>
+                  <nav class="space-y-2">
+                      <a href="#identity" class="nav-item flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 text-sm font-medium text-gray-400 hover:text-white transition group">
+                          <span class="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-gold transition"></span> School Identity
+                      </a>
+                      <a href="#conduct" class="nav-item flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 text-sm font-medium text-gray-400 hover:text-white transition group">
+                          <span class="w-1.5 h-1.5 rounded-full bg-gray-600 group-hover:bg-gold transition"></span> Code of Conduct
+                      </a>
+                      <a href="#prospectus" class="nav-item flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 text-sm font-medium text-gray-400 hover:text-white transition group">
+                          <span class="w-1.5 h-1.5 rounded-full bg-purple-500 group-hover:scale-125 transition"></span> Prospectus List
+                      </a>
+                      <a href="#calculator" class="nav-item flex items-center gap-3 p-3 rounded-lg bg-gray-800/50 text-gold font-bold border border-gray-700/50 hover:bg-gray-800 transition">
+                          <span>🧮</span> Grade Calculator
+                      </a>
+                      <a href="#downloads" class="nav-item flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 text-sm font-medium text-gray-400 hover:text-white transition group">
+                          <span>📂</span> Downloads Center
+                      </a>
+                  </nav>
+              </div>
+          </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="lg:w-3/4 space-y-20">
+
+          <!-- 1. Identity -->
+          <section id="identity" class="handbook-section scroll-mt-32">
+              <div class="flex items-center gap-4 mb-8">
+                  <div class="h-12 w-1 bg-gold rounded-full shadow-[0_0_15px_#FDBE11]"></div>
+                  <div>
+                      <h2 class="text-3xl font-bold text-white font-display">Identity & Anthem</h2>
+                      <p class="text-gray-500 text-sm">The pillars of the Bleoobi spirit.</p>
+                  </div>
+              </div>
+              <div class="bg-darkcard rounded-2xl border border-gray-800 p-8 hover:border-gray-700 transition">
+                  <div class="bg-darkinput p-8 rounded-xl border border-gray-700/50 italic text-gray-300 text-sm leading-relaxed font-serif text-center relative">
+                      <span class="absolute top-4 left-4 text-4xl text-gray-700 font-display">“</span>
+                      Accra Academy, Campus of light! Home of the boys who embrace the right!<br>
+                      We are the future, bold and free, Esse Quam Videri is our decree!<br>
+                      From James Town's hill to Bubuashie's plain, Our glory and honor shall ever remain.
+                      <span class="absolute bottom-4 right-4 text-4xl text-gray-700 font-display">”</span>
+                  </div>
+              </div>
+          </section>
+
+          <!-- 2. Code of Conduct -->
+          <section id="conduct" class="handbook-section scroll-mt-32">
+              <div class="flex items-center gap-4 mb-8">
+                  <div class="h-12 w-1 bg-red-600 rounded-full shadow-[0_0_15px_#dc2626]"></div>
+                  <div>
+                      <h2 class="text-3xl font-bold text-white font-display">Code of Conduct</h2>
+                      <p class="text-gray-500 text-sm">Disciplinary actions and policies.</p>
+                  </div>
+              </div>
+              <div class="grid md:grid-cols-2 gap-6">
+                  <!-- Card Red -->
+                  <div class="bg-darkcard p-8 rounded-2xl border border-red-900/30 hover:border-red-500/50 transition group">
+                      <div class="flex items-center gap-3 mb-4 text-red-500">
+                          <div class="p-2 bg-red-500/10 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg></div>
+                          <h3 class="font-bold text-lg">Dismissal</h3>
+                      </div>
+                      <ul class="space-y-3 text-sm text-gray-400 group-hover:text-gray-300 transition">
+                          <li class="flex gap-3"><span class="text-red-500">•</span> Illegal drugs or alcohol.</li>
+                          <li class="flex gap-3"><span class="text-red-500">•</span> Theft of property.</li>
+                          <li class="flex gap-3"><span class="text-red-500">•</span> Bullying ("Homoing").</li>
+                      </ul>
+                  </div>
+                  <!-- Card Orange -->
+                  <div class="bg-darkcard p-8 rounded-2xl border border-orange-900/30 hover:border-orange-500/50 transition group">
+                      <div class="flex items-center gap-3 mb-4 text-orange-500">
+                          <div class="p-2 bg-orange-500/10 rounded-lg"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                          <h3 class="font-bold text-lg">Suspension</h3>
+                      </div>
+                      <ul class="space-y-3 text-sm text-gray-400 group-hover:text-gray-300 transition">
+                          <li class="flex gap-3"><span class="text-orange-500">•</span> Breaking Bounds (No Exeat).</li>
+                          <li class="flex gap-3"><span class="text-orange-500">•</span> Mobile Phone Possession.</li>
+                          <li class="flex gap-3"><span class="text-orange-500">•</span> Fighting/Assault.</li>
+                      </ul>
+                  </div>
+              </div>
+          </section>
+
+          <!-- 3. INTERACTIVE PROSPECTUS -->
+          <section id="prospectus" class="handbook-section scroll-mt-32">
+              <div class="flex items-center gap-4 mb-8">
+                  <div class="h-12 w-1 bg-purple-600 rounded-full shadow-[0_0_15px_#9333ea]"></div>
+                  <div>
+                      <h2 class="text-3xl font-bold text-white font-display">SHS 1 Prospectus</h2>
+                      <p class="text-gray-500 text-sm">Interactive Checklist.</p>
+                  </div>
+              </div>
+
+              <div class="bg-darkcard rounded-2xl shadow-2xl border border-gray-800 overflow-hidden">
+                  <div class="bg-royal p-6 text-center relative overflow-hidden border-b border-gray-700">
+                      <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('./assets/crest.png')] bg-center bg-no-repeat bg-contain"></div>
+                      <h3 class="text-2xl font-bold text-white relative z-10">Boarding Requirement List</h3>
+                      <p class="text-gold text-xs uppercase tracking-widest font-bold mt-2 relative z-10">Accra Academy • 2025/2026</p>
+                      <button onclick="window.print()" class="absolute right-4 top-4 bg-black/20 hover:bg-black/40 text-white p-2 rounded-lg transition border border-white/10" title="Print List">
+                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                      </button>
+                  </div>
+
+                  <div class="p-8 grid md:grid-cols-2 gap-10">
+                      <!-- Col 1 -->
+                      <div>
+                          <h4 class="font-bold text-gold mb-4 border-b border-gray-800 pb-2 flex items-center gap-2"><span>👕</span> Uniforms</h4>
+                          <ul class="space-y-4">
+                              <li class="flex items-start gap-4 group cursor-pointer" onclick="toggleCheck(this)">
+                                  <div class="w-5 h-5 border-2 border-gray-600 rounded flex items-center justify-center text-royal font-bold checkbox-box bg-darkinput"><svg class="w-3 h-3 opacity-0 check-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg></div>
+                                  <span class="text-sm text-gray-300 group-hover:text-white transition select-none">2 White Short-Sleeved Shirts</span>
+                              </li>
+                              <li class="flex items-start gap-4 group cursor-pointer" onclick="toggleCheck(this)">
+                                  <div class="w-5 h-5 border-2 border-gray-600 rounded flex items-center justify-center text-royal font-bold checkbox-box bg-darkinput"><svg class="w-3 h-3 opacity-0 check-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg></div>
+                                  <span class="text-sm text-gray-300 group-hover:text-white transition select-none">2 Pairs Khaki Shorts (Knee length)</span>
+                              </li>
+                              <li class="flex items-start gap-4 group cursor-pointer" onclick="toggleCheck(this)">
+                                  <div class="w-5 h-5 border-2 border-gray-600 rounded flex items-center justify-center text-royal font-bold checkbox-box bg-darkinput"><svg class="w-3 h-3 opacity-0 check-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg></div>
+                                  <span class="text-sm text-gray-300 group-hover:text-white transition select-none">1 Pair Brown Sandals</span>
+                              </li>
+                          </ul>
+                      </div>
+                      <!-- Col 2 -->
+                      <div>
+                          <h4 class="font-bold text-gold mb-4 border-b border-gray-800 pb-2 flex items-center gap-2"><span>🛏️</span> Bedding</h4>
+                          <ul class="space-y-4">
+                              <li class="flex items-start gap-4 group cursor-pointer" onclick="toggleCheck(this)">
+                                  <div class="w-5 h-5 border-2 border-gray-600 rounded flex items-center justify-center text-royal font-bold checkbox-box bg-darkinput"><svg class="w-3 h-3 opacity-0 check-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg></div>
+                                  <span class="text-sm text-gray-300 group-hover:text-white transition select-none">Student Mattress & 2 White Sheets</span>
+                              </li>
+                              <li class="flex items-start gap-4 group cursor-pointer" onclick="toggleCheck(this)">
+                                  <div class="w-5 h-5 border-2 border-gray-600 rounded flex items-center justify-center text-royal font-bold checkbox-box bg-darkinput"><svg class="w-3 h-3 opacity-0 check-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg></div>
+                                  <span class="text-sm text-gray-300 group-hover:text-white transition select-none">1 Treated Mosquito Net</span>
+                              </li>
+                              <li class="flex items-start gap-4 group cursor-pointer" onclick="toggleCheck(this)">
+                                  <div class="w-5 h-5 border-2 border-gray-600 rounded flex items-center justify-center text-royal font-bold checkbox-box bg-darkinput"><svg class="w-3 h-3 opacity-0 check-icon" fill="currentColor" viewBox="0 0 20 20"><path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"></path></svg></div>
+                                  <span class="text-sm text-gray-300 group-hover:text-white transition select-none">Metal Trunk (Black) & Chop Box</span>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+          </section>
+
+          <!-- 4. WASSCE CALCULATOR -->
+          <section id="calculator" class="handbook-section scroll-mt-32">
+              <div class="bg-darkcard rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden border border-gray-700">
+                  <div class="relative z-10">
+                      <div class="text-center mb-10">
+                          <span class="bg-gold text-royal px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Tool</span>
+                          <h2 class="text-3xl md:text-4xl font-bold text-white mt-4 font-display">WASSCE Calculator</h2>
+                      </div>
+                      <div class="grid md:grid-cols-2 gap-8">
+                          <!-- Input Panel -->
+                          <div class="bg-gray-800/50 backdrop-blur-md p-6 rounded-2xl border border-gray-700">
+                              <h3 class="text-gold font-bold mb-4 uppercase text-xs">Core Subjects</h3>
+                              <div class="grid grid-cols-2 gap-4 mb-4">
+                                  <select class="grade-input calc-select w-full p-2.5 rounded bg-darkinput border border-gray-600 text-white text-sm outline-none focus:border-gold"><option value="1">Eng: A1</option><option value="2">B2</option><option value="3">B3</option><option value="4">C4</option><option value="5">C5</option><option value="6">C6</option><option value="7">D7</option><option value="9">F9</option></select>
+                                  <select class="grade-input calc-select w-full p-2.5 rounded bg-darkinput border border-gray-600 text-white text-sm outline-none focus:border-gold"><option value="1">Math: A1</option><option value="2">B2</option><option value="3">B3</option><option value="4">C4</option><option value="5">C5</option><option value="6">C6</option><option value="7">D7</option><option value="9">F9</option></select>
+                                  <select class="grade-input calc-select w-full p-2.5 rounded bg-darkinput border border-gray-600 text-white text-sm outline-none focus:border-gold"><option value="1">Sci: A1</option><option value="2">B2</option><option value="3">B3</option><option value="4">C4</option><option value="5">C5</option><option value="6">C6</option><option value="7">D7</option><option value="9">F9</option></select>
+                                  <select class="grade-input calc-select w-full p-2.5 rounded bg-darkinput border border-gray-600 text-white text-sm outline-none focus:border-gold"><option value="1">Soc: A1</option><option value="2">B2</option><option value="3">B3</option><option value="4">C4</option><option value="5">C5</option><option value="6">C6</option><option value="7">D7</option><option value="9">F9</option></select>
+                              </div>
+                              <h3 class="text-gold font-bold mb-4 uppercase text-xs pt-4 border-t border-gray-700">3 Best Electives</h3>
+                              <div class="grid grid-cols-3 gap-2">
+                                  <select class="grade-input calc-select w-full p-2 rounded bg-darkinput border border-gray-600 text-white text-sm outline-none focus:border-gold"><option value="1">A1</option><option value="2">B2</option><option value="3">B3</option><option value="4">C4</option><option value="5">C5</option><option value="9">F9</option></select>
+                                  <select class="grade-input calc-select w-full p-2 rounded bg-darkinput border border-gray-600 text-white text-sm outline-none focus:border-gold"><option value="1">A1</option><option value="2">B2</option><option value="3">B3</option><option value="4">C4</option><option value="5">C5</option><option value="9">F9</option></select>
+                                  <select class="grade-input calc-select w-full p-2 rounded bg-darkinput border border-gray-600 text-white text-sm outline-none focus:border-gold"><option value="1">A1</option><option value="2">B2</option><option value="3">B3</option><option value="4">C4</option><option value="5">C5</option><option value="9">F9</option></select>
+                              </div>
+                              <button onclick="calculateAggregate()" class="w-full mt-6 bg-gold text-royal font-bold py-3 rounded-xl hover:bg-white hover:text-royal transition shadow-lg shadow-gold/20">Calculate Score</button>
+                          </div>
+
+                          <!-- Result Panel -->
+                          <div class="flex flex-col items-center justify-center p-6 border border-gray-700 rounded-2xl bg-gray-900/50">
+                              <p class="text-gray-500 text-sm uppercase tracking-widest mb-2">Estimated Aggregate</p>
+                              <div id="agg-result" class="text-9xl font-bold text-white font-display tracking-tighter drop-shadow-2xl">--</div>
+                              <p id="agg-comment" class="text-gold mt-4 text-sm font-bold bg-darkinput px-4 py-2 rounded-full border border-gray-700">Select grades to begin</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+
+          <!-- 5. DOWNLOADS -->
+          <section id="downloads" class="handbook-section scroll-mt-32">
+              <div class="flex items-center gap-4 mb-8">
+                  <div class="h-12 w-1 bg-blue-500 rounded-full shadow-[0_0_15px_#3b82f6]"></div>
+                  <div>
+                      <h2 class="text-3xl font-bold text-white font-display">Downloads Center</h2>
+                      <p class="text-gray-500 text-sm">Official documents and forms.</p>
+                  </div>
+              </div>
+              <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <!-- Card -->
+                  <div class="bg-darkcard p-6 rounded-xl border border-gray-800 shadow-sm hover:border-gold transition group">
+                      <div class="flex justify-between items-start mb-4">
+                          <h3 class="font-bold text-white mb-1 group-hover:text-gold transition">Medical Form</h3>
+                          <span class="text-[10px] bg-gray-800 px-2 py-1 rounded text-gray-400 border border-gray-700">PDF</span>
+                      </div>
+                      <p class="text-xs text-gray-500 mb-6">Required for clinic registration.</p>
+                      <button class="w-full py-2.5 border border-gray-700 rounded-lg text-sm font-bold text-gray-400 group-hover:bg-gold group-hover:text-royal group-hover:border-gold transition">Download File</button>
+                  </div>
+                  <!-- Card -->
+                  <div class="bg-darkcard p-6 rounded-xl border border-gray-800 shadow-sm hover:border-gold transition group">
+                      <div class="flex justify-between items-start mb-4">
+                          <h3 class="font-bold text-white mb-1 group-hover:text-gold transition">Exeat Request</h3>
+                          <span class="text-[10px] bg-gray-800 px-2 py-1 rounded text-gray-400 border border-gray-700">DOCX</span>
+                      </div>
+                      <p class="text-xs text-gray-500 mb-6">Official travel permission slip.</p>
+                      <button class="w-full py-2.5 border border-gray-700 rounded-lg text-sm font-bold text-gray-400 group-hover:bg-gold group-hover:text-royal group-hover:border-gold transition">Download File</button>
+                  </div>
+              </div>
+          </section>
+
+      </main>
+  </div>
+  
+
+  <!-- SCROLL TOP -->
+  <button id="scrollTop" title="Back to top" class="fixed bottom-6 right-6 bg-gold text-royal p-3 rounded-full shadow-lg shadow-gold/20 opacity-0 transition-opacity z-50 hover:scale-110 hover:bg-white">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+  </button>
+
+  <!-- SCRIPTS -->
+  <script>
+      // 1. Live Search
+      const searchInput = document.getElementById('rule-search');
+      const sections = document.querySelectorAll('.handbook-section');
+
+      searchInput.addEventListener('input', (e) => {
+          const term = e.target.value.toLowerCase();
+          sections.forEach(section => {
+              const text = section.innerText.toLowerCase();
+              if(text.includes(term)) {
+                  section.style.display = 'block';
+              } else {
+                  if(term !== '') section.style.display = 'none';
+                  else section.style.display = 'block';
+              }
+          });
+      });
+
+      // 2. AI Search Hook
+      function handleSearchEnter(e) {
+          if (e.key === 'Enter') {
+              const query = e.target.value;
+              const chatToggle = document.getElementById('chat-toggle');
+              const chatInput = document.getElementById('chat-input');
+              const chatForm = document.getElementById('chat-form');
+
+              if (chatToggle) {
+                  chatToggle.click();
+                  setTimeout(() => {
+                      if(chatInput) {
+                          chatInput.value = query;
+                          chatForm.dispatchEvent(new Event('submit'));
+                      }
+                  }, 500);
+              }
+          }
+      }
+
+      // 3. Calculator
+      function calculateAggregate() {
+          let total = 0;
+          document.querySelectorAll('.grade-input').forEach(input => {
+              total += parseInt(input.value);
+          });
+          document.getElementById('agg-result').innerText = total;
+
+          const commentEl = document.getElementById('agg-comment');
+          if(total <= 10) { commentEl.innerText = "🌟 Outstanding! Direct Entry."; commentEl.className = "text-green-400 mt-4 text-sm font-bold bg-green-900/20 px-4 py-2 rounded-full border border-green-900/50"; }
+          else if(total <= 15) { commentEl.innerText = "✅ Very Good. Strong chance."; commentEl.className = "text-blue-400 mt-4 text-sm font-bold bg-blue-900/20 px-4 py-2 rounded-full border border-blue-900/50"; }
+          else if(total <= 24) { commentEl.innerText = "⚠️ Good. Work harder."; commentEl.className = "text-yellow-400 mt-4 text-sm font-bold bg-yellow-900/20 px-4 py-2 rounded-full border border-yellow-900/50"; }
+          else { commentEl.innerText = "🛑 Needs Improvement."; commentEl.className = "text-red-400 mt-4 text-sm font-bold bg-red-900/20 px-4 py-2 rounded-full border border-red-900/50"; }
+      }
+
+      // 4. Prospectus Check Logic
+      function toggleCheck(el) {
+          const box = el.querySelector('.checkbox-box');
+          const icon = el.querySelector('.check-icon');
+          const text = el.querySelector('span');
+
+          if(box.classList.contains('bg-gold')) {
+              box.classList.remove('bg-gold', 'border-gold', 'text-royal');
+              box.classList.add('border-gray-600', 'bg-darkinput');
+              icon.classList.add('opacity-0');
+              text.classList.remove('line-through', 'text-gray-500');
+              text.classList.add('text-gray-300');
+          } else {
+              box.classList.remove('border-gray-600', 'bg-darkinput');
+              box.classList.add('bg-gold', 'border-gold', 'text-royal');
+              icon.classList.remove('opacity-0');
+              text.classList.add('line-through', 'text-gray-500');
+              text.classList.remove('text-gray-300');
+          }
+      }
+
+      document.getElementById('yr').innerText = new Date().getFullYear();
+  </script>
+
+  <script src="./js/script.js"></script>
+</body>
+</html>

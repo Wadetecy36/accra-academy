@@ -1,0 +1,853 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Accra Academy – Esse Quam Videri</title>
+
+  <!-- ✅ CORRECT FAVICON LINK FOR ROOT FILE -->
+  <!-- This points to the favicon.ico I see in your screenshot -->
+  <link rel="icon" href="./favicon.ico" sizes="any">
+
+  
+  <!-- TAILWIND -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: { royal: '#002147', gold: '#FDBE11', soft: '#F0F4F8' },
+          fontFamily: { display: ['Merriweather', 'serif'], body: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+
+<!-- SEO & SOCIAL SHARING -->
+  <meta property="og:title" content="Accra Academy – Esse Quam Videri">
+  <meta property="og:description" content="The premier educational institution in Ghana. Excellence in academics, character, and leadership since 1931.">
+  <meta property="og:image" content="https://accra-academy.vercel.app/assets/crest.png"> <!-- UPGRADE: Use a full banner image here later -->
+  <meta property="og:url" content="https://accra-academy.vercel.app/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- FONTS & LIBS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://unpkg.com/swiper@11/swiper-bundle.min.css" rel="stylesheet">
+
+
+  
+
+  <!-- CUSTOM CSS -->
+  <link href="./css/custom.css" rel="stylesheet">
+</head>
+   <!-- SENIOR DEV FIX: Removed 'bg-soft' to allow 3D canvas visibility -->
+<body class="min-h-screen transition-colors duration-300" id="main-content">
+
+  <!-- 3D BACKGROUND -->
+  <div id="canvas-container" class="fixed inset-0 z-[-1] pointer-events-none"></div>
+
+
+    <!-- LIVE ANNOUNCEMENT BAR -->
+    <div id="announcement-bar" class="hidden bg-gold text-royal font-bold text-sm py-2 relative z-50 overflow-hidden border-b border-royal/10">
+        <div class="container mx-auto flex items-center gap-4">
+            <span class="bg-royal text-gold text-[10px] px-2 py-0.5 rounded uppercase tracking-wider animate-pulse">LATEST</span>
+            <div class="whitespace-nowrap overflow-hidden w-full"><p id="announcement-text" class="inline-block animate-marquee pl-full"></p></div>
+            <button onclick="closeAnnouncement()" class="text-royal hover:text-white">&times;</button>
+        </div>
+    </div>
+    <!-- HEADER -->
+    <header class="site-header sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 h-20 flex justify-between items-center">
+
+
+            <!-- 1. BRAND -->
+            <a href="./index.html" class="flex items-center gap-3 group">
+                <img src="./assets/crest.png" alt="Accra Academy Crest" class="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300">
+                <div class="flex flex-col">
+                    <h1 class="text-xl md:text-2xl font-bold text-royal dark:text-gold font-display leading-tight tracking-tight">Accra Academy</h1>
+                    <p class="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-semibold">Esse Quam Videri</p>
+                </div>
+            </a>
+
+            <!-- 2. DESKTOP NAV -->
+            <nav class="hidden lg:flex items-center gap-8 text-sm font-bold tracking-wide">
+                <a href="./index.html" class="text-royal dark:text-gold border-b-2 border-gold pb-1">HOME</a>
+                <a href="./about.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">ABOUT</a>
+                <a href="./academics.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">ACADEMICS</a>
+                <a href="./news.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">NEWS</a>
+                <a href="./gallery.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">GALLERY</a>
+                <a href="./contacts.html" class="text-gray-600 dark:text-gray-300 hover:text-royal dark:hover:text-gold transition hover:-translate-y-0.5">CONTACT</a>
+            </nav>
+
+            <!-- 3. CONTROLS -->
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-royal dark:text-gold hover:ring-2 hover:ring-gold transition shadow-sm" aria-label="Toggle dark mode">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+                <button id="mobile-btn" class="lg:hidden p-2 text-royal dark:text-gold focus:outline-none" aria-label="Open Menu">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 4. MOBILE MENU -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-t border-gray-200 dark:border-gray-800 shadow-2xl origin-top transition-all duration-300">
+            <nav class="flex flex-col p-6 gap-4 text-center">
+                <a href="./index.html" class="text-royal dark:text-gold font-bold text-lg py-2 border-b border-gray-100 dark:border-gray-800">Home</a>
+                <a href="./about.html" class="text-gray-600 dark:text-gray-300 hover:text-gold py-2">About Us</a>
+                <a href="./academics.html" class="text-gray-600 dark:text-gray-300 hover:text-gold py-2">Academics</a>
+                <a href="./news.html" class="text-gray-600 dark:text-gray-300 hover:text-gold py-2">News</a>
+                <a href="./gallery.html" class="text-gray-600 dark:text-gray-300 hover:text-gold py-2">Gallery</a>
+                <a href="./contacts.html" class="text-gray-600 dark:text-gray-300 hover:text-gold py-2">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+  <!-- HERO (Glass Mode) -->
+<section class="min-h-screen flex items-center justify-center section-glass text-center px-4" data-aos="fade-up">
+  <div class="container relative z-10">
+      
+      <!-- UPDATED CREST CONTAINER -->
+      <div class="mb-8 flex justify-center">
+          <!-- The Glass Orb Container -->
+          <div class="crest-glass-orb w-32 h-32 md:w-40 md:h-40">
+              <!-- The Crest Image (Slightly smaller to fit inside) -->
+              <img src="./assets/crest.png" 
+                   alt="Crest" 
+                   class="w-20 h-20 md:w-24 md:h-24 object-contain drop-shadow-lg" 
+                   fetchpriority="high">
+          </div>
+      </div>
+      <!-- END UPDATED CONTAINER -->
+
+      <h1 class="text-4xl md:text-6xl lg:text-7xl font-display font-bold mb-4 leading-tight text-royal dark:text-white">
+          Welcome to <span class="text-gold">Accra Academy</span>
+      </h1>
+      <p class="text-lg md:text-2xl text-gray-600 dark:text-gray-300 italic mb-10 max-w-2xl mx-auto">"Esse Quam Videri – To Be, Rather Than to Seem"</p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+            <a href="./about.html" class="btn primary w-full sm:w-auto text-center">Discover History</a>
+           <a href="./admissions.html" class="btn ghost text-royal dark:text-white border-royal dark:border-white w-full sm:w-auto text-center hover:bg-royal hover:text-white transition">
+    Admissions
+</a>
+        </div>
+
+        <!-- Info Cards (Glass) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto text-left">
+            <div class="p-6 rounded-2xl bg-white/40 dark:bg-white/5 backdrop-blur-md border border-white/20 hover:bg-white/50 dark:hover:bg-white/10 transition" data-aos="fade-up" data-aos-delay="100">
+                <h3 class="font-bold text-xl text-gold mb-1">Founded 1931</h3>
+                <p class="text-sm text-gray-700 dark:text-gray-300">A legacy of excellence spanning over 90 years.</p>
+            </div>
+            <div class="p-6 rounded-2xl bg-white/40 dark:bg-white/5 backdrop-blur-md border border-white/20 hover:bg-white/50 dark:hover:bg-white/10 transition" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="font-bold text-xl text-gold mb-1">5000+ Students</h3>
+                <p class="text-sm text-gray-700 dark:text-gray-300">Shaping young minds for a brighter future.</p>
+            </div>
+            <div class="p-6 rounded-2xl bg-white/40 dark:bg-white/5 backdrop-blur-md border border-white/20 hover:bg-white/50 dark:hover:bg-white/10 transition" data-aos="fade-up" data-aos-delay="300">
+                <h3 class="font-bold text-xl text-gold mb-1">100+ Staff</h3>
+                <p class="text-sm text-gray-700 dark:text-gray-300">Dedicated educators committed to success.</p>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- EXPLORE FEATURES (Glass Mode) -->
+  <!-- Replaced bg-soft with section-glass -->
+  <section class="py-20 section-glass">
+    <div class="container mx-auto px-4 md:px-6">
+       <div class="text-center mb-12" data-aos="fade-up">
+           <h2 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white">Explore Campus</h2>
+           <p class="text-gray-500 mt-2">Discover what makes Bleoo unique.</p>
+       </div>
+       <div class="features-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Feature Cards (CSS handles glass styling) -->
+            <a href="./academics.html" class="feature-card group block p-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="icon mb-4 text-royal dark:text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg></div>
+                <h3 class="text-lg font-bold mb-2">Programs</h3>
+                <p class="text-sm">Diverse academic programs building leadership.</p>
+            </a>
+            <a href="./academics.html" class="feature-card group block p-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="icon mb-4 text-royal dark:text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg></div>
+                <h3 class="text-lg font-bold mb-2">Science Labs</h3>
+                <p class="text-sm">State-of-the-art labs for hands-on experiments.</p>
+            </a>
+            <a href="./gallery.html" class="feature-card group block p-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="icon mb-4 text-royal dark:text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg></div>
+                <h3 class="text-lg font-bold mb-2">Sports</h3>
+                <p class="text-sm">World-class training grounds for future champions.</p>
+            </a>
+            <a href="#" class="feature-card group block p-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="icon mb-4 text-royal dark:text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-3a1 1 0 011-1h2a1 1 0 011 1v3m-5-6h6m-6 0H4m12 0h4m-6-6h6m-6 0H4"></path></svg></div>
+                <h3 class="text-lg font-bold mb-2">Halls</h3>
+                <p class="text-sm">Boarding facilities fostering brotherhood.</p>
+            </a>
+            <a href="./news.html" class="feature-card group block p-6" data-aos="fade-up" data-aos-delay="500">
+                <div class="icon mb-4 text-royal dark:text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg></div>
+                <h3 class="text-lg font-bold mb-2">News</h3>
+                <p class="text-sm">Stay up to date with school events.</p>
+            </a>
+            <a href="#" class="feature-card group block p-6" data-aos="fade-up" data-aos-delay="600">
+                <div class="icon mb-4 text-royal dark:text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div>
+                <h3 class="text-lg font-bold mb-2">Clubs</h3>
+                <p class="text-sm">Creativity, teamwork, and leadership.</p>
+            </a>
+       </div>
+    </div>
+  </section>
+
+<!-- =========================================
+       THE BLEOO EXPERIENCE (ZIG-ZAG LAYOUT)
+       ========================================= -->
+  <!-- MODIFIED: Uses 'glass-clear' to reveal the 3D background -->
+  <section class="py-24 relative overflow-hidden section-glass glass-clear">
+      
+      <!-- No internal background blobs - letting the 3D Canvas shine through -->
+
+      <div class="container mx-auto px-4 md:px-6 relative z-10">
+          
+          <!-- BLOCK 1: ACADEMICS -->
+          <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
+              <!-- Text Side -->
+              <div data-aos="fade-right">
+                  <div class="flex items-center gap-3 mb-4">
+                      <span class="w-12 h-1 bg-gold rounded-full shadow-[0_0_10px_#FDBE11]"></span>
+                      <span class="text-royal dark:text-gold font-bold uppercase tracking-widest text-sm">Academic Rigor</span>
+                  </div>
+                  <h2 class="text-3xl md:text-5xl font-display font-bold text-royal dark:text-white mb-6 leading-tight">
+                      Cultivating the <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold to-yellow-600">Intellectuals</span> of Tomorrow.
+                  </h2>
+                  <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-8">
+                      At Accra Academy, education goes beyond the textbook. We foster critical thinking, innovation, and a thirst for knowledge. From our state-of-the-art Science Resource Center to our award-winning Robotics Club, we provide the tools for students to excel on a global stage.
+                  </p>
+                  
+                  <ul class="space-y-4 mb-8">
+                      <li class="flex items-start gap-3">
+                          <svg class="w-6 h-6 text-green-500 shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                          <span class="text-gray-700 dark:text-gray-300">Consistent WASSCE Excellence</span>
+                      </li>
+                      <li class="flex items-start gap-3">
+                          <svg class="w-6 h-6 text-green-500 shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                          <span class="text-gray-700 dark:text-gray-300">STEM & Robotics Innovation Hub</span>
+                      </li>
+                      <li class="flex items-start gap-3">
+                          <svg class="w-6 h-6 text-green-500 shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                          <span class="text-gray-700 dark:text-gray-300">Renowned Debating Society</span>
+                      </li>
+                  </ul>
+
+                  <a href="./academics.html" class="btn primary shadow-lg group">
+                      View Departments 
+                      <span class="inline-block transition-transform group-hover:translate-x-1 ml-1">→</span>
+                  </a>
+              </div>
+
+              <!-- Image Side (Styled Frame) -->
+              <div class="relative" data-aos="fade-left">
+                  <!-- Decorative Frame -->
+                  <div class="absolute inset-0 border-2 border-gold rounded-3xl transform translate-x-4 translate-y-4 z-0"></div>
+                  <div class="relative rounded-3xl overflow-hidden shadow-2xl z-10 group">
+                      <!-- Overlay removed -->
+                      <img src="./assets/gallery4.webp" alt="Students in Library" class="w-full h-[500px] object-cover transform group-hover:scale-105 transition duration-700">
+                  </div>
+              </div>
+          </div>
+
+          <!-- BLOCK 2: SPORTS & CULTURE (Image Left, Text Right) -->
+          <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
+              
+              <!-- Image Side -->
+              <div class="relative order-2 md:order-1" data-aos="fade-right">
+                  <!-- Decorative Frame -->
+                  <div class="absolute inset-0 border-2 border-royal dark:border-white rounded-3xl transform -translate-x-4 translate-y-4 z-0"></div>
+                  <div class="relative rounded-3xl overflow-hidden shadow-2xl z-10 group">
+                      <!-- Overlay removed -->
+                      <img src="./assets/sport.jpg" alt="Sports Team" class="w-full h-[500px] object-cover transform group-hover:scale-105 transition duration-700">
+                      
+                      <!-- Floating Badge -->
+                      <div class="absolute bottom-6 right-6 bg-white dark:bg-royal p-4 rounded-xl shadow-lg flex items-center gap-3 animate-bounce-slow">
+                          <span class="text-3xl">🏆</span>
+                          <div>
+                              <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-bold">Champions</p>
+                              <p class="font-bold text-royal dark:text-white">Inter-Colleges 2024</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Text Side -->
+              <div class="order-1 md:order-2" data-aos="fade-left">
+                  <div class="flex items-center gap-3 mb-4">
+                      <span class="w-12 h-1 bg-gold rounded-full"></span>
+                      <span class="text-royal dark:text-gold font-bold uppercase tracking-widest text-sm">Beyond The Classroom</span>
+                  </div>
+                  <h2 class="text-3xl md:text-5xl font-display font-bold text-royal dark:text-white mb-6 leading-tight">
+                      The Spirit of <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-royal to-blue-500 dark:from-white dark:to-gray-400">Brotherhood.</span>
+                  </h2>
+                  <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-8">
+                      "Bleoo" is more than a name; it is a culture. From the roar of the supporters on the sports field to the discipline of the Cadet Corps, we mold characters that stand the test of time.
+                  </p>
+
+                  <div class="grid grid-cols-2 gap-6 mb-8">
+                      <div class="p-4 bg-white dark:bg-white/5 rounded-xl border-l-4 border-gold shadow-sm">
+                          <h4 class="font-bold text-royal dark:text-white text-lg">Sports</h4>
+                          <p class="text-sm text-gray-500 dark:text-gray-400">Football, Athletics, Basketball & Hockey dominance.</p>
+                      </div>
+                      <div class="p-4 bg-white dark:bg-white/5 rounded-xl border-l-4 border-royal dark:border-white shadow-sm">
+                          <h4 class="font-bold text-royal dark:text-white text-lg">Culture</h4>
+                          <p class="text-sm text-gray-500 dark:text-gray-400">Music, Drama & the famous Regimental Band.</p>
+                      </div>
+                  </div>
+
+                  <a href="./gallery.html" class="btn ghost text-royal dark:text-white border-royal dark:border-white hover:bg-royal hover:text-white transition group">
+                      Explore Student Life
+                      <span class="inline-block transition-transform group-hover:translate-x-1 ml-1">→</span>
+                  </a>
+              </div>
+
+          </div>
+
+      </div>
+  </section>
+
+<!-- =========================================
+       GLOBAL IMPACT (ALUMNI SPOTLIGHT)
+       ========================================= -->
+  <section class="py-24 bg-royal text-white relative overflow-hidden border-t border-white/10">
+      
+      <!-- Background Texture (Subtle Pattern) -->
+      <div class="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+      
+      <!-- Glowing Orbs for Depth -->
+      <div class="absolute top-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+      <div class="absolute bottom-0 right-0 w-96 h-96 bg-gold/10 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
+
+      <div class="container mx-auto px-4 relative z-10">
+          
+          <!-- Section Header -->
+          <div class="text-center mb-16" data-aos="fade-up">
+              <span class="text-gold font-bold tracking-[0.2em] uppercase text-xs mb-3 block">From Bubuashie to the World</span>
+              <h2 class="text-3xl md:text-5xl font-display font-bold mb-6">Bleoobi Global Impact</h2>
+              <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto"></div>
+              <p class="mt-6 text-gray-300 max-w-2xl mx-auto text-lg font-light leading-relaxed">
+                  Our alumni do not just participate in the world; they shape it. From Supreme Court Judges to Captains of Industry, the Bleoo brand is a mark of excellence.
+              </p>
+          </div>
+
+          <!-- Alumni Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              
+              <!-- Card 1: Governance -->
+              <div class="group relative p-8 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-gold/50 transition duration-500" data-aos="fade-up" data-aos-delay="100">
+                  <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-100 transition duration-500">
+                      <svg class="w-12 h-12 text-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.516L20.297 19H3.703L12 5.516zM11 16h2v2h-2v-2zm0-6h2v4h-2v-4z"/></svg>
+                  </div>
+                  
+                  <div class="w-16 h-16 rounded-full bg-gradient-to-br from-gold to-yellow-600 flex items-center justify-center text-royal font-bold text-2xl mb-6 shadow-lg shadow-gold/20">
+                      🏛️
+                  </div>
+                  
+                  <h3 class="text-xl font-bold text-white mb-2 group-hover:text-gold transition">Governance & Law</h3>
+                  <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                      Producing successive Speakers of Parliament and Chief Justices who uphold the constitution and the rule of law.
+                  </p>
+                  
+                  <div class="flex items-center gap-3 pt-6 border-t border-white/5">
+                      <span class="text-xs font-mono text-gold uppercase tracking-wider">Notable Alumni</span>
+                      <div class="flex -space-x-2">
+                          <div class="w-8 h-8 rounded-full bg-gray-700 border-2 border-royal flex items-center justify-center text-[8px]">Rt.Hon</div>
+                          <div class="w-8 h-8 rounded-full bg-gray-600 border-2 border-royal flex items-center justify-center text-[8px]">Lord</div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Card 2: Innovation -->
+              <div class="group relative p-8 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-gold/50 transition duration-500" data-aos="fade-up" data-aos-delay="200">
+                  <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-100 transition duration-500">
+                      <svg class="w-12 h-12 text-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                  </div>
+
+                  <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-royal flex items-center justify-center text-white font-bold text-2xl mb-6 shadow-lg shadow-blue-500/20">
+                      🚀
+                  </div>
+                  
+                  <h3 class="text-xl font-bold text-white mb-2 group-hover:text-gold transition">Science & Tech</h3>
+                  <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                      Pioneers in medicine, engineering, and digital innovation. Our Robotics team continues to set national records.
+                  </p>
+                  
+                  <div class="flex items-center gap-3 pt-6 border-t border-white/5">
+                      <span class="text-xs font-mono text-blue-400 uppercase tracking-wider">Achievement</span>
+                      <span class="text-xs text-white bg-blue-900/50 px-2 py-1 rounded">Robotics Champions</span>
+                  </div>
+              </div>
+
+              <!-- Card 3: Business -->
+              <div class="group relative p-8 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-gold/50 transition duration-500" data-aos="fade-up" data-aos-delay="300">
+                  <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-100 transition duration-500">
+                      <svg class="w-12 h-12 text-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l-5.5 9h11z"/></svg>
+                  </div>
+
+                  <div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center text-white font-bold text-2xl mb-6 shadow-lg shadow-green-500/20">
+                      📈
+                  </div>
+                  
+                  <h3 class="text-xl font-bold text-white mb-2 group-hover:text-gold transition">Business & Finance</h3>
+                  <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                      Leaders in banking, entrepreneurship, and corporate governance driving the African economy forward.
+                  </p>
+                  
+                  <div class="flex items-center gap-3 pt-6 border-t border-white/5">
+                      <span class="text-xs font-mono text-green-400 uppercase tracking-wider">Network</span>
+                      <span class="text-xs text-white bg-green-900/50 px-2 py-1 rounded">Global Reach</span>
+                  </div>
+              </div>
+
+          </div>
+
+          <!-- Call to Action -->
+          <div class="mt-16 text-center" data-aos="fade-up">
+              <p class="text-gray-400 text-sm mb-4">Are you an Old Boy?</p>
+              <a href="https://bleoobi.com" target="_blank" class="inline-flex items-center gap-2 text-gold font-bold hover:text-white transition border-b-2 border-gold pb-1 hover:border-white">
+                  Connect with the Alumni Association
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+              </a>
+          </div>
+
+      </div>
+  </section>
+
+  <!-- LEGACY (Glass Mode) -->
+  <section class="py-20 section-glass">
+      <div class="container mx-auto px-4">
+          <div class="text-center mb-12" data-aos="fade-up">
+              <span class="text-gold font-bold tracking-widest uppercase text-sm">Heritage & Glory</span>
+              <h2 class="text-3xl md:text-5xl font-display font-bold text-royal dark:text-white mt-2">Legacy of <span class="text-gold">Firsts</span></h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div class="legacy-card p-6 rounded-xl hover:bg-white/10 transition" data-aos="fade-up" data-aos-delay="100">
+                  <div class="legacy-icon mb-4 text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-3a1 1 0 011-1h2a1 1 0 011 1v3m-5-6h6m-6 0H4m12 0h4m-6-6h6m-6 0H4"></path></svg></div>
+                  <h3 class="text-lg font-bold text-white mb-2">School of Speakers</h3>
+                  <p class="text-xs text-gray-400 mt-2">Producing three consecutive Speakers of Parliament.</p>
+              </div>
+              <div class="legacy-card p-6 rounded-xl hover:bg-white/10 transition" data-aos="fade-up" data-aos-delay="200">
+                  <div class="legacy-icon mb-4 text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg></div>
+                  <h3 class="text-lg font-bold text-white mb-2">Legal Luminaries</h3>
+                  <p class="text-xs text-gray-400 mt-2">Alma mater of successive Chief Justices.</p>
+              </div>
+              <div class="legacy-card p-6 rounded-xl hover:bg-white/10 transition" data-aos="fade-up" data-aos-delay="300">
+                  <div class="legacy-icon mb-4 text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                  <h3 class="text-lg font-bold text-white mb-2">Sports Pioneers</h3>
+                  <p class="text-xs text-gray-400 mt-2">First SHS in Ghana to construct a modern Astro-turf.</p>
+              </div>
+              <div class="legacy-card p-6 rounded-xl hover:bg-white/10 transition" data-aos="fade-up" data-aos-delay="400">
+                  <div class="legacy-icon mb-4 text-gold"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                  <h3 class="text-lg font-bold text-white mb-2">African Excellence</h3>
+                  <p class="text-xs text-gray-400 mt-2">Ranked 8th Best High School in Africa (2003).</p>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- ACHIEVEMENTS (Glass Mode) -->
+  <section class="achievements py-20 section-glass text-white" id="achievements">
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="flex items-start gap-5 mb-16 max-w-4xl" data-aos="fade-right">
+            <div class="w-2 h-20 bg-gold rounded-sm shrink-0 shadow-[0_0_15px_rgba(253,190,17,0.5)]"></div>
+            <div>
+                <h2 class="text-4xl md:text-5xl font-bold font-display mb-4 text-royal dark:text-white">Our <span class="text-gold">Achievements</span></h2>
+                <p class="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">Accra Academy excels in education and leadership, producing Chief Justices, Speakers of Parliament, and concurrent heads of state.</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 border-t border-gray-400/20 pt-12">
+            <div class="stat-item text-center md:text-left md:border-r border-gray-400/20 md:pr-8">
+                <div class="text-4xl font-bold text-gold flex items-baseline justify-center md:justify-start"><span class="counter" data-target="4381">0</span><span>+</span></div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 uppercase tracking-wider font-bold mt-2">Students</p>
+            </div>
+            <div class="stat-item text-center md:text-left md:pl-8 md:border-r border-gray-400/20 md:pr-8">
+                <div class="text-4xl font-bold text-gold flex items-baseline justify-center md:justify-start"><span class="counter" data-target="1">0</span><span>M+</span></div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 uppercase tracking-wider font-bold mt-2">Bleoobi</p>
+            </div>
+            <div class="stat-item text-center md:text-left md:pl-8 md:border-r border-gray-400/20 md:pr-8">
+                <div class="text-4xl font-bold text-gold flex items-baseline justify-center md:justify-start"><span class="counter" data-target="920">0</span></div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 uppercase tracking-wider font-bold mt-2">Awards</p>
+            </div>
+            <div class="stat-item text-center md:text-left md:pl-8">
+                <div class="text-4xl font-bold text-gold flex items-baseline justify-center md:justify-start"><span class="counter" data-target="5">0</span></div>
+                <p class="text-sm text-gray-600 dark:text-gray-400 uppercase tracking-wider font-bold mt-2">Depts</p>
+            </div>
+        </div>
+    </div>
+  </section>
+
+<!-- =========================================
+       LEADERSHIP SHOWCASE (MASTER-DETAIL VIEW)
+       ========================================= -->
+  <section class="py-24 bg-soft dark:bg-gray-900 relative" id="leadership">
+      
+      <div class="container mx-auto px-4 relative z-10 max-w-5xl">
+          
+          <!-- Section Title -->
+          <div class="text-center mb-12" data-aos="fade-down">
+              <span class="text-gold font-bold tracking-widest uppercase text-sm">Stewardship</span>
+              <h2 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white mt-2">School Administration</h2>
+          </div>
+
+          <!-- THE MASTER CARD -->
+          <div class="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row min-h-[600px]" data-aos="fade-up">
+              
+              <!-- LEFT: THE IMAGE (Dynamic) -->
+              <div class="w-full md:w-1/2 relative bg-gray-200">
+                  <!-- The Active Image -->
+                  <img id="leader-main-img" src="./assets/headmaster.jpg" 
+                       class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500" 
+                       alt="Leader Portrait">
+                  
+                  <!-- Overlay Gradient -->
+                  <!-- Overlay removed -->
+              </div>
+
+              <!-- RIGHT: THE CONTENT (Dynamic) -->
+              <div class="w-full md:w-1/2 bg-royal text-white p-8 md:p-12 flex flex-col justify-center relative">
+                  
+                  <!-- Quote Icon -->
+                  <div class="text-gold text-6xl font-serif opacity-30 absolute top-8 right-8">❝</div>
+
+                  <!-- Dynamic Text -->
+                  <div id="leader-text-container" class="relative z-10 animate-fade-in">
+                      <h2 id="leader-name" class="text-2xl md:text-3xl font-display font-bold mb-1">Mr. Eric Ebo Sey</h2>
+                      <p id="leader-role" class="text-gold text-xs font-bold uppercase tracking-widest mb-8">Headmaster</p>
+                      
+                      <div class="h-1 w-12 bg-white/20 mb-8"></div>
+
+                      <p id="leader-msg" class="text-gray-300 leading-relaxed text-sm md:text-base font-light italic">
+                          Accra Academy, established in 1931, is a distinguished educational institution in Accra...
+                      </p>
+                  </div>
+
+                  <!-- THUMBNAIL NAVIGATOR -->
+                  <div class="mt-12 pt-8 border-t border-white/10">
+                      <p class="text-xs text-gray-400 font-bold uppercase mb-4">Select Administrator</p>
+                      <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                          
+                          <!-- Thumb 1: Headmaster -->
+                          <button onclick="changeLeader(0)" class="leader-thumb active relative w-14 h-14 rounded-xl overflow-hidden border-2 border-gold transition-all hover:scale-105 shrink-0">
+                              <img src="./assets/headmaster.jpg" class="w-full h-full object-cover">
+                          </button>
+
+                          <!-- Thumb 2: Admin -->
+                          <button onclick="changeLeader(1)" class="leader-thumb relative w-14 h-14 rounded-xl overflow-hidden border-2 border-transparent hover:border-gold/50 transition-all hover:scale-105 opacity-60 hover:opacity-100 shrink-0">
+                              <img src="./assets/administration.jpg" class="w-full h-full object-cover">
+                          </button>
+
+                          <!-- Thumb 3: Academic -->
+                          <button onclick="changeLeader(2)" class="leader-thumb relative w-14 h-14 rounded-xl overflow-hidden border-2 border-transparent hover:border-gold/50 transition-all hover:scale-105 opacity-60 hover:opacity-100 shrink-0">
+                              <img src="./assets/academics.jpg" class="w-full h-full object-cover">
+                          </button>
+
+                          <!-- Thumb 4: Domestic -->
+                          <button onclick="changeLeader(3)" class="leader-thumb relative w-14 h-14 rounded-xl overflow-hidden border-2 border-transparent hover:border-gold/50 transition-all hover:scale-105 opacity-60 hover:opacity-100 shrink-0">
+                              <img src="./assets/domestic.jpg" class="w-full h-full object-cover">
+                          </button>
+
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+
+      </div>
+  </section>
+
+  <!-- GALLERY SECTION (Panoramic Glass Mode) -->
+  <section class="gallery-section py-24 section-glass border-t border-white/10 overflow-hidden" id="gallery">
+     
+     <!-- 1. HEADLINE (Kept Centered) -->
+     <div class="container mx-auto px-4 mb-16 text-center" data-aos="fade-up">
+          <span class="text-gold font-bold tracking-widest uppercase text-sm mb-2 block">Visual Tour</span>
+          <h2 class="text-4xl md:text-5xl font-bold text-royal dark:text-white font-display mb-4">Campus Life Unfolded</h2>
+          <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg font-light">
+              Experience the vibrant atmosphere, modern facilities, and the brotherhood that defines us.
+          </p>
+     </div>
+
+     <!-- 2. PANORAMIC SLIDER (Full Width) -->
+     <div class="w-full relative" data-aos="fade-up" data-aos-delay="200">
+        <!-- Swiper Container with extra padding for shadow rendering -->
+        <div class="swiper mySwiper !pb-14 !px-4 md:!px-12">
+            <div class="swiper-wrapper">
+                  
+                  <!-- Slide 1 -->
+                  <div class="swiper-slide !w-[85vw] md:!w-[600px] group relative rounded-2xl overflow-hidden shadow-2xl border border-white/20">
+                      <!-- Overlay removed -->
+                      <img src="./assets/admin.png" class="w-full h-[300px] md:h-[500px] object-cover transform group-hover:scale-110 transition duration-700 ease-out" alt="Campus">
+                      <div class="absolute bottom-0 left-0 p-6 z-20 translate-y-4 group-hover:translate-y-0 transition duration-500">
+                          <span class="text-gold text-xs font-bold uppercase tracking-wider">Infrastructure</span>
+                          <h3 class="text-white text-2xl font-bold drop-shadow-md">The Administration Block</h3>
+                      </div>
+                  </div>
+
+                  <!-- Slide 2 -->
+                  <div class="swiper-slide !w-[85vw] md:!w-[600px] group relative rounded-2xl overflow-hidden shadow-2xl border border-white/20">
+                      <!-- Overlay removed -->
+                      <img src="./assets/SRC.png" class="w-full h-[300px] md:h-[500px] object-cover transform group-hover:scale-110 transition duration-700 ease-out" alt="Students">
+                      <div class="absolute bottom-0 left-0 p-6 z-20 translate-y-4 group-hover:translate-y-0 transition duration-500">
+                          <span class="text-gold text-xs font-bold uppercase tracking-wider">Academics</span>
+                          <h3 class="text-white text-2xl font-bold drop-shadow-md">Science Resource Center</h3>
+                      </div>
+                  </div>
+
+                  <!-- Slide 3 -->
+                  <div class="swiper-slide !w-[85vw] md:!w-[600px] group relative rounded-2xl overflow-hidden shadow-2xl border border-white/20">
+                      <!-- Overlay removed -->
+                      <img src="./assets/sport.jpg" class="w-full h-[300px] md:h-[500px] object-cover transform group-hover:scale-110 transition duration-700 ease-out" alt="Sports">
+                      <div class="absolute bottom-0 left-0 p-6 z-20 translate-y-4 group-hover:translate-y-0 transition duration-500">
+                          <span class="text-gold text-xs font-bold uppercase tracking-wider">Athletics</span>
+                          <h3 class="text-white text-2xl font-bold drop-shadow-md">Inter-Colleges Champions</h3>
+                      </div>
+                  </div>
+
+                  <!-- Slide 4 -->
+                  <div class="swiper-slide !w-[85vw] md:!w-[600px] group relative rounded-2xl overflow-hidden shadow-2xl border border-white/20">
+                      <!-- Overlay removed -->
+                      <img src="./assets/lib.jpg" class="w-full h-[300px] md:h-[500px] object-cover transform group-hover:scale-110 transition duration-700 ease-out" alt="Library">
+                      <div class="absolute bottom-0 left-0 p-6 z-20 translate-y-4 group-hover:translate-y-0 transition duration-500">
+                          <span class="text-gold text-xs font-bold uppercase tracking-wider">Research</span>
+                          <h3 class="text-white text-2xl font-bold drop-shadow-md">School Library</h3>
+                      </div>
+                  </div>
+
+                  <!-- Slide 5 -->
+                  <div class="swiper-slide !w-[85vw] md:!w-[600px] group relative rounded-2xl overflow-hidden shadow-2xl border border-white/20">
+                      <!-- Overlay removed -->
+                      <img src="./assets/speech.jpg" class="w-full h-[300px] md:h-[500px] object-cover transform group-hover:scale-110 transition duration-700 ease-out" alt="Events">
+                      <div class="absolute bottom-0 left-0 p-6 z-20 translate-y-4 group-hover:translate-y-0 transition duration-500">
+                          <span class="text-gold text-xs font-bold uppercase tracking-wider">Events</span>
+                          <h3 class="text-white text-2xl font-bold drop-shadow-md">Speech & Prize Giving Day</h3>
+                      </div>
+                  </div>
+
+              </div>
+              
+              <!-- Custom Pagination -->
+              <div class="swiper-pagination"></div>
+              
+              <!-- Custom Navigation Arrows -->
+              <div class="swiper-button-next !text-gold !font-bold"></div>
+              <div class="swiper-button-prev !text-gold !font-bold"></div>
+          </div>
+     </div>
+  </section>
+
+  <!-- FOOTER (Glass) -->
+  <footer class="site-footer section-glass">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <h3>Accra Academy</h3>
+                    <p class="footer-motto">Esse Quam Videri</p>
+                    <p class="footer-desc">Pioneering education since 1931, shaping leaders of tomorrow.</p>
+                    <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest">
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-title">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="./about.html">About Us</a></li>
+                    <li><a href="./academics.html">Academics</a></li>
+                    <li><a href="./src.html">Student Council</a></li>
+                    <li><a href="./gallery.html">Gallery</a></li>
+                    <li><a href="./contacts.html">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-title">Resources</h4>
+                <ul class="footer-links">
+                    <li><a href="./portal.html">Student Portal</a></li>
+                    <li><a href="./handbook.html">Handbook</a></li>
+                    <li><a href="./calendar.html">Calendar</a></li>
+                    <li><a href="./news.html">Events</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-title">Contact Info</h4>
+                <div class="footer-contact">
+                    <div class="contact-item">
+                        <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></div>
+                        <div class="text-box"><span class="label">Location</span><p><a href="https://maps.google.com" target="_blank">Bubuashie, Greater Accra, Ghana</a></p></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></div>
+                        <div class="text-box"><span class="label">Phone</span><p><a href="tel:+233302222690">+233 30 222 2690</a></p></div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></div>
+                        <div class="text-box"><span class="label">Email</span><p><a href="mailto:info@accraacademy.edu.gh">info@accraacademy.edu.gh</a></p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; <span id="yr"></span> Accra Academy. All rights reserved.</p>
+            <div class="footer-social">
+                    <a href="https://web.facebook.com/AccraAcademyGH/" aria-label="Facebook" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34"><circle cx="12" cy="12" r="11" /><path fill="white" d="M13 11h2.5l.4-2.6H13V7.5c0-.7.2-1.1 1.2-1.1H16V4h-2.1c-2.5 0-3.6 1.2-3.6 3.3v1.1H9v2.6h1.3v6.9h2.7V11z"/></svg></a>
+                    <a href="https://x.com/accraacademygh" aria-label="Twitter" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34"><circle cx="12" cy="12" r="11" /><path fill="white" d="M17.7 6H15.6l-2.5 3.2L10.8 6H7.9l3.9 5.2L7.6 18h2.1l2.8-3.8 2.6 3.8h2.8l-4-5.5L17.7 6z"/></svg></a>
+                    <a href="https://www.instagram.com/insidebleoo/" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34" class="social-icon"><circle cx="12" cy="12" r="11" /><path fill="white" d="M16 2H8C4.7 2 2 4.7 2 8v8c0 3.3 2.7 6 6 6h8c3.3 0 6-2.7 6-6V8c0-3.3-2.7-6-6-6zM12 17c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5zm5.5-9.6c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z"/></svg></a>
+                </div>
+            </div>
+        </div>
+  </footer>
+
+  <!-- SCROLL TOP -->
+  <button id="scrollTop" title="Back to top">
+    <svg class="scroll-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+  </button>
+
+  <!-- =========================================
+       AI CHATBOT WIDGET
+       ========================================= -->
+  <div id="bleoo-chat-widget" class="fixed bottom-24 right-6 z-50 flex flex-col items-end pointer-events-none">
+      <div id="chat-window" class="pointer-events-auto bg-white dark:bg-gray-800 w-80 md:w-96 h-[500px] rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 flex-col mb-4 transform translate-y-10 opacity-0 scale-95 transition-all duration-300 origin-bottom-right hidden font-sans">
+
+
+                     <!-- Header -->
+          <div class="bg-royal p-4 rounded-t-2xl flex justify-between items-center shadow-md z-10">
+              <div class="flex items-center gap-3">
+                  <div class="relative">
+                      <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                      <div class="w-2 h-2 bg-green-400 rounded-full absolute top-0 left-0 animate-ping opacity-75"></div>
+                  </div>
+                  <div>
+                      <h3 class="text-gold font-bold font-display text-sm tracking-wide">Bleoo Assistant</h3>
+                      <p class="text-[10px] text-gray-300 uppercase tracking-wider">Online • Gemini 2.5</p>
+                  </div>
+              </div>
+              <button id="close-chat" class="text-white hover:text-gold transition text-xl">&times;</button>
+          </div>
+                    <!-- Messages -->
+          <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-soft dark:bg-gray-900 scroll-smooth">
+              <div class="flex justify-start animate-fade-in">
+                  <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-tl-none p-3 max-w-[85%] text-sm text-gray-700 dark:text-gray-300 shadow-sm">
+                      Hello! I am the AI for Accra Academy. Ask me about our history, anthem, or admissions! 🟡🔵
+                  </div>
+              </div>
+          </div>
+                    <!-- Chips -->
+          <div class="px-3 py-2 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 overflow-x-auto whitespace-nowrap scrollbar-hide flex gap-2" id="chat-suggestions">
+              <button class="chip-btn text-xs bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full text-gray-600 dark:text-gray-300 hover:border-gold hover:text-gold transition">Sing the Anthem 🎵</button>
+              <button class="chip-btn text-xs bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full text-gray-600 dark:text-gray-300 hover:border-gold hover:text-gold transition">Who founded the school?</button>
+              <button class="chip-btn text-xs bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 px-3 py-1 rounded-full text-gray-600 dark:text-gray-300 hover:border-gold hover:text-gold transition">List the Halls</button>
+          </div>
+                    <!-- Input -->
+          <div class="p-3 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 rounded-b-2xl">
+              <form id="chat-form" class="flex gap-2 items-center">
+                  <input type="text" id="chat-input" placeholder="Type a message..." class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gold transition" autocomplete="off">
+                  <button type="button" id="voice-btn" class="text-gray-500 hover:text-red-500 transition p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700" title="Hold to Speak">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+                  </button>
+                  <button type="submit" class="bg-royal text-gold p-2 rounded-full hover:bg-blue-900 transition shadow-md">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                  </button>
+              </form>
+          </div>
+      </div>
+      <button id="chat-toggle" class="pointer-events-auto w-14 h-14 bg-royal text-gold rounded-full shadow-[0_4px_20px_rgba(0,33,71,0.4)] flex items-center justify-center hover:scale-110 transition-transform duration-300 group border-2 border-gold z-50">
+          <svg class="w-7 h-7 group-hover:hidden transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+          <svg class="w-7 h-7 hidden group-hover:block transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+      </button>
+  </div>
+
+<!-- =========================================
+       LEADER MODAL (REQUIRED FOR POPUP)
+       PASTE THIS RIGHT ABOVE YOUR <script> TAGS
+       ========================================= -->
+  <div id="leader-modal" class="fixed inset-0 z-[9999] hidden opacity-0 items-center justify-center px-4 font-sans pointer-events-none">
+      
+      <!-- Dark Backdrop -->
+      <div class="absolute inset-0 bg-black/90 backdrop-blur-sm transition-opacity duration-300" onclick="closeLeaderModal()"></div>
+      
+      <!-- The Card -->
+      <div class="relative bg-white dark:bg-gray-900 w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row transform scale-95 opacity-0 transition-all duration-300 border border-gold/20" id="leader-modal-content">
+            <!-- Close X Button -->
+          <button onclick="closeLeaderModal()" class="absolute top-4 right-4 z-50 bg-black/50 hover:bg-red-600 text-white w-10 h-10 rounded-full flex items-center justify-center transition cursor-pointer">✕</button>
+
+          <!-- Image Side (Left) -->
+          <div class="w-full md:w-2/5 h-64 md:h-auto relative">
+              <img id="modal-img" src="" class="absolute inset-0 w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-royal/90 to-transparent md:hidden"></div>
+          </div>
+
+          <!-- Text Side (Right) -->
+          <div class="w-full md:w-3/5 p-8 md:p-12 bg-white dark:bg-gray-900 flex flex-col justify-center relative">
+              
+              <!-- Watermark -->
+              <img src="./assets/crest.png" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 opacity-5 pointer-events-none grayscale">
+
+              <span class="text-gold font-bold tracking-widest uppercase text-xs mb-2">Message from the Office</span>
+              <h2 id="modal-name" class="text-3xl font-display font-bold text-royal dark:text-white mb-1">Name Placeholder</h2>
+              <p id="modal-role" class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-6">Role Placeholder</p>
+              
+              <div class="prose dark:prose-invert max-w-none z-10">
+                  <p id="modal-msg" class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg italic">
+                      ...
+                  </p>
+              </div>
+
+              <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800 flex items-center gap-3">
+                  <div class="h-1 w-10 bg-gold"></div>
+                  <span class="text-xs text-gray-400 font-bold uppercase tracking-widest">Accra Academy Administration</span>
+              </div>
+          </div>
+      </div>
+  </div>
+<!-- SCRIPTS -->
+<!-- THREE.JS MUST LOAD FIRST -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- 3D Logic (after THREE.js) -->
+<script src="./js/background-3d.js"></script>
+<!-- Main Logic -->
+<script src="./js/script.js"></script>
+  <!-- Libs -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    // Safe initialization
+    if(typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true });
+  </script>
+ 
+ 
+ 
+ <!-- =========================================
+     BACKGROUND AUDIO CONTROL
+     ========================================= -->
+<div id="audio-control" class="fixed bottom-6 left-6 z-50 hidden md:flex items-center gap-3 animate-fade-in">
+    <!-- The Hidden Audio Player -->
+    <audio id="bg-music" loop>
+        <source src="./assets/anthem.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- The Toggle Button -->
+    <button id="music-toggle" class="w-12 h-12 rounded-full bg-royal/80 backdrop-blur-md border border-gold/30 text-gold flex items-center justify-center shadow-lg hover:scale-110 hiddentransition group overflow-hidden">
+        <!-- Bars Animation (Playing) -->
+        <div id="music-bars" class="flex gap-1 items-end h-4 ">
+            <span class="w-1 bg-gold h-full animate-[bounce_1s_infinite]"></span>
+            <span class="w-1 bg-gold h-2/3 animate-[bounce_1.2s_infinite]"></span>
+            <span class="w-1 bg-gold h-3/4 animate-[bounce_0.8s_infinite]"></span>
+        </div>
+        <!-- Muted Icon (Default) -->
+        <svg id="music-off" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path></svg>
+    </button>
+</div>
+</body>
+</html>
