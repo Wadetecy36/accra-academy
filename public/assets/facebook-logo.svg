@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="12" r="11" fill="none"/>
+    <path fill="white" d="M13 11h2.5l.4-2.6H13V7.5c0-.7.2-1.1 1.2-1.1H16V4h-2.1c-2.5 0-3.6 1.2-3.6 3.3v1.1H9v2.6h1.3v6.9h2.7V11z"/>
+</svg>
