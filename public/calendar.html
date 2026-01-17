@@ -1,365 +1,468 @@
 <!doctype html>
 <html lang="en" class="scroll-smooth">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Accra Academy 2025/2026 Academic Calendar. Term dates, vacations, and statutory holidays.">
-  <title>Calendar - Accra Academy</title>
-  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description"
+        content="Accra Academy 2025/2026 Academic Calendar. Term dates, vacations, and statutory holidays.">
+    <title>Calendar - Accra Academy</title>
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
 
-  <!-- TAILWIND -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: { royal: '#002147', gold: '#FDBE11', soft: '#F0F4F8' },
-          fontFamily: { display: ['Merriweather', 'serif'], body: ['Inter', 'sans-serif'] }
+    <!-- TAILWIND -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { royal: '#002147', gold: '#FDBE11', soft: '#F0F4F8' },
+                    fontFamily: { display: ['Merriweather', 'serif'], body: ['Inter', 'sans-serif'] }
+                }
+            }
         }
-      }
-    }
-  </script>
+    </script>
 
-  <!-- LIBS -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <link href="./css/custom.css" rel="stylesheet">
+    <!-- LIBS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="./css/custom.css" rel="stylesheet">
 
-  <style>
-      /* Timeline vertical line */
-      .timeline-line::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 20px;
-          width: 2px;
-          background: #e5e7eb;
-          z-index: 0;
-      }
-      .dark .timeline-line::before { background: #374151; }
+    <style>
+        /* Timeline vertical line */
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            width: 2px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
 
-      /* Active Tab Styling */
-      .cal-tab.active {
-          background-color: var(--royal);
-          color: var(--gold);
-          border-color: var(--gold);
-      }
-  </style>
+        .dark .timeline-line::before {
+            background: #374151;
+        }
+
+        /* Active Tab Styling */
+        .cal-tab.active {
+            background-color: var(--royal);
+            color: var(--gold);
+            border-color: var(--gold);
+        }
+    </style>
 </head>
 
 <body class="min-h-screen bg-soft dark:bg-gray-900 transition-colors duration-300 font-body">
 
     <!-- HEADER -->
-    <header class="site-header fixed top-0 w-full z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
-      <div class="container mx-auto px-4 md:px-6 flex justify-between items-center h-16 md:h-20">
-          <div class="brand flex items-center gap-3">
-              <img src="./assets/crest.png" alt="Crest" class="w-10 h-10 md:w-12 md:h-12 object-contain">
-              <div class="brand-text leading-tight">
-                  <h1 class="text-lg md:text-2xl font-bold text-royal dark:text-gold font-display">Accra Academy</h1>
-                  <p class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest hidden sm:block">Esse Quam Videri</p>
-              </div>
-          </div>
-        <nav class="navlinks hidden md:flex gap-8 text-lg font-medium">
-            <a href="./index.html" class="hover:text-gold transition">Home</a>
-            <a href="./about.html" class="hover:text-gold transition">About</a>
-            <a href="./academics.html" class="hover:text-gold transition">Academics</a>
-            <a href="./news.html" class="hover:text-gold transition">News</a>
-            <a href="./gallery.html" class="hover:text-gold transition">Gallery</a>
-            <a href="./calendar.html" class="text-gold font-bold border-b-2 border-gold">Calendar</a>
-            <a href="./contacts.html" class="hover:text-gold transition">Contact</a>
-        </nav>
-        <div class="flex items-center gap-4">
-            <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:ring-2 hover:ring-gold transition-all flex items-center justify-center" aria-label="Toggle dark mode">
-                <svg class="w-5 h-5 text-royal dark:text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
-            </button>
-            <button class="mobile-btn md:hidden text-2xl text-royal dark:text-gold">☰</button>
+    <header
+        class="site-header fixed top-0 w-full z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-all duration-300">
+        <div class="container mx-auto px-4 md:px-6 flex justify-between items-center h-16 md:h-20">
+            <div class="brand flex items-center gap-3">
+                <img src="./assets/crest.png" alt="Crest" class="w-10 h-10 md:w-12 md:h-12 object-contain">
+                <div class="brand-text leading-tight">
+                    <h1 class="text-lg md:text-2xl font-bold text-royal dark:text-gold font-display">Accra Academy</h1>
+                    <p class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest hidden sm:block">Esse Quam
+                        Videri</p>
+                </div>
+            </div>
+            <nav class="navlinks hidden md:flex gap-8 text-lg font-medium">
+                <a href="./index.html" class="hover:text-gold transition">Home</a>
+                <a href="./about.html" class="hover:text-gold transition">About</a>
+                <a href="./academics.html" class="hover:text-gold transition">Academics</a>
+                <a href="./news.html" class="hover:text-gold transition">News</a>
+                <a href="./gallery.html" class="hover:text-gold transition">Gallery</a>
+                <a href="./calendar.html" class="text-gold font-bold border-b-2 border-gold">Calendar</a>
+                <a href="./contacts.html" class="hover:text-gold transition">Contact</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle"
+                    class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:ring-2 hover:ring-gold transition-all flex items-center justify-center"
+                    aria-label="Toggle dark mode">
+                    <svg class="w-5 h-5 text-royal dark:text-gold" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+                        </path>
+                    </svg>
+                </button>
+                <button class="mobile-btn md:hidden text-2xl text-royal dark:text-gold">☰</button>
+            </div>
         </div>
-    </div>
-  </header>
+    </header>
 
-  <!-- HERO -->
-  <section class="py-20 bg-royal text-white relative overflow-hidden">
-      <div class="absolute inset-0 opacity-10 bg-[url('./assets/pattern.png')]"></div>
-      <div class="container relative z-10 text-center">
-          <span class="text-gold font-bold tracking-widest uppercase text-sm mb-2 block" data-aos="fade-down">Planning & Schedules</span>
-          <h1 class="text-4xl md:text-6xl font-display font-bold mb-4" data-aos="fade-up">Academic Calendar</h1>
-          <p class="text-gray-300 max-w-2xl mx-auto text-lg" data-aos="fade-up" data-aos-delay="100">
-              Official 2025/2026 Transitional Calendar for Second Cycle Institutions.
-          </p>
-      </div>
-  </section>
+    <!-- HERO -->
+    <section class="py-20 bg-royal text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[url('./assets/pattern.png')]"></div>
+        <div class="container relative z-10 text-center">
+            <span class="text-gold font-bold tracking-widest uppercase text-sm mb-2 block" data-aos="fade-down">Planning
+                & Schedules</span>
+            <h1 class="text-4xl md:text-6xl font-display font-bold mb-4" data-aos="fade-up">Academic Calendar</h1>
+            <p class="text-gray-300 max-w-2xl mx-auto text-lg" data-aos="fade-up" data-aos-delay="100">
+                Official 2025/2026 Transitional Calendar for Second Cycle Institutions.
+            </p>
+        </div>
+    </section>
 
-  <!-- MAIN CALENDAR -->
-  <section class="py-16">
-      <div class="container">
+    <!-- MAIN CALENDAR -->
+    <section class="py-16">
+        <div class="container">
 
-          <!-- TABS -->
-          <div class="flex overflow-x-auto gap-3 mb-8 pb-2 scrollbar-hide snap-x px-4">
-              <button class="cal-tab active px-6 py-2 whitespace-nowrap rounded-full font-bold bg-royal text-gold snap-center shrink-0">SHS 3</button>
-              <button class="cal-tab px-6 py-2 whitespace-nowrap rounded-full font-bold bg-white text-gray-500 border border-gray-200 snap-center shrink-0">SHS 2</button>
-              <button class="cal-tab px-6 py-2 whitespace-nowrap rounded-full font-bold bg-white text-gray-500 border border-gray-200 snap-center shrink-0">SHS 1</button>
-          </div>
+            <!-- TABS -->
+            <div class="flex overflow-x-auto gap-3 mb-8 pb-2 scrollbar-hide snap-x px-4">
+                <button
+                    class="cal-tab active px-6 py-2 whitespace-nowrap rounded-full font-bold bg-royal text-gold snap-center shrink-0">SHS
+                    3</button>
+                <button
+                    class="cal-tab px-6 py-2 whitespace-nowrap rounded-full font-bold bg-white text-gray-500 border border-gray-200 snap-center shrink-0">SHS
+                    2</button>
+                <button
+                    class="cal-tab px-6 py-2 whitespace-nowrap rounded-full font-bold bg-white text-gray-500 border border-gray-200 snap-center shrink-0">SHS
+                    1</button>
+            </div>
 
-          <!-- SHS 3 SCHEDULE -->
-          <div id="shs3" class="schedule-content max-w-4xl mx-auto">
-              <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border-l-8 border-gold mb-8">
-                  <h3 class="text-2xl font-bold text-royal dark:text-white mb-6 flex items-center gap-3">
-                      <span class="text-4xl">🎓</span> Form 3 Schedule
-                  </h3>
-                  <div class="timeline-line relative space-y-8 pl-12">
-                      <!-- Item -->
-                      <div class="relative">
-                          <div class="absolute -left-[38px] w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800"></div>
-                          <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">First Semester (In School)</h4>
-                          <p class="text-gold font-mono font-bold text-sm">27th Oct 2025 – 13th Feb 2026</p>
-                          <p class="text-gray-500 text-sm mt-1">14 Weeks of academic work.</p>
-                      </div>
-                      <!-- Item -->
-                      <div class="relative">
-                          <div class="absolute -left-[38px] w-6 h-6 bg-red-500 rounded-full border-4 border-white dark:border-gray-800"></div>
-                          <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">Christmas Break</h4>
-                          <p class="text-gold font-mono font-bold text-sm">20th Dec 2025 – 4th Jan 2026</p>
-                      </div>
-                      <!-- Item -->
-                      <div class="relative">
-                          <div class="absolute -left-[38px] w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800"></div>
-                          <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">Second Semester</h4>
-                          <p class="text-gold font-mono font-bold text-sm">14th Feb 2026 – 21st June 2026</p>
-                      </div>
-                      <!-- Item -->
-                      <div class="relative">
-                          <div class="absolute -left-[38px] w-6 h-6 bg-blue-600 rounded-full border-4 border-white dark:border-gray-800 animate-pulse"></div>
-                          <h4 class="text-lg font-bold text-royal dark:text-white">WASSCE Examination</h4>
-                          <p class="text-blue-500 font-mono font-bold text-sm">20th April 2026 – 20th June 2026</p>
-                          <p class="text-gray-500 text-sm mt-1">The final showdown.</p>
-                      </div>
-                  </div>
-              </div>
-          </div>
+            <!-- SHS 3 SCHEDULE -->
+            <div id="shs3" class="schedule-content max-w-4xl mx-auto">
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border-l-8 border-gold mb-8">
+                    <h3 class="text-2xl font-bold text-royal dark:text-white mb-6 flex items-center gap-3">
+                        <span class="text-4xl">🎓</span> Form 3 Schedule
+                    </h3>
+                    <div class="timeline-line relative space-y-8 pl-12">
+                        <!-- Item -->
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[38px] w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800">
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">First Semester (In School)
+                            </h4>
+                            <p class="text-gold font-mono font-bold text-sm">27th Oct 2025 – 13th Feb 2026</p>
+                            <p class="text-gray-500 text-sm mt-1">14 Weeks of academic work.</p>
+                        </div>
+                        <!-- Item -->
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[38px] w-6 h-6 bg-red-500 rounded-full border-4 border-white dark:border-gray-800">
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">Christmas Break</h4>
+                            <p class="text-gold font-mono font-bold text-sm">20th Dec 2025 – 4th Jan 2026</p>
+                        </div>
+                        <!-- Item -->
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[38px] w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800">
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">Second Semester</h4>
+                            <p class="text-gold font-mono font-bold text-sm">14th Feb 2026 – 21st June 2026</p>
+                        </div>
+                        <!-- Item -->
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[38px] w-6 h-6 bg-blue-600 rounded-full border-4 border-white dark:border-gray-800 animate-pulse">
+                            </div>
+                            <h4 class="text-lg font-bold text-royal dark:text-white">WASSCE Examination</h4>
+                            <p class="text-blue-500 font-mono font-bold text-sm">20th April 2026 – 20th June 2026</p>
+                            <p class="text-gray-500 text-sm mt-1">The final showdown.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-          <!-- SHS 2 SCHEDULE -->
-          <div id="shs2" class="schedule-content max-w-4xl mx-auto hidden">
-              <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border-l-8 border-blue-500 mb-8">
-                  <h3 class="text-2xl font-bold text-royal dark:text-white mb-6 flex items-center gap-3">
-                      <span class="text-4xl">📚</span> Form 2 Schedule
-                  </h3>
-                  <div class="timeline-line relative space-y-8 pl-12">
-                      <!-- Item -->
-                      <div class="relative">
-                          <div class="absolute -left-[38px] w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800"></div>
-                          <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">First Semester</h4>
-                          <p class="text-gold font-mono font-bold text-sm">5th Jan 2026 – 17th April 2026</p>
-                          <p class="text-gray-500 text-sm mt-1">15 Weeks (Includes 5 weeks online: Mar 16 - Apr 17).</p>
-                      </div>
-                      <!-- Item -->
-                      <div class="relative">
-                          <div class="absolute -left-[38px] w-6 h-6 bg-red-500 rounded-full border-4 border-white dark:border-gray-800"></div>
-                          <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">Break</h4>
-                          <p class="text-gold font-mono font-bold text-sm">18th April 2026 – 17th May 2026</p>
-                      </div>
-                      <!-- Item -->
-                      <div class="relative">
-                          <div class="absolute -left-[38px] w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800"></div>
-                          <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">Second Semester</h4>
-                          <p class="text-gold font-mono font-bold text-sm">18th May 2026 – 4th Sept 2026</p>
-                          <p class="text-gray-500 text-sm mt-1">End of Academic Year.</p>
-                      </div>
-                  </div>
-              </div>
-          </div>
+            <!-- SHS 2 SCHEDULE -->
+            <div id="shs2" class="schedule-content max-w-4xl mx-auto hidden">
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border-l-8 border-blue-500 mb-8">
+                    <h3 class="text-2xl font-bold text-royal dark:text-white mb-6 flex items-center gap-3">
+                        <span class="text-4xl">📚</span> Form 2 Schedule
+                    </h3>
+                    <div class="timeline-line relative space-y-8 pl-12">
+                        <!-- Item -->
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[38px] w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800">
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">First Semester</h4>
+                            <p class="text-gold font-mono font-bold text-sm">5th Jan 2026 – 17th April 2026</p>
+                            <p class="text-gray-500 text-sm mt-1">15 Weeks (Includes 5 weeks online: Mar 16 - Apr 17).
+                            </p>
+                        </div>
+                        <!-- Item -->
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[38px] w-6 h-6 bg-red-500 rounded-full border-4 border-white dark:border-gray-800">
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">Break</h4>
+                            <p class="text-gold font-mono font-bold text-sm">18th April 2026 – 17th May 2026</p>
+                        </div>
+                        <!-- Item -->
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[38px] w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800">
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">Second Semester</h4>
+                            <p class="text-gold font-mono font-bold text-sm">18th May 2026 – 4th Sept 2026</p>
+                            <p class="text-gray-500 text-sm mt-1">End of Academic Year.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-          <!-- SHS 1 SCHEDULE -->
-          <div id="shs1" class="schedule-content max-w-4xl mx-auto hidden">
-              <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border-l-8 border-green-500 mb-8">
-                  <h3 class="text-2xl font-bold text-royal dark:text-white mb-6 flex items-center gap-3">
-                      <span class="text-4xl">🌱</span> Form 1 Schedule
-                  </h3>
-                  <div class="timeline-line relative space-y-8 pl-12">
-                      <!-- Item -->
-                      <div class="relative">
-                          <div class="absolute -left-[38px] w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800"></div>
-                          <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">Reporting Date</h4>
-                          <p class="text-gold font-mono font-bold text-sm">18th Oct 2025</p>
-                          <p class="text-gray-500 text-sm mt-1">Orientation and registration week.</p>
-                      </div>
-                      <!-- Item -->
-                      <div class="relative">
-                          <div class="absolute -left-[38px] w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800"></div>
-                          <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">First Semester</h4>
-                          <p class="text-gold font-mono font-bold text-sm">18th Oct 2025 – 30th Jan 2026</p>
-                          <p class="text-gray-500 text-sm mt-1">13 Weeks (9 weeks onsite, 4 weeks online).</p>
-                      </div>
-                      <!-- Item -->
-                      <div class="relative">
-                          <div class="absolute -left-[38px] w-6 h-6 bg-red-500 rounded-full border-4 border-white dark:border-gray-800"></div>
-                          <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">Break</h4>
-                          <p class="text-gold font-mono font-bold text-sm">31st Jan 2026 – 15th Mar 2026</p>
-                      </div>
-                      <!-- Item -->
-                      <div class="relative">
-                          <div class="absolute -left-[38px] w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800"></div>
-                          <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">Second Semester</h4>
-                          <p class="text-gold font-mono font-bold text-sm">16th Mar 2026 – 4th Sept 2026</p>
-                      </div>
-                  </div>
-              </div>
-          </div>
+            <!-- SHS 1 SCHEDULE -->
+            <div id="shs1" class="schedule-content max-w-4xl mx-auto hidden">
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border-l-8 border-green-500 mb-8">
+                    <h3 class="text-2xl font-bold text-royal dark:text-white mb-6 flex items-center gap-3">
+                        <span class="text-4xl">🌱</span> Form 1 Schedule
+                    </h3>
+                    <div class="timeline-line relative space-y-8 pl-12">
+                        <!-- Item -->
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[38px] w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800">
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">Reporting Date</h4>
+                            <p class="text-gold font-mono font-bold text-sm">18th Oct 2025</p>
+                            <p class="text-gray-500 text-sm mt-1">Orientation and registration week.</p>
+                        </div>
+                        <!-- Item -->
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[38px] w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800">
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">First Semester</h4>
+                            <p class="text-gold font-mono font-bold text-sm">18th Oct 2025 – 30th Jan 2026</p>
+                            <p class="text-gray-500 text-sm mt-1">13 Weeks (9 weeks onsite, 4 weeks online).</p>
+                        </div>
+                        <!-- Item -->
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[38px] w-6 h-6 bg-red-500 rounded-full border-4 border-white dark:border-gray-800">
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">Break</h4>
+                            <p class="text-gold font-mono font-bold text-sm">31st Jan 2026 – 15th Mar 2026</p>
+                        </div>
+                        <!-- Item -->
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[38px] w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800">
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">Second Semester</h4>
+                            <p class="text-gold font-mono font-bold text-sm">16th Mar 2026 – 4th Sept 2026</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-      </div>
-  </section>
+        </div>
+    </section>
 
-  <!-- KEY HOLIDAYS GRID -->
-  <section class="py-16 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-      <div class="container">
-          <h2 class="text-3xl font-display font-bold text-center mb-10 text-royal dark:text-gold">Statutory Holidays & Breaks</h2>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div class="p-6 rounded-xl bg-soft dark:bg-gray-700 text-center">
-                  <span class="text-3xl">🎄</span>
-                  <h4 class="font-bold mt-2 text-royal dark:text-white">Christmas Break</h4>
-                  <p class="text-sm text-gray-500 dark:text-gray-300">20th Dec 2025 - 4th Jan 2026</p>
-              </div>
-              <div class="p-6 rounded-xl bg-soft dark:bg-gray-700 text-center">
-                  <span class="text-3xl">🥚</span>
-                  <h4 class="font-bold mt-2 text-royal dark:text-white">Easter Break</h4>
-                  <p class="text-sm text-gray-500 dark:text-gray-300">1st April - 8th April 2026</p>
-              </div>
-              <div class="p-6 rounded-xl bg-soft dark:bg-gray-700 text-center">
-                  <span class="text-3xl">🇬🇭</span>
-                  <h4 class="font-bold mt-2 text-royal dark:text-white">Independence Day</h4>
-                  <p class="text-sm text-gray-500 dark:text-gray-300">6th March 2026</p>
-              </div>
-          </div>
-      </div>
-  </section>
+    <!-- KEY HOLIDAYS GRID -->
+    <section class="py-16 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        <div class="container">
+            <h2 class="text-3xl font-display font-bold text-center mb-10 text-royal dark:text-gold">Statutory Holidays &
+                Breaks</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 rounded-xl bg-soft dark:bg-gray-700 text-center">
+                    <span class="text-3xl">🎄</span>
+                    <h4 class="font-bold mt-2 text-royal dark:text-white">Christmas Break</h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-300">20th Dec 2025 - 4th Jan 2026</p>
+                </div>
+                <div class="p-6 rounded-xl bg-soft dark:bg-gray-700 text-center">
+                    <span class="text-3xl">🥚</span>
+                    <h4 class="font-bold mt-2 text-royal dark:text-white">Easter Break</h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-300">1st April - 8th April 2026</p>
+                </div>
+                <div class="p-6 rounded-xl bg-soft dark:bg-gray-700 text-center">
+                    <span class="text-3xl">🇬🇭</span>
+                    <h4 class="font-bold mt-2 text-royal dark:text-white">Independence Day</h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-300">6th March 2026</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                         <!-- FOOTER (Consistent) -->
+    <!-- FOOTER (Consistent) -->
 
     <footer class="site-footer">
-      <div class="container">
-          <div class="footer-grid">
-              <div class="footer-col">
-                  <div class="footer-brand">
-                      <h3>Accra Academy</h3>
-                      <p class="footer-motto">Esse Quam Videri</p>
-                      <p class="footer-desc">Pioneering education since 1931, shaping leaders of tomorrow.</p>
-                      <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest">
-                  </div>
-              </div>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-brand">
+                        <h3>Accra Academy</h3>
+                        <p class="footer-motto">Esse Quam Videri</p>
+                        <p class="footer-desc">Pioneering education since 1931, shaping leaders of tomorrow.</p>
+                        <img src="./assets/crest.png" alt="Accra Academy Crest" class="crest">
+                    </div>
+                </div>
 
-              <div class="footer-col">
-                  <h4 class="footer-title">Quick Links</h4>
-                  <ul class="footer-links">
-                      <li><a href="./about.html">About Us</a></li>
-                      <li><a href="./academics.html">Academics</a></li>
-                      <li><a href="./src.html">Student Council</a></li>
-                      <li><a href="./gallery.html">Gallery</a></li>
-                      <li><a href="./contacts.html">Contact</a></li>
-                  </ul>
-              </div>
+                <div class="footer-col">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="./about.html">About Us</a></li>
+                        <li><a href="./academics.html">Academics</a></li>
+                        <li><a href="./src.html">Student Council</a></li>
+                        <li><a href="./gallery.html">Gallery</a></li>
+                        <li><a href="./contacts.html">Contact</a></li>
+                    </ul>
+                </div>
 
-              <div class="footer-col">
-                  <h4 class="footer-title">Resources</h4>
-                  <ul class="footer-links">
-                      <li><a href="#">Student Portal</a></li>
-                      <li><a href="#">Handbook</a></li>
-                      <li><a href="#">Calendar</a></li>
-                      <li><a href="#">Events</a></li>
-                  </ul>
-              </div>
+                <div class="footer-col">
+                    <h4 class="footer-title">Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Student Portal</a></li>
+                        <li><a href="#">Handbook</a></li>
+                        <li><a href="#">Calendar</a></li>
+                        <li><a href="#">Events</a></li>
+                    </ul>
+                </div>
 
-              <div class="footer-col">
-                  <h4 class="footer-title">Contact Info</h4>
-                  <div class="footer-contact">
-                      <div class="contact-item">
-                          <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg></div>
-                          <div class="text-box"><span class="label">Location</span><p><a href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127071.0249387849!2d-0.39625250273437496!3d5.5715232000000094!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf99c23fffffff%3A0x647b9cbf8aae1105!2sAccra%20Academy!5e0!3m2!1sen!2sgh!4v1764154421833!5m2!1sen!2sgh">Bubuashie, Greater Accra, Ghana</a></p></div>
-                      </div>
-                      <div class="contact-item">
-                          <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg></div>
-                          <div class="text-box"><span class="label">Phone</span><p><a href="tel:+233302222690">+233 30 222 2690</a></p></div>
-                      </div>
-                      <div class="contact-item">
-                          <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg></div>
-                          <div class="text-box"><span class="label">Email</span><p><a href="mailto:info@accraacademy.edu.gh">info@accraacademy.edu.gh</a></p></div>
-                      </div>
-                  </div>
-              </div>
-          </div>
+                <div class="footer-col">
+                    <h4 class="footer-title">Contact Info</h4>
+                    <div class="footer-contact">
+                        <div class="contact-item">
+                            <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                    </path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg></div>
+                            <div class="text-box"><span class="label">Location</span>
+                                <p><a
+                                        href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127071.0249387849!2d-0.39625250273437496!3d5.5715232000000094!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf99c23fffffff%3A0x647b9cbf8aae1105!2sAccra%20Academy!5e0!3m2!1sen!2sgh!4v1764154421833!5m2!1sen!2sgh">Bubuashie,
+                                        Greater Accra, Ghana</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                                    </path>
+                                </svg></div>
+                            <div class="text-box"><span class="label">Phone</span>
+                                <p><a href="tel:+233302222690">+233 30 222 2690</a></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="icon-box"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                    </path>
+                                </svg></div>
+                            <div class="text-box"><span class="label">Email</span>
+                                <p><a href="mailto:info@accraacademy.edu.gh">info@accraacademy.edu.gh</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-          <div class="footer-bottom">
-              <p>&copy; <span id="yr"></span> Accra Academy. All rights reserved.</p>
-              <div class="footer-social">
-                  <a href="https://web.facebook.com/AccraAcademyGH/" aria-label="Facebook" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34"><circle cx="12" cy="12" r="11" /><path fill="white" d="M13 11h2.5l.4-2.6H13V7.5c0-.7.2-1.1 1.2-1.1H16V4h-2.1c-2.5 0-3.6 1.2-3.6 3.3v1.1H9v2.6h1.3v6.9h2.7V11z"/></svg></a>
-                  <a href="https://x.com/accraacademygh" aria-label="Twitter" class="social-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34"><circle cx="12" cy="12" r="11" /><path fill="white" d="M17.7 6H15.6l-2.5 3.2L10.8 6H7.9l3.9 5.2L7.6 18h2.1l2.8-3.8 2.6 3.8h2.8l-4-5.5L17.7 6z"/></svg></a>
-                  <a href="https://www.instagram.com/insidebleoo/" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34" class="social-icon"><circle cx="12" cy="12" r="11" /><path fill="white" d="M16 2H8C4.7 2 2 4.7 2 8v8c0 3.3 2.7 6 6 6h8c3.3 0 6-2.7 6-6V8c0-3.3-2.7-6-6-6zM12 17c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5zm5.5-9.6c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z"/></svg></a>
-              </div>
-          </div>
-      </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="yr"></span> Accra Academy. All rights reserved.</p>
+                <div class="footer-social">
+                    <a href="https://web.facebook.com/AccraAcademyGH/" aria-label="Facebook" class="social-icon"><svg
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34">
+                            <circle cx="12" cy="12" r="11" />
+                            <path fill="white"
+                                d="M13 11h2.5l.4-2.6H13V7.5c0-.7.2-1.1 1.2-1.1H16V4h-2.1c-2.5 0-3.6 1.2-3.6 3.3v1.1H9v2.6h1.3v6.9h2.7V11z" />
+                        </svg></a>
+                    <a href="https://x.com/accraacademygh" aria-label="Twitter" class="social-icon"><img
+                            src="./assets/x.png" alt="X" width="34" height="34"
+                            class="rounded-full bg-white object-contain border-2 border-transparent"></a>
+                    <a href="https://www.instagram.com/insidebleoo/" aria-label="Instagram"><svg
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="34" height="34"
+                            class="social-icon">
+                            <circle cx="12" cy="12" r="11" />
+                            <path fill="white"
+                                d="M16 2H8C4.7 2 2 4.7 2 8v8c0 3.3 2.7 6 6 6h8c3.3 0 6-2.7 6-6V8c0-3.3-2.7-6-6-6zM12 17c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5zm5.5-9.6c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z" />
+                        </svg></a>
+                </div>
+            </div>
+        </div>
     </footer>
 
 
-  <button id="scrollTop" title="Back to top" class="fixed bottom-6 right-6 bg-gold text-royal p-3 rounded-full shadow-lg opacity-0 transition-opacity z-50">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
-  </button>
-
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script src="./js/script.js"></script>
-
-  <!-- CHAT WIDGET CONTAINER -->
-  <div id="bleoo-chat-widget" class="fixed bottom-24 right-6 z-50 flex flex-col items-end pointer-events-none">
-    <div id="chat-window" class="pointer-events-auto bg-white dark:bg-gray-800 w-80 md:w-96 h-[500px] rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col mb-4 transform translate-y-10 opacity-0 scale-95 transition-all duration-300 origin-bottom-right hidden">
-        <div class="bg-royal p-4 rounded-t-2xl flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <div>
-                    <h3 class="text-gold font-bold font-display text-sm">Bleoo Assistant</h3>
-                    <p class="text-xs text-gray-300">Ask about admissions, history, or events</p>
-                </div>
-            </div>
-            <button id="close-chat" class="text-white hover:text-gold transition text-xl">&times;</button>
-        </div>
-        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-soft dark:bg-gray-900">
-            <div class="flex justify-start">
-                <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-tl-none p-3 max-w-[85%] text-sm text-gray-700 dark:text-gray-300 shadow-sm">
-                    Hello! I am the Accra Academy AI Assistant. How can I help you today? 🟡🔵
-                </div>
-            </div>
-        </div>
-        <div class="p-3 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 rounded-b-2xl">
-            <form id="chat-form" class="flex gap-2">
-                <input type="text" id="chat-input" placeholder="Type your question..." class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold" autocomplete="off">
-                <button type="submit" class="bg-royal text-gold p-2 rounded-full hover:bg-opacity-90 transition disabled:opacity-50">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-                </button>
-            </form>
-        </div>
-    </div>
-    <button id="chat-toggle" class="pointer-events-auto w-14 h-14 bg-royal text-gold rounded-full shadow-[0_0_20px_rgba(0,33,71,0.3)] flex items-center justify-center hover:scale-110 transition-transform duration-300 group border-2 border-gold">
-        <svg class="w-7 h-7 group-hover:hidden transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
-        <svg class="w-7 h-7 hidden group-hover:block transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+    <button id="scrollTop" title="Back to top"
+        class="fixed bottom-6 right-6 bg-gold text-royal p-3 rounded-full shadow-lg opacity-0 transition-opacity z-50">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
     </button>
-  </div>
 
-  <script>
-      function showSchedule(id, btn) {
-          // Hide all
-          document.querySelectorAll('.schedule-content').forEach(el => el.classList.add('hidden'));
-          document.querySelectorAll('.cal-tab').forEach(el => {
-              el.classList.remove('active', 'bg-royal', 'text-gold', 'border-gold');
-              el.classList.add('bg-white', 'text-gray-600', 'border-gray-200');
-          });
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="./js/script.js"></script>
 
-          // Show active
-          document.getElementById(id).classList.remove('hidden');
-          btn.classList.add('active', 'bg-royal', 'text-gold', 'border-gold');
-          btn.classList.remove('bg-white', 'text-gray-600', 'border-gray-200');
-      }
-  </script>
+    <!-- CHAT WIDGET CONTAINER -->
+    <div id="bleoo-chat-widget" class="fixed bottom-24 right-6 z-50 flex flex-col items-end pointer-events-none">
+        <div id="chat-window"
+            class="pointer-events-auto bg-white dark:bg-gray-800 w-80 md:w-96 h-[500px] rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 flex flex-col mb-4 transform translate-y-10 opacity-0 scale-95 transition-all duration-300 origin-bottom-right hidden">
+            <div class="bg-royal p-4 rounded-t-2xl flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <div>
+                        <h3 class="text-gold font-bold font-display text-sm">Bleoo Assistant</h3>
+                        <p class="text-xs text-gray-300">Ask about admissions, history, or events</p>
+                    </div>
+                </div>
+                <button id="close-chat" class="text-white hover:text-gold transition text-xl">&times;</button>
+            </div>
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-soft dark:bg-gray-900">
+                <div class="flex justify-start">
+                    <div
+                        class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl rounded-tl-none p-3 max-w-[85%] text-sm text-gray-700 dark:text-gray-300 shadow-sm">
+                        Hello! I am the Accra Academy AI Assistant. How can I help you today? 🟡🔵
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 rounded-b-2xl">
+                <form id="chat-form" class="flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Type your question..."
+                        class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold"
+                        autocomplete="off">
+                    <button type="submit"
+                        class="bg-royal text-gold p-2 rounded-full hover:bg-opacity-90 transition disabled:opacity-50">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <button id="chat-toggle"
+            class="pointer-events-auto w-14 h-14 bg-royal text-gold rounded-full shadow-[0_0_20px_rgba(0,33,71,0.3)] flex items-center justify-center hover:scale-110 transition-transform duration-300 group border-2 border-gold">
+            <svg class="w-7 h-7 group-hover:hidden transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+                </path>
+            </svg>
+            <svg class="w-7 h-7 hidden group-hover:block transition" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        function showSchedule(id, btn) {
+            // Hide all
+            document.querySelectorAll('.schedule-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.cal-tab').forEach(el => {
+                el.classList.remove('active', 'bg-royal', 'text-gold', 'border-gold');
+                el.classList.add('bg-white', 'text-gray-600', 'border-gray-200');
+            });
+
+            // Show active
+            document.getElementById(id).classList.remove('hidden');
+            btn.classList.add('active', 'bg-royal', 'text-gold', 'border-gold');
+            btn.classList.remove('bg-white', 'text-gray-600', 'border-gray-200');
+        }
+    </script>
 
 </body>
+
 </html>
