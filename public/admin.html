@@ -269,13 +269,16 @@
                     <div class="space-y-4">
                         <div class="glass-panel p-4 rounded-xl border-l-4 border-blue-500 flex justify-between">
                             <span>Interactions</span><span class="text-2xl font-bold text-white"
-                                id="stat-total">--</span></div>
+                                id="stat-total">--</span>
+                        </div>
                         <div class="glass-panel p-4 rounded-xl border-l-4 border-green-500 flex justify-between">
                             <span>Knowledge Nodes</span><span class="text-2xl font-bold text-white"
-                                id="stat-brain">--</span></div>
+                                id="stat-brain">--</span>
+                        </div>
                         <div class="glass-panel p-4 rounded-xl border-l-4 border-purple-500 flex justify-between">
                             <span>Students</span><span class="text-2xl font-bold text-white"
-                                id="stat-students">--</span></div>
+                                id="stat-students">--</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -327,6 +330,16 @@
         }
         function logout() { sessionStorage.removeItem('bleoo_admin_token'); location.reload(); }
 
+        // AUTH HELPER
+        function time() { return new Date().getTime(); }
+        function getHeaders() {
+            const token = sessionStorage.getItem('bleoo_admin_token');
+            return {
+                'Content-Type': 'application/json',
+                'Authorization': token ? `Bearer ${token}` : ''
+            };
+        }
+
         // NAVIGATION
         function switchTab(tab) {
             ['logs', 'brain', 'students', 'stats'].forEach(t => {
@@ -352,7 +365,8 @@
             try {
                 let url = `${API_BASE}/logs?limit=50`;
                 if (query) url += `&search=${encodeURIComponent(query)}`;
-                const res = await fetch(url);
+                const res = await fetch(url, { headers: getHeaders() }); // AUTH ADDED
+                if (!res.ok) throw new Error("Auth Failed");
                 const data = await res.json();
                 container.innerHTML = data.map(log => `
                     <div class="glass-panel p-4 rounded border-l-4 border-l-gold">
@@ -360,39 +374,45 @@
                         <div class="text-white text-sm mb-2 font-medium">"${escapeHTML(log.userMessage)}"</div>
                         <div class="pl-3 border-l border-gray-700 text-blue-300 text-xs">${escapeHTML(log.botReply)}</div>
                     </div>`).join('');
-            } catch (e) { container.innerHTML = `<div class="text-red-500 text-center">Connection Error</div>`; }
+            } catch (e) { container.innerHTML = `<div class="text-red-500 text-center">Connection Error or Access Denied</div>`; }
         }
 
         // KNOWLEDGE & ANNOUNCEMENTS
         async function fetchKnowledge() {
-            const list = document.getElementById('knowledge-list');
-            const data = await (await fetch(`${API_BASE}/knowledge`)).json();
-            document.getElementById('k-count').innerText = data.length + " Nodes";
-            list.innerHTML = data.map(k => `
-                <div class="bg-gray-800 p-3 rounded flex justify-between items-center group border border-gray-700">
-                    <div><span class="text-[10px] bg-blue-900 text-blue-200 px-1 rounded mr-2">${escapeHTML(k.category)}</span><span class="text-sm font-bold text-gray-300">${escapeHTML(k.topic)}</span><p class="text-xs text-gray-500 truncate w-64">${escapeHTML(k.content)}</p></div>
-                    <button onclick="del('knowledge','${k._id}')" class="text-red-500 opacity-0 group-hover:opacity-100">×</button>
-                </div>`).join('');
+            try {
+                const list = document.getElementById('knowledge-list');
+                const res = await fetch(`${API_BASE}/knowledge`); // Public GET is fine, but good to check
+                const data = await res.json();
+                document.getElementById('k-count').innerText = (data.length || 0) + " Nodes";
+                list.innerHTML = data.map(k => `
+                    <div class="bg-gray-800 p-3 rounded flex justify-between items-center group border border-gray-700">
+                        <div><span class="text-[10px] bg-blue-900 text-blue-200 px-1 rounded mr-2">${escapeHTML(k.category)}</span><span class="text-sm font-bold text-gray-300">${escapeHTML(k.topic)}</span><p class="text-xs text-gray-500 truncate w-64">${escapeHTML(k.content)}</p></div>
+                        <button onclick="del('knowledge','${k._id}')" class="text-red-500 opacity-0 group-hover:opacity-100 font-bold px-2 hover:bg-white/10 rounded">DELETE</button>
+                    </div>`).join('');
+            } catch (e) { console.error(e); }
         }
         document.getElementById('brain-form').onsubmit = async e => {
             e.preventDefault();
-            await fetch(`${API_BASE}/knowledge`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ topic: document.getElementById('k-topic').value, category: document.getElementById('k-category').value, content: document.getElementById('k-content').value }) });
+            await fetch(`${API_BASE}/knowledge`, { method: 'POST', headers: getHeaders(), body: JSON.stringify({ topic: document.getElementById('k-topic').value, category: document.getElementById('k-category').value, content: document.getElementById('k-content').value }) });
             e.target.reset(); fetchKnowledge();
         };
         document.getElementById('announce-form').onsubmit = async e => {
             e.preventDefault();
-            await fetch(`${API_BASE}/announcement`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: document.getElementById('announce-text').value }) });
+            await fetch(`${API_BASE}/announcement`, { method: 'POST', headers: getHeaders(), body: JSON.stringify({ text: document.getElementById('announce-text').value }) });
             alert("Broadcast Sent!"); e.target.reset();
         };
-        async function clearAnnounce() { if (confirm("Clear?")) await fetch(`${API_BASE}/announcement`, { method: 'DELETE' }); }
+        async function clearAnnounce() { if (confirm("Clear?")) await fetch(`${API_BASE}/announcement`, { method: 'DELETE', headers: getHeaders() }); }
 
         // STUDENTS (NEW: ADD & LIST)
         async function fetchStudents() {
-            const res = await fetch(`${API_BASE}/students`);
-            studentData = await res.json();
-            document.getElementById('student-list').innerHTML = studentData.map(s => `
-                <tr class="hover:bg-white/5 border-b border-gray-800"><td class="p-4 font-bold text-white">${escapeHTML(s.fullName)}</td><td class="p-4 text-gold font-mono">${escapeHTML(s.indexNumber)}</td><td class="p-4 text-xs text-gray-400">${escapeHTML(s.program)}</td><td class="p-4 text-xs text-gray-400">${escapeHTML(s.yearOfCompletion)}</td><td class="p-4"><button onclick="del('students','${s._id}')" class="text-red-400 text-xs hover:text-red-300">DEL</button></td></tr>
-            `).join('');
+            try {
+                const res = await fetch(`${API_BASE}/students`, { headers: getHeaders() }); // AUTH ADDED
+                if (!res.ok) throw new Error("Access Denied");
+                studentData = await res.json();
+                document.getElementById('student-list').innerHTML = studentData.map(s => `
+                    <tr class="hover:bg-white/5 border-b border-gray-800"><td class="p-4 font-bold text-white">${escapeHTML(s.fullName)}</td><td class="p-4 text-gold font-mono">${escapeHTML(s.indexNumber)}</td><td class="p-4 text-xs text-gray-400">${escapeHTML(s.program)}</td><td class="p-4 text-xs text-gray-400">${escapeHTML(s.yearOfCompletion)}</td><td class="p-4"><button onclick="del('students','${s._id}')" class="text-red-400 text-xs hover:text-red-300">DEL</button></td></tr>
+                `).join('');
+            } catch (e) { document.getElementById('student-list').innerHTML = `<tr><td colspan="5" class="text-center text-red-500 p-4">Access Denied</td></tr>`; }
         }
 
         document.getElementById('student-form').onsubmit = async e => {
@@ -407,14 +427,19 @@
             };
 
             const res = await fetch(`${API_BASE}/students`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+                method: 'POST', headers: getHeaders(), body: JSON.stringify(payload)
             });
             const json = await res.json();
             if (json.success) { alert('Student Enrolled!'); e.target.reset(); fetchStudents(); }
             else { alert('Error: ' + json.error); }
         };
 
-        async function del(type, id) { if (confirm('Delete?')) { await fetch(`${API_BASE}/${type}/${id}`, { method: 'DELETE' }); type === 'knowledge' ? fetchKnowledge() : fetchStudents(); } }
+        async function del(type, id) {
+            if (confirm('Delete?')) {
+                await fetch(`${API_BASE}/${type}/${id}`, { method: 'DELETE', headers: getHeaders() });
+                type === 'knowledge' ? fetchKnowledge() : fetchStudents();
+            }
+        }
         function downloadStudentCSV() {
             if (!studentData.length) return alert('No data');
             const csv = ["Name,Index,Program,House,Year"].concat(studentData.map(s => `"${s.fullName}","${s.indexNumber}","${s.program}","${s.house}","${s.yearOfCompletion}"`)).join('\n');
@@ -423,20 +448,28 @@
 
         // STATS
         async function loadStats() {
-            const logs = await (await fetch(`${API_BASE}/logs?limit=100`)).json();
-            const facts = await (await fetch(`${API_BASE}/knowledge`)).json();
-            const students = await (await fetch(`${API_BASE}/students`)).json();
-            document.getElementById('stat-total').innerText = logs.length;
-            document.getElementById('stat-brain').innerText = facts.length;
-            document.getElementById('stat-students').innerText = students.length;
+            try {
+                const logs = await (await fetch(`${API_BASE}/logs?limit=100`, { headers: getHeaders() })).json();
+                const facts = await (await fetch(`${API_BASE}/knowledge`)).json();
+                const students = await (await fetch(`${API_BASE}/students`, { headers: getHeaders() })).json();
 
-            const hours = {}; logs.forEach(l => { const h = new Date(l.timestamp).getHours() + ":00"; hours[h] = (hours[h] || 0) + 1; });
-            if (trafficChart) trafficChart.destroy();
-            trafficChart = new Chart(document.getElementById('trafficChart'), {
-                type: 'line',
-                data: { labels: Object.keys(hours).sort(), datasets: [{ label: 'Activity', data: Object.values(hours), borderColor: '#FDBE11', backgroundColor: 'rgba(253,190,17,0.1)', fill: true, tension: 0.4 }] },
-                options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
-            });
+                // Safe checks
+                document.getElementById('stat-total').innerText = Array.isArray(logs) ? logs.length : 0;
+                document.getElementById('stat-brain').innerText = Array.isArray(facts) ? facts.length : 0;
+                document.getElementById('stat-students').innerText = Array.isArray(students) ? students.length : 0;
+
+                if (Array.isArray(logs)) {
+                    const hours = {}; logs.forEach(l => { const h = new Date(l.timestamp).getHours() + ":00"; hours[h] = (hours[h] || 0) + 1; });
+                    if (trafficChart) trafficChart.destroy();
+                    trafficChart = new Chart(document.getElementById('trafficChart'), {
+                        type: 'line',
+                        data: { labels: Object.keys(hours).sort(), datasets: [{ label: 'Activity', data: Object.values(hours), borderColor: '#FDBE11', backgroundColor: 'rgba(253,190,17,0.1)', fill: true, tension: 0.4 }] },
+                        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } }
+                    });
+                }
+            } catch (e) {
+                console.error("Stats Error:", e);
+            }
         }
     </script>
 </body>
