@@ -13,7 +13,18 @@ const app = express();
 app.set('trust proxy', 1);
 
 // --- MIDDLEWARE ---
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.tailwindcss.com", "https://cdn.jsdelivr.net"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://unpkg.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            imgSrc: ["'self'", "data:", "https://*"],
+            connectSrc: ["'self'", "https://generativelanguage.googleapis.com"]
+        }
+    }
+}));
 app.use(mongoSanitize());
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
