@@ -122,13 +122,13 @@
                     <h1 class="text-xl font-bold tracking-wider">BLEOO <span class="text-gold">ADMIN</span></h1>
                 </div>
                 <div class="flex bg-black/30 p-1 rounded-lg gap-1">
-                    <button onclick="switchTab('logs')" id="tab-logs"
+                    <button id="tab-logs"
                         class="tab-btn active px-4 py-2 rounded text-xs font-bold transition">LOGS</button>
-                    <button onclick="switchTab('brain')" id="tab-brain"
+                    <button id="tab-brain"
                         class="tab-btn px-4 py-2 rounded text-xs font-bold transition text-gray-400">BRAIN</button>
-                    <button onclick="switchTab('students')" id="tab-students"
+                    <button id="tab-students"
                         class="tab-btn px-4 py-2 rounded text-xs font-bold transition text-gray-400">STUDENTS</button>
-                    <button onclick="switchTab('stats')" id="tab-stats"
+                    <button id="tab-stats"
                         class="tab-btn px-4 py-2 rounded text-xs font-bold transition text-gray-400">ANALYTICS</button>
                 </div>
                 <button onclick="logout()"
@@ -291,6 +291,15 @@
         let studentData = [];
         let trafficChart = null;
 
+        // AUTH HELPER
+        function getHeaders() {
+            const token = sessionStorage.getItem('bleoo_admin_token');
+            return {
+                'Content-Type': 'application/json',
+                'Authorization': token ? `Bearer ${token}` : ''
+            };
+        }
+
         function escapeHTML(str) {
             if (!str) return '';
             return String(str).replace(/[&<>'"]/g,
@@ -303,46 +312,12 @@
                 }[tag]));
         }
 
-        if (sessionStorage.getItem('bleoo_admin_token')) showDashboard();
-
-        // AUTH
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const pass = document.getElementById('admin-pass').value;
-            try {
-                const res = await fetch(`${API_BASE}/auth/admin/login`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pass })
-                });
-                const data = await res.json();
-                if (data.success) { sessionStorage.setItem('bleoo_admin_token', data.token); showDashboard(); }
-                else throw 1;
-            } catch {
-                document.getElementById('login-card').classList.add('shake');
-                document.getElementById('login-msg').innerText = "ACCESS DENIED";
-                setTimeout(() => document.getElementById('login-card').classList.remove('shake'), 500);
-            }
-        });
-
-        function showDashboard() {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('dashboard-content').classList.remove('hidden');
-            switchTab('logs');
-        }
-        function logout() { sessionStorage.removeItem('bleoo_admin_token'); location.reload(); }
-
-        // AUTH HELPER
-        function time() { return new Date().getTime(); }
-        function getHeaders() {
-            const token = sessionStorage.getItem('bleoo_admin_token');
-            return {
-                'Content-Type': 'application/json',
-                'Authorization': token ? `Bearer ${token}` : ''
-            };
-        }
-
-        // NAVIGATION
+        // NAVIGATION LOGIC
         function switchTab(tab) {
+            console.log("Switching to tab:", tab);
+
             try {
+                // UI Update
                 ['logs', 'brain', 'students', 'stats'].forEach(t => {
                     const view = document.getElementById('view-' + t);
                     const btn = document.getElementById('tab-' + t);
@@ -357,17 +332,74 @@
                 const targetBtn = document.getElementById('tab-' + tab);
 
                 if (targetView) targetView.classList.remove('hidden');
-                if (targetBtn) targetBtn.classList.remove('text-gray-400'), targetBtn.classList.add('active', 'text-gold');
+                if (targetBtn) {
+                    targetBtn.classList.remove('text-gray-400');
+                    targetBtn.classList.add('active', 'text-gold');
+                }
 
+                // Data Fetching
                 if (tab === 'logs') fetchLogs();
-                if (tab === 'brain') fetchKnowledge();
-                if (tab === 'students') fetchStudents();
-                if (tab === 'stats') loadStats();
+                else if (tab === 'brain') fetchKnowledge();
+                else if (tab === 'students') fetchStudents();
+                else if (tab === 'stats') loadStats();
+
             } catch (err) {
-                console.error("Tab Switch Error:", err);
-                alert("Interface Error: " + err.message);
+                console.error("Tab Error:", err);
+                alert("Tab Error: " + err.message);
             }
         }
+
+        // INITIALIZATION
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("Admin Dashboard Initialized");
+
+            // Event Listeners for Tabs
+            document.getElementById('tab-logs').addEventListener('click', () => switchTab('logs'));
+            document.getElementById('tab-brain').addEventListener('click', () => switchTab('brain'));
+            document.getElementById('tab-students').addEventListener('click', () => switchTab('students'));
+            document.getElementById('tab-stats').addEventListener('click', () => switchTab('stats'));
+
+            // Check Session
+            if (sessionStorage.getItem('bleoo_admin_token')) {
+                showDashboard();
+            }
+
+            // Login Form
+            document.getElementById('login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const pass = document.getElementById('admin-pass').value;
+                try {
+                    const res = await fetch(`${API_BASE}/auth/admin/login`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pass })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        sessionStorage.setItem('bleoo_admin_token', data.token);
+                        showDashboard();
+                    } else {
+                        throw new Error("Invalid password");
+                    }
+                } catch (err) {
+                    const card = document.getElementById('login-card');
+                    card.classList.add('shake');
+                    document.getElementById('login-msg').innerText = "ACCESS DENIED";
+                    setTimeout(() => card.classList.remove('shake'), 500);
+                }
+            });
+        });
+
+        function showDashboard() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard-content').classList.remove('hidden');
+            switchTab('logs');
+        }
+
+        function logout() {
+            sessionStorage.removeItem('bleoo_admin_token');
+            location.reload();
+        }
+
+        // --- DATA FETCHING FUNCTIONS ---
 
         // LOGS
         let searchTimeout;
@@ -378,7 +410,7 @@
             try {
                 let url = `${API_BASE}/logs?limit=50`;
                 if (query) url += `&search=${encodeURIComponent(query)}`;
-                const res = await fetch(url, { headers: getHeaders() }); // AUTH ADDED
+                const res = await fetch(url, { headers: getHeaders() });
                 if (!res.ok) throw new Error("Auth Failed");
                 const data = await res.json();
                 container.innerHTML = data.map(log => `
@@ -387,14 +419,16 @@
                         <div class="text-white text-sm mb-2 font-medium">"${escapeHTML(log.userMessage)}"</div>
                         <div class="pl-3 border-l border-gray-700 text-blue-300 text-xs">${escapeHTML(log.botReply)}</div>
                     </div>`).join('');
-            } catch (e) { container.innerHTML = `<div class="text-red-500 text-center">Connection Error or Access Denied</div>`; }
+            } catch (e) {
+                container.innerHTML = `<div class="text-red-500 text-center">Connection Error or Access Denied</div>`;
+            }
         }
 
-        // KNOWLEDGE & ANNOUNCEMENTS
+        // KNOWLEDGE
         async function fetchKnowledge() {
+            const list = document.getElementById('knowledge-list');
             try {
-                const list = document.getElementById('knowledge-list');
-                const res = await fetch(`${API_BASE}/knowledge`); // Public GET is fine, but good to check
+                const res = await fetch(`${API_BASE}/knowledge`);
                 const data = await res.json();
                 document.getElementById('k-count').innerText = (data.length || 0) + " Nodes";
                 list.innerHTML = data.map(k => `
@@ -403,63 +437,23 @@
                         <button onclick="del('knowledge','${k._id}')" class="text-red-500 opacity-0 group-hover:opacity-100 font-bold px-2 hover:bg-white/10 rounded">DELETE</button>
                     </div>`).join('');
             } catch (e) {
-                console.error(e);
-                document.getElementById('knowledge-list').innerHTML = `<div class="text-red-500 text-center p-4">Connection Error: Could not load knowledge base.</div>`;
+                list.innerHTML = `<div class="text-red-500 text-center p-4">Connection Error: Could not load knowledge base.</div>`;
             }
         }
-        document.getElementById('brain-form').onsubmit = async e => {
-            e.preventDefault();
-            await fetch(`${API_BASE}/knowledge`, { method: 'POST', headers: getHeaders(), body: JSON.stringify({ topic: document.getElementById('k-topic').value, category: document.getElementById('k-category').value, content: document.getElementById('k-content').value }) });
-            e.target.reset(); fetchKnowledge();
-        };
-        document.getElementById('announce-form').onsubmit = async e => {
-            e.preventDefault();
-            await fetch(`${API_BASE}/announcement`, { method: 'POST', headers: getHeaders(), body: JSON.stringify({ text: document.getElementById('announce-text').value }) });
-            alert("Broadcast Sent!"); e.target.reset();
-        };
-        async function clearAnnounce() { if (confirm("Clear?")) await fetch(`${API_BASE}/announcement`, { method: 'DELETE', headers: getHeaders() }); }
 
-        // STUDENTS (NEW: ADD & LIST)
+        // STUDENTS
         async function fetchStudents() {
+            const list = document.getElementById('student-list');
             try {
-                const res = await fetch(`${API_BASE}/students`, { headers: getHeaders() }); // AUTH ADDED
+                const res = await fetch(`${API_BASE}/students`, { headers: getHeaders() });
                 if (!res.ok) throw new Error("Access Denied");
                 studentData = await res.json();
-                document.getElementById('student-list').innerHTML = studentData.map(s => `
+                list.innerHTML = studentData.map(s => `
                     <tr class="hover:bg-white/5 border-b border-gray-800"><td class="p-4 font-bold text-white">${escapeHTML(s.fullName)}</td><td class="p-4 text-gold font-mono">${escapeHTML(s.indexNumber)}</td><td class="p-4 text-xs text-gray-400">${escapeHTML(s.program)}</td><td class="p-4 text-xs text-gray-400">${escapeHTML(s.yearOfCompletion)}</td><td class="p-4"><button onclick="del('students','${s._id}')" class="text-red-400 text-xs hover:text-red-300">DEL</button></td></tr>
                 `).join('');
-            } catch (e) { document.getElementById('student-list').innerHTML = `<tr><td colspan="5" class="text-center text-red-500 p-4">Access Denied</td></tr>`; }
-        }
-
-        document.getElementById('student-form').onsubmit = async e => {
-            e.preventDefault();
-            const payload = {
-                fullName: document.getElementById('s-name').value,
-                indexNumber: document.getElementById('s-index').value,
-                password: document.getElementById('s-pass').value,
-                program: document.getElementById('s-prog').value,
-                house: document.getElementById('s-house').value,
-                yearOfCompletion: parseInt(document.getElementById('s-year').value)
-            };
-
-            const res = await fetch(`${API_BASE}/students`, {
-                method: 'POST', headers: getHeaders(), body: JSON.stringify(payload)
-            });
-            const json = await res.json();
-            if (json.success) { alert('Student Enrolled!'); e.target.reset(); fetchStudents(); }
-            else { alert('Error: ' + json.error); }
-        };
-
-        async function del(type, id) {
-            if (confirm('Delete?')) {
-                await fetch(`${API_BASE}/${type}/${id}`, { method: 'DELETE', headers: getHeaders() });
-                type === 'knowledge' ? fetchKnowledge() : fetchStudents();
+            } catch (e) {
+                list.innerHTML = `<tr><td colspan="5" class="text-center text-red-500 p-4">Access Denied: ${e.message}</td></tr>`;
             }
-        }
-        function downloadStudentCSV() {
-            if (!studentData.length) return alert('No data');
-            const csv = ["Name,Index,Program,House,Year"].concat(studentData.map(s => `"${s.fullName}","${s.indexNumber}","${s.program}","${s.house}","${s.yearOfCompletion}"`)).join('\n');
-            const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = 'students.csv'; a.click();
         }
 
         // STATS
@@ -469,7 +463,6 @@
                 const facts = await (await fetch(`${API_BASE}/knowledge`)).json();
                 const students = await (await fetch(`${API_BASE}/students`, { headers: getHeaders() })).json();
 
-                // Safe checks
                 document.getElementById('stat-total').innerText = Array.isArray(logs) ? logs.length : 0;
                 document.getElementById('stat-brain').innerText = Array.isArray(facts) ? facts.length : 0;
                 document.getElementById('stat-students').innerText = Array.isArray(students) ? students.length : 0;
@@ -484,12 +477,54 @@
                     });
                 }
             } catch (e) {
-                console.error("Stats Error:", e);
                 document.getElementById('stat-total').innerText = "Err";
                 document.getElementById('stat-brain').innerText = "Err";
                 document.getElementById('stat-students').innerText = "Err";
             }
         }
+
+        // ACTIONS
+        async function del(type, id) {
+            if (confirm('Delete?')) {
+                await fetch(`${API_BASE}/${type}/${id}`, { method: 'DELETE', headers: getHeaders() });
+                type === 'knowledge' ? fetchKnowledge() : fetchStudents();
+            }
+        }
+
+        function downloadStudentCSV() {
+            if (!studentData.length) return alert('No data');
+            const csv = ["Name,Index,Program,House,Year"].concat(studentData.map(s => `"${s.fullName}","${s.indexNumber}","${s.program}","${s.house}","${s.yearOfCompletion}"`)).join('\n');
+            const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = 'students.csv'; a.click();
+        }
+
+        // FORMS
+        document.getElementById('brain-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            await fetch(`${API_BASE}/knowledge`, { method: 'POST', headers: getHeaders(), body: JSON.stringify({ topic: document.getElementById('k-topic').value, category: document.getElementById('k-category').value, content: document.getElementById('k-content').value }) });
+            e.target.reset(); fetchKnowledge();
+        });
+
+        document.getElementById('announce-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            await fetch(`${API_BASE}/announcement`, { method: 'POST', headers: getHeaders(), body: JSON.stringify({ text: document.getElementById('announce-text').value }) });
+            alert("Broadcast Sent!"); e.target.reset();
+        });
+
+        document.getElementById('student-form').addEventListener('submit', async e => {
+            e.preventDefault();
+            const payload = {
+                fullName: document.getElementById('s-name').value,
+                indexNumber: document.getElementById('s-index').value,
+                password: document.getElementById('s-pass').value,
+                program: document.getElementById('s-prog').value,
+                house: document.getElementById('s-house').value,
+                yearOfCompletion: parseInt(document.getElementById('s-year').value)
+            };
+            const res = await fetch(`${API_BASE}/students`, { method: 'POST', headers: getHeaders(), body: JSON.stringify(payload) });
+            const json = await res.json();
+            if (json.success) { alert('Student Enrolled!'); e.target.reset(); fetchStudents(); }
+            else { alert('Error: ' + json.error); }
+        });
     </script>
 </body>
 
