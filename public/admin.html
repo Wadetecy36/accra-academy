@@ -342,18 +342,31 @@
 
         // NAVIGATION
         function switchTab(tab) {
-            ['logs', 'brain', 'students', 'stats'].forEach(t => {
-                document.getElementById('view-' + t).classList.add('hidden');
-                document.getElementById('tab-' + t).classList.remove('active', 'text-gold');
-                document.getElementById('tab-' + t).classList.add('text-gray-400');
-            });
-            document.getElementById('view-' + tab).classList.remove('hidden');
-            document.getElementById('tab-' + tab).classList.add('active', 'text-gold');
+            try {
+                ['logs', 'brain', 'students', 'stats'].forEach(t => {
+                    const view = document.getElementById('view-' + t);
+                    const btn = document.getElementById('tab-' + t);
+                    if (view) view.classList.add('hidden');
+                    if (btn) {
+                        btn.classList.remove('active', 'text-gold');
+                        btn.classList.add('text-gray-400');
+                    }
+                });
 
-            if (tab === 'logs') fetchLogs();
-            if (tab === 'brain') fetchKnowledge();
-            if (tab === 'students') fetchStudents();
-            if (tab === 'stats') loadStats();
+                const targetView = document.getElementById('view-' + tab);
+                const targetBtn = document.getElementById('tab-' + tab);
+
+                if (targetView) targetView.classList.remove('hidden');
+                if (targetBtn) targetBtn.classList.remove('text-gray-400'), targetBtn.classList.add('active', 'text-gold');
+
+                if (tab === 'logs') fetchLogs();
+                if (tab === 'brain') fetchKnowledge();
+                if (tab === 'students') fetchStudents();
+                if (tab === 'stats') loadStats();
+            } catch (err) {
+                console.error("Tab Switch Error:", err);
+                alert("Interface Error: " + err.message);
+            }
         }
 
         // LOGS
@@ -389,7 +402,10 @@
                         <div><span class="text-[10px] bg-blue-900 text-blue-200 px-1 rounded mr-2">${escapeHTML(k.category)}</span><span class="text-sm font-bold text-gray-300">${escapeHTML(k.topic)}</span><p class="text-xs text-gray-500 truncate w-64">${escapeHTML(k.content)}</p></div>
                         <button onclick="del('knowledge','${k._id}')" class="text-red-500 opacity-0 group-hover:opacity-100 font-bold px-2 hover:bg-white/10 rounded">DELETE</button>
                     </div>`).join('');
-            } catch (e) { console.error(e); }
+            } catch (e) {
+                console.error(e);
+                document.getElementById('knowledge-list').innerHTML = `<div class="text-red-500 text-center p-4">Connection Error: Could not load knowledge base.</div>`;
+            }
         }
         document.getElementById('brain-form').onsubmit = async e => {
             e.preventDefault();
@@ -469,6 +485,9 @@
                 }
             } catch (e) {
                 console.error("Stats Error:", e);
+                document.getElementById('stat-total').innerText = "Err";
+                document.getElementById('stat-brain').innerText = "Err";
+                document.getElementById('stat-students').innerText = "Err";
             }
         }
     </script>
