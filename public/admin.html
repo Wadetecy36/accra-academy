@@ -361,7 +361,7 @@
 
             // Check Session
             if (sessionStorage.getItem('bleoo_admin_token')) {
-                showDashboard();
+                window.location.href = 'dashboard.html';
             }
 
             // Login Form
@@ -375,7 +375,7 @@
                     const data = await res.json();
                     if (data.success) {
                         sessionStorage.setItem('bleoo_admin_token', data.token);
-                        showDashboard();
+                        window.location.href = 'dashboard.html';
                     } else {
                         throw new Error("Invalid password");
                     }

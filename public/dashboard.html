@@ -4,158 +4,650 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Dashboard | Accra Academy</title>
+    <title>SchoolSync Dashboard - Accra Academy</title>
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = { theme: { extend: { colors: { royal: '#002147', gold: '#FDBE11' } } } }
+        tailwind.config = {
+            theme: {
+                extend: { colors: { royal: '#002147', gold: '#FDBE11', dark: '#020617' }, fontFamily: { mono: ['Consolas', 'Monaco', 'monospace'] } }
+            }
+        }
     </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Theme Initialization -->
+    <script>
+            (function () {
+                const savedTheme = localStorage.getItem('theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            })();
+    </script>
+
+    <style>
+        /* --- DYNAMIC THEME VARIABLES --- */
+        :root {
+            /* DARK THEME (Gold & Royal Blue) */
+            --bg-color: #0f172a;
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --card-bg: rgba(30, 41, 59, 0.4);
+            --card-hover: rgba(51, 65, 85, 0.5);
+            --nav-bg: rgba(15, 23, 42, 0.85);
+            --input-bg: rgba(15, 23, 42, 0.6);
+            --gold-accent: #fbbf24;
+            --blue-accent: #3b82f6;
+            --glow-primary: rgba(59, 130, 246, 0.15);
+            --glow-secondary: rgba(251, 191, 36, 0.1);
+        }
+
+        [data-theme="light"] {
+            /* LIGHT THEME */
+            --bg-color: #f8fafc;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(226, 232, 240, 0.8);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --card-bg: #ffffff;
+            --card-hover: #f1f5f9;
+            --nav-bg: rgba(255, 255, 255, 0.9);
+            --input-bg: #ffffff;
+            --gold-accent: #d97706;
+            --blue-accent: #2563eb;
+            --glow-primary: rgba(37, 99, 235, 0.05);
+            --glow-secondary: rgba(217, 119, 6, 0.05);
+        }
+
+        body {
+            font-family: 'Outfit', 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(at 0% 0%, var(--glow-primary) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, var(--glow-secondary) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* --- GLASSMORPHISM & CARDS --- */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            background: var(--card-hover);
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: var(--blue-accent);
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gold-accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        .text-theme-main {
+            color: var(--text-main);
+        }
+
+        .text-theme-muted {
+            color: var(--text-muted);
+        }
+
+        .text-gold {
+            color: var(--gold-accent);
+            font-weight: 700;
+        }
+
+        .text-blue {
+            color: var(--blue-accent);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold-accent) 0%, #fbbf24 100%);
+            color: #0f172a;
+            font-weight: 600;
+            border: none;
+            border-radius: 9999px;
+            padding: 0.75rem 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(251, 191, 36, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(251, 191, 36, 0.4);
+            filter: brightness(1.05);
+        }
+
+        input,
+        select,
+        textarea {
+            background: var(--input-bg) !important;
+            border: 2px solid var(--glass-border) !important;
+            color: var(--text-main) !important;
+            border-radius: 1rem !important;
+            padding: 0.75rem 1rem !important;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--blue-accent) !important;
+            outline: none;
+            box-shadow: 0 0 0 4px var(--glow-primary);
+        }
+
+        select option {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 10px;
+        }
+
+        .material-icons-round {
+            vertical-align: middle;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 
-<body class="bg-gray-50 min-h-screen">
+<body class="antialiased">
 
-    <!-- TOP NAV -->
-    <nav class="bg-royal text-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <img src="./assets/crest.png" class="w-8">
-                <span class="font-bold tracking-wide">STUDENT<span class="text-gold">PORTAL</span></span>
-            </div>
-            <div class="flex items-center gap-4">
-                <span id="nav-name" class="text-sm font-medium hidden md:block">Loading...</span>
-                <button onclick="logout()"
-                    class="text-xs bg-red-600 px-3 py-1.5 rounded hover:bg-red-500">LOGOUT</button>
+    <!-- AUTH CHECK -->
+    <script>
+        if (!sessionStorage.getItem('bleoo_admin_token')) {
+            window.location.href = 'admin.html'; // Redirect to login
+        }
+    </script>
+
+    <div class="ambient-glow"></div>
+
+    <!-- Navigation -->
+    <nav class="glass sticky top-0 z-50 border-b-0" style="background: var(--nav-bg);">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3">
+                    <img src="./assets/crest.png" class="w-10 h-10 object-contain drop-shadow-lg">
+                    <div><span class="text-xl font-bold tracking-tight text-theme-main">SchoolSync <span
+                                class="text-gold">Administrator</span></span></div>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="#" class="px-4 py-2 rounded-lg text-theme-main flex items-center bg-white/10">
+                        <i class="material-icons-round mr-2 text-gold">people</i> Students
+                    </a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-4 pl-4 border-l border-white/10">
+                    <button onclick="toggleTheme()"
+                        class="p-2 rounded-full hover:bg-white/10 text-theme-muted hover:text-gold transition">
+                        <i class="material-icons-round" id="theme-icon">light_mode</i>
+                    </button>
+                    <span class="text-sm font-medium text-theme-main">Admin</span>
+                    <button onclick="logout()"
+                        class="p-2 rounded-full hover:bg-red-500/20 text-theme-muted hover:text-red-400 transition">
+                        <i class="material-icons-round">logout</i>
+                    </button>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- CONTENT -->
-    <main class="container mx-auto px-6 py-8">
+    <!-- Main Content: Ported from students.html matching new Node API -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
 
-        <!-- Welcome Banner -->
-        <div
-            class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-                <h1 class="text-2xl font-bold text-gray-800">Welcome back, <span id="user-name"
-                        class="text-royal">Student</span></h1>
-                <p class="text-gray-500 text-sm mt-1">ID: <span id="user-id">--</span> | <span id="user-class"
-                        class="font-bold">--</span></p>
-            </div>
-            <div class="bg-blue-50 px-6 py-3 rounded-lg text-center">
-                <span class="block text-xs text-gray-500 uppercase font-bold">Current GPA</span>
-                <span id="user-gpa" class="text-3xl font-bold text-royal">0.0</span>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-            <!-- ACADEMIC REPORT -->
-            <div class="md:col-span-2 space-y-6">
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                    <h2 class="text-lg font-bold text-royal mb-4 border-b pb-2">Latest Results (Term 1)</h2>
-                    <table class="w-full text-left">
-                        <thead class="bg-gray-50 text-xs uppercase text-gray-500">
-                            <tr>
-                                <th class="p-3">Subject</th>
-                                <th class="p-3">Grade</th>
-                                <th class="p-3">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="grades-body" class="divide-y divide-gray-100 text-sm">
-                            <!-- Injected by JS -->
-                        </tbody>
-                    </table>
+        <div class="space-y-8">
+            <!-- Header -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-theme-main">Students</h1>
+                    <p class="text-theme-muted">Browse and manage student records</p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="openAddModal()"
+                        class="btn-gold px-6 py-2 rounded-xl text-black flex items-center font-bold shadow-lg">
+                        <i class="material-icons-round mr-2">person_add</i>
+                        <span>Add Student</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- SIDEBAR -->
-            <div class="space-y-6">
-                <!-- Profile Card -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                    <h3 class="text-sm font-bold text-gray-400 uppercase mb-4">Student Profile</h3>
-                    <div class="space-y-3 text-sm">
-                        <div class="flex justify-between"><span class="text-gray-500">House</span> <span id="user-house"
-                                class="font-bold text-royal">--</span></div>
-                        <div class="flex justify-between"><span class="text-gray-500">Program</span> <span
-                                id="user-program" class="font-bold">--</span></div>
-                        <div class="flex justify-between"><span class="text-gray-500">Attendance</span> <span
-                                id="user-att" class="text-green-600 font-bold">--</span></div>
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="glass-card p-6 relative overflow-hidden group">
+                    <p class="text-theme-muted text-sm">Total Students</p>
+                    <p class="text-2xl font-bold text-theme-main mt-1" id="total-count">--</p>
+                    <i class="material-icons-round absolute bottom-4 right-4 text-3xl text-blue-500/20">groups</i>
+                </div>
+                <!-- More stats can be added here if backend supports aggregation -->
+            </div>
+
+            <!-- Actions & Bulk -->
+            <div class="glass-card p-4 flex flex-col md:flex-row gap-4 items-center justify-between">
+                <div class="flex bg-black/20 rounded-lg p-1">
+                    <button onclick="setViewMode('grid')" id="view-grid"
+                        class="px-4 py-2 rounded-md text-gold bg-white/10 flex items-center">
+                        <i class="material-icons-round mr-2">grid_view</i> Grid
+                    </button>
+                    <button onclick="setViewMode('table')" id="view-table"
+                        class="px-4 py-2 rounded-md text-theme-muted flex items-center">
+                        <i class="material-icons-round mr-2">table_rows</i> Table
+                    </button>
+                </div>
+
+                <div id="bulk-actions-panel"
+                    class="hidden flex gap-4 items-center bg-gold-500/10 px-4 py-2 rounded-xl border border-gold-500/20">
+                    <div
+                        class="flex items-center bg-gold-500/20 px-3 py-1 rounded-lg text-gold border border-gold-500/30">
+                        <i class="material-icons-round text-sm mr-2">check_box</i>
+                        <span id="selected-count" class="font-bold">0</span> &nbsp;Selected
+                    </div>
+                    <select id="bulk-action"
+                        class="px-4 py-2 bg-black/20 border border-white/10 rounded-lg text-theme-main text-sm">
+                        <option value="">Select Action...</option>
+                        <option value="delete">Delete</option>
+                    </select>
+                    <button onclick="executeBulkAction()"
+                        class="btn-gold px-4 py-2 rounded-lg text-sm text-black font-bold">Apply</button>
+                    <button onclick="clearSelections()" class="text-theme-muted hover:text-white text-sm">Clear</button>
+                </div>
+            </div>
+
+            <!-- Search & Filter -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Sidebar -->
+                <div class="lg:col-span-1 space-y-6">
+                    <div class="glass-card p-6 sticky top-24">
+                        <h3 class="font-bold text-theme-main mb-4 flex items-center"><i
+                                class="material-icons-round text-gold mr-2">filter_list</i> Filters</h3>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label
+                                    class="text-xs text-theme-muted uppercase tracking-wider mb-1 block">Search</label>
+                                <input type="text" id="name-search" placeholder="Name, ID..."
+                                    class="w-full pl-3 pr-3 text-sm">
+                            </div>
+                            <div>
+                                <select id="filter-program" class="w-full text-sm" onchange="loadStudents()">
+                                    <option value="">All Programs</option>
+                                    <option value="General Science">General Science</option>
+                                    <option value="Business">Business</option>
+                                    <option value="General Arts">General Arts</option>
+                                    <option value="Visual Arts">Visual Arts</option>
+                                    <option value="Agriculture">Agriculture</option>
+                                    <option value="Home Economics">Home Economics</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select id="filter-hall" class="w-full text-sm" onchange="loadStudents()">
+                                    <option value="">All Halls</option>
+                                    <option value="Alema Hall">Alema Hall</option>
+                                    <option value="Ellen Hall">Ellen Hall</option>
+                                    <option value="Halm Addo Hall">Halm Addo Hall</option>
+                                    <option value="Nana Wereko Ampem II Hall">Nana Wereko Ampem II Hall</option>
+                                    <option value="Wilson Q .Tei Hall">Wilson Q .Tei Hall</option>
+                                    <option value="Awuletey Hall">Awuletey Hall</option>
+                                    <option value="Peter Ala Adjetey Hall">Peter Ala Adjetey Hall</option>
+                                    <option value="Nana Akuako Sarpong Hall">Nana Akuako Sarpong Hall</option>
+                                    <option value="Nana Awuah Darko Ampem Hall">Nana Awuah Darko Ampem Hall</option>
+                                </select>
+                            </div>
+                            <button onclick="loadStudents()"
+                                class="w-full py-2 btn-gold text-sm font-bold text-black border-none">Search</button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Fees Status -->
-                <div class="bg-royal text-white p-6 rounded-xl shadow-lg relative overflow-hidden">
-                    <div class="absolute -right-4 -top-4 text-gold opacity-10 text-9xl font-black">¢</div>
-                    <h3 class="text-gold font-bold mb-2">Financial Status</h3>
-                    <p class="text-xs text-blue-200 mb-1">Outstanding Balance</p>
-                    <p id="user-fees" class="text-3xl font-bold">GHS 0.00</p>
-                    <button
-                        class="mt-4 w-full bg-white text-royal text-xs font-bold py-2 rounded hover:bg-gold transition">VIEW
-                        DETAILS</button>
+                <!-- Results -->
+                <div class="lg:col-span-3">
+                    <div id="students-grid-view" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                    <div id="students-table-view" class="hidden glass-card overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full text-left">
+                                <thead class="bg-black/20 text-theme-muted text-xs uppercase">
+                                    <tr>
+                                        <th class="px-6 py-3"></th>
+                                        <th class="px-6 py-3">Student</th>
+                                        <th class="px-6 py-3">Program</th>
+                                        <th class="px-6 py-3">Class</th>
+                                        <th class="px-6 py-3">Hall</th>
+                                        <th class="px-6 py-3">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="students-table-body" class="text-sm text-theme-main divide-y divide-white/5">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="empty-state" class="hidden text-center py-20">
+                        <i class="material-icons-round text-4xl text-theme-muted mb-3">search_off</i>
+                        <h3 class="text-xl font-bold text-theme-main">No students found</h3>
+                    </div>
                 </div>
             </div>
-
         </div>
     </main>
 
+    <!-- ADD USER MODAL -->
+    <div id="add-modal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4 backdrop-blur-md">
+        <div class="glass-card w-full max-w-2xl p-8 animate-fade-in shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-theme-main">Enrol Student</h3>
+                <button onclick="closeAddModal()" class="text-theme-muted hover:text-white"><i
+                        class="material-icons-round text-2xl">close</i></button>
+            </div>
+
+            <form id="student-form" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="s-name" placeholder="Full Name (*)" required class="w-full">
+                    <input type="text" id="s-index" placeholder="Index Number" class="w-full">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <select id="s-program" required class="w-full">
+                        <option value="">Select Program (*)</option>
+                        <option value="General Science">General Science</option>
+                        <option value="Business">Business</option>
+                        <option value="General Arts">General Arts</option>
+                        <option value="Visual Arts">Visual Arts</option>
+                        <option value="Agriculture">Agriculture</option>
+                        <option value="Home Economics">Home Economics</option>
+                    </select>
+                    <input type="number" id="s-year" placeholder="Enrollment Year (e.g. 2024) (*)" required
+                        class="w-full">
+                </div>
+                <select id="s-hall" class="w-full">
+                    <option value="">Select Hall (Optional)</option>
+                    <option value="Alema Hall">Alema Hall</option>
+                    <option value="Ellen Hall">Ellen Hall</option>
+                    <option value="Halm Addo Hall">Halm Addo Hall</option>
+                    <option value="Nana Wereko Ampem II Hall">Nana Wereko Ampem II Hall</option>
+                    <option value="Wilson Q .Tei Hall">Wilson Q .Tei Hall</option>
+                    <option value="Awuletey Hall">Awuletey Hall</option>
+                    <option value="Peter Ala Adjetey Hall">Peter Ala Adjetey Hall</option>
+                    <option value="Nana Akuako Sarpong Hall">Nana Akuako Sarpong Hall</option>
+                    <option value="Nana Awuah Darko Ampem Hall">Nana Awuah Darko Ampem Hall</option>
+                </select>
+                <input type="text" id="s-class" placeholder="Class Room (e.g. 1A)" class="w-full">
+                <input type="email" id="s-email" placeholder="Email" class="w-full">
+                <input type="tel" id="s-phone" placeholder="Phone" class="w-full">
+
+                <button type="submit" class="w-full btn-gold text-black font-bold py-3 mt-4">Save Student</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST & LOADER -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-3"></div>
+    <div id="loading-overlay"
+        class="fixed inset-0 bg-black/80 z-[60] hidden items-center justify-center backdrop-blur-sm">
+        <div class="glass p-8 rounded-2xl flex flex-col items-center">
+            <div class="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+            <p class="text-gold font-semibold">Processing...</p>
+        </div>
+    </div>
+
+    <!-- MAIN LOGIC (PORTED TO API) -->
     <script>
-        // 1. CHECK AUTH
-        const userJson = sessionStorage.getItem('bleoo_user');
-        if (!userJson) {
-            window.location.href = 'portal.html';
+        const API_BASE = '/api';
+        let students = [];
+        let selected = new Set();
+        let viewMode = 'grid';
+
+        // --- AUTH HELPER ---
+        async function apiRequest(endpoint, options = {}) {
+            const token = sessionStorage.getItem('bleoo_admin_token');
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                ...options.headers
+            };
+
+            document.getElementById('loading-overlay').classList.remove('hidden', 'flex');
+            document.getElementById('loading-overlay').classList.add('flex');
+
+            try {
+                const res = await fetch(API_BASE + endpoint, { ...options, headers });
+                const data = await res.json();
+                document.getElementById('loading-overlay').classList.add('hidden');
+                document.getElementById('loading-overlay').classList.remove('flex');
+
+                if (!res.ok) throw new Error(data.error || 'Request failed');
+                return data;
+            } catch (e) {
+                document.getElementById('loading-overlay').classList.add('hidden');
+                document.getElementById('loading-overlay').classList.remove('flex');
+                showToast(e.message, 'error');
+                if (e.message.includes('Auth') || e.message.includes('Token')) {
+                    location.href = 'admin.html';
+                }
+                throw e;
+            }
         }
 
-        const user = JSON.parse(userJson);
-
-        // 2. POPULATE UI
-        document.getElementById('nav-name').innerText = user.name;
-        document.getElementById('user-name').innerText = user.name.split(' ')[0]; // First name
-        document.getElementById('user-id').innerText = user.studentId;
-        document.getElementById('user-class').innerText = user.class;
-        document.getElementById('user-house').innerText = user.house;
-        document.getElementById('user-program').innerText = user.program;
-        document.getElementById('user-gpa').innerText = user.gpa;
-        document.getElementById('user-att').innerText = user.attendance;
-
-        // Format Currency
-        const fees = new Intl.NumberFormat('en-GH', { style: 'currency', currency: 'GHS' }).format(user.feesOwed);
-        document.getElementById('user-fees').innerText = fees;
-        if (user.feesOwed > 0) {
-            document.getElementById('user-fees').classList.add('text-red-400');
+        function showToast(msg, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `${type === 'error' ? 'bg-red-600' : 'bg-green-600'} text-white p-4 rounded-xl shadow-lg flex items-center animate-fade-in`;
+            toast.innerHTML = `<i class="material-icons-round mr-2">${type === 'error' ? 'error' : 'check_circle'}</i> ${msg}`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
         }
 
-        function escapeHTML(str) {
-            if (!str) return '';
-            return String(str).replace(/[&<>'"]/g,
-                tag => ({
-                    '&': '&amp;',
-                    '<': '&lt;',
-                    '>': '&gt;',
-                    "'": '&#39;',
-                    '"': '&quot;'
-                }[tag]));
+        // --- DATA LOAD ---
+        async function loadStudents() {
+            const name = document.getElementById('name-search').value;
+            const program = document.getElementById('filter-program').value;
+            const hall = document.getElementById('filter-hall').value;
+
+            try {
+                let query = `?search=${encodeURIComponent(name)}&program=${encodeURIComponent(program)}&hall=${encodeURIComponent(hall)}`;
+                const data = await apiRequest('/students' + query);
+                students = data.students || [];
+                document.getElementById('total-count').innerText = data.pagination?.total || students.length;
+                render();
+            } catch (e) { console.error(e); }
         }
 
-        // Grades Logic
-        const tbody = document.getElementById('grades-body');
-        tbody.innerHTML = user.grades.map(g => {
-            let statusColor = 'text-green-600 bg-green-50';
-            if (g.grade.includes('C') || g.grade.includes('D')) statusColor = 'text-yellow-600 bg-yellow-50';
-            if (g.grade === 'F9') statusColor = 'text-red-600 bg-red-50';
+        function render() {
+            const grid = document.getElementById('students-grid-view');
+            const tableBody = document.getElementById('students-table-body');
+            const toggleGrid = document.getElementById('view-grid');
+            const toggleTable = document.getElementById('view-table');
 
-            return `
-            <tr>
-                <td class="p-3 font-medium">${escapeHTML(g.subject)}</td>
-                <td class="p-3 font-bold">${escapeHTML(g.grade)}</td>
-                <td class="p-3"><span class="px-2 py-1 rounded text-xs font-bold ${statusColor}">${g.grade === 'F9' ? 'FAIL' : 'PASS'}</span></td>
-            </tr>
-            `;
-        }).join('');
+            // Toggle UI
+            if (viewMode === 'grid') {
+                document.getElementById('students-table-view').classList.add('hidden');
+                grid.classList.remove('hidden');
+                toggleGrid.classList.add('bg-white/10', 'text-gold');
+                toggleTable.classList.remove('bg-white/10', 'text-gold');
+            } else {
+                grid.classList.add('hidden');
+                document.getElementById('students-table-view').classList.remove('hidden');
+                toggleTable.classList.add('bg-white/10', 'text-gold');
+                toggleGrid.classList.remove('bg-white/10', 'text-gold');
+            }
 
-        // 3. LOGOUT
-        function logout() {
-            sessionStorage.removeItem('bleoo_user');
-            window.location.href = 'portal.html';
+            // Empty State
+            if (!students.length) {
+                document.getElementById('empty-state').classList.remove('hidden');
+                return;
+            } else {
+                document.getElementById('empty-state').classList.add('hidden');
+            }
+
+            // Render GRID
+            grid.innerHTML = students.map(s => `
+                <div class="glass-card p-6 relative group border border-white/5 hover:border-gold/30">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-900 flex items-center justify-center text-white font-bold text-lg">
+                            ${s.name.charAt(0)}
+                        </div>
+                        <input type="checkbox" onchange="toggleSelect('${s._id}', this.checked)" ${selected.has(s._id) ? 'checked' : ''} class="w-5 h-5 rounded border-white/20 bg-black/20 text-gold focus:ring-0">
+                    </div>
+                    <h3 class="font-bold text-theme-main truncate">${s.name}</h3>
+                    <p class="text-xs text-theme-muted mb-3">${s.indexNumber || 'No Index'}</p>
+                    <div class="flex flex-wrap gap-2 text-[10px] uppercase font-bold tracking-wider mb-4">
+                        <span class="px-2 py-1 rounded bg-blue-500/10 text-blue-300 border border-blue-500/20">${s.program}</span>
+                        <span class="px-2 py-1 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20">${s.currentForm || 'Form ?'}</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-theme-muted pt-3 border-t border-white/10">
+                        <span>${s.hall || 'No Hall'}</span>
+                        <button onclick="deleteStudent('${s._id}')" class="text-red-400 hover:text-red-300"><i class="material-icons-round text-sm">delete</i></button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render TABLE
+            tableBody.innerHTML = students.map(s => `
+                <tr class="hover:bg-white/5 border-b border-white/5 group">
+                    <td class="px-6 py-4"><input type="checkbox" onchange="toggleSelect('${s._id}', this.checked)" ${selected.has(s._id) ? 'checked' : ''}></td>
+                    <td class="px-6 py-4">
+                        <div class="font-bold text-theme-main">${s.name}</div>
+                        <div class="text-xs text-theme-muted">${s.indexNumber || ''}</div>
+                    </td>
+                    <td class="px-6 py-4 text-xs">${s.program}</td>
+                    <td class="px-6 py-4 text-xs font-mono text-blue-300">${s.classRoom || '-'}</td>
+                    <td class="px-6 py-4 text-theme-muted text-xs">${s.hall || '-'}</td>
+                    <td class="px-6 py-4">
+                        <button onclick="deleteStudent('${s._id}')" class="text-red-400 hover:scale-110 transition"><i class="material-icons-round">delete</i></button>
+                    </td>
+                </tr>
+            `).join('');
         }
+
+        // --- ACTIONS ---
+        function setViewMode(mode) { viewMode = mode; render(); }
+
+        function toggleSelect(id, checked) {
+            checked ? selected.add(id) : selected.delete(id);
+            document.getElementById('selected-count').innerText = selected.size;
+            document.getElementById('bulk-actions-panel').classList.toggle('hidden', selected.size === 0);
+        }
+
+        function clearSelections() { selected.clear(); render(); document.getElementById('bulk-actions-panel').classList.add('hidden'); }
+
+        // DELETE
+        async function deleteStudent(id) {
+            if (!confirm('Are you sure you want to delete this student?')) return;
+            try {
+                await apiRequest(`/students/${id}`, { method: 'DELETE' });
+                showToast('Student deleted');
+                loadStudents();
+            } catch (e) { }
+        }
+
+        // BULK ACTION
+        async function executeBulkAction() {
+            const action = document.getElementById('bulk-action').value;
+            if (!action || selected.size === 0) return;
+            if (!confirm(`Perform '${action}' on ${selected.size} students?`)) return;
+
+            try {
+                await apiRequest('/students/bulk-action', {
+                    method: 'POST',
+                    body: JSON.stringify({ ids: Array.from(selected), action })
+                });
+                showToast('Bulk action completed');
+                clearSelections();
+                loadStudents();
+            } catch (e) { }
+        }
+
+        // ADD STUDENT
+        function openAddModal() { document.getElementById('add-modal').classList.remove('hidden'); document.getElementById('add-modal').classList.add('flex'); }
+        function closeAddModal() { document.getElementById('add-modal').classList.add('hidden'); document.getElementById('add-modal').classList.remove('flex'); }
+
+        document.getElementById('student-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                name: document.getElementById('s-name').value,
+                indexNumber: document.getElementById('s-index').value,
+                program: document.getElementById('s-program').value,
+                enrollmentYear: parseInt(document.getElementById('s-year').value),
+                hall: document.getElementById('s-hall').value,
+                classRoom: document.getElementById('s-class').value,
+                email: document.getElementById('s-email').value,
+                phone: document.getElementById('s-phone').value,
+            };
+
+            try {
+                await apiRequest('/students', { method: 'POST', body: JSON.stringify(payload) });
+                showToast('Student enrolled successfully');
+                closeAddModal();
+                e.target.reset();
+                loadStudents();
+            } catch (e) { }
+        });
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            document.getElementById('theme-icon').innerText = next === 'light' ? 'dark_mode' : 'light_mode';
+        }
+
+        function logout() { sessionStorage.removeItem('bleoo_admin_token'); location.href = 'admin.html'; }
+
+        // INIT
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStudents();
+            if (localStorage.getItem('theme') === 'light') document.getElementById('theme-icon').innerText = 'dark_mode';
+        });
+
     </script>
 </body>
 
