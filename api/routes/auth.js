@@ -54,7 +54,12 @@ router.post('/admin/login',
         }
 
         if (req.body.password === ADMIN_PASSWORD) {
-            const token = jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '6h' });
+            // Include a 'system-admin' ID so that SecurityLog and createdBy fields don't fail validation
+            const token = jwt.sign(
+                { id: '000000000000000000000000', role: 'admin' },
+                JWT_SECRET,
+                { expiresIn: '6h' }
+            );
             res.json({ success: true, token });
         } else {
             res.status(401).json({ success: false });

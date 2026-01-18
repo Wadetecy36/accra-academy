@@ -464,14 +464,18 @@
                 document.getElementById('loading-overlay').classList.add('hidden');
                 document.getElementById('loading-overlay').classList.remove('flex');
 
-                if (!res.ok) throw new Error(data.error || 'Request failed');
+                if (!res.ok) {
+                    console.error(`API Error (${endpoint}):`, data.error || data);
+                    throw new Error(data.error || 'Request failed');
+                }
                 return data;
             } catch (e) {
                 document.getElementById('loading-overlay').classList.add('hidden');
                 document.getElementById('loading-overlay').classList.remove('flex');
+                console.error("Fetch Error:", e);
                 showToast(e.message, 'error');
-                if (e.message.includes('Auth') || e.message.includes('Token')) {
-                    location.href = 'admin.html';
+                if (e.message.toLowerCase().includes('auth') || e.message.toLowerCase().includes('token')) {
+                    setTimeout(() => location.href = 'admin.html', 1500);
                 }
                 throw e;
             }
@@ -498,7 +502,15 @@
                 students = data.students || [];
                 document.getElementById('total-count').innerText = data.pagination?.total || students.length;
                 render();
-            } catch (e) { console.error(e); }
+            } catch (e) {
+                console.error("Dashboard Load Error:", e);
+                document.getElementById('empty-state').innerHTML = `
+                    <i class="material-icons-round text-4xl text-red-400 mb-3">error_outline</i>
+                    <h3 class="text-xl font-bold text-red-400">Connection Failed</h3>
+                    <p class="text-theme-muted">Ensure the server is running and your token is valid.</p>
+                `;
+                document.getElementById('empty-state').classList.remove('hidden');
+            }
         }
 
         function render() {
