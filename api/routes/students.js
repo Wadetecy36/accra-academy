@@ -50,8 +50,11 @@ async function pythonProxy(req, res, endpoint, options = {}) {
         res.status(response.status).json(data);
         return true;
     } catch (error) {
-        console.error("Proxy Error:", error);
-        res.status(502).json({ error: "Failed to connect to SchoolSync Service" });
+        console.error(`Proxy Error connecting to [${pythonUrl}${endpoint}]:`, error.message);
+        res.status(502).json({
+            error: "Failed to connect to SchoolSync Service",
+            details: error.message
+        });
         return true;
     }
 }
