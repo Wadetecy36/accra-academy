@@ -550,17 +550,17 @@
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-900 flex items-center justify-center text-white font-bold text-lg">
                             ${s.name.charAt(0)}
                         </div>
-                        <input type="checkbox" onchange="toggleSelect('${s._id}', this.checked)" ${selected.has(s._id) ? 'checked' : ''} class="w-5 h-5 rounded border-white/20 bg-black/20 text-gold focus:ring-0">
+                        <input type="checkbox" onchange="toggleSelect('${s.id}', this.checked)" ${selected.has(String(s.id)) ? 'checked' : ''} class="w-5 h-5 rounded border-white/20 bg-black/20 text-gold focus:ring-0">
                     </div>
                     <h3 class="font-bold text-theme-main truncate">${s.name}</h3>
-                    <p class="text-xs text-theme-muted mb-3">${s.indexNumber || 'No Index'}</p>
+                    <p class="text-xs text-theme-muted mb-3">${s.indexNumber || s.index_number || 'No Index'}</p>
                     <div class="flex flex-wrap gap-2 text-[10px] uppercase font-bold tracking-wider mb-4">
                         <span class="px-2 py-1 rounded bg-blue-500/10 text-blue-300 border border-blue-500/20">${s.program}</span>
-                        <span class="px-2 py-1 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20">${s.currentForm || 'Form ?'}</span>
+                        <span class="px-2 py-1 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20">${s.current_form || s.currentForm || 'Form ?'}</span>
                     </div>
                     <div class="flex justify-between items-center text-xs text-theme-muted pt-3 border-t border-white/10">
                         <span>${s.hall || 'No Hall'}</span>
-                        <button onclick="deleteStudent('${s._id}')" class="text-red-400 hover:text-red-300"><i class="material-icons-round text-sm">delete</i></button>
+                        <button onclick="deleteStudent('${s.id}')" class="text-red-400 hover:text-red-300"><i class="material-icons-round text-sm">delete</i></button>
                     </div>
                 </div>
             `).join('');
@@ -568,16 +568,16 @@
             // Render TABLE
             tableBody.innerHTML = students.map(s => `
                 <tr class="hover:bg-white/5 border-b border-white/5 group">
-                    <td class="px-6 py-4"><input type="checkbox" onchange="toggleSelect('${s._id}', this.checked)" ${selected.has(s._id) ? 'checked' : ''}></td>
+                    <td class="px-6 py-4"><input type="checkbox" onchange="toggleSelect('${s.id}', this.checked)" ${selected.has(String(s.id)) ? 'checked' : ''}></td>
                     <td class="px-6 py-4">
                         <div class="font-bold text-theme-main">${s.name}</div>
-                        <div class="text-xs text-theme-muted">${s.indexNumber || ''}</div>
+                        <div class="text-xs text-theme-muted">${s.indexNumber || s.index_number || ''}</div>
                     </td>
                     <td class="px-6 py-4 text-xs">${s.program}</td>
-                    <td class="px-6 py-4 text-xs font-mono text-blue-300">${s.classRoom || '-'}</td>
+                    <td class="px-6 py-4 text-xs font-mono text-blue-300">${s.class_room || s.classRoom || '-'}</td>
                     <td class="px-6 py-4 text-theme-muted text-xs">${s.hall || '-'}</td>
                     <td class="px-6 py-4">
-                        <button onclick="deleteStudent('${s._id}')" class="text-red-400 hover:scale-110 transition"><i class="material-icons-round">delete</i></button>
+                        <button onclick="deleteStudent('${s.id}')" class="text-red-400 hover:scale-110 transition"><i class="material-icons-round">delete</i></button>
                     </td>
                 </tr>
             `).join('');
@@ -647,11 +647,11 @@
             e.preventDefault();
             const payload = {
                 name: document.getElementById('s-name').value,
-                indexNumber: document.getElementById('s-index').value,
+                index_number: document.getElementById('s-index').value,
                 program: document.getElementById('s-program').value,
-                enrollmentYear: parseInt(document.getElementById('s-year').value),
+                enrollment_year: parseInt(document.getElementById('s-year').value),
                 hall: document.getElementById('s-hall').value,
-                classRoom: document.getElementById('s-class').value,
+                class_room: document.getElementById('s-class').value,
                 email: document.getElementById('s-email').value,
                 phone: document.getElementById('s-phone').value,
             };
