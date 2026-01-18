@@ -288,7 +288,7 @@
                 </div>
 
                 <div id="bulk-actions-panel"
-                    class="hidden flex gap-4 items-center bg-gold-500/10 px-4 py-2 rounded-xl border border-gold-500/20">
+                    class="hidden flex flex-wrap gap-4 items-center bg-gold-500/10 px-4 py-2 rounded-xl border border-gold-500/20 glass">
                     <div
                         class="flex items-center bg-gold-500/20 px-3 py-1 rounded-lg text-gold border border-gold-500/30">
                         <i class="material-icons-round text-sm mr-2">check_box</i>
@@ -297,7 +297,10 @@
                     <select id="bulk-action"
                         class="px-4 py-2 bg-black/20 border border-white/10 rounded-lg text-theme-main text-sm">
                         <option value="">Select Action...</option>
-                        <option value="delete">Delete</option>
+                        <option value="move-form">Promote (Move Form)</option>
+                        <option value="update-hall">Change Hall</option>
+                        <option value="update-program">Change Program</option>
+                        <option value="delete" class="text-red-400">Delete</option>
                     </select>
                     <button onclick="executeBulkAction()"
                         class="btn-gold px-4 py-2 rounded-lg text-sm text-black font-bold">Apply</button>
@@ -605,14 +608,32 @@
         async function executeBulkAction() {
             const action = document.getElementById('bulk-action').value;
             if (!action || selected.size === 0) return;
-            if (!confirm(`Perform '${action}' on ${selected.size} students?`)) return;
+
+            let payload = {};
+
+            // Handle Action-specific Payloads
+            if (action === 'delete') {
+                if (!confirm(`Are you absolutely sure you want to delete ${selected.size} students? This cannot be undone.`)) return;
+            } else if (action === 'move-form') {
+                const target = prompt("Which form should these students be moved to? (Form 1, Form 2, Form 3, Completed)");
+                if (!target) return;
+                payload.newYear = target;
+            } else if (action === 'update-hall') {
+                const hall = prompt("Enter the new Hall name for selected students:");
+                if (!hall) return;
+                payload.hall = hall;
+            } else if (action === 'update-program') {
+                const program = prompt("Enter the new Program name for selected students:");
+                if (!program) return;
+                payload.program = program;
+            }
 
             try {
                 await apiRequest('/students/bulk-action', {
                     method: 'POST',
-                    body: JSON.stringify({ ids: Array.from(selected), action })
+                    body: JSON.stringify({ ids: Array.from(selected), action, payload })
                 });
-                showToast('Bulk action completed');
+                showToast(`Bulk '${action}' completed successfully`);
                 clearSelections();
                 loadStudents();
             } catch (e) { }
