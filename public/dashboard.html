@@ -384,51 +384,175 @@
         </div>
     </main>
 
-    <!-- ADD USER MODAL -->
-    <div id="add-modal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4 backdrop-blur-md">
-        <div class="glass-card w-full max-w-2xl p-8 animate-fade-in shadow-2xl">
+    <!-- ENROL/EDIT MODAL -->
+    <div id="student-modal"
+        class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4 backdrop-blur-md">
+        <div class="glass-card w-full max-w-2xl p-8 animate-fade-in shadow-2xl maxHeight80 overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold text-theme-main">Enrol Student</h3>
-                <button onclick="closeAddModal()" class="text-theme-muted hover:text-white"><i
+                <h3 id="modal-title" class="text-2xl font-bold text-theme-main">Enrol Student</h3>
+                <button onclick="closeModal()" class="text-theme-muted hover:text-white"><i
                         class="material-icons-round text-2xl">close</i></button>
             </div>
 
             <form id="student-form" class="space-y-4">
+                <input type="hidden" id="s-id">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="s-name" placeholder="Full Name (*)" required class="w-full">
-                    <input type="text" id="s-index" placeholder="Index Number" class="w-full">
+                    <div>
+                        <label class="text-xs text-theme-muted uppercase mb-1 block">Full Name (*)</label>
+                        <input type="text" id="s-name" placeholder="Full Name" required class="w-full">
+                    </div>
+                    <div>
+                        <label class="text-xs text-theme-muted uppercase mb-1 block">Index Number</label>
+                        <input type="text" id="s-index" placeholder="Index Number" class="w-full">
+                    </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <select id="s-program" required class="w-full">
-                        <option value="">Select Program (*)</option>
-                        <option value="General Science">General Science</option>
-                        <option value="Business">Business</option>
-                        <option value="General Arts">General Arts</option>
-                        <option value="Visual Arts">Visual Arts</option>
-                        <option value="Agriculture">Agriculture</option>
-                        <option value="Home Economics">Home Economics</option>
-                    </select>
-                    <input type="number" id="s-year" placeholder="Enrollment Year (e.g. 2024) (*)" required
-                        class="w-full">
-                </div>
-                <select id="s-hall" class="w-full">
-                    <option value="">Select Hall (Optional)</option>
-                    <option value="Alema Hall">Alema Hall</option>
-                    <option value="Ellen Hall">Ellen Hall</option>
-                    <option value="Halm Addo Hall">Halm Addo Hall</option>
-                    <option value="Nana Wereko Ampem II Hall">Nana Wereko Ampem II Hall</option>
-                    <option value="Wilson Q .Tei Hall">Wilson Q .Tei Hall</option>
-                    <option value="Awuletey Hall">Awuletey Hall</option>
-                    <option value="Peter Ala Adjetey Hall">Peter Ala Adjetey Hall</option>
-                    <option value="Nana Akuako Sarpong Hall">Nana Akuako Sarpong Hall</option>
-                    <option value="Nana Awuah Darko Ampem Hall">Nana Awuah Darko Ampem Hall</option>
-                </select>
-                <input type="text" id="s-class" placeholder="Class Room (e.g. 1A)" class="w-full">
-                <input type="email" id="s-email" placeholder="Email" class="w-full">
-                <input type="tel" id="s-phone" placeholder="Phone" class="w-full">
 
-                <button type="submit" class="w-full btn-gold text-black font-bold py-3 mt-4">Save Student</button>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs text-theme-muted uppercase mb-1 block">Gender</label>
+                        <select id="s-gender" class="w-full">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs text-theme-muted uppercase mb-1 block">Program (*)</label>
+                        <select id="s-program" required class="w-full">
+                            <option value="">Select Program</option>
+                            <option value="General Science">General Science</option>
+                            <option value="Business">Business</option>
+                            <option value="General Arts">General Arts</option>
+                            <option value="Visual Arts">Visual Arts</option>
+                            <option value="Agriculture">Agriculture</option>
+                            <option value="Home Economics">Home Economics</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs text-theme-muted uppercase mb-1 block">Hall / House</label>
+                        <select id="s-hall" class="w-full">
+                            <option value="">Select Hall</option>
+                            <option value="Alema Hall">Alema Hall</option>
+                            <option value="Ellen Hall">Ellen Hall</option>
+                            <option value="Halm Addo Hall">Halm Addo Hall</option>
+                            <option value="Nana Wereko Ampem II Hall">Nana Wereko Ampem II Hall</option>
+                            <option value="Wilson Q .Tei Hall">Wilson Q .Tei Hall</option>
+                            <option value="Awuletey Hall">Awuletey Hall</option>
+                            <option value="Peter Ala Adjetey Hall">Peter Ala Adjetey Hall</option>
+                            <option value="Nana Akuako Sarpong Hall">Nana Akuako Sarpong Hall</option>
+                            <option value="Nana Awuah Darko Ampem Hall">Nana Awuah Darko Ampem Hall</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs text-theme-muted uppercase mb-1 block">Class Room</label>
+                        <input type="text" id="s-class" placeholder="e.g. 1A" class="w-full">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs text-theme-muted uppercase mb-1 block">Enrollment Year (*)</label>
+                        <input type="number" id="s-year" placeholder="2024" required class="w-full">
+                    </div>
+                    <div>
+                        <label class="text-xs text-theme-muted uppercase mb-1 block">Date of Birth</label>
+                        <input type="date" id="s-dob" class="w-full">
+                    </div>
+                </div>
+
+                <div class="border-t border-white/10 pt-4 mt-4">
+                    <h4 class="text-sm font-bold text-gold mb-3 uppercase tracking-wider">Contact & Guardians</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="email" id="s-email" placeholder="Student Email" class="w-full">
+                        <input type="tel" id="s-phone" placeholder="Student Phone" class="w-full">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <input type="text" id="s-guardian-name" placeholder="Guardian Name" class="w-full">
+                        <input type="tel" id="s-guardian-phone" placeholder="Guardian Phone" class="w-full">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full btn-gold text-black font-bold py-3 mt-6">Save Student
+                    Record</button>
             </form>
+        </div>
+    </div>
+
+    <!-- VIEW RECORD MODAL -->
+    <div id="view-modal"
+        class="fixed inset-0 bg-black/90 z-[60] hidden items-center justify-center p-4 backdrop-blur-xl">
+        <div
+            class="glass-card w-full max-w-3xl p-8 animate-fade-in shadow-2xl maxHeight80 overflow-y-auto border-gold/20">
+            <div class="flex justify-between items-start mb-8">
+                <div class="flex items-center gap-6">
+                    <div id="v-photo-container"></div>
+                    <div>
+                        <h2 id="v-name" class="text-3xl font-bold text-theme-main">--</h2>
+                        <p id="v-index" class="text-gold font-mono tracking-widest">--</p>
+                    </div>
+                </div>
+                <button onclick="closeViewModal()"
+                    class="bg-white/10 p-2 rounded-full hover:bg-gold hover:text-black transition">
+                    <i class="material-icons-round">close</i>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
+                    <p class="text-[10px] text-theme-muted uppercase mb-1">Current Status</p>
+                    <p id="v-form" class="text-lg font-bold text-blue-300">--</p>
+                </div>
+                <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
+                    <p class="text-[10px] text-theme-muted uppercase mb-1">Program</p>
+                    <p id="v-program" class="text-lg font-bold text-purple-300">--</p>
+                </div>
+                <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
+                    <p class="text-[10px] text-theme-muted uppercase mb-1">Residence</p>
+                    <p id="v-hall" class="text-lg font-bold text-gold">--</p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <h4 class="text-sm font-bold text-theme-main mb-3 flex items-center gap-2">
+                        <i class="material-icons-round text-gold">contact_page</i> Personal Information
+                    </h4>
+                    <div class="grid grid-cols-2 gap-y-3 text-sm">
+                        <span class="text-theme-muted">Gender:</span> <span id="v-gender"
+                            class="text-theme-main">--</span>
+                        <span class="text-theme-muted">Age:</span> <span id="v-age" class="text-theme-main">--</span>
+                        <span class="text-theme-muted">Class:</span> <span id="v-class"
+                            class="text-theme-main">--</span>
+                        <span class="text-theme-muted">Email:</span> <span id="v-email"
+                            class="text-theme-main">--</span>
+                    </div>
+                </div>
+
+                <div class="border-t border-white/10 pt-6">
+                    <h4 class="text-sm font-bold text-theme-main mb-3 flex items-center gap-2">
+                        <i class="material-icons-round text-gold">family_restroom</i> Guardian Details
+                    </h4>
+                    <div class="grid grid-cols-2 gap-y-3 text-sm">
+                        <span class="text-theme-muted">Name:</span> <span id="v-guardian-name"
+                            class="text-theme-main">--</span>
+                        <span class="text-theme-muted">Phone:</span> <span id="v-guardian-phone"
+                            class="text-theme-main">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-10 flex gap-4">
+                <button onclick="printRecord()"
+                    class="flex-1 py-3 rounded-xl bg-white/10 font-bold hover:bg-white/20 transition flex items-center justify-center gap-2">
+                    <i class="material-icons-round">print</i> Print Report
+                </button>
+                <button onclick="closeViewModal(); editStudent(currentViewId)"
+                    class="flex-1 py-3 rounded-xl bg-gold text-black font-bold hover:brightness-110 transition flex items-center justify-center gap-2">
+                    <i class="material-icons-round">edit</i> Edit Record
+                </button>
+            </div>
         </div>
     </div>
 
@@ -544,40 +668,64 @@
             }
 
             // Render GRID
-            grid.innerHTML = students.map(s => `
+            grid.innerHTML = students.map(s => {
+                const photoHtml = s.photo_url
+                    ? `<img src="${s.photo_url}" class="w-12 h-12 rounded-xl object-cover border border-white/10">`
+                    : `<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-900 flex items-center justify-center text-white font-bold text-lg">
+                            ${s.name.charAt(0)}
+                       </div>`;
+
+                return `
                 <div class="glass-card p-6 relative group border border-white/5 hover:border-gold/30">
                     <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-900 flex items-center justify-center text-white font-bold text-lg">
-                            ${s.name.charAt(0)}
-                        </div>
+                        ${photoHtml}
                         <input type="checkbox" onchange="toggleSelect('${s.id}', this.checked)" ${selected.has(String(s.id)) ? 'checked' : ''} class="w-5 h-5 rounded border-white/20 bg-black/20 text-gold focus:ring-0">
                     </div>
-                    <h3 class="font-bold text-theme-main truncate">${s.name}</h3>
-                    <p class="text-xs text-theme-muted mb-3">${s.indexNumber || s.index_number || 'No Index'}</p>
+                    
+                    <h3 class="font-bold text-theme-main truncate mb-0.5">${s.name}</h3>
+                    <div class="flex items-center gap-2 mb-3">
+                        ${s.email ? `<i class="material-icons-round text-xs text-theme-muted">email</i>` : ''}
+                        ${s.phone ? `<i class="material-icons-round text-xs text-theme-muted">phone</i>` : ''}
+                        <p class="text-[10px] text-theme-muted uppercase tracking-tight">${s.index_number || s.indexNumber || 'No Index'}</p>
+                    </div>
+
                     <div class="flex flex-wrap gap-2 text-[10px] uppercase font-bold tracking-wider mb-4">
                         <span class="px-2 py-1 rounded bg-blue-500/10 text-blue-300 border border-blue-500/20">${s.program}</span>
                         <span class="px-2 py-1 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20">${s.current_form || s.currentForm || 'Form ?'}</span>
                     </div>
+
                     <div class="flex justify-between items-center text-xs text-theme-muted pt-3 border-t border-white/10">
-                        <span>${s.hall || 'No Hall'}</span>
-                        <button onclick="deleteStudent('${s.id}')" class="text-red-400 hover:text-red-300"><i class="material-icons-round text-sm">delete</i></button>
+                        <span class="font-medium">${s.hall || 'No Hall'}</span>
+                        <div class="flex items-center gap-2">
+                             <button onclick="viewStudent('${s.id}')" title="Academic Record" class="hover:text-gold transition"><i class="material-icons-round text-lg">school</i></button>
+                             <button onclick="editStudent('${s.id}')" title="Edit Profile" class="hover:text-gold transition"><i class="material-icons-round text-lg">edit</i></button>
+                             <button onclick="deleteStudent('${s.id}')" title="Delete" class="text-red-400/50 hover:text-red-400 transition"><i class="material-icons-round text-lg">delete_outline</i></button>
+                        </div>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
 
             // Render TABLE
             tableBody.innerHTML = students.map(s => `
                 <tr class="hover:bg-white/5 border-b border-white/5 group">
                     <td class="px-6 py-4"><input type="checkbox" onchange="toggleSelect('${s.id}', this.checked)" ${selected.has(String(s.id)) ? 'checked' : ''}></td>
                     <td class="px-6 py-4">
-                        <div class="font-bold text-theme-main">${s.name}</div>
-                        <div class="text-xs text-theme-muted">${s.indexNumber || s.index_number || ''}</div>
+                        <div class="flex items-center gap-3">
+                            ${s.photo_url ? `<img src="${s.photo_url}" class="w-8 h-8 rounded-lg object-cover">` : `<div class="w-8 h-8 rounded-lg bg-blue-900 flex items-center justify-center text-[10px] font-bold">${s.name.charAt(0)}</div>`}
+                            <div>
+                                <div class="font-bold text-theme-main">${s.name}</div>
+                                <div class="text-[10px] text-theme-muted">${s.index_number || s.indexNumber || ''}</div>
+                            </div>
+                        </div>
                     </td>
                     <td class="px-6 py-4 text-xs">${s.program}</td>
                     <td class="px-6 py-4 text-xs font-mono text-blue-300">${s.class_room || s.classRoom || '-'}</td>
                     <td class="px-6 py-4 text-theme-muted text-xs">${s.hall || '-'}</td>
                     <td class="px-6 py-4">
-                        <button onclick="deleteStudent('${s.id}')" class="text-red-400 hover:scale-110 transition"><i class="material-icons-round">delete</i></button>
+                        <div class="flex items-center gap-3">
+                            <button onclick="editStudent('${s.id}')" class="text-theme-muted hover:text-gold transition"><i class="material-icons-round text-lg">edit</i></button>
+                            <button onclick="deleteStudent('${s.id}')" class="text-red-400/50 hover:text-red-400 transition"><i class="material-icons-round text-lg">delete_outline</i></button>
+                        </div>
                     </td>
                 </tr>
             `).join('');
@@ -639,28 +787,110 @@
             } catch (e) { }
         }
 
-        // ADD STUDENT
-        function openAddModal() { document.getElementById('add-modal').classList.remove('hidden'); document.getElementById('add-modal').classList.add('flex'); }
-        function closeAddModal() { document.getElementById('add-modal').classList.add('hidden'); document.getElementById('add-modal').classList.remove('flex'); }
+        // ENROL / EDIT
+        let isEdit = false;
+        function openAddModal() {
+            isEdit = false;
+            document.getElementById('modal-title').innerText = 'Enrol Student';
+            document.getElementById('student-form').reset();
+            document.getElementById('s-id').value = '';
+            document.getElementById('student-modal').classList.remove('hidden');
+            document.getElementById('student-modal').classList.add('flex');
+        }
+
+        async function editStudent(id) {
+            try {
+                const data = await apiRequest(`/students/${id}`);
+                const s = data.student;
+                isEdit = true;
+                document.getElementById('modal-title').innerText = 'Edit Student Record';
+                document.getElementById('s-id').value = s.id;
+                document.getElementById('s-name').value = s.name;
+                document.getElementById('s-index').value = s.index_number || s.indexNumber || '';
+                document.getElementById('s-gender').value = s.gender || 'Male';
+                document.getElementById('s-program').value = s.program || '';
+                document.getElementById('s-hall').value = s.hall || '';
+                document.getElementById('s-class').value = s.class_room || s.classRoom || '';
+                document.getElementById('s-year').value = s.enrollment_year || '';
+                document.getElementById('s-dob').value = s.date_of_birth ? s.date_of_birth.split('T')[0] : '';
+                document.getElementById('s-email').value = s.email || '';
+                document.getElementById('s-phone').value = s.phone || '';
+                document.getElementById('s-guardian-name').value = s.guardian_name || '';
+                document.getElementById('s-guardian-phone').value = s.guardian_phone || '';
+
+                document.getElementById('student-modal').classList.remove('hidden');
+                document.getElementById('student-modal').classList.add('flex');
+            } catch (e) { }
+        }
+
+        function closeModal() {
+            document.getElementById('student-modal').classList.add('hidden');
+            document.getElementById('student-modal').classList.remove('flex');
+        }
+
+        // VIEW DETAILS
+        let currentViewId = null;
+        async function viewStudent(id) {
+            try {
+                currentViewId = id;
+                const data = await apiRequest(`/students/${id}`);
+                const s = data.student;
+
+                document.getElementById('v-name').innerText = s.name;
+                document.getElementById('v-index').innerText = s.index_number || s.indexNumber || 'NO INDEX';
+                document.getElementById('v-form').innerText = s.current_form || s.currentForm || '--';
+                document.getElementById('v-program').innerText = s.program || '--';
+                document.getElementById('v-hall').innerText = s.hall || '--';
+                document.getElementById('v-gender').innerText = s.gender || '--';
+                document.getElementById('v-age').innerText = s.age ? `${s.age} yrs` : '--';
+                document.getElementById('v-class').innerText = s.class_room || s.classRoom || '--';
+                document.getElementById('v-email').innerText = s.email || '--';
+                document.getElementById('v-guardian-name').innerText = s.guardian_name || '--';
+                document.getElementById('v-guardian-phone').innerText = s.guardian_phone || '--';
+
+                const photoContainer = document.getElementById('v-photo-container');
+                if (s.photo_url) {
+                    photoContainer.innerHTML = `<img src="${s.photo_url}" class="w-24 h-24 rounded-2xl object-cover border-2 border-gold/50 shadow-2xl shadow-gold/20">`;
+                } else {
+                    photoContainer.innerHTML = `<div class="w-24 h-24 rounded-2xl bg-blue-900 flex items-center justify-center text-3xl font-bold border-2 border-white/10">${s.name.charAt(0)}</div>`;
+                }
+
+                document.getElementById('view-modal').classList.remove('hidden');
+                document.getElementById('view-modal').classList.add('flex');
+            } catch (e) { }
+        }
+
+        function closeViewModal() {
+            document.getElementById('view-modal').classList.add('hidden');
+            document.getElementById('view-modal').classList.remove('flex');
+        }
+
+        function printRecord() { window.print(); }
 
         document.getElementById('student-form').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const id = document.getElementById('s-id').value;
             const payload = {
                 name: document.getElementById('s-name').value,
                 index_number: document.getElementById('s-index').value,
+                gender: document.getElementById('s-gender').value,
                 program: document.getElementById('s-program').value,
                 enrollment_year: parseInt(document.getElementById('s-year').value),
                 hall: document.getElementById('s-hall').value,
                 class_room: document.getElementById('s-class').value,
+                date_of_birth: document.getElementById('s-dob').value,
                 email: document.getElementById('s-email').value,
                 phone: document.getElementById('s-phone').value,
+                guardian_name: document.getElementById('s-guardian-name').value,
+                guardian_phone: document.getElementById('s-guardian-phone').value,
             };
 
             try {
-                await apiRequest('/students', { method: 'POST', body: JSON.stringify(payload) });
-                showToast('Student enrolled successfully');
-                closeAddModal();
-                e.target.reset();
+                const method = isEdit ? 'PUT' : 'POST';
+                const endpoint = isEdit ? `/students/${id}` : '/students';
+                await apiRequest(endpoint, { method, body: JSON.stringify(payload) });
+                showToast(isEdit ? 'Record updated' : 'Student enrolled successfully');
+                closeModal();
                 loadStudents();
             } catch (e) { }
         });
