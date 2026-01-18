@@ -23,8 +23,42 @@ async function logEvent(userId, type, details, req) {
     }
 }
 
+// Helper: Proxy to Python API
+async function pythonProxy(req, res, endpoint, options = {}) {
+    const pythonUrl = process.env.PYTHON_API_URL;
+    const internalSecret = process.env.INTERNAL_SECRET_KEY;
+
+    if (!pythonUrl) return false;
+
+    try {
+        const url = new URL(endpoint, pythonUrl);
+        if (req.query) {
+            Object.keys(req.query).forEach(key => url.searchParams.append(key, req.query[key]));
+        }
+
+        const response = await fetch(url.toString(), {
+            method: options.method || req.method,
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Internal-Secret': internalSecret,
+                ...options.headers
+            },
+            body: (req.method !== 'GET' && req.method !== 'HEAD') ? JSON.stringify(req.body) : undefined
+        });
+
+        const data = await response.json();
+        res.status(response.status).json(data);
+        return true;
+    } catch (error) {
+        console.error("Proxy Error:", error);
+        res.status(502).json({ error: "Failed to connect to SchoolSync Service" });
+        return true;
+    }
+}
+
 // GET /api/students - List with Search & Filtering
 router.get('/', verifyAdmin, async (req, res) => {
+    if (await pythonProxy(req, res, '/api/students')) return;
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 20;
@@ -72,6 +106,7 @@ router.get('/', verifyAdmin, async (req, res) => {
 
 // GET /api/students/:id - Single Student Details
 router.get('/:id', verifyAdmin, async (req, res) => {
+    if (await pythonProxy(req, res, `/api/students/${req.params.id}`)) return;
     try {
         const student = await Student.findById(req.params.id);
         if (!student) return res.status(404).json({ error: "Student not found" });
@@ -83,6 +118,7 @@ router.get('/:id', verifyAdmin, async (req, res) => {
 
 // POST /api/students - Create Student
 router.post('/', verifyAdmin, async (req, res) => {
+    if (await pythonProxy(req, res, '/api/students')) return;
     try {
         // Basic Validation
         const { name, program, enrollmentYear } = req.body;
@@ -114,6 +150,7 @@ router.post('/', verifyAdmin, async (req, res) => {
 
 // PUT /api/students/:id - Update Student
 router.put('/:id', verifyAdmin, async (req, res) => {
+    if (await pythonProxy(req, res, `/api/students/${req.params.id}`)) return;
     try {
         // Prevent password update via this route
         delete req.body.password;
@@ -136,6 +173,7 @@ router.put('/:id', verifyAdmin, async (req, res) => {
 
 // DELETE /api/students/:id - Delete Student
 router.delete('/:id', verifyAdmin, async (req, res) => {
+    if (await pythonProxy(req, res, `/api/students/${req.params.id}`)) return;
     try {
         const student = await Student.findByIdAndDelete(req.params.id);
         if (!student) return res.status(404).json({ error: "Student not found" });
@@ -149,6 +187,7 @@ router.delete('/:id', verifyAdmin, async (req, res) => {
 
 // POST /api/students/bulk-action - Bulk Operations
 router.post('/bulk-action', verifyAdmin, async (req, res) => {
+    if (await pythonProxy(req, res, '/api/students/bulk-action')) return;
     try {
         const { ids, action, payload } = req.body;
         if (!ids || !Array.isArray(ids) || ids.length === 0) {
@@ -206,8 +245,9 @@ router.post('/bulk-action', verifyAdmin, async (req, res) => {
     }
 });
 
-// GET /api/students/stats - Dashboard Stats
+// GET /api/students/stats/dashboard - Dashboard Stats
 router.get('/stats/dashboard', verifyAdmin, async (req, res) => {
+    if (await pythonProxy(req, res, '/api/students/stats/dashboard')) return;
     try {
         const total = await Student.countDocuments();
         const currentYear = new Date().getFullYear();
