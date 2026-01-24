@@ -16,6 +16,7 @@
 
     <style>
         :root {
+            /* Theme Variables */
             --bg-color: #0f172a;
             --glass-bg: rgba(30, 41, 59, 0.7);
             --glass-border: rgba(255, 255, 255, 0.08);
@@ -30,12 +31,14 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             min-height: 100vh;
+            /* Premium Background Gradient */
             background-image: 
                 radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
                 radial-gradient(at 100% 0%, rgba(251, 191, 36, 0.1) 0px, transparent 50%);
             background-attachment: fixed;
         }
 
+        /* Glassmorphism Card Style */
         .glass-card {
             background: rgba(30, 41, 59, 0.4);
             backdrop-filter: blur(12px);
@@ -47,8 +50,10 @@
         .glass-card:hover {
             transform: translateY(-4px);
             border-color: var(--blue-accent);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
         }
 
+        /* Gold Button */
         .btn-gold {
             background: linear-gradient(135deg, var(--gold-accent) 0%, #d97706 100%);
             color: #0f172a;
@@ -56,17 +61,19 @@
             padding: 0.75rem 1.5rem;
             border-radius: 9999px;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
 
         .btn-gold:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+            box-shadow: 0 8px 15px rgba(251, 191, 36, 0.3);
         }
 
+        /* Form Inputs */
         input, textarea {
             background: rgba(15, 23, 42, 0.6);
             border: 2px solid var(--glass-border);
-            color: white;
+            color: var(--text-main);
             padding: 0.75rem 1rem;
             border-radius: 0.75rem;
             width: 100%;
@@ -76,239 +83,434 @@
         input:focus, textarea:focus {
             outline: none;
             border-color: var(--blue-accent);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Navigation Tabs */
+        .tab-btn {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.3s;
+            cursor: pointer;
         }
 
         .tab-active {
-            background: rgba(59, 130, 246, 0.1);
+            background: rgba(59, 130, 246, 0.15);
             color: var(--blue-accent);
         }
         
-        .hidden { display: none; }
+        .tab-inactive {
+            color: var(--text-muted);
+        }
+
+        .tab-inactive:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Utilities */
+        .hidden { display: none !important; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
     </style>
 </head>
 <body class="p-4 md:p-8">
     <div class="max-w-7xl mx-auto space-y-8">
         
-        <!-- Header -->
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <!-- Header Section -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
             <div>
-                <h1 class="text-3xl font-bold flex items-center">
+                <h1 class="text-3xl font-bold flex items-center bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
                     <i class="material-icons-round mr-3 text-gold">admin_panel_settings</i>
                     Command Center
                 </h1>
-                <p class="text-text-muted mt-1">Syncing <span class="text-blue-400">SchoolSync Pro</span> & <span class="text-gold">Accra Academy</span></p>
+                <p class="text-text-muted mt-1 text-sm md:text-base">
+                    Syncing <span class="text-blue-400 font-semibold">SchoolSync Pro</span> & <span class="text-gold font-semibold">Accra Academy</span>
+                </p>
             </div>
             
-            <!-- Navigation -->
-            <div class="flex p-1 rounded-xl bg-slate-800/50 border border-white/5">
-                <button onclick="switchTab('overview')" id="tab-overview" class="px-6 py-2 rounded-lg text-sm font-medium transition-all tab-active flex items-center">
-                    <i class="material-icons-round mr-2">dashboard</i> Overview
+            <!-- Tab Navigation -->
+            <div class="flex p-1.5 rounded-xl bg-slate-800/80 border border-white/5 backdrop-blur-md shadow-lg overflow-x-auto max-w-full">
+                <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn tab-active">
+                    <i class="material-icons-round mr-2 text-lg">dashboard</i> Overview
                 </button>
-                <button onclick="switchTab('website')" id="tab-website" class="px-6 py-2 rounded-lg text-sm font-medium text-text-muted hover:text-white transition-all flex items-center">
-                    <i class="material-icons-round mr-2">web</i> Website
+                <button onclick="switchTab('students')" id="tab-students" class="tab-btn tab-inactive">
+                    <i class="material-icons-round mr-2 text-lg">people</i> Students
                 </button>
-                <button onclick="switchTab('logs')" id="tab-logs" class="px-6 py-2 rounded-lg text-sm font-medium text-text-muted hover:text-white transition-all flex items-center">
-                    <i class="material-icons-round mr-2">terminal</i> Logs
+                <button onclick="switchTab('website')" id="tab-website" class="tab-btn tab-inactive">
+                    <i class="material-icons-round mr-2 text-lg">web</i> Website
+                </button>
+                <button onclick="switchTab('logs')" id="tab-logs" class="tab-btn tab-inactive">
+                    <i class="material-icons-round mr-2 text-lg">terminal</i> Logs
                 </button>
             </div>
         </div>
 
-        <!-- TAB: OVERVIEW -->
-        <div id="content-overview" class="space-y-6">
+        <!-- ==================== TAB: OVERVIEW ==================== -->
+        <div id="content-overview" class="tab-content space-y-6 animate-fade-in">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Data fetched from Node -> Python Proxy -->
-                <div class="glass-card p-6">
-                    <div class="flex justify-between items-start mb-4">
+                
+                <!-- Total Students (Synced) -->
+                <div class="glass-card p-6 relative overflow-hidden">
+                    <div class="absolute right-0 top-0 p-3 opacity-10">
+                        <i class="material-icons-round text-9xl text-blue-500">school</i>
+                    </div>
+                    <div class="flex justify-between items-start mb-4 relative z-10">
                         <div class="p-3 bg-blue-500/10 rounded-xl text-blue-400">
                             <i class="material-icons-round">school</i>
                         </div>
-                        <span class="text-xs font-bold px-2 py-1 rounded bg-green-500/20 text-green-400">SYNC LOGGED</span>
+                        <span class="text-xs font-bold px-2 py-1 rounded bg-green-500/20 text-green-400 border border-green-500/20">Synced</span>
                     </div>
-                    <p class="text-text-muted text-sm">Total enrollment</p>
-                    <h3 class="text-4xl font-bold mt-1" id="stat-total">...</h3>
+                    <p class="text-text-muted text-sm font-medium">Total Enrollment</p>
+                    <h3 class="text-4xl font-bold mt-1 text-white" id="stat-total">...</h3>
                 </div>
 
-                <div class="glass-card p-6">
+                <!-- New Admissions -->
+                <div class="glass-card p-6 relative overflow-hidden">
                     <div class="flex justify-between items-start mb-4">
                         <div class="p-3 bg-green-500/10 rounded-xl text-green-400">
                             <i class="material-icons-round">person_add</i>
                         </div>
                     </div>
-                    <p class="text-text-muted text-sm">New this month</p>
-                    <h3 class="text-4xl font-bold mt-1" id="stat-new">...</h3>
+                    <p class="text-text-muted text-sm font-medium">New This Month</p>
+                    <h3 class="text-4xl font-bold mt-1 text-white" id="stat-new">...</h3>
                 </div>
 
-                <div class="glass-card p-6">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-3 bg-purple-500/10 rounded-xl text-purple-400">
-                            <i class="material-icons-round">payments</i>
-                        </div>
-                    </div>
-                    <p class="text-text-muted text-sm">Fees Collection</p>
-                    <h3 class="text-4xl font-bold mt-1">92%</h3>
-                </div>
-
-                <div class="glass-card p-6">
+                <!-- Website Status -->
+                <div class="glass-card p-6 relative overflow-hidden">
                     <div class="flex justify-between items-start mb-4">
                         <div class="p-3 bg-red-500/10 rounded-xl text-red-400">
+                            <i class="material-icons-round">public</i>
+                        </div>
+                    </div>
+                    <p class="text-text-muted text-sm font-medium">Website Status</p>
+                    <div class="flex items-center mt-2">
+                        <span class="w-3 h-3 rounded-full bg-green-500 animate-pulse mr-2"></span>
+                        <span class="text-xl font-bold text-white">Online</span>
+                    </div>
+                </div>
+
+                <!-- Announcements -->
+                <div class="glass-card p-6 relative overflow-hidden">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-yellow-500/10 rounded-xl text-gold">
                             <i class="material-icons-round">campaign</i>
                         </div>
                     </div>
-                    <p class="text-text-muted text-sm">Active Alerts</p>
-                    <h3 class="text-4xl font-bold mt-1" id="stat-announcements">0</h3>
+                    <p class="text-text-muted text-sm font-medium">Active Announcement</p>
+                    <h3 class="text-4xl font-bold mt-1 text-white" id="stat-announcements">0</h3>
                 </div>
             </div>
         </div>
 
-        <!-- TAB: WEBSITE -->
-        <div id="content-website" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Announcements Manager -->
-            <div class="glass-card p-6">
-                <h2 class="text-xl font-bold mb-6 flex items-center">
-                    <i class="material-icons-round mr-2 text-red-400">campaign</i> Live Announcements
+        <!-- ==================== TAB: STUDENTS (Sync View) ==================== -->
+        <div id="content-students" class="tab-content hidden glass-card p-6 md:p-8">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center">
+                        <i class="material-icons-round mr-3 text-blue-500">people</i> Student Database
+                    </h2>
+                    <p class="text-text-muted text-sm mt-1">Live view from SchoolSync SQL Database</p>
+                </div>
+                <button onclick="loadData()" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-text-muted hover:text-white transition">
+                    <i class="material-icons-round">refresh</i>
+                </button>
+            </div>
+            
+            <div class="overflow-x-auto rounded-xl border border-white/5">
+                <table class="w-full text-sm text-left">
+                    <thead class="text-xs text-text-muted uppercase bg-black/20">
+                        <tr>
+                            <th class="p-4 font-semibold">Name</th>
+                            <th class="p-4 font-semibold">Program</th>
+                            <th class="p-4 font-semibold">Form / Year</th>
+                            <th class="p-4 font-semibold text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="students-table" class="divide-y divide-white/5 bg-white/5">
+                        <tr id="students-loading">
+                            <td colspan="4" class="p-8 text-center text-text-muted italic">Loading students from proxy...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Simple Pagination Control -->
+            <div class="flex justify-center mt-6 space-x-2">
+                <button onclick="changePage(-1)" class="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white disabled:opacity-50">Prev</button>
+                <span id="page-indicator" class="px-4 py-2 text-text-muted">Page 1</span>
+                <button onclick="changePage(1)" class="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white">Next</button>
+            </div>
+        </div>
+
+        <!-- ==================== TAB: WEBSITE ==================== -->
+        <div id="content-website" class="tab-content hidden grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Announcements -->
+            <div class="glass-card p-6 md:p-8">
+                <h2 class="text-xl font-bold mb-6 flex items-center text-white">
+                    <i class="material-icons-round mr-2 text-red-500">campaign</i> Live Announcements
                 </h2>
                 <div class="space-y-4">
-                    <textarea id="announcement-input" rows="3" placeholder="Type announcement for the homepage..."></textarea>
+                    <div>
+                        <label class="block text-sm text-text-muted mb-2 font-medium">Broadcast Message</label>
+                        <textarea id="announcement-input" rows="4" placeholder="Enter announcement to display on homepage..." 
+                            class="focus:ring-2 focus:ring-red-500/50"></textarea>
+                    </div>
                     <div class="flex justify-end">
-                        <button onclick="postAnnouncement()" class="btn-gold">Broadcast Live</button>
+                        <button onclick="postAnnouncement()" class="btn-gold flex items-center">
+                            <i class="material-icons-round mr-2">send</i> Post Live
+                        </button>
                     </div>
                 </div>
-                <div class="mt-8 pt-6 border-t border-white/10">
-                    <p class="text-xs font-bold text-text-muted uppercase tracking-widest mb-4">Current Broadcast</p>
-                    <div id="current-announcement" class="p-4 bg-slate-900/50 rounded-xl border border-red-500/30 text-sm">
+                
+                <div class="mt-8 pt-8 border-t border-white/10">
+                    <div class="flex items-center justify-between mb-4">
+                        <p class="text-xs font-bold text-text-muted uppercase tracking-widest">Active On Website</p>
+                        <span class="inline-flex h-2 w-2 rounded-full bg-green-500"></span>
+                    </div>
+                    <div id="current-announcement" class="p-4 bg-black/20 rounded-xl border-l-4 border-red-500 text-sm text-white italic">
                         Loading...
                     </div>
                 </div>
             </div>
 
             <!-- Knowledge Base -->
-            <div class="glass-card p-6">
-                <h2 class="text-xl font-bold mb-6 flex items-center">
-                    <i class="material-icons-round mr-2 text-blue-400">auto_stories</i> Knowledge Base
+            <div class="glass-card p-6 md:p-8">
+                <h2 class="text-xl font-bold mb-6 flex items-center text-white">
+                    <i class="material-icons-round mr-2 text-blue-500">auto_stories</i> Knowledge Base
                 </h2>
-                <div class="space-y-4 mb-6">
-                    <input id="kb-question" type="text" placeholder="Question (e.g., When is vacation?)">
-                    <textarea id="kb-answer" rows="2" placeholder="Answer (e.g., Dec 15th)"></textarea>
-                    <button onclick="addKnowledge()" class="w-full btn-gold py-2 rounded-lg text-sm">Add Entry</button>
+                <div class="space-y-4 mb-8">
+                    <input id="kb-question" type="text" placeholder="Question (e.g., Visiting Hours?)">
+                    <textarea id="kb-answer" rows="2" placeholder="Answer (e.g., 2pm - 5pm Weekends)"></textarea>
+                    <button onclick="addKnowledge()" class="w-full btn-gold py-2 rounded-lg text-sm font-bold shadow-lg">Add to Knowledge Base</button>
                 </div>
-                <div id="kb-list" class="h-64 overflow-y-auto space-y-3 custom-scrollbar">
-                    <!-- Loaded via JS -->
+                
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-text-muted uppercase tracking-wider mb-2">Existing Entries</h3>
+                    <div id="kb-list" class="h-64 overflow-y-auto custom-scrollbar space-y-3 pr-2">
+                        <!-- Loaded items -->
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- TAB: LOGS -->
-        <div id="content-logs" class="hidden">
-            <div class="glass-card p-6">
-                <h2 class="text-xl font-bold mb-6">AI Chat Logs</h2>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left">
-                        <thead class="text-xs text-text-muted uppercase bg-white/5">
-                            <tr>
-                                <th class="p-3 rounded-l-lg">Time</th>
-                                <th class="p-3">User Query</th>
-                                <th class="p-3">AI Response</th>
-                                <th class="p-3 rounded-r-lg">Type</th>
-                            </tr>
-                        </thead>
-                        <tbody id="logs-table" class="divide-y divide-white/5"></tbody>
-                    </table>
-                </div>
+        <!-- ==================== TAB: LOGS ==================== -->
+        <div id="content-logs" class="tab-content hidden glass-card p-6 md:p-8">
+            <h2 class="text-xl font-bold mb-6 flex items-center text-white">
+                <i class="material-icons-round mr-2 text-purple-500">smart_toy</i> AI Chat Logs
+            </h2>
+            <div class="overflow-hidden rounded-xl border border-white/5">
+                <table class="w-full text-sm text-left">
+                    <thead class="text-xs text-text-muted uppercase bg-black/20">
+                        <tr>
+                            <th class="p-4 font-semibold">Time</th>
+                            <th class="p-4 font-semibold">User Query</th>
+                            <th class="p-4 font-semibold">AI Response</th>
+                            <th class="p-4 font-semibold rounded-tr-xl">Type</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logs-table" class="divide-y divide-white/5 bg-white/5">
+                        <!-- Loaded logs -->
+                    </tbody>
+                </table>
             </div>
         </div>
 
     </div>
 
+    <!-- MAIN SCRIPT -->
     <script>
-        // API Configuration
-        const API_BASE = '/api'; 
+        // --- CONFIG ---
+        const API_BASE = '/api';
+        let currentPage = 1;
 
-        // Authenticated Fetch Wrapper
+        // --- AUTH API REQUEST ---
         async function fetchAuth(endpoint, options = {}) {
-            const token = localStorage.getItem('token');
-            const headers = {
-                'Content-Type': 'application/json',
-                ...options.headers
-            };
-            if (token) headers['Authorization'] = `Bearer ${token}`;
+            // Retrieve token (assumes login flow provided it)
+            const token = localStorage.getItem('token'); 
             
-            const res = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
-            return res.json();
+            const headers = { 
+                'Content-Type': 'application/json',
+                ...options.headers 
+            };
+            if(token) headers['Authorization'] = `Bearer ${token}`;
+
+            try {
+                const res = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
+                // If 401 Unauthorized, maybe redirect to login? 
+                // For now we just return the JSON.
+                return await res.json();
+            } catch (err) {
+                console.error("API Error:", err);
+                return { success: false, error: err.message };
+            }
         }
 
-        // Tab Switching
+        // --- TABS LOGIC ---
         function switchTab(tab) {
-            ['overview', 'website', 'logs'].forEach(t => {
-                document.getElementById(`content-${t}`).classList.add('hidden');
-                document.getElementById(`tab-${t}`).classList.remove('tab-active', 'text-blue-400');
-                document.getElementById(`tab-${t}`).classList.add('text-text-muted');
+            // Hide all contents
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            
+            // Deactivate all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('tab-active');
+                btn.classList.add('tab-inactive');
             });
+            
+            // Show target
             document.getElementById(`content-${tab}`).classList.remove('hidden');
-            document.getElementById(`tab-${tab}`).classList.add('tab-active', 'text-blue-400');
-            document.getElementById(`tab-${tab}`).classList.remove('text-text-muted');
+            
+            // Activate button
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            activeBtn.classList.add('tab-active');
+            activeBtn.classList.remove('tab-inactive');
+            
+            // If Students tab, refresh data
+            if(tab === 'students') loadStudents(currentPage);
         }
 
-        // Data Loading
+        // --- DATA LOADING ---
         async function loadData() {
-            // 1. Stats (Proxied from Python Backend)
+            // 1. Stats
             const statsRes = await fetchAuth('/students/stats/dashboard');
-            if (statsRes.success) {
+            if(statsRes.success && statsRes.stats) {
                 document.getElementById('stat-total').innerText = statsRes.stats.total;
                 document.getElementById('stat-new').innerText = statsRes.stats.newThisMonth;
             }
 
-            // 2. Announcement
+            // 2. Announcements
             const annRes = await fetchAuth('/announcement');
-            const annDisplay = document.getElementById('current-announcement');
-            annDisplay.innerText = annRes.text || "No active announcement";
-            document.getElementById('stat-announcements').innerText = annRes.isActive ? 1 : 0;
+            const display = document.getElementById('current-announcement');
+            const count = document.getElementById('stat-announcements');
+            
+            if (annRes.text) {
+                display.innerText = `"${annRes.text}"`;
+                count.innerText = "1";
+            } else {
+                display.innerText = "No active announcement.";
+                count.innerText = "0";
+            }
 
             // 3. Knowledge Base
             const kbRes = await fetchAuth('/knowledge');
-            const kbList = document.getElementById('kb-list');
-            kbList.innerHTML = kbRes.map(k => `
-                <div class="p-3 bg-white/5 rounded-lg border border-white/5 hover:border-blue-500/30 transition">
-                    <p class="font-bold text-blue-200">${k.question}</p>
-                    <p class="text-text-muted text-xs mt-1 truncate">${k.text || k.answer}</p>
-                </div>
-            `).join('');
+            if (Array.isArray(kbRes)) {
+                document.getElementById('kb-list').innerHTML = kbRes.map(k => `
+                    <div class="p-3 bg-white/5 rounded-lg border border-white/5 hover:border-blue-500/30 transition group relative">
+                        <button onclick="deleteKnowledge('${k._id}')" class="absolute top-2 right-2 text-red-400 opacity-0 group-hover:opacity-100 transition">
+                            <i class="material-icons-round text-sm">delete</i>
+                        </button>
+                        <p class="font-bold text-blue-200 text-sm mb-1">${k.question}</p>
+                        <p class="text-text-muted text-xs truncate">${k.text || k.answer}</p>
+                    </div>
+                `).join('');
+            }
 
             // 4. Logs
-            const logsRes = await fetchAuth('/logs?limit=10');
-            const logsTable = document.getElementById('logs-table');
-            logsTable.innerHTML = logsRes.map(l => `
-                <tr class="hover:bg-white/5">
-                    <td class="p-3 text-text-muted">${new Date(l.timestamp).toLocaleTimeString()}</td>
-                    <td class="p-3 font-medium">${l.userMessage}</td>
-                    <td class="p-3 text-text-muted truncate max-w-xs">${l.botReply}</td>
-                    <td class="p-3"><span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">Chat</span></td>
-                </tr>
-            `).join('');
+            const logsRes = await fetchAuth('/logs?limit=8');
+            if (Array.isArray(logsRes)) {
+                document.getElementById('logs-table').innerHTML = logsRes.map(l => `
+                    <tr class="hover:bg-white/5 transition">
+                        <td class="p-4 text-text-muted whitespace-nowrap">${new Date(l.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+                        <td class="p-4 font-medium text-white">${l.userMessage || '-'}</td>
+                        <td class="p-4 text-text-muted truncate max-w-xs">${l.botReply || '...'}</td>
+                        <td class="p-4"><span class="px-2 py-1 rounded-md text-xs bg-purple-500/20 text-purple-300 font-bold border border-purple-500/20">Chat</span></td>
+                    </tr>
+                `).join('');
+            }
         }
 
-        // Actions
+        // --- STUDENT SYNC LOGIC ---
+        async function loadStudents(page) {
+            currentPage = page;
+            document.getElementById('page-indicator').innerText = `Page ${page}`;
+            
+            const tbody = document.getElementById('students-table');
+            // Don't wipe if empty to avoid flash, just set loading opacity? 
+            // For now, simple loading text:
+            tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-text-muted"><div class="animate-pulse">Fetching from SchoolSync...</div></td></tr>`;
+            
+            // Call Node API which proxies to Python
+            const res = await fetchAuth(`/students?limit=10&page=${page}`);
+            
+            if(res.success && res.students) {
+                if(res.students.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-text-muted">No students found.</td></tr>`;
+                    return;
+                }
+                
+                tbody.innerHTML = res.students.map(s => `
+                    <tr class="hover:bg-white/5 transition border-b border-white/5">
+                        <td class="p-4">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold mr-3">
+                                    ${s.name.charAt(0)}
+                                </div>
+                                <span class="font-medium text-white">${s.name}</span>
+                            </div>
+                        </td>
+                        <td class="p-4 text-text-muted">${s.program || 'General'}</td>
+                        <td class="p-4 text-text-muted">${getForm(s.enrollment_year)}</td>
+                        <td class="p-4 text-center">
+                            <button class="text-blue-400 hover:text-blue-300 transition text-xs font-bold uppercase tracking-wide">Details</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+               tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-red-400">Sync Error: ${res.error || 'Connection Failed'}</td></tr>`;
+            }
+        }
+
+        function getForm(year) {
+            const current = new Date().getFullYear();
+            const diff = current - year;
+            if(diff === 0) return "Form 1";
+            if(diff === 1) return "Form 2";
+            if(diff === 2) return "Form 3";
+            return "Graduated";
+        }
+
+        function changePage(delta) {
+            if(currentPage + delta < 1) return;
+            loadStudents(currentPage + delta);
+        }
+
+        // --- ACTIONS ---
         async function postAnnouncement() {
             const text = document.getElementById('announcement-input').value;
-            await fetchAuth('/announcement', {
-                method: 'POST',
-                body: JSON.stringify({ text })
-            });
-            loadData();
+            if(!text) return;
+            await fetchAuth('/announcement', { method: 'POST', body: JSON.stringify({ text }) });
             document.getElementById('announcement-input').value = '';
+            loadData(); // Refresh UI
         }
 
         async function addKnowledge() {
             const question = document.getElementById('kb-question').value;
             const text = document.getElementById('kb-answer').value;
-            await fetchAuth('/knowledge', {
-                method: 'POST',
-                body: JSON.stringify({ question, text })
-            });
+            if(!question || !text) return;
+            
+            await fetchAuth('/knowledge', { method: 'POST', body: JSON.stringify({ question, text }) });
+            document.getElementById('kb-question').value = '';
+            document.getElementById('kb-answer').value = '';
             loadData();
         }
 
-        // Init
-        document.addEventListener('DOMContentLoaded', loadData);
+        async function deleteKnowledge(id) {
+             if(confirm('Delete this entry?')) {
+                 await fetchAuth(`/knowledge/${id}`, { method: 'DELETE' });
+                 loadData();
+             }
+        }
+
+        // --- INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            // Load students initially hidden until tab switch, or pre-load?
+            // Let's just load Main Data. Students load on click.
+        });
     </script>
 </body>
 </html>
