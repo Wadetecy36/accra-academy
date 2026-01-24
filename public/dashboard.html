@@ -1,917 +1,314 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SchoolSync Dashboard - Accra Academy</title>
-
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-
+    <title>Command Center - Accra Academy</title>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: { colors: { royal: '#002147', gold: '#FDBE11', dark: '#020617' }, fontFamily: { mono: ['Consolas', 'Monaco', 'monospace'] } }
-            }
-        }
-    </script>
-
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Theme Initialization -->
-    <script>
-            (function () {
-                const savedTheme = localStorage.getItem('theme') || 'dark';
-                document.documentElement.setAttribute('data-theme', savedTheme);
-            })();
-    </script>
-
     <style>
-        /* --- DYNAMIC THEME VARIABLES --- */
         :root {
-            /* DARK THEME (Gold & Royal Blue) */
             --bg-color: #0f172a;
             --glass-bg: rgba(30, 41, 59, 0.7);
             --glass-border: rgba(255, 255, 255, 0.08);
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
-            --card-bg: rgba(30, 41, 59, 0.4);
-            --card-hover: rgba(51, 65, 85, 0.5);
-            --nav-bg: rgba(15, 23, 42, 0.85);
-            --input-bg: rgba(15, 23, 42, 0.6);
             --gold-accent: #fbbf24;
             --blue-accent: #3b82f6;
-            --glow-primary: rgba(59, 130, 246, 0.15);
-            --glow-secondary: rgba(251, 191, 36, 0.1);
-        }
-
-        [data-theme="light"] {
-            /* LIGHT THEME */
-            --bg-color: #f8fafc;
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: rgba(226, 232, 240, 0.8);
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --card-bg: #ffffff;
-            --card-hover: #f1f5f9;
-            --nav-bg: rgba(255, 255, 255, 0.9);
-            --input-bg: #ffffff;
-            --gold-accent: #d97706;
-            --blue-accent: #2563eb;
-            --glow-primary: rgba(37, 99, 235, 0.05);
-            --glow-secondary: rgba(217, 119, 6, 0.05);
         }
 
         body {
-            font-family: 'Outfit', 'Segoe UI', sans-serif;
+            font-family: 'Outfit', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease;
-            overflow-x: hidden;
             min-height: 100vh;
-            background-image:
-                radial-gradient(at 0% 0%, var(--glow-primary) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, var(--glow-secondary) 0px, transparent 50%);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(251, 191, 36, 0.1) 0px, transparent 50%);
             background-attachment: fixed;
         }
 
-        /* --- GLASSMORPHISM & CARDS --- */
-        .glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-        }
-
         .glass-card {
-            background: var(--card-bg);
+            background: rgba(30, 41, 59, 0.4);
             backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
             border-radius: 1.5rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
         }
 
         .glass-card:hover {
-            background: var(--card-hover);
-            transform: translateY(-4px) scale(1.01);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(-4px);
             border-color: var(--blue-accent);
         }
 
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--gold-accent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .glass-card:hover::before {
-            opacity: 1;
-        }
-
-        .text-theme-main {
-            color: var(--text-main);
-        }
-
-        .text-theme-muted {
-            color: var(--text-muted);
-        }
-
-        .text-gold {
-            color: var(--gold-accent);
-            font-weight: 700;
-        }
-
-        .text-blue {
-            color: var(--blue-accent);
-        }
-
         .btn-gold {
-            background: linear-gradient(135deg, var(--gold-accent) 0%, #fbbf24 100%);
+            background: linear-gradient(135deg, var(--gold-accent) 0%, #d97706 100%);
             color: #0f172a;
             font-weight: 600;
-            border: none;
-            border-radius: 9999px;
             padding: 0.75rem 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(251, 191, 36, 0.3);
+            border-radius: 9999px;
             transition: all 0.3s ease;
         }
 
         .btn-gold:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(251, 191, 36, 0.4);
-            filter: brightness(1.05);
+            box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
         }
 
-        input,
-        select,
-        textarea {
-            background: var(--input-bg) !important;
-            border: 2px solid var(--glass-border) !important;
-            color: var(--text-main) !important;
-            border-radius: 1rem !important;
-            padding: 0.75rem 1rem !important;
-            transition: all 0.3s ease;
-            font-size: 1rem;
+        input, textarea {
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid var(--glass-border);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            width: 100%;
+            transition: all 0.3s;
         }
-
-        input:focus,
-        select:focus,
-        textarea:focus {
-            border-color: var(--blue-accent) !important;
+        
+        input:focus, textarea:focus {
             outline: none;
-            box-shadow: 0 0 0 4px var(--glow-primary);
+            border-color: var(--blue-accent);
         }
 
-        select option {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding: 10px;
+        .tab-active {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--blue-accent);
         }
-
-        .material-icons-round {
-            vertical-align: middle;
-        }
-
-        .animate-fade-in {
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        
+        .hidden { display: none; }
     </style>
 </head>
-
-<body class="antialiased">
-
-    <!-- AUTH CHECK -->
-    <script>
-        if (!sessionStorage.getItem('bleoo_admin_token')) {
-            window.location.href = 'admin.html'; // Redirect to login
-        }
-    </script>
-
-    <div class="ambient-glow"></div>
-
-    <!-- Navigation -->
-    <nav class="glass sticky top-0 z-50 border-b-0" style="background: var(--nav-bg);">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex items-center space-x-3">
-                    <img src="./assets/crest.png" class="w-10 h-10 object-contain drop-shadow-lg">
-                    <div><span class="text-xl font-bold tracking-tight text-theme-main">SchoolSync <span
-                                class="text-gold">Administrator</span></span></div>
-                </div>
-
-                <div class="hidden md:flex items-center space-x-2">
-                    <a href="#" class="px-4 py-2 rounded-lg text-theme-main flex items-center bg-white/10">
-                        <i class="material-icons-round mr-2 text-gold">people</i> Students
-                    </a>
-                </div>
-
-                <div class="hidden md:flex items-center space-x-4 pl-4 border-l border-white/10">
-                    <button onclick="toggleTheme()"
-                        class="p-2 rounded-full hover:bg-white/10 text-theme-muted hover:text-gold transition">
-                        <i class="material-icons-round" id="theme-icon">light_mode</i>
-                    </button>
-                    <span class="text-sm font-medium text-theme-main">Admin</span>
-                    <button onclick="logout()"
-                        class="p-2 rounded-full hover:bg-red-500/20 text-theme-muted hover:text-red-400 transition">
-                        <i class="material-icons-round">logout</i>
-                    </button>
-                </div>
+<body class="p-4 md:p-8">
+    <div class="max-w-7xl mx-auto space-y-8">
+        
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-3xl font-bold flex items-center">
+                    <i class="material-icons-round mr-3 text-gold">admin_panel_settings</i>
+                    Command Center
+                </h1>
+                <p class="text-text-muted mt-1">Syncing <span class="text-blue-400">SchoolSync Pro</span> & <span class="text-gold">Accra Academy</span></p>
+            </div>
+            
+            <!-- Navigation -->
+            <div class="flex p-1 rounded-xl bg-slate-800/50 border border-white/5">
+                <button onclick="switchTab('overview')" id="tab-overview" class="px-6 py-2 rounded-lg text-sm font-medium transition-all tab-active flex items-center">
+                    <i class="material-icons-round mr-2">dashboard</i> Overview
+                </button>
+                <button onclick="switchTab('website')" id="tab-website" class="px-6 py-2 rounded-lg text-sm font-medium text-text-muted hover:text-white transition-all flex items-center">
+                    <i class="material-icons-round mr-2">web</i> Website
+                </button>
+                <button onclick="switchTab('logs')" id="tab-logs" class="px-6 py-2 rounded-lg text-sm font-medium text-text-muted hover:text-white transition-all flex items-center">
+                    <i class="material-icons-round mr-2">terminal</i> Logs
+                </button>
             </div>
         </div>
-    </nav>
 
-    <!-- Main Content: Ported from students.html matching new Node API -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
-
-        <div class="space-y-8">
-            <!-- Header -->
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 class="text-3xl font-bold text-theme-main">Students</h1>
-                    <p class="text-theme-muted">Browse and manage student records</p>
-                </div>
-                <div class="flex flex-wrap gap-3">
-                    <button onclick="openAddModal()"
-                        class="btn-gold px-6 py-2 rounded-xl text-black flex items-center font-bold shadow-lg">
-                        <i class="material-icons-round mr-2">person_add</i>
-                        <span>Add Student</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Stats Bar -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div class="glass-card p-6 relative overflow-hidden group">
-                    <p class="text-theme-muted text-sm">Total Students</p>
-                    <p class="text-2xl font-bold text-theme-main mt-1" id="total-count">--</p>
-                    <i class="material-icons-round absolute bottom-4 right-4 text-3xl text-blue-500/20">groups</i>
-                </div>
-                <!-- More stats can be added here if backend supports aggregation -->
-            </div>
-
-            <!-- Actions & Bulk -->
-            <div class="glass-card p-4 flex flex-col md:flex-row gap-4 items-center justify-between">
-                <div class="flex bg-black/20 rounded-lg p-1">
-                    <button onclick="setViewMode('grid')" id="view-grid"
-                        class="px-4 py-2 rounded-md text-gold bg-white/10 flex items-center">
-                        <i class="material-icons-round mr-2">grid_view</i> Grid
-                    </button>
-                    <button onclick="setViewMode('table')" id="view-table"
-                        class="px-4 py-2 rounded-md text-theme-muted flex items-center">
-                        <i class="material-icons-round mr-2">table_rows</i> Table
-                    </button>
-                </div>
-
-                <div id="bulk-actions-panel"
-                    class="hidden flex flex-wrap gap-4 items-center bg-gold-500/10 px-4 py-2 rounded-xl border border-gold-500/20 glass">
-                    <div
-                        class="flex items-center bg-gold-500/20 px-3 py-1 rounded-lg text-gold border border-gold-500/30">
-                        <i class="material-icons-round text-sm mr-2">check_box</i>
-                        <span id="selected-count" class="font-bold">0</span> &nbsp;Selected
+        <!-- TAB: OVERVIEW -->
+        <div id="content-overview" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Data fetched from Node -> Python Proxy -->
+                <div class="glass-card p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-blue-500/10 rounded-xl text-blue-400">
+                            <i class="material-icons-round">school</i>
+                        </div>
+                        <span class="text-xs font-bold px-2 py-1 rounded bg-green-500/20 text-green-400">SYNC LOGGED</span>
                     </div>
-                    <select id="bulk-action"
-                        class="px-4 py-2 bg-black/20 border border-white/10 rounded-lg text-theme-main text-sm">
-                        <option value="">Select Action...</option>
-                        <option value="move-form">Promote (Move Form)</option>
-                        <option value="update-hall">Change Hall</option>
-                        <option value="update-program">Change Program</option>
-                        <option value="delete" class="text-red-400">Delete</option>
-                    </select>
-                    <button onclick="executeBulkAction()"
-                        class="btn-gold px-4 py-2 rounded-lg text-sm text-black font-bold">Apply</button>
-                    <button onclick="clearSelections()" class="text-theme-muted hover:text-white text-sm">Clear</button>
+                    <p class="text-text-muted text-sm">Total enrollment</p>
+                    <h3 class="text-4xl font-bold mt-1" id="stat-total">...</h3>
                 </div>
-            </div>
 
-            <!-- Search & Filter -->
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                <!-- Sidebar -->
-                <div class="lg:col-span-1 space-y-6">
-                    <div class="glass-card p-6 sticky top-24">
-                        <h3 class="font-bold text-theme-main mb-4 flex items-center"><i
-                                class="material-icons-round text-gold mr-2">filter_list</i> Filters</h3>
-
-                        <div class="space-y-4">
-                            <div>
-                                <label
-                                    class="text-xs text-theme-muted uppercase tracking-wider mb-1 block">Search</label>
-                                <input type="text" id="name-search" placeholder="Name, ID..."
-                                    class="w-full pl-3 pr-3 text-sm">
-                            </div>
-                            <div>
-                                <select id="filter-program" class="w-full text-sm" onchange="loadStudents()">
-                                    <option value="">All Programs</option>
-                                    <option value="General Science">General Science</option>
-                                    <option value="Business">Business</option>
-                                    <option value="General Arts">General Arts</option>
-                                    <option value="Visual Arts">Visual Arts</option>
-                                    <option value="Agriculture">Agriculture</option>
-                                    <option value="Home Economics">Home Economics</option>
-                                </select>
-                            </div>
-                            <div>
-                                <select id="filter-hall" class="w-full text-sm" onchange="loadStudents()">
-                                    <option value="">All Halls</option>
-                                    <option value="Alema Hall">Alema Hall</option>
-                                    <option value="Ellen Hall">Ellen Hall</option>
-                                    <option value="Halm Addo Hall">Halm Addo Hall</option>
-                                    <option value="Nana Wereko Ampem II Hall">Nana Wereko Ampem II Hall</option>
-                                    <option value="Wilson Q .Tei Hall">Wilson Q .Tei Hall</option>
-                                    <option value="Awuletey Hall">Awuletey Hall</option>
-                                    <option value="Peter Ala Adjetey Hall">Peter Ala Adjetey Hall</option>
-                                    <option value="Nana Akuako Sarpong Hall">Nana Akuako Sarpong Hall</option>
-                                    <option value="Nana Awuah Darko Ampem Hall">Nana Awuah Darko Ampem Hall</option>
-                                </select>
-                            </div>
-                            <button onclick="loadStudents()"
-                                class="w-full py-2 btn-gold text-sm font-bold text-black border-none">Search</button>
+                <div class="glass-card p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-green-500/10 rounded-xl text-green-400">
+                            <i class="material-icons-round">person_add</i>
                         </div>
                     </div>
+                    <p class="text-text-muted text-sm">New this month</p>
+                    <h3 class="text-4xl font-bold mt-1" id="stat-new">...</h3>
                 </div>
 
-                <!-- Results -->
-                <div class="lg:col-span-3">
-                    <div id="students-grid-view" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-                    <div id="students-table-view" class="hidden glass-card overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full text-left">
-                                <thead class="bg-black/20 text-theme-muted text-xs uppercase">
-                                    <tr>
-                                        <th class="px-6 py-3"></th>
-                                        <th class="px-6 py-3">Student</th>
-                                        <th class="px-6 py-3">Program</th>
-                                        <th class="px-6 py-3">Class</th>
-                                        <th class="px-6 py-3">Hall</th>
-                                        <th class="px-6 py-3">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="students-table-body" class="text-sm text-theme-main divide-y divide-white/5">
-                                </tbody>
-                            </table>
+                <div class="glass-card p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-purple-500/10 rounded-xl text-purple-400">
+                            <i class="material-icons-round">payments</i>
                         </div>
                     </div>
-                    <div id="empty-state" class="hidden text-center py-20">
-                        <i class="material-icons-round text-4xl text-theme-muted mb-3">search_off</i>
-                        <h3 class="text-xl font-bold text-theme-main">No students found</h3>
+                    <p class="text-text-muted text-sm">Fees Collection</p>
+                    <h3 class="text-4xl font-bold mt-1">92%</h3>
+                </div>
+
+                <div class="glass-card p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="p-3 bg-red-500/10 rounded-xl text-red-400">
+                            <i class="material-icons-round">campaign</i>
+                        </div>
                     </div>
+                    <p class="text-text-muted text-sm">Active Alerts</p>
+                    <h3 class="text-4xl font-bold mt-1" id="stat-announcements">0</h3>
                 </div>
             </div>
         </div>
-    </main>
 
-    <!-- ENROL/EDIT MODAL -->
-    <div id="student-modal"
-        class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4 backdrop-blur-md">
-        <div class="glass-card w-full max-w-2xl p-8 animate-fade-in shadow-2xl maxHeight80 overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h3 id="modal-title" class="text-2xl font-bold text-theme-main">Enrol Student</h3>
-                <button onclick="closeModal()" class="text-theme-muted hover:text-white"><i
-                        class="material-icons-round text-2xl">close</i></button>
+        <!-- TAB: WEBSITE -->
+        <div id="content-website" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Announcements Manager -->
+            <div class="glass-card p-6">
+                <h2 class="text-xl font-bold mb-6 flex items-center">
+                    <i class="material-icons-round mr-2 text-red-400">campaign</i> Live Announcements
+                </h2>
+                <div class="space-y-4">
+                    <textarea id="announcement-input" rows="3" placeholder="Type announcement for the homepage..."></textarea>
+                    <div class="flex justify-end">
+                        <button onclick="postAnnouncement()" class="btn-gold">Broadcast Live</button>
+                    </div>
+                </div>
+                <div class="mt-8 pt-6 border-t border-white/10">
+                    <p class="text-xs font-bold text-text-muted uppercase tracking-widest mb-4">Current Broadcast</p>
+                    <div id="current-announcement" class="p-4 bg-slate-900/50 rounded-xl border border-red-500/30 text-sm">
+                        Loading...
+                    </div>
+                </div>
             </div>
 
-            <form id="student-form" class="space-y-4">
-                <input type="hidden" id="s-id">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-xs text-theme-muted uppercase mb-1 block">Full Name (*)</label>
-                        <input type="text" id="s-name" placeholder="Full Name" required class="w-full">
-                    </div>
-                    <div>
-                        <label class="text-xs text-theme-muted uppercase mb-1 block">Index Number</label>
-                        <input type="text" id="s-index" placeholder="Index Number" class="w-full">
-                    </div>
+            <!-- Knowledge Base -->
+            <div class="glass-card p-6">
+                <h2 class="text-xl font-bold mb-6 flex items-center">
+                    <i class="material-icons-round mr-2 text-blue-400">auto_stories</i> Knowledge Base
+                </h2>
+                <div class="space-y-4 mb-6">
+                    <input id="kb-question" type="text" placeholder="Question (e.g., When is vacation?)">
+                    <textarea id="kb-answer" rows="2" placeholder="Answer (e.g., Dec 15th)"></textarea>
+                    <button onclick="addKnowledge()" class="w-full btn-gold py-2 rounded-lg text-sm">Add Entry</button>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-xs text-theme-muted uppercase mb-1 block">Gender</label>
-                        <select id="s-gender" class="w-full">
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-xs text-theme-muted uppercase mb-1 block">Program (*)</label>
-                        <select id="s-program" required class="w-full">
-                            <option value="">Select Program</option>
-                            <option value="General Science">General Science</option>
-                            <option value="Business">Business</option>
-                            <option value="General Arts">General Arts</option>
-                            <option value="Visual Arts">Visual Arts</option>
-                            <option value="Agriculture">Agriculture</option>
-                            <option value="Home Economics">Home Economics</option>
-                        </select>
-                    </div>
+                <div id="kb-list" class="h-64 overflow-y-auto space-y-3 custom-scrollbar">
+                    <!-- Loaded via JS -->
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-xs text-theme-muted uppercase mb-1 block">Hall / House</label>
-                        <select id="s-hall" class="w-full">
-                            <option value="">Select Hall</option>
-                            <option value="Alema Hall">Alema Hall</option>
-                            <option value="Ellen Hall">Ellen Hall</option>
-                            <option value="Halm Addo Hall">Halm Addo Hall</option>
-                            <option value="Nana Wereko Ampem II Hall">Nana Wereko Ampem II Hall</option>
-                            <option value="Wilson Q .Tei Hall">Wilson Q .Tei Hall</option>
-                            <option value="Awuletey Hall">Awuletey Hall</option>
-                            <option value="Peter Ala Adjetey Hall">Peter Ala Adjetey Hall</option>
-                            <option value="Nana Akuako Sarpong Hall">Nana Akuako Sarpong Hall</option>
-                            <option value="Nana Awuah Darko Ampem Hall">Nana Awuah Darko Ampem Hall</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-xs text-theme-muted uppercase mb-1 block">Class Room</label>
-                        <input type="text" id="s-class" placeholder="e.g. 1A" class="w-full">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-xs text-theme-muted uppercase mb-1 block">Enrollment Year (*)</label>
-                        <input type="number" id="s-year" placeholder="2024" required class="w-full">
-                    </div>
-                    <div>
-                        <label class="text-xs text-theme-muted uppercase mb-1 block">Date of Birth</label>
-                        <input type="date" id="s-dob" class="w-full">
-                    </div>
-                </div>
-
-                <div class="border-t border-white/10 pt-4 mt-4">
-                    <h4 class="text-sm font-bold text-gold mb-3 uppercase tracking-wider">Contact & Guardians</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input type="email" id="s-email" placeholder="Student Email" class="w-full">
-                        <input type="tel" id="s-phone" placeholder="Student Phone" class="w-full">
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        <input type="text" id="s-guardian-name" placeholder="Guardian Name" class="w-full">
-                        <input type="tel" id="s-guardian-phone" placeholder="Guardian Phone" class="w-full">
-                    </div>
-                </div>
-
-                <button type="submit" class="w-full btn-gold text-black font-bold py-3 mt-6">Save Student
-                    Record</button>
-            </form>
+            </div>
         </div>
+
+        <!-- TAB: LOGS -->
+        <div id="content-logs" class="hidden">
+            <div class="glass-card p-6">
+                <h2 class="text-xl font-bold mb-6">AI Chat Logs</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-text-muted uppercase bg-white/5">
+                            <tr>
+                                <th class="p-3 rounded-l-lg">Time</th>
+                                <th class="p-3">User Query</th>
+                                <th class="p-3">AI Response</th>
+                                <th class="p-3 rounded-r-lg">Type</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-table" class="divide-y divide-white/5"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- VIEW RECORD MODAL -->
-    <div id="view-modal"
-        class="fixed inset-0 bg-black/90 z-[60] hidden items-center justify-center p-4 backdrop-blur-xl">
-        <div
-            class="glass-card w-full max-w-3xl p-8 animate-fade-in shadow-2xl maxHeight80 overflow-y-auto border-gold/20">
-            <div class="flex justify-between items-start mb-8">
-                <div class="flex items-center gap-6">
-                    <div id="v-photo-container"></div>
-                    <div>
-                        <h2 id="v-name" class="text-3xl font-bold text-theme-main">--</h2>
-                        <p id="v-index" class="text-gold font-mono tracking-widest">--</p>
-                    </div>
-                </div>
-                <button onclick="closeViewModal()"
-                    class="bg-white/10 p-2 rounded-full hover:bg-gold hover:text-black transition">
-                    <i class="material-icons-round">close</i>
-                </button>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
-                    <p class="text-[10px] text-theme-muted uppercase mb-1">Current Status</p>
-                    <p id="v-form" class="text-lg font-bold text-blue-300">--</p>
-                </div>
-                <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
-                    <p class="text-[10px] text-theme-muted uppercase mb-1">Program</p>
-                    <p id="v-program" class="text-lg font-bold text-purple-300">--</p>
-                </div>
-                <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
-                    <p class="text-[10px] text-theme-muted uppercase mb-1">Residence</p>
-                    <p id="v-hall" class="text-lg font-bold text-gold">--</p>
-                </div>
-            </div>
-
-            <div class="space-y-6">
-                <div>
-                    <h4 class="text-sm font-bold text-theme-main mb-3 flex items-center gap-2">
-                        <i class="material-icons-round text-gold">contact_page</i> Personal Information
-                    </h4>
-                    <div class="grid grid-cols-2 gap-y-3 text-sm">
-                        <span class="text-theme-muted">Gender:</span> <span id="v-gender"
-                            class="text-theme-main">--</span>
-                        <span class="text-theme-muted">Age:</span> <span id="v-age" class="text-theme-main">--</span>
-                        <span class="text-theme-muted">Class:</span> <span id="v-class"
-                            class="text-theme-main">--</span>
-                        <span class="text-theme-muted">Email:</span> <span id="v-email"
-                            class="text-theme-main">--</span>
-                    </div>
-                </div>
-
-                <div class="border-t border-white/10 pt-6">
-                    <h4 class="text-sm font-bold text-theme-main mb-3 flex items-center gap-2">
-                        <i class="material-icons-round text-gold">family_restroom</i> Guardian Details
-                    </h4>
-                    <div class="grid grid-cols-2 gap-y-3 text-sm">
-                        <span class="text-theme-muted">Name:</span> <span id="v-guardian-name"
-                            class="text-theme-main">--</span>
-                        <span class="text-theme-muted">Phone:</span> <span id="v-guardian-phone"
-                            class="text-theme-main">--</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-10 flex gap-4">
-                <button onclick="printRecord()"
-                    class="flex-1 py-3 rounded-xl bg-white/10 font-bold hover:bg-white/20 transition flex items-center justify-center gap-2">
-                    <i class="material-icons-round">print</i> Print Report
-                </button>
-                <button onclick="closeViewModal(); editStudent(currentViewId)"
-                    class="flex-1 py-3 rounded-xl bg-gold text-black font-bold hover:brightness-110 transition flex items-center justify-center gap-2">
-                    <i class="material-icons-round">edit</i> Edit Record
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- TOAST & LOADER -->
-    <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-3"></div>
-    <div id="loading-overlay"
-        class="fixed inset-0 bg-black/80 z-[60] hidden items-center justify-center backdrop-blur-sm">
-        <div class="glass p-8 rounded-2xl flex flex-col items-center">
-            <div class="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-            <p class="text-gold font-semibold">Processing...</p>
-        </div>
-    </div>
-
-    <!-- MAIN LOGIC (PORTED TO API) -->
     <script>
-        const API_BASE = '/api';
-        let students = [];
-        let selected = new Set();
-        let viewMode = 'grid';
+        // API Configuration
+        const API_BASE = '/api'; 
 
-        // --- AUTH HELPER ---
-        async function apiRequest(endpoint, options = {}) {
-            const token = sessionStorage.getItem('bleoo_admin_token');
+        // Authenticated Fetch Wrapper
+        async function fetchAuth(endpoint, options = {}) {
+            const token = localStorage.getItem('token');
             const headers = {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
                 ...options.headers
             };
-
-            document.getElementById('loading-overlay').classList.remove('hidden', 'flex');
-            document.getElementById('loading-overlay').classList.add('flex');
-
-            try {
-                const res = await fetch(API_BASE + endpoint, { ...options, headers });
-                const data = await res.json();
-                document.getElementById('loading-overlay').classList.add('hidden');
-                document.getElementById('loading-overlay').classList.remove('flex');
-
-                if (!res.ok) {
-                    console.error(`API Error (${endpoint}):`, data.error || data);
-                    throw new Error(data.error || 'Request failed');
-                }
-                return data;
-            } catch (e) {
-                document.getElementById('loading-overlay').classList.add('hidden');
-                document.getElementById('loading-overlay').classList.remove('flex');
-                console.error("Fetch Error:", e);
-                showToast(e.message, 'error');
-                if (e.message.toLowerCase().includes('auth') || e.message.toLowerCase().includes('token')) {
-                    setTimeout(() => location.href = 'admin.html', 1500);
-                }
-                throw e;
-            }
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+            
+            const res = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
+            return res.json();
         }
 
-        function showToast(msg, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            toast.className = `${type === 'error' ? 'bg-red-600' : 'bg-green-600'} text-white p-4 rounded-xl shadow-lg flex items-center animate-fade-in`;
-            toast.innerHTML = `<i class="material-icons-round mr-2">${type === 'error' ? 'error' : 'check_circle'}</i> ${msg}`;
-            container.appendChild(toast);
-            setTimeout(() => toast.remove(), 4000);
+        // Tab Switching
+        function switchTab(tab) {
+            ['overview', 'website', 'logs'].forEach(t => {
+                document.getElementById(`content-${t}`).classList.add('hidden');
+                document.getElementById(`tab-${t}`).classList.remove('tab-active', 'text-blue-400');
+                document.getElementById(`tab-${t}`).classList.add('text-text-muted');
+            });
+            document.getElementById(`content-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).classList.add('tab-active', 'text-blue-400');
+            document.getElementById(`tab-${tab}`).classList.remove('text-text-muted');
         }
 
-        // --- DATA LOAD ---
-        async function loadStudents() {
-            const name = document.getElementById('name-search').value;
-            const program = document.getElementById('filter-program').value;
-            const hall = document.getElementById('filter-hall').value;
-
-            try {
-                let query = `?search=${encodeURIComponent(name)}&program=${encodeURIComponent(program)}&hall=${encodeURIComponent(hall)}`;
-                const data = await apiRequest('/students' + query);
-                students = data.students || [];
-                document.getElementById('total-count').innerText = data.pagination?.total || students.length;
-                render();
-            } catch (e) {
-                console.error("Dashboard Load Error:", e);
-                document.getElementById('empty-state').innerHTML = `
-                    <i class="material-icons-round text-4xl text-red-400 mb-3">error_outline</i>
-                    <h3 class="text-xl font-bold text-red-400">Connection Failed</h3>
-                    <p class="text-theme-muted">Ensure the server is running and your token is valid.</p>
-                `;
-                document.getElementById('empty-state').classList.remove('hidden');
-            }
-        }
-
-        function render() {
-            const grid = document.getElementById('students-grid-view');
-            const tableBody = document.getElementById('students-table-body');
-            const toggleGrid = document.getElementById('view-grid');
-            const toggleTable = document.getElementById('view-table');
-
-            // Toggle UI
-            if (viewMode === 'grid') {
-                document.getElementById('students-table-view').classList.add('hidden');
-                grid.classList.remove('hidden');
-                toggleGrid.classList.add('bg-white/10', 'text-gold');
-                toggleTable.classList.remove('bg-white/10', 'text-gold');
-            } else {
-                grid.classList.add('hidden');
-                document.getElementById('students-table-view').classList.remove('hidden');
-                toggleTable.classList.add('bg-white/10', 'text-gold');
-                toggleGrid.classList.remove('bg-white/10', 'text-gold');
+        // Data Loading
+        async function loadData() {
+            // 1. Stats (Proxied from Python Backend)
+            const statsRes = await fetchAuth('/students/stats/dashboard');
+            if (statsRes.success) {
+                document.getElementById('stat-total').innerText = statsRes.stats.total;
+                document.getElementById('stat-new').innerText = statsRes.stats.newThisMonth;
             }
 
-            // Empty State
-            if (!students.length) {
-                document.getElementById('empty-state').classList.remove('hidden');
-                return;
-            } else {
-                document.getElementById('empty-state').classList.add('hidden');
-            }
+            // 2. Announcement
+            const annRes = await fetchAuth('/announcement');
+            const annDisplay = document.getElementById('current-announcement');
+            annDisplay.innerText = annRes.text || "No active announcement";
+            document.getElementById('stat-announcements').innerText = annRes.isActive ? 1 : 0;
 
-            // Render GRID
-            grid.innerHTML = students.map(s => {
-                const photoHtml = s.photo_url
-                    ? `<img src="${s.photo_url}" class="w-12 h-12 rounded-xl object-cover border border-white/10">`
-                    : `<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-900 flex items-center justify-center text-white font-bold text-lg">
-                            ${s.name.charAt(0)}
-                       </div>`;
-
-                return `
-                <div class="glass-card p-6 relative group border border-white/5 hover:border-gold/30">
-                    <div class="flex justify-between items-start mb-4">
-                        ${photoHtml}
-                        <input type="checkbox" onchange="toggleSelect('${s.id}', this.checked)" ${selected.has(String(s.id)) ? 'checked' : ''} class="w-5 h-5 rounded border-white/20 bg-black/20 text-gold focus:ring-0">
-                    </div>
-                    
-                    <h3 class="font-bold text-theme-main truncate mb-0.5">${s.name}</h3>
-                    <div class="flex items-center gap-2 mb-3">
-                        ${s.email ? `<i class="material-icons-round text-xs text-theme-muted">email</i>` : ''}
-                        ${s.phone ? `<i class="material-icons-round text-xs text-theme-muted">phone</i>` : ''}
-                        <p class="text-[10px] text-theme-muted uppercase tracking-tight">${s.index_number || s.indexNumber || 'No Index'}</p>
-                    </div>
-
-                    <div class="flex flex-wrap gap-2 text-[10px] uppercase font-bold tracking-wider mb-4">
-                        <span class="px-2 py-1 rounded bg-blue-500/10 text-blue-300 border border-blue-500/20">${s.program}</span>
-                        <span class="px-2 py-1 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20">${s.current_form || s.currentForm || 'Form ?'}</span>
-                    </div>
-
-                    <div class="flex justify-between items-center text-xs text-theme-muted pt-3 border-t border-white/10">
-                        <span class="font-medium">${s.hall || 'No Hall'}</span>
-                        <div class="flex items-center gap-2">
-                             <button onclick="viewStudent('${s.id}')" title="Academic Record" class="hover:text-gold transition"><i class="material-icons-round text-lg">school</i></button>
-                             <button onclick="editStudent('${s.id}')" title="Edit Profile" class="hover:text-gold transition"><i class="material-icons-round text-lg">edit</i></button>
-                             <button onclick="deleteStudent('${s.id}')" title="Delete" class="text-red-400/50 hover:text-red-400 transition"><i class="material-icons-round text-lg">delete_outline</i></button>
-                        </div>
-                    </div>
+            // 3. Knowledge Base
+            const kbRes = await fetchAuth('/knowledge');
+            const kbList = document.getElementById('kb-list');
+            kbList.innerHTML = kbRes.map(k => `
+                <div class="p-3 bg-white/5 rounded-lg border border-white/5 hover:border-blue-500/30 transition">
+                    <p class="font-bold text-blue-200">${k.question}</p>
+                    <p class="text-text-muted text-xs mt-1 truncate">${k.text || k.answer}</p>
                 </div>
-            `}).join('');
+            `).join('');
 
-            // Render TABLE
-            tableBody.innerHTML = students.map(s => `
-                <tr class="hover:bg-white/5 border-b border-white/5 group">
-                    <td class="px-6 py-4"><input type="checkbox" onchange="toggleSelect('${s.id}', this.checked)" ${selected.has(String(s.id)) ? 'checked' : ''}></td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            ${s.photo_url ? `<img src="${s.photo_url}" class="w-8 h-8 rounded-lg object-cover">` : `<div class="w-8 h-8 rounded-lg bg-blue-900 flex items-center justify-center text-[10px] font-bold">${s.name.charAt(0)}</div>`}
-                            <div>
-                                <div class="font-bold text-theme-main">${s.name}</div>
-                                <div class="text-[10px] text-theme-muted">${s.index_number || s.indexNumber || ''}</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 text-xs">${s.program}</td>
-                    <td class="px-6 py-4 text-xs font-mono text-blue-300">${s.class_room || s.classRoom || '-'}</td>
-                    <td class="px-6 py-4 text-theme-muted text-xs">${s.hall || '-'}</td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center gap-3">
-                            <button onclick="editStudent('${s.id}')" class="text-theme-muted hover:text-gold transition"><i class="material-icons-round text-lg">edit</i></button>
-                            <button onclick="deleteStudent('${s.id}')" class="text-red-400/50 hover:text-red-400 transition"><i class="material-icons-round text-lg">delete_outline</i></button>
-                        </div>
-                    </td>
+            // 4. Logs
+            const logsRes = await fetchAuth('/logs?limit=10');
+            const logsTable = document.getElementById('logs-table');
+            logsTable.innerHTML = logsRes.map(l => `
+                <tr class="hover:bg-white/5">
+                    <td class="p-3 text-text-muted">${new Date(l.timestamp).toLocaleTimeString()}</td>
+                    <td class="p-3 font-medium">${l.userMessage}</td>
+                    <td class="p-3 text-text-muted truncate max-w-xs">${l.botReply}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 rounded text-xs bg-blue-500/20 text-blue-300">Chat</span></td>
                 </tr>
             `).join('');
         }
 
-        // --- ACTIONS ---
-        function setViewMode(mode) { viewMode = mode; render(); }
-
-        function toggleSelect(id, checked) {
-            checked ? selected.add(id) : selected.delete(id);
-            document.getElementById('selected-count').innerText = selected.size;
-            document.getElementById('bulk-actions-panel').classList.toggle('hidden', selected.size === 0);
+        // Actions
+        async function postAnnouncement() {
+            const text = document.getElementById('announcement-input').value;
+            await fetchAuth('/announcement', {
+                method: 'POST',
+                body: JSON.stringify({ text })
+            });
+            loadData();
+            document.getElementById('announcement-input').value = '';
         }
 
-        function clearSelections() { selected.clear(); render(); document.getElementById('bulk-actions-panel').classList.add('hidden'); }
-
-        // DELETE
-        async function deleteStudent(id) {
-            if (!confirm('Are you sure you want to delete this student?')) return;
-            try {
-                await apiRequest(`/students/${id}`, { method: 'DELETE' });
-                showToast('Student deleted');
-                loadStudents();
-            } catch (e) { }
+        async function addKnowledge() {
+            const question = document.getElementById('kb-question').value;
+            const text = document.getElementById('kb-answer').value;
+            await fetchAuth('/knowledge', {
+                method: 'POST',
+                body: JSON.stringify({ question, text })
+            });
+            loadData();
         }
 
-        // BULK ACTION
-        async function executeBulkAction() {
-            const action = document.getElementById('bulk-action').value;
-            if (!action || selected.size === 0) return;
-
-            let payload = {};
-
-            // Handle Action-specific Payloads
-            if (action === 'delete') {
-                if (!confirm(`Are you absolutely sure you want to delete ${selected.size} students? This cannot be undone.`)) return;
-            } else if (action === 'move-form') {
-                const target = prompt("Which form should these students be moved to? (Form 1, Form 2, Form 3, Completed)");
-                if (!target) return;
-                payload.newYear = target;
-            } else if (action === 'update-hall') {
-                const hall = prompt("Enter the new Hall name for selected students:");
-                if (!hall) return;
-                payload.hall = hall;
-            } else if (action === 'update-program') {
-                const program = prompt("Enter the new Program name for selected students:");
-                if (!program) return;
-                payload.program = program;
-            }
-
-            try {
-                await apiRequest('/students/bulk-action', {
-                    method: 'POST',
-                    body: JSON.stringify({ ids: Array.from(selected), action, payload })
-                });
-                showToast(`Bulk '${action}' completed successfully`);
-                clearSelections();
-                loadStudents();
-            } catch (e) { }
-        }
-
-        // ENROL / EDIT
-        let isEdit = false;
-        function openAddModal() {
-            isEdit = false;
-            document.getElementById('modal-title').innerText = 'Enrol Student';
-            document.getElementById('student-form').reset();
-            document.getElementById('s-id').value = '';
-            document.getElementById('student-modal').classList.remove('hidden');
-            document.getElementById('student-modal').classList.add('flex');
-        }
-
-        async function editStudent(id) {
-            try {
-                const data = await apiRequest(`/students/${id}`);
-                const s = data.student;
-                isEdit = true;
-                document.getElementById('modal-title').innerText = 'Edit Student Record';
-                document.getElementById('s-id').value = s.id;
-                document.getElementById('s-name').value = s.name;
-                document.getElementById('s-index').value = s.index_number || s.indexNumber || '';
-                document.getElementById('s-gender').value = s.gender || 'Male';
-                document.getElementById('s-program').value = s.program || '';
-                document.getElementById('s-hall').value = s.hall || '';
-                document.getElementById('s-class').value = s.class_room || s.classRoom || '';
-                document.getElementById('s-year').value = s.enrollment_year || '';
-                document.getElementById('s-dob').value = s.date_of_birth ? s.date_of_birth.split('T')[0] : '';
-                document.getElementById('s-email').value = s.email || '';
-                document.getElementById('s-phone').value = s.phone || '';
-                document.getElementById('s-guardian-name').value = s.guardian_name || '';
-                document.getElementById('s-guardian-phone').value = s.guardian_phone || '';
-
-                document.getElementById('student-modal').classList.remove('hidden');
-                document.getElementById('student-modal').classList.add('flex');
-            } catch (e) { }
-        }
-
-        function closeModal() {
-            document.getElementById('student-modal').classList.add('hidden');
-            document.getElementById('student-modal').classList.remove('flex');
-        }
-
-        // VIEW DETAILS
-        let currentViewId = null;
-        async function viewStudent(id) {
-            try {
-                currentViewId = id;
-                const data = await apiRequest(`/students/${id}`);
-                const s = data.student;
-
-                document.getElementById('v-name').innerText = s.name;
-                document.getElementById('v-index').innerText = s.index_number || s.indexNumber || 'NO INDEX';
-                document.getElementById('v-form').innerText = s.current_form || s.currentForm || '--';
-                document.getElementById('v-program').innerText = s.program || '--';
-                document.getElementById('v-hall').innerText = s.hall || '--';
-                document.getElementById('v-gender').innerText = s.gender || '--';
-                document.getElementById('v-age').innerText = s.age ? `${s.age} yrs` : '--';
-                document.getElementById('v-class').innerText = s.class_room || s.classRoom || '--';
-                document.getElementById('v-email').innerText = s.email || '--';
-                document.getElementById('v-guardian-name').innerText = s.guardian_name || '--';
-                document.getElementById('v-guardian-phone').innerText = s.guardian_phone || '--';
-
-                const photoContainer = document.getElementById('v-photo-container');
-                if (s.photo_url) {
-                    photoContainer.innerHTML = `<img src="${s.photo_url}" class="w-24 h-24 rounded-2xl object-cover border-2 border-gold/50 shadow-2xl shadow-gold/20">`;
-                } else {
-                    photoContainer.innerHTML = `<div class="w-24 h-24 rounded-2xl bg-blue-900 flex items-center justify-center text-3xl font-bold border-2 border-white/10">${s.name.charAt(0)}</div>`;
-                }
-
-                document.getElementById('view-modal').classList.remove('hidden');
-                document.getElementById('view-modal').classList.add('flex');
-            } catch (e) { }
-        }
-
-        function closeViewModal() {
-            document.getElementById('view-modal').classList.add('hidden');
-            document.getElementById('view-modal').classList.remove('flex');
-        }
-
-        function printRecord() { window.print(); }
-
-        document.getElementById('student-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('s-id').value;
-            const payload = {
-                name: document.getElementById('s-name').value,
-                index_number: document.getElementById('s-index').value,
-                gender: document.getElementById('s-gender').value,
-                program: document.getElementById('s-program').value,
-                enrollment_year: parseInt(document.getElementById('s-year').value),
-                hall: document.getElementById('s-hall').value,
-                class_room: document.getElementById('s-class').value,
-                date_of_birth: document.getElementById('s-dob').value,
-                email: document.getElementById('s-email').value,
-                phone: document.getElementById('s-phone').value,
-                guardian_name: document.getElementById('s-guardian-name').value,
-                guardian_phone: document.getElementById('s-guardian-phone').value,
-            };
-
-            try {
-                const method = isEdit ? 'PUT' : 'POST';
-                const endpoint = isEdit ? `/students/${id}` : '/students';
-                await apiRequest(endpoint, { method, body: JSON.stringify(payload) });
-                showToast(isEdit ? 'Record updated' : 'Student enrolled successfully');
-                closeModal();
-                loadStudents();
-            } catch (e) { }
-        });
-
-        function toggleTheme() {
-            const current = document.documentElement.getAttribute('data-theme');
-            const next = current === 'light' ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-            document.getElementById('theme-icon').innerText = next === 'light' ? 'dark_mode' : 'light_mode';
-        }
-
-        function logout() { sessionStorage.removeItem('bleoo_admin_token'); location.href = 'admin.html'; }
-
-        // INIT
-        document.addEventListener('DOMContentLoaded', () => {
-            loadStudents();
-            if (localStorage.getItem('theme') === 'light') document.getElementById('theme-icon').innerText = 'dark_mode';
-        });
-
+        // Init
+        document.addEventListener('DOMContentLoaded', loadData);
     </script>
 </body>
-
 </html>
