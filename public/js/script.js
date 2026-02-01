@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let slideIndex = 0;
         showSlides(slideIndex);
 
-        window.plusSlides = function(n) {
+        window.plusSlides = function (n) {
             showSlides(slideIndex += n);
         }
 
@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('img').forEach(img => {
         // Prevent infinite loop if fallback also fails
         if (!img.hasAttribute('data-fallback-applied')) {
-            img.onerror = function() {
+            img.onerror = function () {
                 console.warn(`🖼️ Image Failed: ${this.src} -> Replaced with placeholder`);
                 this.setAttribute('data-fallback-applied', 'true');
                 this.onerror = null;
@@ -351,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const clean = text.replace(/[*#]/g, '').trim();
         if (!clean) return;
         window.currAudio = new Audio(`https://api.streamelements.com/kappa/v2/speech?voice=Amy&text=${encodeURIComponent(clean)}`);
-        window.currAudio.play().catch(() => {});
+        window.currAudio.play().catch(() => { });
     }
 
     if (chatToggle && chatWindow) {
@@ -425,8 +425,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function addMsg(text, sender) {
         const d = document.createElement('div');
-        d.className = `flex ${sender==='user'?'justify-end':'justify-start'} animate-fade-in`;
-        d.innerHTML = `<div class="${sender==='user'?'bg-royal text-white':'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200'} p-3 rounded-2xl max-w-[85%] text-sm shadow-sm">${text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')}</div>`;
+        d.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`;
+        d.innerHTML = `<div class="${sender === 'user' ? 'bg-royal text-white' : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200'} p-3 rounded-2xl max-w-[85%] text-sm shadow-sm">${text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')}</div>`;
         chatMessages.appendChild(d);
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
@@ -468,10 +468,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const offIcon = document.getElementById('music-off');
 
     if (audio && musicBtn) {
-        // 1. SET LOW VOLUME (Not Loud)
-        audio.volume = 0.3; // 30% Volume
-
-        // 2. TOGGLE UI STATE
+        audio.volume = 0.3;
         const updateUI = (isPlaying) => {
             if (isPlaying) {
                 barsIcon.classList.remove('hidden');
@@ -484,26 +481,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        // 3. ATTEMPT AUTOPLAY
         const startAudio = () => {
             audio.play().then(() => {
                 updateUI(true);
-                // Remove the click listener once it starts
                 document.removeEventListener('click', startAudio);
-            }).catch(error => {
-                console.log("Autoplay blocked by browser. Waiting for interaction.");
-            });
+            }).catch(() => { });
         };
 
-        // Try immediately
         startAudio();
-
-        // Fallback: If blocked, start on FIRST click anywhere on page
         document.addEventListener('click', startAudio, { once: true });
 
-        // 4. MANUAL BUTTON CLICK
         musicBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Don't trigger the document listener
+            e.stopPropagation();
             if (audio.paused) {
                 audio.play();
                 updateUI(true);
@@ -513,13 +502,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
- // <--- END OF DOMContentLoaded LISTENER
+
+    // Modal safety fix on load
+    const modal = document.getElementById('leader-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+}); // END OF DOMContentLoaded
 
 /* =========================================
-   LEADERSHIP SLIDER LOGIC (SMOOTH ANIMATION)
+   LEADERSHIP SLIDER LOGIC (GLOBAL)
    ========================================= */
 
-// 1. Data Source (Same as before)
 const leaderData = [
     {
         name: "Mr. Eric Ebo Sey",
@@ -547,12 +544,10 @@ const leaderData = [
     }
 ];
 
-// 2. The Animated Change Function
-window.changeLeader = function(index) {
+window.changeLeader = function (index) {
     const data = leaderData[index];
-    if(!data) return;
+    if (!data) return;
 
-    // Elements
     const imgEl = document.getElementById('leader-main-img');
     const nameEl = document.getElementById('leader-name');
     const roleEl = document.getElementById('leader-role');
@@ -560,58 +555,35 @@ window.changeLeader = function(index) {
     const containerText = document.getElementById('leader-text-container');
     const thumbs = document.querySelectorAll('.leader-thumb');
 
-    // Prevent clicking same slide animation spam
-    if(imgEl.src.includes(data.img.replace('./', ''))) return;
-
-    // A. TRIGGER OUT-ANIMATION (Fade Out & Scale)
-    imgEl.classList.add('changing');
-    containerText.classList.add('changing');
-
-    // B. UPDATE THUMBNAILS (Instant feedback)
+    // B. UPDATE THUMBNAILS
     thumbs.forEach((t, i) => {
-        if(i === index) {
-            t.classList.add('border-gold', 'opacity-100', 'scale-110');
+        if (i === index) {
+            t.classList.add('active', 'border-gold', 'opacity-100', 'scale-110');
             t.classList.remove('border-transparent', 'opacity-60');
         } else {
-            t.classList.remove('border-gold', 'opacity-100', 'scale-110');
+            t.classList.remove('active', 'border-gold', 'opacity-100', 'scale-110');
             t.classList.add('border-transparent', 'opacity-60');
         }
     });
 
-    // C. SWAP CONTENT (Wait 400ms for fade out to finish)
+    // C. ANIMATED SWAP
+    if (containerText) containerText.style.opacity = '0';
+    if (imgEl) imgEl.style.opacity = '0';
+
     setTimeout(() => {
-        // Swap Data
-        imgEl.src = data.img;
-        nameEl.innerText = data.name;
-        roleEl.innerText = data.role;
-        msgEl.innerText = data.msg;
+        if (imgEl) imgEl.src = data.img;
+        if (nameEl) nameEl.innerText = data.name;
+        if (roleEl) roleEl.innerText = data.role;
+        if (msgEl) msgEl.innerText = data.msg;
 
-        // Wait a tiny bit for browser to register new image (50ms)
-        // Then TRIGGER IN-ANIMATION
         setTimeout(() => {
-            imgEl.classList.remove('changing');
-            containerText.classList.remove('changing');
+            if (containerText) containerText.style.opacity = '1';
+            if (imgEl) imgEl.style.opacity = '1';
         }, 50);
+    }, 300);
+};
 
-    }, 400); // Matches CSS transition duration
-
-   /* =========================================
-   11. LEADERSHIP MODAL SAFETY FIX
-   ========================================= */
-
-// CRITICAL: Hide modal on page load
-document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('leader-modal');
-    if (modal) {
-        modal.style.display = 'none';
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        console.log('✅ Modal hidden on load');
-    }
-});
-
-// Global close function
-window.closeLeaderModal = function() {
+window.closeLeaderModal = function () {
     const modal = document.getElementById('leader-modal');
     if (modal) {
         modal.style.display = 'none';
@@ -620,6 +592,3 @@ window.closeLeaderModal = function() {
     }
     document.body.classList.remove('modal-open');
 };
-
-};
-});
