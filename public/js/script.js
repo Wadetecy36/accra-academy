@@ -513,10 +513,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 }); // END OF DOMContentLoaded
 
-/* =========================================
-   LEADERSHIP SLIDER LOGIC (GLOBAL)
-   ========================================= */
-
 const leaderData = [
     {
         name: "Mr. Eric Ebo Sey",
@@ -544,7 +540,10 @@ const leaderData = [
     }
 ];
 
+let currentLeaderIndex = 0;
+
 window.changeLeader = function (index) {
+    currentLeaderIndex = index;
     const data = leaderData[index];
     if (!data) return;
 
@@ -581,6 +580,33 @@ window.changeLeader = function (index) {
             if (imgEl) imgEl.style.opacity = '1';
         }, 50);
     }, 300);
+};
+
+window.openLeaderModal = function (index = null) {
+    const idx = (index !== null) ? index : currentLeaderIndex;
+    const data = leaderData[idx];
+    if (!data) return;
+
+    const modal = document.getElementById('leader-modal');
+    if (!modal) return;
+
+    // Update Modal Content
+    document.getElementById('modal-img').src = data.img;
+    document.getElementById('modal-name').innerText = data.name;
+    document.getElementById('modal-role').innerText = data.role;
+    document.getElementById('modal-msg').innerText = data.msg;
+
+    // Show Modal
+    modal.style.display = 'flex';
+    modal.classList.remove('hidden');
+    modal.classList.add('active');
+    setTimeout(() => {
+        modal.style.opacity = '1';
+        modal.querySelector('#leader-modal-content').classList.remove('scale-95', 'opacity-0');
+        modal.querySelector('#leader-modal-content').classList.add('scale-100', 'opacity-100');
+    }, 10);
+
+    document.body.classList.add('modal-open');
 };
 
 window.closeLeaderModal = function () {

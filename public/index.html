@@ -692,17 +692,29 @@
                     <div class="text-gold text-6xl font-serif opacity-30 absolute top-8 right-8">❝</div>
 
                     <!-- Dynamic Text -->
-                    <div id="leader-text-container" class="relative z-10 animate-fade-in">
+                    <div id="leader-text-container" class="relative z-10 animate-fade-in hover:cursor-pointer group"
+                        onclick="openLeaderModal()">
                         <h2 id="leader-name" class="text-2xl md:text-3xl font-display font-bold mb-1">Mr. Eric Ebo Sey
                         </h2>
                         <p id="leader-role" class="text-gold text-xs font-bold uppercase tracking-widest mb-8">
                             Headmaster</p>
 
-                        <div class="h-1 w-12 bg-white/20 mb-8"></div>
+                        <div class="h-1 w-12 bg-white/20 mb-8 transition-all group-hover:w-20 group-hover:bg-gold">
+                        </div>
 
-                        <p id="leader-msg" class="text-gray-300 leading-relaxed text-sm md:text-base font-light italic">
+                        <p id="leader-msg"
+                            class="text-gray-300 leading-relaxed text-sm md:text-base font-light italic line-clamp-4">
                             Accra Academy, established in 1931, is a distinguished educational institution in Accra...
                         </p>
+
+                        <button
+                            class="mt-8 text-xs font-bold uppercase tracking-widest text-gold hover:text-white transition flex items-center gap-2">
+                            <span>Read Full Message</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </button>
                     </div>
 
                     <!-- THUMBNAIL NAVIGATOR -->
