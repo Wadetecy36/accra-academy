@@ -6,7 +6,16 @@ const router = express.Router();
 
 router.get('/', verifyAdmin, async (req, res) => {
     const { search, limit } = req.query;
-    let query = search ? { $or: [{ userMessage: { $regex: search, $options: 'i' } }, { botReply: { $regex: search, $options: 'i' } }] } : {};
+    let query = {};
+    if (search) {
+        const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        query = {
+            $or: [
+                { userMessage: { $regex: escapedSearch, $options: 'i' } },
+                { botReply: { $regex: escapedSearch, $options: 'i' } }
+            ]
+        };
+    }
     res.json(await ChatLog.find(query).sort({ timestamp: -1 }).limit(parseInt(limit) || 50));
 });
 

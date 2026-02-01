@@ -60,13 +60,20 @@ const StudentSchema = new mongoose.Schema({
 
 // Virtual: Current Form Calculation
 StudentSchema.virtual('currentForm').get(function () {
-    const currentYear = new Date().getFullYear();
-    const diff = currentYear - this.enrollmentYear;
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth(); // 0-indexed (0 = Jan, 8 = Sept)
+
+    // School year usually transitions in September/October
+    // If it's before September, we are still in the previous academic year
+    const academicYearOffset = currentMonth < 8 ? 0 : 1;
+    const diff = (currentYear + academicYearOffset) - (this.enrollmentYear + 1);
 
     if (diff >= 3) return "Completed";
     if (diff === 2) return "Third Form";
     if (diff === 1) return "Second Form";
-    return "First Form";
+    if (diff === 0) return "First Form";
+    return "Pre-Enrollment";
 });
 
 // Virtual: Age Calculation

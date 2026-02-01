@@ -1,8 +1,9 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
-const Student = require('../models/student'); // Match file casing for Linux compatibility
-const SecurityLog = require('../models/SecurityLog');
+const Student = require('../models/student');
+const SecurityLog = require('../models/securityLog'); // Normalized to lowercase
+
 const { verifyToken, verifyAdmin } = require('../middleware/auth');
 const mongoSanitize = require('express-mongo-sanitize');
 
@@ -72,7 +73,9 @@ router.get('/', verifyAdmin, async (req, res) => {
 
         // Search Logic (Name, Index, Email)
         if (search) {
-            const regex = new RegExp(search, 'i');
+            // Escape special regex characters to prevent ReDoS attacks
+            const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(escapedSearch, 'i');
             query.$or = [
                 { name: regex },
                 { indexNumber: regex },

@@ -8,20 +8,7 @@ const bcrypt = require('bcryptjs');
 
 const MONGO_URI = process.env.MONGO_URI;
 
-const StudentSchema = new mongoose.Schema({
-    studentId: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    name: String,
-    class: String,
-    house: String,
-    program: String,
-    gpa: Number,
-    attendance: String,
-    feesOwed: Number,
-    grades: Array // List of subjects and scores
-});
-
-const Student = mongoose.model('Student', StudentSchema);
+const Student = require('./models/student');
 
 const createStudents = async () => {
     try {
@@ -37,37 +24,28 @@ const createStudents = async () => {
 
         const students = [
             {
-                studentId: "2025001",
+                indexNumber: "2025001",
                 password: hashedPassword,
                 name: "Kwame Mensah",
-                class: "SHS 2 Science B",
-                house: "Alema",
+                classRoom: "SHS 2 Science B",
+                hall: "Alema Hall",
                 program: "General Science",
-                gpa: 3.8,
-                attendance: "98%",
-                feesOwed: 0,
-                grades: [
-                    { subject: "Elective Maths", grade: "A1" },
-                    { subject: "Physics", grade: "B2" },
-                    { subject: "Chemistry", grade: "A1" },
-                    { subject: "Biology", grade: "A1" }
+                enrollmentYear: 2024,
+                academicHistory: [
+                    { form: "First Form", year: 2024, gpa: 3.8, remarks: "Excellent start" }
                 ]
             },
             {
-                studentId: "2025002",
+                indexNumber: "2025002",
                 password: hashedPassword,
                 name: "Daniel Ofori",
-                class: "SHS 3 Arts A",
-                house: "Halm-Addo",
+                classRoom: "SHS 3 Arts A",
+                hall: "Halm Addo Hall",
                 program: "General Arts",
-                gpa: 3.5,
-                attendance: "92%",
-                feesOwed: 150,
-                grades: [
-                    { subject: "Government", grade: "A1" },
-                    { subject: "Literature", grade: "B3" },
-                    { subject: "History", grade: "A1" },
-                    { subject: "Economics", grade: "B2" }
+                enrollmentYear: 2023,
+                academicHistory: [
+                    { form: "First Form", year: 2023, gpa: 3.5 },
+                    { form: "Second Form", year: 2024, gpa: 3.6 }
                 ]
             }
         ];

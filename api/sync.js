@@ -34,11 +34,13 @@ async function syncData() {
         for (let line of lines) {
             if (!line.trim()) continue;
 
-            // Basic CSV parsing (assuming simple format: Name,Index,Year,Program,House)
-            const parts = line.split(',').map(p => p.replace(/"/g, '').trim());
-            if (parts.length < 4) continue;
+            // Improved CSV parsing for quoted values
+            const parts = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
+            const cleanParts = parts.map(p => p.replace(/^"|"$/g, '').trim());
 
-            const [name, index, yearStr, program, house] = parts;
+            if (cleanParts.length < 4) continue;
+
+            const [name, index, yearStr, program, house] = cleanParts;
 
             // Map "Form X" to enrollmentYear
             const currentYear = new Date().getFullYear();

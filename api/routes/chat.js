@@ -12,7 +12,7 @@ const AI_INSTRUCTIONS = `You are 'Bleoo Assistant'. Answer using provided FACTS.
 router.post('/', publicLimiter, async (req, res) => {
     try {
         const { message, history } = req.body;
-        const facts = await Knowledge.find({});
+        const facts = await Knowledge.find({}).limit(50); // Safety limit to prevent token overflow
         const context = `${AI_INSTRUCTIONS}\nFACTS:\n${facts.map(f => `[${f.topic}]: ${f.content}`).join('\n')}\nUSER Q: ${message}`;
 
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
@@ -30,9 +30,9 @@ router.post('/', publicLimiter, async (req, res) => {
         let reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "System Error";
 
         let sentiment = "Neutral";
-        if(reply.includes('[Positive]')) { sentiment="Positive"; reply=reply.replace('[Positive]',''); }
-        else if(reply.includes('[Negative]')) { sentiment="Negative"; reply=reply.replace('[Negative]',''); }
-        else if(reply.includes('[Neutral]')) { sentiment="Neutral"; reply=reply.replace('[Neutral]',''); }
+        if (reply.includes('[Positive]')) { sentiment = "Positive"; reply = reply.replace('[Positive]', ''); }
+        else if (reply.includes('[Negative]')) { sentiment = "Negative"; reply = reply.replace('[Negative]', ''); }
+        else if (reply.includes('[Neutral]')) { sentiment = "Neutral"; reply = reply.replace('[Neutral]', ''); }
 
         await new ChatLog({ userMessage: message, botReply: reply, sentiment }).save();
         res.json({ reply: reply.trim() });
