@@ -3,20 +3,137 @@
 /* ============================================================= */
 
 /* ============================================ */
-/*              Table of Contents               */
+/*    LEADERSHIP LOGIC (TOP-LEVEL GLOBAL)       */
 /* ============================================ */
-/*     0.      Mobile Menu Toggle               */
-/*     1.      3D Tilt Effects                  */
-/*     2.      Dark Mode Toggle                 */
-/*     3.      Gallery Swiper(Responsive)       */
-/*     4.      About Page Carousel              */
-/*     5.      Scroll To Top                    */
-/*     6.      Easter Egg                       */
-/*     7.      Init AOS                         */
-/*     8.      Achievements Counter             */
-/*     9.      Image Fallback                   */
-/*     10.     AI Chatbot Logic                 */
-/*     11.     LEADERSHIP MODAL LOGIC (Global)  */
+const leaderData = [
+    {
+        name: "Mr. Eric Ebo Sey",
+        role: "Headmaster",
+        img: "./assets/headmaster.jpg",
+        msg: "Accra Academy, established in 1931, is a distinguished educational institution in Accra, Ghana, boasting 226 staff and a student body of 4,381. Evolving from a private institution to a Government-Assisted School in 1950, we prioritize academic excellence, personal growth, and character development. Join us in nurturing future leaders who excel academically and impact the world positively."
+    },
+    {
+        name: "Mr. Paul Kofi Yesu Dadzie",
+        role: "Assistant Headmaster (Administration)",
+        img: "./assets/administration.jpg",
+        msg: "Greetings from Accra Academy! As the Assistant Headmaster Administration, I extend a warm welcome to our esteemed community. At the heart of our institution is a commitment to efficient and supportive administration, ensuring a seamless experience for students and staff alike. From admissions to facilities management, our dedicated team strives for excellence."
+    },
+    {
+        name: "Mr. Isaac Tweneboah",
+        role: "Assistant Headmaster (Academic)",
+        img: "./assets/academics.jpg",
+        msg: "Welcome to Accra Academy! As the Assistant Headmaster Academic, I am thrilled to embark on this educational journey with you. Our commitment to academic excellence is unwavering, and we strive to create an environment that nurtures not only knowledge but also critical thinking and personal growth. Explore our diverse academic programs where innovation meets tradition."
+    },
+    {
+        name: "Mr. William Kwame Asun",
+        role: "Assistant Headmaster (Domestic/Welfare)",
+        img: "./assets/domestic.jpg",
+        msg: "I am honored to welcome you as the Assistant Headmaster Domestic/Welfare. Our focus extends beyond the classroom, ensuring a supportive and nurturing environment for every student. From dormitory life to overall well-being, we prioritize the domestic and welfare aspects of your experience. Thank you for being part of the Accra Academy family."
+    }
+];
+
+let currentLeaderIndex = 0;
+
+window.changeLeader = function (index) {
+    console.log("Change Leader Requested:", index);
+    currentLeaderIndex = index;
+    const data = leaderData[index];
+    if (!data) return;
+
+    const imgEl = document.getElementById('leader-main-img');
+    const nameEl = document.getElementById('leader-name');
+    const roleEl = document.getElementById('leader-role');
+    const msgEl = document.getElementById('leader-msg');
+    const containerText = document.getElementById('leader-text-container');
+    const thumbs = document.querySelectorAll('.leader-thumb');
+
+    // B. UPDATE THUMBNAILS
+    thumbs.forEach((t, i) => {
+        if (i === index) {
+            t.classList.add('active', 'border-gold', 'opacity-100', 'scale-110');
+            t.classList.remove('border-transparent', 'opacity-60');
+        } else {
+            t.classList.remove('active', 'border-gold', 'opacity-100', 'scale-110');
+            t.classList.add('border-transparent', 'opacity-60');
+        }
+    });
+
+    // C. ANIMATED SWAP
+    if (containerText) containerText.style.opacity = '0';
+    if (imgEl) imgEl.style.opacity = '0';
+
+    setTimeout(() => {
+        if (imgEl) imgEl.src = data.img;
+        if (nameEl) nameEl.innerText = data.name;
+        if (roleEl) roleEl.innerText = data.role;
+        if (msgEl) msgEl.innerText = data.msg;
+
+        setTimeout(() => {
+            if (containerText) containerText.style.opacity = '1';
+            if (imgEl) imgEl.style.opacity = '1';
+        }, 50);
+    }, 300);
+};
+
+window.openLeaderModal = function (index = null) {
+    const idx = (index !== null) ? index : currentLeaderIndex;
+    const data = leaderData[idx];
+    if (!data) {
+        console.error("No leader data found for index:", idx);
+        return;
+    }
+
+    const modal = document.getElementById('leader-modal');
+    const content = document.getElementById('leader-modal-content');
+    if (!modal || !content) return;
+
+    console.log("Opening Modal for:", data.name);
+
+    // Update Modal Content
+    document.getElementById('modal-img').src = data.img;
+    document.getElementById('modal-name').innerText = data.name;
+    document.getElementById('modal-role').innerText = data.role;
+    document.getElementById('modal-msg').innerText = data.msg;
+
+    // Reset styles for transition
+    modal.style.opacity = '0';
+    content.classList.add('scale-95', 'opacity-0');
+    content.classList.remove('scale-100', 'opacity-100');
+
+    // Show Modal
+    modal.style.display = 'flex';
+    modal.classList.remove('hidden');
+    modal.classList.add('active');
+
+    setTimeout(() => {
+        modal.style.opacity = '1';
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+    }, 30);
+
+    document.body.classList.add('modal-open');
+};
+
+window.closeLeaderModal = function () {
+    const modal = document.getElementById('leader-modal');
+    const content = document.getElementById('leader-modal-content');
+    if (modal) {
+        modal.style.opacity = '0';
+        if (content) {
+            content.classList.add('scale-95', 'opacity-0');
+            content.classList.remove('scale-100', 'opacity-100');
+        }
+        setTimeout(() => {
+            modal.style.display = 'none';
+            modal.classList.add('hidden');
+            modal.classList.remove('flex', 'active');
+        }, 300);
+    }
+    document.body.classList.remove('modal-open');
+};
+
+/* ============================================ */
+/*              Standard Initialization         */
 /* ============================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -513,108 +630,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 }); // END OF DOMContentLoaded
 
-const leaderData = [
-    {
-        name: "Mr. Eric Ebo Sey",
-        role: "Headmaster",
-        img: "./assets/headmaster.jpg",
-        msg: "Accra Academy, established in 1931, is a distinguished educational institution in Accra, Ghana, boasting 226 staff and a student body of 4,381. Evolving from a private institution to a Government-Assisted School in 1950, we prioritize academic excellence, personal growth, and character development. Join us in nurturing future leaders who excel academically and impact the world positively."
-    },
-    {
-        name: "Mr. Paul Kofi Yesu Dadzie",
-        role: "Assistant Headmaster (Administration)",
-        img: "./assets/administration.jpg",
-        msg: "Greetings from Accra Academy! As the Assistant Headmaster Administration, I extend a warm welcome to our esteemed community. At the heart of our institution is a commitment to efficient and supportive administration, ensuring a seamless experience for students and staff alike. From admissions to facilities management, our dedicated team strives for excellence."
-    },
-    {
-        name: "Mr. Isaac Tweneboah",
-        role: "Assistant Headmaster (Academic)",
-        img: "./assets/academics.jpg",
-        msg: "Welcome to Accra Academy! As the Assistant Headmaster Academic, I am thrilled to embark on this educational journey with you. Our commitment to academic excellence is unwavering, and we strive to create an environment that nurtures not only knowledge but also critical thinking and personal growth. Explore our diverse academic programs where innovation meets tradition."
-    },
-    {
-        name: "Mr. William Kwame Asun",
-        role: "Assistant Headmaster (Domestic/Welfare)",
-        img: "./assets/domestic.jpg",
-        msg: "I am honored to welcome you as the Assistant Headmaster Domestic/Welfare. Our focus extends beyond the classroom, ensuring a supportive and nurturing environment for every student. From dormitory life to overall well-being, we prioritize the domestic and welfare aspects of your experience. Thank you for being part of the Accra Academy family."
-    }
-];
 
-let currentLeaderIndex = 0;
-
-window.changeLeader = function (index) {
-    currentLeaderIndex = index;
-    const data = leaderData[index];
-    if (!data) return;
-
-    const imgEl = document.getElementById('leader-main-img');
-    const nameEl = document.getElementById('leader-name');
-    const roleEl = document.getElementById('leader-role');
-    const msgEl = document.getElementById('leader-msg');
-    const containerText = document.getElementById('leader-text-container');
-    const thumbs = document.querySelectorAll('.leader-thumb');
-
-    // B. UPDATE THUMBNAILS
-    thumbs.forEach((t, i) => {
-        if (i === index) {
-            t.classList.add('active', 'border-gold', 'opacity-100', 'scale-110');
-            t.classList.remove('border-transparent', 'opacity-60');
-        } else {
-            t.classList.remove('active', 'border-gold', 'opacity-100', 'scale-110');
-            t.classList.add('border-transparent', 'opacity-60');
-        }
-    });
-
-    // C. ANIMATED SWAP
-    if (containerText) containerText.style.opacity = '0';
-    if (imgEl) imgEl.style.opacity = '0';
-
-    setTimeout(() => {
-        if (imgEl) imgEl.src = data.img;
-        if (nameEl) nameEl.innerText = data.name;
-        if (roleEl) roleEl.innerText = data.role;
-        if (msgEl) msgEl.innerText = data.msg;
-
-        setTimeout(() => {
-            if (containerText) containerText.style.opacity = '1';
-            if (imgEl) imgEl.style.opacity = '1';
-        }, 50);
-    }, 300);
-};
-
-window.openLeaderModal = function (index = null) {
-    const idx = (index !== null) ? index : currentLeaderIndex;
-    const data = leaderData[idx];
-    if (!data) return;
-
-    const modal = document.getElementById('leader-modal');
-    if (!modal) return;
-
-    // Update Modal Content
-    document.getElementById('modal-img').src = data.img;
-    document.getElementById('modal-name').innerText = data.name;
-    document.getElementById('modal-role').innerText = data.role;
-    document.getElementById('modal-msg').innerText = data.msg;
-
-    // Show Modal
-    modal.style.display = 'flex';
-    modal.classList.remove('hidden');
-    modal.classList.add('active');
-    setTimeout(() => {
-        modal.style.opacity = '1';
-        modal.querySelector('#leader-modal-content').classList.remove('scale-95', 'opacity-0');
-        modal.querySelector('#leader-modal-content').classList.add('scale-100', 'opacity-100');
-    }, 10);
-
-    document.body.classList.add('modal-open');
-};
-
-window.closeLeaderModal = function () {
-    const modal = document.getElementById('leader-modal');
-    if (modal) {
-        modal.style.display = 'none';
-        modal.classList.add('hidden');
-        modal.classList.remove('flex', 'active');
-    }
-    document.body.classList.remove('modal-open');
-};

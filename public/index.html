@@ -671,14 +671,14 @@
             </div>
 
             <!-- THE MASTER CARD -->
-            <div class="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row min-h-[600px]"
-                data-aos="fade-up">
+            <div class="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row min-h-[600px] cursor-pointer group/card"
+                data-aos="fade-up" onclick="openLeaderModal()">
 
                 <!-- LEFT: THE IMAGE (Dynamic) -->
-                <div class="w-full md:w-1/2 relative bg-gray-200">
+                <div class="w-full md:w-1/2 relative bg-gray-200 overflow-hidden">
                     <!-- The Active Image -->
                     <img id="leader-main-img" src="./assets/headmaster.jpg"
-                        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                        class="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover/card:scale-105"
                         alt="Leader Portrait">
 
                     <!-- Overlay Gradient -->
@@ -692,8 +692,7 @@
                     <div class="text-gold text-6xl font-serif opacity-30 absolute top-8 right-8">❝</div>
 
                     <!-- Dynamic Text -->
-                    <div id="leader-text-container" class="relative z-10 animate-fade-in hover:cursor-pointer group"
-                        onclick="openLeaderModal()">
+                    <div id="leader-text-container" class="relative z-10 animate-fade-in group">
                         <h2 id="leader-name" class="text-2xl md:text-3xl font-display font-bold mb-1">Mr. Eric Ebo Sey
                         </h2>
                         <p id="leader-role" class="text-gold text-xs font-bold uppercase tracking-widest mb-8">
@@ -718,7 +717,7 @@
                     </div>
 
                     <!-- THUMBNAIL NAVIGATOR -->
-                    <div class="mt-12 pt-8 border-t border-white/10">
+                    <div class="mt-12 pt-8 border-t border-white/10" onclick="event.stopPropagation()">
                         <p class="text-xs text-gray-400 font-bold uppercase mb-4">Select Administrator</p>
                         <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
 
@@ -1097,11 +1096,11 @@
     <!-- 3D Logic (after THREE.js) -->
     <script src="./js/background-3d.js"></script>
     <!-- Main Logic -->
-    <script src="./js/script.js"></script>
     <!-- Libs -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="./js/script.js"></script>
 
     <script>
         // Safe initialization
