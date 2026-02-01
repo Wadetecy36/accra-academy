@@ -3,7 +3,7 @@
 /* ============================================================= */
 
 /* ============================================ */
-/*    LEADERSHIP LOGIC (TOP-LEVEL GLOBAL)       */
+/*    LEADERSHIP LOGIC (S.O.T)                   */
 /* ============================================ */
 const leaderData = [
     {
@@ -32,105 +32,33 @@ const leaderData = [
     }
 ];
 
-let currentLeaderIndex = 0;
-
-window.changeLeader = function (index) {
-    console.log("Change Leader Requested:", index);
-    currentLeaderIndex = index;
-    const data = leaderData[index];
+window.openLeaderModal = function (idx) {
+    const data = leaderData[idx];
     if (!data) return;
 
-    const imgEl = document.getElementById('leader-main-img');
-    const nameEl = document.getElementById('leader-name');
-    const roleEl = document.getElementById('leader-role');
-    const msgEl = document.getElementById('leader-msg');
-    const containerText = document.getElementById('leader-text-container');
-    const thumbs = document.querySelectorAll('.leader-thumb');
-
-    // B. UPDATE THUMBNAILS
-    thumbs.forEach((t, i) => {
-        if (i === index) {
-            t.classList.add('active', 'border-gold', 'opacity-100', 'scale-110');
-            t.classList.remove('border-transparent', 'opacity-60');
-        } else {
-            t.classList.remove('active', 'border-gold', 'opacity-100', 'scale-110');
-            t.classList.add('border-transparent', 'opacity-60');
-        }
-    });
-
-    // C. ANIMATED SWAP
-    if (containerText) containerText.style.opacity = '0';
-    if (imgEl) imgEl.style.opacity = '0';
-
-    setTimeout(() => {
-        if (imgEl) imgEl.src = data.img;
-        if (nameEl) nameEl.innerText = data.name;
-        if (roleEl) roleEl.innerText = data.role;
-        if (msgEl) msgEl.innerText = data.msg;
-
-        setTimeout(() => {
-            if (containerText) containerText.style.opacity = '1';
-            if (imgEl) imgEl.style.opacity = '1';
-        }, 50);
-    }, 300);
-};
-
-window.openLeaderModal = function (index = null) {
-    const idx = (index !== null) ? index : currentLeaderIndex;
-    const data = leaderData[idx];
-    if (!data) {
-        console.error("No leader data found for index:", idx);
-        return;
-    }
-
     const modal = document.getElementById('leader-modal');
-    const content = document.getElementById('leader-modal-content');
-    if (!modal || !content) return;
+    if (!modal) return;
 
-    console.log("Opening Modal for:", data.name);
-
-    // Update Modal Content
+    // Fill Content
     document.getElementById('modal-img').src = data.img;
     document.getElementById('modal-name').innerText = data.name;
     document.getElementById('modal-role').innerText = data.role;
     document.getElementById('modal-msg').innerText = data.msg;
 
-    // Reset styles for transition
-    modal.style.opacity = '0';
-    content.classList.add('scale-95', 'opacity-0');
-    content.classList.remove('scale-100', 'opacity-100');
-
-    // Show Modal
-    modal.style.display = 'flex';
-    modal.classList.remove('hidden');
+    // Show
     modal.classList.add('active');
-
-    setTimeout(() => {
-        modal.style.opacity = '1';
-        content.classList.remove('scale-95', 'opacity-0');
-        content.classList.add('scale-100', 'opacity-100');
-    }, 30);
-
     document.body.classList.add('modal-open');
 };
 
 window.closeLeaderModal = function () {
     const modal = document.getElementById('leader-modal');
-    const content = document.getElementById('leader-modal-content');
     if (modal) {
-        modal.style.opacity = '0';
-        if (content) {
-            content.classList.add('scale-95', 'opacity-0');
-            content.classList.remove('scale-100', 'opacity-100');
-        }
-        setTimeout(() => {
-            modal.style.display = 'none';
-            modal.classList.add('hidden');
-            modal.classList.remove('flex', 'active');
-        }, 300);
+        modal.classList.remove('active');
     }
     document.body.classList.remove('modal-open');
 };
+
+
 
 /* ============================================ */
 /*              Standard Initialization         */
@@ -620,13 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Modal safety fix on load
-    const modal = document.getElementById('leader-modal');
-    if (modal) {
-        modal.style.display = 'none';
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-    }
+
 
 }); // END OF DOMContentLoaded
 

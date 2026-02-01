@@ -613,146 +613,88 @@
         </div>
     </section>
 
-    <!-- ACHIEVEMENTS (Glass Mode) -->
-    <section class="achievements py-20 section-glass text-white" id="achievements">
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="flex items-start gap-5 mb-16 max-w-4xl" data-aos="fade-right">
-                <div class="w-2 h-20 bg-gold rounded-sm shrink-0 shadow-[0_0_15px_rgba(253,190,17,0.5)]"></div>
-                <div>
-                    <h2 class="text-4xl md:text-5xl font-bold font-display mb-4 text-royal dark:text-white">Our <span
-                            class="text-gold">Achievements</span></h2>
-                    <p class="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">Accra Academy excels in
-                        education and leadership, producing Chief Justices, Speakers of Parliament, and concurrent heads
-                        of state.</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 border-t border-gray-400/20 pt-12">
-                <div class="stat-item text-center md:text-left md:border-r border-gray-400/20 md:pr-8">
-                    <div class="text-4xl font-bold text-gold flex items-baseline justify-center md:justify-start"><span
-                            class="counter" data-target="4381">0</span><span>+</span></div>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 uppercase tracking-wider font-bold mt-2">Students
-                    </p>
-                </div>
-                <div class="stat-item text-center md:text-left md:pl-8 md:border-r border-gray-400/20 md:pr-8">
-                    <div class="text-4xl font-bold text-gold flex items-baseline justify-center md:justify-start"><span
-                            class="counter" data-target="1">0</span><span>M+</span></div>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 uppercase tracking-wider font-bold mt-2">Bleoobi
-                    </p>
-                </div>
-                <div class="stat-item text-center md:text-left md:pl-8 md:border-r border-gray-400/20 md:pr-8">
-                    <div class="text-4xl font-bold text-gold flex items-baseline justify-center md:justify-start"><span
-                            class="counter" data-target="920">0</span></div>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 uppercase tracking-wider font-bold mt-2">Awards
-                    </p>
-                </div>
-                <div class="stat-item text-center md:text-left md:pl-8">
-                    <div class="text-4xl font-bold text-gold flex items-baseline justify-center md:justify-start"><span
-                            class="counter" data-target="5">0</span></div>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 uppercase tracking-wider font-bold mt-2">Depts
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- =========================================
-       LEADERSHIP SHOWCASE (MASTER-DETAIL VIEW)
+       LEADERSHIP & ADMINISTRATION
        ========================================= -->
-    <section class="py-24 bg-soft dark:bg-gray-900 relative" id="leadership">
-
-        <div class="container mx-auto px-4 relative z-10 max-w-5xl">
-
-            <!-- Section Title -->
-            <div class="text-center mb-12" data-aos="fade-down">
+    <section class="py-24 section-glass" id="leadership">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
                 <span class="text-gold font-bold tracking-widest uppercase text-sm">Stewardship</span>
-                <h2 class="text-3xl md:text-4xl font-display font-bold text-royal dark:text-white mt-2">School
-                    Administration</h2>
+                <h2 class="text-3xl md:text-5xl font-display font-bold text-royal dark:text-white mt-2">Our Leadership
+                </h2>
+                <p class="text-gray-500 dark:text-gray-400 mt-4 max-w-2xl mx-auto">The dedicated team guiding Accra
+                    Academy towards continued excellence.</p>
             </div>
 
-            <!-- THE MASTER CARD -->
-            <div class="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row min-h-[600px] cursor-pointer group/card"
-                data-aos="fade-up" onclick="openLeaderModal()">
-
-                <!-- LEFT: THE IMAGE (Dynamic) -->
-                <div class="w-full md:w-1/2 relative bg-gray-200 overflow-hidden">
-                    <!-- The Active Image -->
-                    <img id="leader-main-img" src="./assets/headmaster.jpg"
-                        class="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover/card:scale-105"
-                        alt="Leader Portrait">
-
-                    <!-- Overlay Gradient -->
-                    <!-- Overlay removed -->
+            <div class="max-w-6xl mx-auto">
+                <!-- Highlighted: Headmaster -->
+                <div class="mb-12" data-aos="fade-up">
+                    <div class="leader-card group flex flex-col md:flex-row items-stretch min-h-[400px]"
+                        onclick="openLeaderModal(0)">
+                        <div class="md:w-2/5 overflow-hidden">
+                            <img src="./assets/headmaster.jpg" class="w-full h-full object-cover">
+                        </div>
+                        <div class="md:w-3/5 p-8 md:p-12 flex flex-col justify-center bg-royal text-white">
+                            <div class="text-gold text-4xl mb-4">❝</div>
+                            <h3 class="text-3xl font-display font-bold mb-1">Mr. Eric Ebo Sey</h3>
+                            <p class="text-gold font-bold uppercase tracking-widest text-xs mb-6">Headmaster</p>
+                            <p class="text-gray-300 italic line-clamp-3 mb-8">"Accra Academy, established in 1931, is a
+                                distinguished educational institution in Accra... Join us in nurturing future leaders
+                                who excel academically and impact the world positively."</p>
+                            <button
+                                class="w-fit text-sm font-bold border-b-2 border-gold pb-1 hover:text-gold transition">Read
+                                Full Message</button>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- RIGHT: THE CONTENT (Dynamic) -->
-                <div class="w-full md:w-1/2 bg-royal text-white p-8 md:p-12 flex flex-col justify-center relative">
-
-                    <!-- Quote Icon -->
-                    <div class="text-gold text-6xl font-serif opacity-30 absolute top-8 right-8">❝</div>
-
-                    <!-- Dynamic Text -->
-                    <div id="leader-text-container" class="relative z-10 animate-fade-in group">
-                        <h2 id="leader-name" class="text-2xl md:text-3xl font-display font-bold mb-1">Mr. Eric Ebo Sey
-                        </h2>
-                        <p id="leader-role" class="text-gold text-xs font-bold uppercase tracking-widest mb-8">
-                            Headmaster</p>
-
-                        <div class="h-1 w-12 bg-white/20 mb-8 transition-all group-hover:w-20 group-hover:bg-gold">
+                <!-- Grid: Assistant Headmasters -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Admin -->
+                    <div class="leader-card group" data-aos="fade-up" data-aos-delay="100" onclick="openLeaderModal(1)">
+                        <div class="h-64 overflow-hidden">
+                            <img src="./assets/administration.jpg" class="w-full h-full object-cover">
                         </div>
-
-                        <p id="leader-msg"
-                            class="text-gray-300 leading-relaxed text-sm md:text-base font-light italic line-clamp-4">
-                            Accra Academy, established in 1931, is a distinguished educational institution in Accra...
-                        </p>
-
-                        <button
-                            class="mt-8 text-xs font-bold uppercase tracking-widest text-gold hover:text-white transition flex items-center gap-2">
-                            <span>Read Full Message</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <!-- THUMBNAIL NAVIGATOR -->
-                    <div class="mt-12 pt-8 border-t border-white/10" onclick="event.stopPropagation()">
-                        <p class="text-xs text-gray-400 font-bold uppercase mb-4">Select Administrator</p>
-                        <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-
-                            <!-- Thumb 1: Headmaster -->
-                            <button onclick="changeLeader(0)"
-                                class="leader-thumb active relative w-14 h-14 rounded-xl overflow-hidden border-2 border-gold transition-all hover:scale-105 shrink-0">
-                                <img src="./assets/headmaster.jpg" class="w-full h-full object-cover">
-                            </button>
-
-                            <!-- Thumb 2: Admin -->
-                            <button onclick="changeLeader(1)"
-                                class="leader-thumb relative w-14 h-14 rounded-xl overflow-hidden border-2 border-transparent hover:border-gold/50 transition-all hover:scale-105 opacity-60 hover:opacity-100 shrink-0">
-                                <img src="./assets/administration.jpg" class="w-full h-full object-cover">
-                            </button>
-
-                            <!-- Thumb 3: Academic -->
-                            <button onclick="changeLeader(2)"
-                                class="leader-thumb relative w-14 h-14 rounded-xl overflow-hidden border-2 border-transparent hover:border-gold/50 transition-all hover:scale-105 opacity-60 hover:opacity-100 shrink-0">
-                                <img src="./assets/academics.jpg" class="w-full h-full object-cover">
-                            </button>
-
-                            <!-- Thumb 4: Domestic -->
-                            <button onclick="changeLeader(3)"
-                                class="leader-thumb relative w-14 h-14 rounded-xl overflow-hidden border-2 border-transparent hover:border-gold/50 transition-all hover:scale-105 opacity-60 hover:opacity-100 shrink-0">
-                                <img src="./assets/domestic.jpg" class="w-full h-full object-cover">
-                            </button>
-
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold text-royal dark:text-white mb-1">Mr. Paul Kofi Yesu Dadzie</h4>
+                            <p class="text-gold font-bold uppercase tracking-widest text-[10px] mb-4">Asst. Headmaster
+                                (Admin)</p>
+                            <button class="text-xs font-bold text-royal dark:text-gold group-hover:underline">Read
+                                Message →</button>
                         </div>
                     </div>
-
+                    <!-- Academic -->
+                    <div class="leader-card group" data-aos="fade-up" data-aos-delay="200" onclick="openLeaderModal(2)">
+                        <div class="h-64 overflow-hidden">
+                            <img src="./assets/academics.jpg" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold text-royal dark:text-white mb-1">Mr. Isaac Tweneboah</h4>
+                            <p class="text-gold font-bold uppercase tracking-widest text-[10px] mb-4">Asst. Headmaster
+                                (Academic)</p>
+                            <button class="text-xs font-bold text-royal dark:text-gold group-hover:underline">Read
+                                Message →</button>
+                        </div>
+                    </div>
+                    <!-- Domestic -->
+                    <div class="leader-card group" data-aos="fade-up" data-aos-delay="300" onclick="openLeaderModal(3)">
+                        <div class="h-64 overflow-hidden">
+                            <img src="./assets/domestic.jpg" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold text-royal dark:text-white mb-1">Mr. William Kwame Asun</h4>
+                            <p class="text-gold font-bold uppercase tracking-widest text-[10px] mb-4">Asst. Headmaster
+                                (Domestic)</p>
+                            <button class="text-xs font-bold text-royal dark:text-gold group-hover:underline">Read
+                                Message →</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </div>
     </section>
+
+
 
     <!-- GALLERY SECTION (Panoramic Glass Mode) -->
     <section class="gallery-section py-24 section-glass border-t border-white/10 overflow-hidden" id="gallery">
@@ -1036,107 +978,79 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
         </button>
-    </div>
-
-    <!-- =========================================
-       LEADER MODAL (REQUIRED FOR POPUP)
-       PASTE THIS RIGHT ABOVE YOUR <script> TAGS
+        <!-- =========================================
+       MODERN LEADER MODAL
        ========================================= -->
-    <div id="leader-modal"
-        class="fixed inset-0 z-[9999] hidden opacity-0 items-center justify-center px-4 font-sans pointer-events-none">
+        <div id="leader-modal" onclick="closeLeaderModal()">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content flex flex-col md:flex-row" onclick="event.stopPropagation()">
+                <!-- Image -->
+                <div class="md:w-2/5 h-64 md:h-auto overflow-hidden">
+                    <img id="modal-img" src="" class="w-full h-full object-cover">
+                </div>
+                <!-- Text Content -->
+                <div class="md:w-3/5 p-8 md:p-12 relative flex flex-col justify-center">
+                    <!-- Watermark -->
+                    <img src="./assets/crest.png"
+                        class="absolute inset-0 m-auto w-48 opacity-[0.03] pointer-events-none">
 
-        <!-- Dark Backdrop -->
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm transition-opacity duration-300"
-            onclick="closeLeaderModal()"></div>
+                    <h3 id="modal-name" class="text-3xl font-display font-bold text-royal dark:text-white mb-1">Name
+                    </h3>
+                    <p id="modal-role" class="text-gold font-bold uppercase tracking-widest text-xs mb-6">Role</p>
 
-        <!-- The Card -->
-        <div class="relative bg-white dark:bg-gray-900 w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row transform scale-95 opacity-0 transition-all duration-300 border border-gold/20"
-            id="leader-modal-content">
-            <!-- Close X Button -->
-            <button onclick="closeLeaderModal()"
-                class="absolute top-4 right-4 z-50 bg-black/50 hover:bg-red-600 text-white w-10 h-10 rounded-full flex items-center justify-center transition cursor-pointer">✕</button>
+                    <div class="h-1 w-12 bg-royal/10 dark:bg-white/10 mb-6"></div>
 
-            <!-- Image Side (Left) -->
-            <div class="w-full md:w-2/5 h-64 md:h-auto relative">
-                <img id="modal-img" src="" class="absolute inset-0 w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-t from-royal/90 to-transparent md:hidden"></div>
-            </div>
-
-            <!-- Text Side (Right) -->
-            <div class="w-full md:w-3/5 p-8 md:p-12 bg-white dark:bg-gray-900 flex flex-col justify-center relative">
-
-                <!-- Watermark -->
-                <img src="./assets/crest.png"
-                    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 opacity-5 pointer-events-none grayscale">
-
-                <span class="text-gold font-bold tracking-widest uppercase text-xs mb-2">Message from the Office</span>
-                <h2 id="modal-name" class="text-3xl font-display font-bold text-royal dark:text-white mb-1">Name
-                    Placeholder</h2>
-                <p id="modal-role"
-                    class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-6">Role
-                    Placeholder</p>
-
-                <div class="prose dark:prose-invert max-w-none z-10">
-                    <p id="modal-msg" class="text-gray-600 dark:text-gray-300 leading-relaxed text-lg italic">
-                        ...
+                    <p id="modal-msg"
+                        class="text-gray-600 dark:text-gray-300 leading-relaxed italic text-lg line-clamp-[10]">Message
                     </p>
-                </div>
 
-                <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-800 flex items-center gap-3">
-                    <div class="h-1 w-10 bg-gold"></div>
-                    <span class="text-xs text-gray-400 font-bold uppercase tracking-widest">Accra Academy
-                        Administration</span>
+                    <button onclick="closeLeaderModal()"
+                        class="mt-8 px-6 py-2 bg-royal text-gold font-bold rounded-full w-fit hover:bg-royal/90 transition shadow-lg">Close
+                        Message</button>
                 </div>
+                <!-- Close Trigger (Top Right) -->
+                <button onclick="closeLeaderModal()"
+                    class="absolute top-6 right-6 text-gray-400 hover:text-red-500 transition text-2xl">✕</button>
             </div>
         </div>
-    </div>
-    <!-- SCRIPTS -->
-    <!-- THREE.JS MUST LOAD FIRST -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- 3D Logic (after THREE.js) -->
-    <script src="./js/background-3d.js"></script>
-    <!-- Main Logic -->
-    <!-- Libs -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="./js/script.js"></script>
 
-    <script>
-        // Safe initialization
-        if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true });
-    </script>
+        <!-- SCRIPTS -->
+        <!-- THREE.JS MUST LOAD FIRST -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        <script src="./js/background-3d.js"></script>
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+        <script src="./js/script.js"></script>
 
+        <script>
+            // Safe initialization
+            document.addEventListener('DOMContentLoaded', () => {
+                if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true });
+            });
+        </script>
 
-
-    <!-- =========================================
-     BACKGROUND AUDIO CONTROL
-     ========================================= -->
-    <div id="audio-control" class="fixed bottom-6 left-6 z-50 hidden md:flex items-center gap-3 animate-fade-in">
-        <!-- The Hidden Audio Player -->
-        <audio id="bg-music" loop>
-            <source src="./assets/cylf.mp3" type="audio/mpeg">
-        </audio>
-
-        <!-- The Toggle Button -->
-        <button id="music-toggle"
-            class="w-12 h-12 rounded-full bg-royal/80 backdrop-blur-md border border-gold/30 text-gold flex items-center justify-center shadow-lg hover:scale-110 hiddentransition group overflow-hidden">
-            <!-- Bars Animation (Playing) -->
-            <div id="music-bars" class="flex gap-1 items-end h-4 ">
-                <span class="w-1 bg-gold h-full animate-[bounce_1s_infinite]"></span>
-                <span class="w-1 bg-gold h-2/3 animate-[bounce_1.2s_infinite]"></span>
-                <span class="w-1 bg-gold h-3/4 animate-[bounce_0.8s_infinite]"></span>
-            </div>
-            <!-- Muted Icon (Default) -->
-            <svg id="music-off" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
-                    clip-rule="evenodd"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>
-            </svg>
-        </button>
-    </div>
+        <!-- BACKGROUND AUDIO CONTROL -->
+        <div id="audio-control" class="fixed bottom-6 left-6 z-50 hidden md:flex items-center gap-3">
+            <audio id="bg-music" loop>
+                <source src="./assets/cylf.mp3" type="audio/mpeg">
+            </audio>
+            <button id="music-toggle"
+                class="w-12 h-12 rounded-full bg-royal/80 backdrop-blur-md border border-gold/30 text-gold flex items-center justify-center shadow-lg hover:scale-110 transition group overflow-hidden">
+                <div id="music-bars" class="flex gap-1 items-end h-4 ">
+                    <span class="w-1 bg-gold h-full animate-[bounce_1s_infinite]"></span>
+                    <span class="w-1 bg-gold h-2/3 animate-[bounce_1.2s_infinite]"></span>
+                    <span class="w-1 bg-gold h-3/4 animate-[bounce_0.8s_infinite]"></span>
+                </div>
+                <svg id="music-off" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z">
+                    </path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>
+                </svg>
+            </button>
+        </div>
 </body>
 
 </html>
