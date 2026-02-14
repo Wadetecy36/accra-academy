@@ -3,7 +3,7 @@
 /* ============================================================= */
 
 /* ============================================ */
-/*    LEADERSHIP LOGIC (S.O.T)                   */
+/*    LEADERSHIP DATA (S.O.T)                    */
 /* ============================================ */
 const leaderData = [
     {
@@ -32,59 +32,102 @@ const leaderData = [
     }
 ];
 
-// Helper: Update Content
-window.updateLeaderModal = function (idx) {
-    const data = leaderData[idx];
-    if (!data) return;
-    document.getElementById('modal-img').src = data.img;
-    document.getElementById('modal-name').innerText = data.name;
-    document.getElementById('modal-role').innerText = data.role;
-    document.getElementById('modal-msg').innerText = data.msg;
-};
+window.BleooLeadership = {
+    currentIndex: 0,
 
-// Helper: Render Thumbnails Navigation
-window.renderModalThumbnails = function (activeIdx) {
-    const container = document.getElementById('modal-thumbnails');
-    if (!container) return;
+    init: function () {
+        console.log('🚀 Leadership Engine Initializing...');
+        this.renderAllThumbnails(0);
+        this.attachGlobalHandlers();
+    },
 
-    container.innerHTML = leaderData.map((leader, i) => `
-        <div class="w-10 h-10 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 ${i === activeIdx ? 'border-gold scale-110 shadow-lg' : 'border-white/10 opacity-50 hover:opacity-100'}" 
-             onclick="window.updateLeaderModal(${i}); window.renderModalThumbnails(${i});">
-            <img src="${leader.img}" class="w-full h-full object-cover">
-        </div>
-    `).join('');
-};
+    attachGlobalHandlers: function () {
+        // Expose critical functions to window for HTML onclicks
+        window.openLeaderModal = (idx) => this.openModal(idx);
+        window.closeLeaderModal = () => this.closeModal();
+        window.updateMainLeadership = (idx) => this.updateMain(idx);
+        window.updateLeaderModal = (idx) => this.updateModalContent(idx);
+        window.renderModalThumbnails = (idx) => this.renderModalThumbs(idx);
+    },
 
-window.openLeaderModal = function (idx) {
-    const modal = document.getElementById('leader-modal');
-    if (!modal) return;
+    updateMain: function (idx) {
+        const data = leaderData[idx];
+        if (!data) return;
 
-    // 1. Update Content
-    window.updateLeaderModal(idx);
+        // Content Area Animation
+        const area = document.getElementById('leader-content-area');
+        if (area) {
+            area.style.opacity = '0';
+            area.style.transform = 'translateY(10px)';
 
-    // 2. Render Thumbnails
-    window.renderModalThumbnails(idx);
+            setTimeout(() => {
+                document.getElementById('main-leader-img').src = data.img;
+                document.getElementById('main-leader-name').innerText = data.name;
+                document.getElementById('main-leader-role').innerText = data.role;
+                document.getElementById('main-leader-msg').innerText = data.msg;
+                document.getElementById('main-leader-btn').onclick = () => this.openModal(idx);
 
-    // 3. Show Modal
-    modal.classList.add('active');
-    document.body.classList.add('modal-open');
-};
+                area.style.opacity = '1';
+                area.style.transform = 'translateY(0)';
+                this.renderAllThumbnails(idx);
+            }, 300);
+        }
+    },
 
-window.closeLeaderModal = function () {
-    const modal = document.getElementById('leader-modal');
-    if (modal) {
-        modal.classList.remove('active');
+    renderAllThumbnails: function (activeIdx) {
+        const mainContainer = document.getElementById('main-leader-thumbnails');
+        if (!mainContainer) return;
+
+        mainContainer.innerHTML = leaderData.map((leader, i) => `
+            <div class="w-12 h-12 rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-500 ${i === activeIdx ? 'border-gold scale-110 shadow-[0_0_15px_rgba(253,190,17,0.4)]' : 'border-white/10 opacity-40 hover:opacity-100 hover:scale-105'}" 
+                 onclick="window.updateMainLeadership(${i})">
+                <img src="${leader.img}" class="w-full h-full object-cover">
+            </div>
+        `).join('');
+    },
+
+    openModal: function (idx) {
+        const modal = document.getElementById('leader-modal');
+        if (!modal) return;
+
+        this.updateModalContent(idx);
+        this.renderModalThumbs(idx);
+
+        modal.classList.add('active');
+        document.body.classList.add('modal-open');
+    },
+
+    updateModalContent: function (idx) {
+        const data = leaderData[idx];
+        if (!data) return;
+        document.getElementById('modal-img').src = data.img;
+        document.getElementById('modal-name').innerText = data.name;
+        document.getElementById('modal-role').innerText = data.role;
+        document.getElementById('modal-msg').innerText = data.msg;
+    },
+
+    renderModalThumbs: function (activeIdx) {
+        const container = document.getElementById('modal-thumbnails');
+        if (!container) return;
+
+        container.innerHTML = leaderData.map((leader, i) => `
+            <div class="w-10 h-10 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 ${i === activeIdx ? 'border-gold scale-110 shadow-lg' : 'border-white/10 opacity-50 hover:opacity-100'}" 
+                 onclick="window.updateLeaderModal(${i}); window.renderModalThumbnails(${i});">
+                <img src="${leader.img}" class="w-full h-full object-cover">
+            </div>
+        `).join('');
+    },
+
+    closeModal: function () {
+        const modal = document.getElementById('leader-modal');
+        if (modal) modal.classList.remove('active');
+        document.body.classList.remove('modal-open');
     }
-    document.body.classList.remove('modal-open');
 };
-
-
-
-/* ============================================ */
-/*              Standard Initialization         */
-/* ============================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Start Engine
+    window.BleooLeadership.init();
 
     // SENIOR DEV: Initialization Log
     console.log('%c 🔧 DOMContentLoaded: Initializing Scripts... ', 'background: #002147; color: #FDBE11; font-weight: bold;');
@@ -116,49 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 mobileBtn.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>';
             });
         });
-    }
-
-    /* =========================================
-       1. INTERACTIVE LEADERSHIP SWITCHER
-       ========================================= */
-    const mainThumbnails = document.getElementById('main-leader-thumbnails');
-
-    // Global function to update main card
-    window.updateMainLeadership = function (idx) {
-        const data = leaderData[idx];
-        if (!data) return;
-
-        // Update Main Card Elements
-        const img = document.getElementById('main-leader-img');
-        const name = document.getElementById('main-leader-name');
-        const role = document.getElementById('main-leader-role');
-        const msg = document.getElementById('main-leader-msg');
-        const btn = document.getElementById('main-leader-btn');
-
-        if (img) img.src = data.img;
-        if (name) name.innerText = data.name;
-        if (role) role.innerText = data.role;
-        if (msg) msg.innerText = data.msg;
-        if (btn) btn.onclick = () => window.openLeaderModal(idx);
-
-        // Re-render thumbnails to highlight active
-        window.renderMainThumbnails(idx);
-    };
-
-    // Global function to render main thumbnails
-    window.renderMainThumbnails = function (activeIdx) {
-        if (!mainThumbnails) return;
-        mainThumbnails.innerHTML = leaderData.map((leader, i) => `
-            <div class="w-12 h-12 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 ${i === activeIdx ? 'border-gold scale-110 shadow-lg' : 'border-white/10 opacity-50 hover:opacity-100 hover:scale-105'}" 
-                 onclick="window.updateMainLeadership(${i})">
-                <img src="${leader.img}" class="w-full h-full object-cover">
-            </div>
-        `).join('');
-    };
-
-    if (mainThumbnails) {
-        window.renderMainThumbnails(0);
-        console.log('👥 Leadership Switcher Ready');
     }
 
     /* =========================================
