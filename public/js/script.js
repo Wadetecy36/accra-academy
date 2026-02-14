@@ -33,22 +33,42 @@ const leaderData = [
 ];
 
 window.openLeaderModal = function (idx) {
-    const data = leaderData[idx];
-    if (!data) return;
-
     const modal = document.getElementById('leader-modal');
     if (!modal) return;
 
-    // Fill Content
+    // 1. Update Content
+    updateLeaderModal(idx);
+
+    // 2. Render Thumbnails (once or every time to update active state)
+    renderModalThumbnails(idx);
+
+    // 3. Show Modal
+    modal.classList.add('active');
+    document.body.classList.add('modal-open');
+};
+
+// Helper: Update Content
+function updateLeaderModal(idx) {
+    const data = leaderData[idx];
+    if (!data) return;
     document.getElementById('modal-img').src = data.img;
     document.getElementById('modal-name').innerText = data.name;
     document.getElementById('modal-role').innerText = data.role;
     document.getElementById('modal-msg').innerText = data.msg;
+}
 
-    // Show
-    modal.classList.add('active');
-    document.body.classList.add('modal-open');
-};
+// Helper: Render Thumbnails Navigation
+function renderModalThumbnails(activeIdx) {
+    const container = document.getElementById('modal-thumbnails');
+    if (!container) return;
+
+    container.innerHTML = leaderData.map((leader, i) => `
+        <div class="w-10 h-10 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 ${i === activeIdx ? 'border-gold scale-110 shadow-lg' : 'border-white/10 opacity-50 hover:opacity-100'}" 
+             onclick="updateLeaderModal(${i}); renderModalThumbnails(${i});">
+            <img src="${leader.img}" class="w-full h-full object-cover">
+        </div>
+    `).join('');
+}
 
 window.closeLeaderModal = function () {
     const modal = document.getElementById('leader-modal');
@@ -99,7 +119,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* =========================================
-       1. 3D TILT EFFECT FOR CARDS
+       1. INTERACTIVE LEADERSHIP SWITCHER
+       ========================================= */
+    const mainThumbnails = document.getElementById('main-leader-thumbnails');
+    if (mainThumbnails) {
+        window.updateMainLeadership = function (idx) {
+            const data = leaderData[idx];
+            if (!data) return;
+
+            // Update Main Card
+            document.getElementById('main-leader-img').src = data.img;
+            document.getElementById('main-leader-name').innerText = data.name;
+            document.getElementById('main-leader-role').innerText = data.role;
+            document.getElementById('main-leader-msg').innerText = data.msg;
+            document.getElementById('main-leader-btn').onclick = () => openLeaderModal(idx);
+
+            // Re-render thumbnails to update active state
+            renderMainThumbnails(idx);
+        };
+
+        function renderMainThumbnails(activeIdx) {
+            mainThumbnails.innerHTML = leaderData.map((leader, i) => `
+                <div class="w-12 h-12 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 ${i === activeIdx ? 'border-gold scale-110 shadow-lg' : 'border-white/10 opacity-50 hover:opacity-100 hover:scale-105'}" 
+                     onclick="updateMainLeadership(${i})">
+                    <img src="${leader.img}" class="w-full h-full object-cover">
+                </div>
+            `).join('');
+        }
+
+        // Init
+        renderMainThumbnails(0);
+    }
+
+    /* =========================================
+       2. 3D TILT EFFECT FOR CARDS
        ========================================= */
     const cards = document.querySelectorAll('.feature-card, .info-card');
 

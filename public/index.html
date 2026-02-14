@@ -627,66 +627,53 @@
             </div>
 
             <div class="max-w-6xl mx-auto">
-                <!-- Highlighted: Headmaster -->
-                <div class="mb-12" data-aos="fade-up">
-                    <div class="leader-card group flex flex-col md:flex-row items-stretch min-h-[400px]"
-                        onclick="openLeaderModal(0)">
-                        <div class="md:w-2/5 h-64 md:h-auto overflow-hidden">
-                            <img src="./assets/headmaster.jpg" class="w-full h-full object-cover" loading="lazy">
-                        </div>
-                        <div class="md:w-3/5 p-8 md:p-12 flex flex-col justify-center bg-royal text-white">
-                            <div class="text-gold text-4xl mb-4">❝</div>
-                            <h3 class="text-3xl font-display font-bold mb-1">Mr. Eric Ebo Sey</h3>
-                            <p class="text-gold font-bold uppercase tracking-widest text-xs mb-6">Headmaster</p>
-                            <p class="text-gray-300 italic line-clamp-3 mb-8">"Accra Academy, established in 1931, is a
-                                distinguished educational institution in Accra... Join us in nurturing future leaders
-                                who excel academically and impact the world positively."</p>
-                            <button
-                                class="w-fit text-sm font-bold border-b-2 border-gold pb-1 hover:text-gold transition">Read
-                                Full Message →</button>
-                        </div>
+                <div class="leader-card group flex flex-col md:flex-row items-stretch min-h-[500px] overflow-hidden shadow-2xl relative"
+                    data-aos="zoom-in">
+                    <!-- Left: Large Image -->
+                    <div class="md:w-1/2 overflow-hidden relative">
+                        <img id="main-leader-img" src="./assets/headmaster.jpg"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-royal/50 to-transparent md:hidden"></div>
                     </div>
-                </div>
 
-                <!-- Grid: Assistant Headmasters -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Admin -->
-                    <div class="leader-card group" data-aos="fade-up" data-aos-delay="100" onclick="openLeaderModal(1)">
-                        <div class="h-64 overflow-hidden">
-                            <img src="./assets/administration.jpg" class="w-full h-full object-cover">
-                        </div>
-                        <div class="p-6">
-                            <h4 class="text-xl font-bold text-royal dark:text-white mb-1">Mr. Paul Kofi Yesu Dadzie</h4>
-                            <p class="text-gold font-bold uppercase tracking-widest text-[10px] mb-4">Asst. Headmaster
-                                (Admin)</p>
-                            <button class="text-xs font-bold text-royal dark:text-gold group-hover:underline">Read
-                                Message →</button>
-                        </div>
-                    </div>
-                    <!-- Academic -->
-                    <div class="leader-card group" data-aos="fade-up" data-aos-delay="200" onclick="openLeaderModal(2)">
-                        <div class="h-64 overflow-hidden">
-                            <img src="./assets/academics.jpg" class="w-full h-full object-cover">
-                        </div>
-                        <div class="p-6">
-                            <h4 class="text-xl font-bold text-royal dark:text-white mb-1">Mr. Isaac Tweneboah</h4>
-                            <p class="text-gold font-bold uppercase tracking-widest text-[10px] mb-4">Asst. Headmaster
-                                (Academic)</p>
-                            <button class="text-xs font-bold text-royal dark:text-gold group-hover:underline">Read
-                                Message →</button>
-                        </div>
-                    </div>
-                    <!-- Domestic -->
-                    <div class="leader-card group" data-aos="fade-up" data-aos-delay="300" onclick="openLeaderModal(3)">
-                        <div class="h-64 overflow-hidden">
-                            <img src="./assets/domestic.jpg" class="w-full h-full object-cover">
-                        </div>
-                        <div class="p-6">
-                            <h4 class="text-xl font-bold text-royal dark:text-white mb-1">Mr. William Kwame Asun</h4>
-                            <p class="text-gold font-bold uppercase tracking-widest text-[10px] mb-4">Asst. Headmaster
-                                (Domestic)</p>
-                            <button class="text-xs font-bold text-royal dark:text-gold group-hover:underline">Read
-                                Message →</button>
+                    <!-- Right: Content -->
+                    <div class="md:w-1/2 p-8 md:p-16 flex flex-col justify-center bg-royal text-white relative">
+                        <!-- Watermark -->
+                        <img src="./assets/crest.png"
+                            class="absolute inset-0 m-auto w-64 opacity-[0.03] pointer-events-none">
+
+                        <div class="text-gold text-5xl mb-6 italic font-serif">❝</div>
+
+                        <h3 id="main-leader-name"
+                            class="text-3xl md:text-4xl font-display font-bold text-white mb-2 tracking-tight">Mr. Eric
+                            Ebo Sey</h3>
+                        <p id="main-leader-role"
+                            class="text-gold font-bold uppercase tracking-[0.2em] text-[10px] mb-8">Headmaster</p>
+
+                        <div class="h-px w-16 bg-gold/40 mb-8 md:mb-12"></div>
+
+                        <p id="main-leader-msg"
+                            class="text-gray-300 leading-relaxed italic text-lg md:text-xl line-clamp-[6] mb-12">
+                            "Accra Academy, established in 1931, is a distinguished educational institution in Accra...
+                            Join us in nurturing future leaders who excel academically and impact the world positively."
+                        </p>
+
+                        <div
+                            class="mt-auto flex flex-col md:flex-row md:items-center justify-between gap-8 pt-8 border-t border-white/10 uppercase tracking-widest font-bold">
+                            <!-- Read Full Button -->
+                            <button id="main-leader-btn" onclick="openLeaderModal(0)"
+                                class="text-xs text-gold hover:text-white transition flex items-center gap-2 group/btn">
+                                Read Full Message <span
+                                    class="transition-transform group-hover/btn:translate-x-1">→</span>
+                            </button>
+
+                            <!-- Thumbnails Navigation -->
+                            <div class="flex flex-col gap-3">
+                                <span class="text-[9px] text-gray-500">The Directorate</span>
+                                <div id="main-leader-thumbnails" class="flex gap-3">
+                                    <!-- JS will inject thumbnails here -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -989,23 +976,27 @@
                     <img id="modal-img" src="" class="w-full h-full object-cover">
                 </div>
                 <!-- Text Content -->
-                <div class="md:w-3/5 p-8 md:p-12 relative flex flex-col justify-center">
+                <div class="md:w-3/5 p-8 md:p-12 relative flex flex-col justify-center bg-royal text-white">
                     <!-- Watermark -->
                     <img src="./assets/crest.png"
                         class="absolute inset-0 m-auto w-48 opacity-[0.03] pointer-events-none">
 
-                    <h3 id="modal-name" class="text-3xl font-display font-bold text-royal dark:text-white mb-1">Name
-                    </h3>
-                    <p id="modal-role" class="text-gold font-bold uppercase tracking-widest text-xs mb-6">Role</p>
+                    <div class="text-gold text-4xl mb-4 italic font-serif">❝</div>
 
-                    <div class="h-1 w-12 bg-royal/10 dark:bg-white/10 mb-6"></div>
+                    <h3 id="modal-name" class="text-3xl font-display font-bold text-white mb-1">Name</h3>
+                    <p id="modal-role" class="text-gold font-bold uppercase tracking-widest text-[10px] mb-6">Role</p>
 
-                    <p id="modal-msg" class="text-gray-600 dark:text-gray-300 leading-relaxed italic text-lg">Message
-                    </p>
+                    <div class="h-px w-12 bg-gold/30 mb-6"></div>
 
-                    <button onclick="closeLeaderModal()"
-                        class="mt-8 px-6 py-2 bg-royal text-gold font-bold rounded-full w-fit hover:bg-royal/90 transition shadow-lg">Close
-                        Message</button>
+                    <p id="modal-msg" class="text-gray-300 leading-relaxed italic text-base">Message</p>
+
+                    <!-- Thumbnails Navigation (Bottom Right) -->
+                    <div class="flex items-center gap-3 mt-12 pt-6 border-t border-white/10">
+                        <p class="text-[9px] uppercase tracking-widest font-bold text-gray-400 mr-2">Switch Leader:</p>
+                        <div id="modal-thumbnails" class="flex gap-2">
+                            <!-- JS will inject thumbnails here -->
+                        </div>
+                    </div>
                 </div>
                 <!-- Close Trigger (Top Right) -->
                 <button onclick="closeLeaderModal()"
