@@ -631,8 +631,8 @@
                 <div class="mb-12" data-aos="fade-up">
                     <div class="leader-card group flex flex-col md:flex-row items-stretch min-h-[400px]"
                         onclick="openLeaderModal(0)">
-                        <div class="md:w-2/5 overflow-hidden">
-                            <img src="./assets/headmaster.jpg" class="w-full h-full object-cover">
+                        <div class="md:w-2/5 h-64 md:h-auto overflow-hidden">
+                            <img src="./assets/headmaster.jpg" class="w-full h-full object-cover" loading="lazy">
                         </div>
                         <div class="md:w-3/5 p-8 md:p-12 flex flex-col justify-center bg-royal text-white">
                             <div class="text-gold text-4xl mb-4">❝</div>
@@ -643,7 +643,7 @@
                                 who excel academically and impact the world positively."</p>
                             <button
                                 class="w-fit text-sm font-bold border-b-2 border-gold pb-1 hover:text-gold transition">Read
-                                Full Message</button>
+                                Full Message →</button>
                         </div>
                     </div>
                 </div>
@@ -721,7 +721,7 @@
                         <!-- Overlay removed -->
                         <img src="./assets/admin.png"
                             class="w-full h-[300px] md:h-[500px] object-cover transform group-hover:scale-110 transition duration-700 ease-out"
-                            alt="Campus">
+                            alt="Campus" loading="lazy">
                         <div
                             class="absolute bottom-0 left-0 p-6 z-20 translate-y-4 group-hover:translate-y-0 transition duration-500">
                             <span class="text-gold text-xs font-bold uppercase tracking-wider">Infrastructure</span>
@@ -735,7 +735,7 @@
                         <!-- Overlay removed -->
                         <img src="./assets/SRC.png"
                             class="w-full h-[300px] md:h-[500px] object-cover transform group-hover:scale-110 transition duration-700 ease-out"
-                            alt="Students">
+                            alt="Students" loading="lazy">
                         <div
                             class="absolute bottom-0 left-0 p-6 z-20 translate-y-4 group-hover:translate-y-0 transition duration-500">
                             <span class="text-gold text-xs font-bold uppercase tracking-wider">Academics</span>
@@ -1000,8 +1000,7 @@
 
                     <div class="h-1 w-12 bg-royal/10 dark:bg-white/10 mb-6"></div>
 
-                    <p id="modal-msg"
-                        class="text-gray-600 dark:text-gray-300 leading-relaxed italic text-lg line-clamp-[10]">Message
+                    <p id="modal-msg" class="text-gray-600 dark:text-gray-300 leading-relaxed italic text-lg">Message
                     </p>
 
                     <button onclick="closeLeaderModal()"

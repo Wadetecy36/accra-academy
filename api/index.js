@@ -4,6 +4,8 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
+const compression = require('compression');
+const morgan = require('morgan');
 const mongoSanitize = require('express-mongo-sanitize');
 const rateLimit = require('express-rate-limit');
 
@@ -25,9 +27,18 @@ app.use(helmet({
         }
     }
 }));
+app.use(compression());
+app.use(morgan('dev'));
 app.use(mongoSanitize());
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
+
+// Static Cache Options
+const cacheOptions = {
+    maxAge: '1d',
+    etag: true,
+    lastModified: true
+};
 
 // Global Rate Limit
 const limiter = rateLimit({
@@ -78,7 +89,8 @@ app.use('/api/chat', chatRoutes);
 
 
 // Serve static frontend
-app.use(express.static(path.join(__dirname, '../public')));
+// Serve static frontend with caching
+app.use(express.static(path.join(__dirname, '../public'), cacheOptions));
 
 app.get('/health', (req, res) => {
     res.status(200).send('OK');

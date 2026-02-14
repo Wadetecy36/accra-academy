@@ -450,7 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await res.json();
                 document.getElementById(loadId).remove();
 
-                const reply = data.reply || "Server Error";
+                const reply = data.reply || "I'm sorry, I'm experiencing some technical difficulties. Please try again later.";
                 addMsg(reply, 'bot');
                 chatHistory.push({
                     text: reply,
