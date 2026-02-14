@@ -32,43 +32,43 @@ const leaderData = [
     }
 ];
 
-window.openLeaderModal = function (idx) {
-    const modal = document.getElementById('leader-modal');
-    if (!modal) return;
-
-    // 1. Update Content
-    updateLeaderModal(idx);
-
-    // 2. Render Thumbnails (once or every time to update active state)
-    renderModalThumbnails(idx);
-
-    // 3. Show Modal
-    modal.classList.add('active');
-    document.body.classList.add('modal-open');
-};
-
 // Helper: Update Content
-function updateLeaderModal(idx) {
+window.updateLeaderModal = function (idx) {
     const data = leaderData[idx];
     if (!data) return;
     document.getElementById('modal-img').src = data.img;
     document.getElementById('modal-name').innerText = data.name;
     document.getElementById('modal-role').innerText = data.role;
     document.getElementById('modal-msg').innerText = data.msg;
-}
+};
 
 // Helper: Render Thumbnails Navigation
-function renderModalThumbnails(activeIdx) {
+window.renderModalThumbnails = function (activeIdx) {
     const container = document.getElementById('modal-thumbnails');
     if (!container) return;
 
     container.innerHTML = leaderData.map((leader, i) => `
         <div class="w-10 h-10 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 ${i === activeIdx ? 'border-gold scale-110 shadow-lg' : 'border-white/10 opacity-50 hover:opacity-100'}" 
-             onclick="updateLeaderModal(${i}); renderModalThumbnails(${i});">
+             onclick="window.updateLeaderModal(${i}); window.renderModalThumbnails(${i});">
             <img src="${leader.img}" class="w-full h-full object-cover">
         </div>
     `).join('');
-}
+};
+
+window.openLeaderModal = function (idx) {
+    const modal = document.getElementById('leader-modal');
+    if (!modal) return;
+
+    // 1. Update Content
+    window.updateLeaderModal(idx);
+
+    // 2. Render Thumbnails
+    window.renderModalThumbnails(idx);
+
+    // 3. Show Modal
+    modal.classList.add('active');
+    document.body.classList.add('modal-open');
+};
 
 window.closeLeaderModal = function () {
     const modal = document.getElementById('leader-modal');
@@ -122,33 +122,43 @@ document.addEventListener('DOMContentLoaded', () => {
        1. INTERACTIVE LEADERSHIP SWITCHER
        ========================================= */
     const mainThumbnails = document.getElementById('main-leader-thumbnails');
+
+    // Global function to update main card
+    window.updateMainLeadership = function (idx) {
+        const data = leaderData[idx];
+        if (!data) return;
+
+        // Update Main Card Elements
+        const img = document.getElementById('main-leader-img');
+        const name = document.getElementById('main-leader-name');
+        const role = document.getElementById('main-leader-role');
+        const msg = document.getElementById('main-leader-msg');
+        const btn = document.getElementById('main-leader-btn');
+
+        if (img) img.src = data.img;
+        if (name) name.innerText = data.name;
+        if (role) role.innerText = data.role;
+        if (msg) msg.innerText = data.msg;
+        if (btn) btn.onclick = () => window.openLeaderModal(idx);
+
+        // Re-render thumbnails to highlight active
+        window.renderMainThumbnails(idx);
+    };
+
+    // Global function to render main thumbnails
+    window.renderMainThumbnails = function (activeIdx) {
+        if (!mainThumbnails) return;
+        mainThumbnails.innerHTML = leaderData.map((leader, i) => `
+            <div class="w-12 h-12 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 ${i === activeIdx ? 'border-gold scale-110 shadow-lg' : 'border-white/10 opacity-50 hover:opacity-100 hover:scale-105'}" 
+                 onclick="window.updateMainLeadership(${i})">
+                <img src="${leader.img}" class="w-full h-full object-cover">
+            </div>
+        `).join('');
+    };
+
     if (mainThumbnails) {
-        window.updateMainLeadership = function (idx) {
-            const data = leaderData[idx];
-            if (!data) return;
-
-            // Update Main Card
-            document.getElementById('main-leader-img').src = data.img;
-            document.getElementById('main-leader-name').innerText = data.name;
-            document.getElementById('main-leader-role').innerText = data.role;
-            document.getElementById('main-leader-msg').innerText = data.msg;
-            document.getElementById('main-leader-btn').onclick = () => openLeaderModal(idx);
-
-            // Re-render thumbnails to update active state
-            renderMainThumbnails(idx);
-        };
-
-        function renderMainThumbnails(activeIdx) {
-            mainThumbnails.innerHTML = leaderData.map((leader, i) => `
-                <div class="w-12 h-12 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 ${i === activeIdx ? 'border-gold scale-110 shadow-lg' : 'border-white/10 opacity-50 hover:opacity-100 hover:scale-105'}" 
-                     onclick="updateMainLeadership(${i})">
-                    <img src="${leader.img}" class="w-full h-full object-cover">
-                </div>
-            `).join('');
-        }
-
-        // Init
-        renderMainThumbnails(0);
+        window.renderMainThumbnails(0);
+        console.log('👥 Leadership Switcher Ready');
     }
 
     /* =========================================
