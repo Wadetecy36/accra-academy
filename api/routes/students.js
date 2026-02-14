@@ -8,6 +8,7 @@ const { verifyToken, verifyAdmin } = require('../middleware/auth');
 const mongoSanitize = require('express-mongo-sanitize');
 
 const router = express.Router();
+const { sendToN8n } = require('../utils/n8n');
 
 // Helper: Log Security Event
 async function logEvent(userId, type, details, req) {
@@ -146,6 +147,9 @@ router.post('/', verifyAdmin, async (req, res) => {
         await newStudent.save();
         await logEvent(req.user.id, 'create_student', { studentId: newStudent._id, name: newStudent.name }, req);
 
+        // Trigger n8n automation
+        sendToN8n('student_enrolled', newStudent);
+
         res.json({ success: true, student: newStudent });
     } catch (e) {
         console.error(e);
@@ -170,6 +174,15 @@ router.put('/:id', verifyAdmin, async (req, res) => {
         if (!updatedStudent) return res.status(404).json({ error: "Student not found" });
 
         await logEvent(req.user.id, 'update_student', { studentId: updatedStudent._id, changes: Object.keys(req.body) }, req);
+
+        // Trigger n8n automation
+        if (req.body.attendance !== undefined && req.body.attendance < 75) {
+            sendToN8n('attendance_alert', updatedStudent);
+        }
+        if (req.body.gpa !== undefined || req.body.academicHistory !== undefined) {
+            sendToN8n('grade_update', updatedStudent);
+        }
+
         res.json({ success: true, student: updatedStudent });
 
     } catch (e) {
@@ -185,6 +198,10 @@ router.delete('/:id', verifyAdmin, async (req, res) => {
         if (!student) return res.status(404).json({ error: "Student not found" });
 
         await logEvent(req.user.id, 'delete_student', { studentId: req.params.id, name: student.name }, req);
+
+        // Trigger n8n automation
+        sendToN8n('student_deleted', { studentId: student._id, name: student.name });
+
         res.json({ success: true });
     } catch (e) {
         res.status(500).json({ error: "Delete failed" });
@@ -240,6 +257,15 @@ router.post('/bulk-action', verifyAdmin, async (req, res) => {
         }
         else {
             return res.status(400).json({ error: "Invalid action" });
+        }
+
+        // Trigger n8n automation for bulk actions
+        for (const id of ids) {
+            sendToN8n(action === 'delete' ? 'student_deleted' : 'student_moved', {
+                studentId: id,
+                action: action,
+                payload: payload
+            });
         }
 
         await logEvent(req.user.id, 'bulk_action', { action, count: ids.length, result }, req);
