@@ -351,8 +351,13 @@ div[class*="from-royal"] {
     position: relative;
 }
 
-.active .modal-content {
+#leader-modal.active .modal-content {
     transform: translateY(0) scale(1);
+}
+
+.modal-content .md\:w-3\/5 {
+    overflow-y: auto;
+    max-height: 80vh;
 }
 
 @media (max-width: 850px) {

@@ -39,6 +39,12 @@ window.BleooLeadership = {
         console.log('🚀 Leadership Engine Initializing...');
         this.attachGlobalHandlers();
         this.renderAllThumbnails(0);
+        
+        // Ensure main button matches initial state
+        const mainBtn = document.getElementById('main-leader-btn');
+        if (mainBtn) {
+            mainBtn.addEventListener('click', () => this.openModal(this.currentIndex));
+        }
     },
 
     attachGlobalHandlers: function () {
@@ -55,24 +61,28 @@ window.BleooLeadership = {
         this.currentIndex = idx;
         const area = document.getElementById('leader-content-area');
         const img = document.getElementById('main-leader-img');
-
+        
         if (area) {
             area.classList.remove('animate-fade-in');
             void area.offsetWidth; // Trigger reflow
             area.classList.add('animate-fade-in');
-
-            document.getElementById('main-leader-name').innerText = data.name;
-            document.getElementById('main-leader-role').innerText = data.role;
-            document.getElementById('main-leader-msg').innerText = data.msg;
-            document.getElementById('main-leader-btn').onclick = () => this.openModal(idx);
+            
+            const nameEl = document.getElementById('main-leader-name');
+            const roleEl = document.getElementById('main-leader-role');
+            const msgEl = document.getElementById('main-leader-msg');
+            
+            if (nameEl) nameEl.innerText = data.name;
+            if (roleEl) roleEl.innerText = data.role;
+            if (msgEl) msgEl.innerText = data.msg;
         }
 
         if (img) {
-            img.style.opacity = '0.5';
+            img.style.transition = 'opacity 0.3s ease';
+            img.style.opacity = '0.4';
             setTimeout(() => {
                 img.src = data.img;
                 img.style.opacity = '1';
-            }, 200);
+            }, 300);
         }
 
         this.renderAllThumbnails(idx);
@@ -85,7 +95,7 @@ window.BleooLeadership = {
         container.innerHTML = leaderData.map((leader, i) => `
             <div class="w-12 h-12 rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-300 ${i === activeIdx ? 'border-gold scale-110 shadow-lg' : 'border-white/10 opacity-50'}" 
                  onclick="window.updateMainLeadership(${i})">
-                <img src="${leader.img}" class="w-full h-full object-cover pointer-events-none">
+                <img src="${leader.img}" class="w-full h-full object-cover pointer-events-none" alt="${leader.name}">
             </div>
         `).join('');
     },
@@ -95,6 +105,9 @@ window.BleooLeadership = {
         if (!modal) return;
 
         this.updateModal(idx);
+        modal.style.display = 'flex';
+        // Force reflow for opacity transition
+        void modal.offsetWidth;
         modal.classList.add('active');
         document.body.classList.add('modal-open');
     },
@@ -103,17 +116,37 @@ window.BleooLeadership = {
         const data = leaderData[idx];
         if (!data) return;
 
-        document.getElementById('modal-img').src = data.img;
-        document.getElementById('modal-name').innerText = data.name;
-        document.getElementById('modal-role').innerText = data.role;
-        document.getElementById('modal-msg').innerText = data.msg;
+        const img = document.getElementById('modal-img');
+        const name = document.getElementById('modal-name');
+        const role = document.getElementById('modal-role');
+        const msg = document.getElementById('modal-msg');
+
+        // Add small fade effect for modal content switch
+        const contentArea = name ? name.parentElement : null;
+        if (contentArea) {
+            contentArea.style.opacity = '0.4';
+            contentArea.style.transform = 'translateY(5px)';
+            contentArea.style.transition = 'all 0.3s ease';
+        }
+
+        setTimeout(() => {
+            if (img) img.src = data.img;
+            if (name) name.innerText = data.name;
+            if (role) role.innerText = data.role;
+            if (msg) msg.innerText = data.msg;
+            
+            if (contentArea) {
+                contentArea.style.opacity = '1';
+                contentArea.style.transform = 'translateY(0)';
+            }
+        }, 150);
 
         const container = document.getElementById('modal-thumbnails');
         if (container) {
             container.innerHTML = leaderData.map((leader, i) => `
                 <div class="w-12 h-12 rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-300 ${i === idx ? 'border-gold scale-110 shadow-lg' : 'border-white/10 opacity-50'}" 
                      onclick="window.updateLeaderModal(${i})">
-                    <img src="${leader.img}" class="w-full h-full object-cover pointer-events-none">
+                    <img src="${leader.img}" class="w-full h-full object-cover pointer-events-none" alt="${leader.name}">
                 </div>
             `).join('');
         }
@@ -121,7 +154,15 @@ window.BleooLeadership = {
 
     closeModal: function () {
         const modal = document.getElementById('leader-modal');
-        if (modal) modal.classList.remove('active');
+        if (modal) {
+            modal.classList.remove('active');
+            // Wait for transition before hiding
+            setTimeout(() => {
+                if (!modal.classList.contains('active')) {
+                    modal.style.display = 'none';
+                }
+            }, 400);
+        }
         document.body.classList.remove('modal-open');
     }
 };
