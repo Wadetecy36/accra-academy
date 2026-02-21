@@ -39,7 +39,7 @@ window.BleooLeadership = {
         console.log('🚀 Leadership Engine Initializing...');
         this.attachGlobalHandlers();
         this.renderAllThumbnails(0);
-        
+
         // Ensure main button matches initial state
         const mainBtn = document.getElementById('main-leader-btn');
         if (mainBtn) {
@@ -61,16 +61,16 @@ window.BleooLeadership = {
         this.currentIndex = idx;
         const area = document.getElementById('leader-content-area');
         const img = document.getElementById('main-leader-img');
-        
+
         if (area) {
             area.classList.remove('animate-fade-in');
             void area.offsetWidth; // Trigger reflow
             area.classList.add('animate-fade-in');
-            
+
             const nameEl = document.getElementById('main-leader-name');
             const roleEl = document.getElementById('main-leader-role');
             const msgEl = document.getElementById('main-leader-msg');
-            
+
             if (nameEl) nameEl.innerText = data.name;
             if (roleEl) roleEl.innerText = data.role;
             if (msgEl) msgEl.innerText = data.msg;
@@ -105,9 +105,6 @@ window.BleooLeadership = {
         if (!modal) return;
 
         this.updateModal(idx);
-        modal.style.display = 'flex';
-        // Force reflow for opacity transition
-        void modal.offsetWidth;
         modal.classList.add('active');
         document.body.classList.add('modal-open');
     },
@@ -134,7 +131,7 @@ window.BleooLeadership = {
             if (name) name.innerText = data.name;
             if (role) role.innerText = data.role;
             if (msg) msg.innerText = data.msg;
-            
+
             if (contentArea) {
                 contentArea.style.opacity = '1';
                 contentArea.style.transform = 'translateY(0)';
@@ -156,12 +153,6 @@ window.BleooLeadership = {
         const modal = document.getElementById('leader-modal');
         if (modal) {
             modal.classList.remove('active');
-            // Wait for transition before hiding
-            setTimeout(() => {
-                if (!modal.classList.contains('active')) {
-                    modal.style.display = 'none';
-                }
-            }, 400);
         }
         document.body.classList.remove('modal-open');
     }
@@ -617,8 +608,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const barsIcon = document.getElementById('music-bars');
     const offIcon = document.getElementById('music-off');
 
-    if (audio && musicBtn) {
+    if (audio && musicBtn && barsIcon && offIcon) {
         audio.volume = 0.3;
+        let audioStarted = false;
 
         const updateUI = (isPlaying) => {
             if (isPlaying) {
@@ -632,44 +624,38 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        const tryPlay = () => {
-            audio.play()
-                .then(() => {
-                    updateUI(true);
-                    // Remove listeners once played
-                    document.removeEventListener('click', tryPlay);
-                    document.removeEventListener('scroll', tryPlay);
-                })
-                .catch(err => {
-                    console.warn("Autoplay blocked or failed:", err);
-                    updateUI(false);
-                });
-        };
+        // Show paused state initially  
+        updateUI(false);
 
-        // Listen for user interaction to kick off audio
-        document.addEventListener('click', tryPlay, { once: true });
-        document.addEventListener('scroll', tryPlay, { once: true });
-
-        // Explicit Toggle logic
+        // Toggle play/pause on button click
         musicBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // Stop from triggering tryPlay on the same click
-
+            e.stopPropagation();
             if (audio.paused) {
                 audio.play()
-                    .then(() => updateUI(true))
-                    .catch(e => console.error("Play Error:", e));
+                    .then(() => {
+                        audioStarted = true;
+                        updateUI(true);
+                    })
+                    .catch(err => console.warn('Play error:', err));
             } else {
                 audio.pause();
                 updateUI(false);
             }
         });
 
-        // Initialize UI based on state
-        updateUI(!audio.paused);
+        // Autoplay on first non-button interaction (e.g. scroll or click elsewhere)
+        const autoStart = (e) => {
+            if (audioStarted) return;
+            if (e.target === musicBtn || musicBtn.contains(e.target)) return;
+            audio.play()
+                .then(() => {
+                    audioStarted = true;
+                    updateUI(true);
+                })
+                .catch(() => { });
+        };
+        document.addEventListener('click', autoStart);
+        document.addEventListener('scroll', autoStart, { once: true });
     }
 
-
-
 }); // END OF DOMContentLoaded
-
-

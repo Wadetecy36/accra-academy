@@ -315,24 +315,26 @@ div[class*="from-royal"] {
 
 /* === PREMIUM MODAL SYSTEM === */
 #leader-modal {
-    display: none;
-    /* Hidden by default */
     position: fixed;
     inset: 0;
     z-index: 10000;
+    display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    background: rgba(0, 10, 30, 0.4);
+    background: rgba(0, 10, 30, 0.75);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     opacity: 0;
-    transition: opacity 0.4s ease;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
 #leader-modal.active {
-    display: flex;
     opacity: 1;
+    visibility: visible;
+    pointer-events: all;
 }
 
 .modal-content {

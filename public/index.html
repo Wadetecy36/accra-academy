@@ -1020,29 +1020,14 @@
             </div>
         </div>
 
-        <!-- SCRIPTS -->
-        <!-- THREE.JS MUST LOAD FIRST -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-        <script src="./js/background-3d.js"></script>
-        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-        <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-        <script src="./js/script.js"></script>
-
-        <script>
-            // Safe initialization
-            document.addEventListener('DOMContentLoaded', () => {
-                if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true });
-            });
-        </script>
-
         <!-- BACKGROUND AUDIO CONTROL -->
         <div id="audio-control" class="fixed bottom-6 left-6 z-50 flex items-center gap-3">
             <audio id="bg-music" loop>
                 <source src="./assets/cylf.mp3" type="audio/mpeg">
             </audio>
             <button id="music-toggle"
-                class="w-12 h-12 rounded-full bg-royal/80 backdrop-blur-md border border-gold/30 text-gold flex items-center justify-center shadow-lg hover:scale-110 transition group overflow-hidden">
+                class="w-12 h-12 rounded-full bg-royal/80 backdrop-blur-md border border-gold/30 text-gold flex items-center justify-center shadow-lg hover:scale-110 transition group overflow-hidden"
+                aria-label="Toggle background music">
                 <div id="music-bars" class="flex gap-1 items-end h-4">
                     <span class="w-1 bg-gold rounded-full music-bar-1"></span>
                     <span class="w-1 bg-gold rounded-full music-bar-2"></span>
@@ -1057,6 +1042,24 @@
                 </svg>
             </button>
         </div>
+
+        <!-- SCRIPTS -->
+        <!-- THREE.JS MUST LOAD FIRST -->
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+        <script src="./js/background-3d.js"></script>
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+        <script src="./js/script.js"></script>
+
+        <script>
+            // Safe initialization
+            document.addEventListener('DOMContentLoaded', () => {
+                if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true });
+            });
+        </script>
+
 </body>
 
 </html>
