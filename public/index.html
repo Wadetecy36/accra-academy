@@ -1036,16 +1036,16 @@
         </script>
 
         <!-- BACKGROUND AUDIO CONTROL -->
-        <div id="audio-control" class="fixed bottom-6 left-6 z-50 hidden md:flex items-center gap-3">
+        <div id="audio-control" class="fixed bottom-6 left-6 z-50 flex items-center gap-3">
             <audio id="bg-music" loop>
                 <source src="./assets/cylf.mp3" type="audio/mpeg">
             </audio>
             <button id="music-toggle"
                 class="w-12 h-12 rounded-full bg-royal/80 backdrop-blur-md border border-gold/30 text-gold flex items-center justify-center shadow-lg hover:scale-110 transition group overflow-hidden">
-                <div id="music-bars" class="flex gap-1 items-end h-4 ">
-                    <span class="w-1 bg-gold h-full animate-[bounce_1s_infinite]"></span>
-                    <span class="w-1 bg-gold h-2/3 animate-[bounce_1.2s_infinite]"></span>
-                    <span class="w-1 bg-gold h-3/4 animate-[bounce_0.8s_infinite]"></span>
+                <div id="music-bars" class="flex gap-1 items-end h-4">
+                    <span class="w-1 bg-gold rounded-full music-bar-1"></span>
+                    <span class="w-1 bg-gold rounded-full music-bar-2"></span>
+                    <span class="w-1 bg-gold rounded-full music-bar-3"></span>
                 </div>
                 <svg id="music-off" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

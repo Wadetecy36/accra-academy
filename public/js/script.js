@@ -569,7 +569,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* =========================================
-       12. SMART AUDIO AUTOPLAY
+       12. SMART AUDIO AUTOPLAY & TOGGLE
        ========================================= */
     const audio = document.getElementById('bg-music');
     const musicBtn = document.getElementById('music-toggle');
@@ -578,6 +578,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (audio && musicBtn) {
         audio.volume = 0.3;
+
         const updateUI = (isPlaying) => {
             if (isPlaying) {
                 barsIcon.classList.remove('hidden');
@@ -590,26 +591,40 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        const startAudio = () => {
-            audio.play().then(() => {
-                updateUI(true);
-                document.removeEventListener('click', startAudio);
-            }).catch(() => { });
+        const tryPlay = () => {
+            audio.play()
+                .then(() => {
+                    updateUI(true);
+                    // Remove listeners once played
+                    document.removeEventListener('click', tryPlay);
+                    document.removeEventListener('scroll', tryPlay);
+                })
+                .catch(err => {
+                    console.warn("Autoplay blocked or failed:", err);
+                    updateUI(false);
+                });
         };
 
-        startAudio();
-        document.addEventListener('click', startAudio, { once: true });
+        // Listen for user interaction to kick off audio
+        document.addEventListener('click', tryPlay, { once: true });
+        document.addEventListener('scroll', tryPlay, { once: true });
 
+        // Explicit Toggle logic
         musicBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
+            e.stopPropagation(); // Stop from triggering tryPlay on the same click
+
             if (audio.paused) {
-                audio.play();
-                updateUI(true);
+                audio.play()
+                    .then(() => updateUI(true))
+                    .catch(e => console.error("Play Error:", e));
             } else {
                 audio.pause();
                 updateUI(false);
             }
         });
+
+        // Initialize UI based on state
+        updateUI(!audio.paused);
     }
 
 
