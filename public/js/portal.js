@@ -3,9 +3,9 @@
 /* ============================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     // --- CONFIGURATION ---
-    const API_BASE = '/api'; 
+    const API_BASE = '/api';
 
     // --- DOM ELEMENTS ---
     const loginView = document.getElementById('login-view');
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
     const logoutBtn = document.getElementById('logout-btn');
     const errorBox = document.getElementById('login-error');
-    
+
     // --- 1. INITIALIZATION CHECK ---
     const token = localStorage.getItem('bleoo_student_token');
     if (token) {
@@ -21,10 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 2. LOGIN HANDLER ---
-    if(loginForm) {
+    if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const btn = document.getElementById('login-btn');
             const originalText = btn.innerText;
             const indexNumber = document.getElementById('idx').value.trim();
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 3. LOGOUT HANDLER ---
-    if(logoutBtn) {
+    if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
             localStorage.removeItem('bleoo_student_token');
             window.location.reload();
@@ -74,12 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 4. DASHBOARD LOADER ---
     async function loadDashboard(token) {
         try {
-            const res = await fetch(`${API_BASE}/student/profile`, {
+            const res = await fetch(`${API_BASE}/students/profile`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
             if (res.status === 401) throw new Error("Session Expired");
-            
+
             const student = await res.json();
 
             // ANIMATE TRANSITION
@@ -91,70 +91,68 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Subtle fade in
                 dashboardView.classList.add('animate-fade-in');
             }, 300);
-            
+
             // Populate UI
             populateUI(student);
 
         } catch (err) {
             console.error("Dashboard Load Error:", err);
             localStorage.removeItem('bleoo_student_token');
-            if(!loginView.classList.contains('hidden')) return;
+            if (!loginView.classList.contains('hidden')) return;
             window.location.reload();
         }
     }
 
     // --- 5. UI POPULATION ---
     function populateUI(s) {
-        document.getElementById('p-name').innerText = s.fullName;
+        document.getElementById('p-name').innerText = s.name;
         document.getElementById('p-index').innerText = s.indexNumber;
         document.getElementById('p-prog').innerText = s.program;
-        document.getElementById('p-house').innerText = s.house;
-        document.getElementById('p-class').innerText = s.currentClass;
-        
-        document.getElementById('p-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(s.fullName)}&background=FDBE11&color=002147&bold=true&size=128`;
+        document.getElementById('p-house').innerText = s.hall;
+        document.getElementById('p-class').innerText = s.classRoom || "N/A";
+
+        document.getElementById('p-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}&background=FDBE11&color=002147&bold=true&size=128`;
 
         document.getElementById('p-gpa').innerText = s.gpa ? s.gpa.toFixed(2) : "0.00";
         document.getElementById('p-attendance').innerText = (s.attendance || 0) + "%";
 
         const currentYear = new Date().getFullYear();
         const statusBadge = document.getElementById('p-status');
-        if (s.yearOfCompletion < currentYear) {
+        if (s.enrollmentYear + 3 <= currentYear) {
             statusBadge.innerText = "ALUMNI";
             statusBadge.className = "inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gold text-royal border border-royal";
         }
 
-        if (s.transcript && s.transcript.length > 0) {
-            renderTranscript(s.transcript);
-            renderChart(s.transcript);
+        if (s.academicHistory && s.academicHistory.length > 0) {
+            renderTranscript(s.academicHistory);
+            renderChart(s.academicHistory);
         } else {
             document.getElementById('results-body').innerHTML = `<tr><td colspan="4" class="p-6 text-center text-gray-400 italic">No academic records found for this index number.</td></tr>`;
         }
     }
 
-    function renderTranscript(transcript) {
-        const latest = transcript[transcript.length - 1];
+    function renderTranscript(history) {
+        const latest = history[history.length - 1];
         const tbody = document.getElementById('results-body');
-        if(!latest) return;
+        if (!latest) return;
 
-        tbody.innerHTML = latest.courses.map((c, index) => `
-            <tr class="border-b border-gray-100 dark:border-gray-700/50 hover:bg-gold/5 transition ${index % 2 === 0 ? 'bg-gray-50/50 dark:bg-white/5' : ''}">
-                <td class="p-4 font-bold text-royal dark:text-gray-200">${c.subject}</td>
-                <td class="p-4 font-black ${getGradeColor(c.grade)}">${c.grade}</td>
-                <td class="p-4 text-gray-500 dark:text-gray-400 font-mono">${c.score}</td>
-                <td class="p-4 text-xs font-bold text-gray-400 uppercase tracking-wide">${getRemark(c.grade)}</td>
+        // Note: The model stores a flat record, not courses. 
+        // Adapting UI to show the summary record instead of per-course.
+        tbody.innerHTML = `
+            <tr class="border-b border-gray-100 dark:border-gray-700/50 hover:bg-gold/5 transition">
+                <td class="p-4 font-bold text-royal dark:text-gray-200">Term Average (${latest.form})</td>
+                <td class="p-4 font-black">${latest.gpa || 'N/A'}</td>
+                <td class="p-4 text-gray-500 dark:text-gray-400 font-mono">${Math.round((latest.gpa / 4) * 100) || 'N/A'}%</td>
+                <td class="p-4 text-xs font-bold text-gray-400 uppercase tracking-wide">${latest.remarks || 'No remarks'}</td>
             </tr>
-        `).join('');
+        `;
     }
 
     // THEME MATCHED CHART
-    function renderChart(transcript) {
+    function renderChart(history) {
         const ctx = document.getElementById('gradesChart').getContext('2d');
-        const labels = transcript.map(t => t.semester || 'Sem X');
-        const dataPoints = transcript.map(t => {
-            if(!t.courses || t.courses.length === 0) return 0;
-            const total = t.courses.reduce((acc, curr) => acc + (curr.score || 0), 0);
-            return (total / t.courses.length).toFixed(1);
-        });
+        const labels = history.map(h => h.form || h.year);
+        const dataPoints = history.map(h => h.gpa || 0);
 
         // Gradient for Chart
         const gradient = ctx.createLinearGradient(0, 0, 0, 400);
@@ -184,14 +182,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    y: { 
-                        beginAtZero: false, 
-                        min: 40, 
-                        max: 100, 
+                    y: {
+                        beginAtZero: false,
+                        min: 40,
+                        max: 100,
                         grid: { color: 'rgba(255,255,255,0.05)', borderDash: [5, 5] },
                         ticks: { color: '#9ca3af' }
                     },
-                    x: { 
+                    x: {
                         grid: { display: false },
                         ticks: { color: '#9ca3af' }
                     }

@@ -447,9 +447,10 @@
             try {
                 const res = await fetch(`${API_BASE}/students`, { headers: getHeaders() });
                 if (!res.ok) throw new Error("Access Denied");
-                studentData = await res.json();
+                const data = await res.json();
+                studentData = data.students || [];
                 list.innerHTML = studentData.map(s => `
-                    <tr class="hover:bg-white/5 border-b border-gray-800"><td class="p-4 font-bold text-white">${escapeHTML(s.fullName)}</td><td class="p-4 text-gold font-mono">${escapeHTML(s.indexNumber)}</td><td class="p-4 text-xs text-gray-400">${escapeHTML(s.program)}</td><td class="p-4 text-xs text-gray-400">${escapeHTML(s.yearOfCompletion)}</td><td class="p-4"><button onclick="del('students','${s._id}')" class="text-red-400 text-xs hover:text-red-300">DEL</button></td></tr>
+                    <tr class="hover:bg-white/5 border-b border-gray-800"><td class="p-4 font-bold text-white">${escapeHTML(s.name)}</td><td class="p-4 text-gold font-mono">${escapeHTML(s.indexNumber)}</td><td class="p-4 text-xs text-gray-400">${escapeHTML(s.program)}</td><td class="p-4 text-xs text-gray-400">${escapeHTML(s.enrollmentYear)}</td><td class="p-4"><button onclick="del('students','${s._id}')" class="text-red-400 text-xs hover:text-red-300">DEL</button></td></tr>
                 `).join('');
             } catch (e) {
                 list.innerHTML = `<tr><td colspan="5" class="text-center text-red-500 p-4">Access Denied: ${e.message}</td></tr>`;
@@ -493,7 +494,7 @@
 
         function downloadStudentCSV() {
             if (!studentData.length) return alert('No data');
-            const csv = ["Name,Index,Program,House,Year"].concat(studentData.map(s => `"${s.fullName}","${s.indexNumber}","${s.program}","${s.house}","${s.yearOfCompletion}"`)).join('\n');
+            const csv = ["Name,Index,Program,Hall,EnrollmentYear"].concat(studentData.map(s => `"${s.name}","${s.indexNumber}","${s.program}","${s.hall}","${s.enrollmentYear}"`)).join('\n');
             const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = 'students.csv'; a.click();
         }
 

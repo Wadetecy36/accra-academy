@@ -37,7 +37,7 @@ router.post('/login',
             if (!validPass) return res.status(400).json({ error: "Invalid password" });
 
             const token = jwt.sign({ id: student._id }, JWT_SECRET, { expiresIn: '2h' });
-            res.json({ success: true, token, user: { name: student.fullName } });
+            res.json({ success: true, token, user: { name: student.name } });
         } catch (e) { res.status(500).json({ error: "Login Error" }); }
     }
 );

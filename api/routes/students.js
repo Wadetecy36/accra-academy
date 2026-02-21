@@ -128,9 +128,12 @@ router.post('/', verifyAdmin, async (req, res) => {
     if (await pythonProxy(req, res, '/api/students')) return;
     try {
         // Basic Validation
-        const { name, program, enrollmentYear } = req.body;
-        if (!name || !program || !enrollmentYear) {
-            return res.status(400).json({ error: "Missing required fields" });
+        const { name, fullName, program, enrollmentYear, yearOfCompletion } = req.body;
+        const studentName = name || fullName;
+        const studentYear = enrollmentYear || yearOfCompletion;
+
+        if (!studentName || !program || !studentYear) {
+            return res.status(400).json({ error: "Missing required fields (name, program, year)" });
         }
 
         // Default Password Generation if not provided
@@ -140,6 +143,9 @@ router.post('/', verifyAdmin, async (req, res) => {
 
         const newStudent = new Student({
             ...req.body,
+            name: studentName,
+            enrollmentYear: studentYear,
+            hall: req.body.hall || req.body.house,
             password: passwordHash,
             createdBy: req.user.id
         });
@@ -187,6 +193,17 @@ router.put('/:id', verifyAdmin, async (req, res) => {
 
     } catch (e) {
         res.status(500).json({ error: "Update failed" });
+    }
+});
+
+// GET /api/students/profile - Current Student Profile
+router.get('/profile', verifyToken, async (req, res) => {
+    try {
+        const student = await Student.findById(req.user.id);
+        if (!student) return res.status(404).json({ error: "Student not found" });
+        res.json(student);
+    } catch (e) {
+        res.status(500).json({ error: "Profile fetch failed" });
     }
 });
 
@@ -293,12 +310,22 @@ router.get('/stats/dashboard', verifyAdmin, async (req, res) => {
         startOfMonth.setHours(0, 0, 0, 0);
         const newThisMonth = await Student.countDocuments({ createdAt: { $gte: startOfMonth } });
 
+        const stats = await Student.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    avgEnrollmentYear: { $avg: "$enrollmentYear" },
+                    total: { $sum: 1 }
+                }
+            }
+        ]);
+
         res.json({
             success: true,
             stats: {
                 total,
                 newThisMonth,
-                avgAge: 16 // Placeholder until aggregation
+                avgAge: stats.length > 0 ? Math.round(new Date().getFullYear() - stats[0].avgEnrollmentYear + 14) : 16
             }
         });
     } catch (e) {

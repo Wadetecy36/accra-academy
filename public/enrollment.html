@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Enrollment - Accra Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0c1222;
+            --glass-bg: rgba(30, 41, 59, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --gold: #fbbf24;
+            --royal: #3b82f6;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            background-image:
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(251, 191, 36, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+        }
+
+        .input-field {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--royal);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold) 0%, #d97706 100%);
+            color: #0f172a;
+            font-weight: 700;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(251, 191, 36, 0.3);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8">
+    <div class="max-w-7xl mx-auto space-y-8">
+
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <h1
+                    class="text-3xl font-bold flex items-center bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                    <i class="material-icons-round mr-3 text-gold">school</i>
+                    Student Enrollment Panel
+                </h1>
+                <p class="text-text-muted mt-1">Manage admissions and database records</p>
+            </div>
+
+            <div class="flex gap-4">
+                <a href="dashboard.html"
+                    class="flex items-center px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition">
+                    <i class="material-icons-round mr-2">dashboard</i> Command Center
+                </a>
+                <button onclick="logout()"
+                    class="flex items-center px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/10 transition">
+                    <i class="material-icons-round mr-2">logout</i> Logout
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- LEFT: Enrollment Form -->
+            <div class="lg:col-span-1 space-y-6">
+                <div class="glass-panel p-6 shadow-2xl border-gold/20">
+                    <h2 class="text-xl font-bold mb-6 flex items-center text-gold">
+                        <i class="material-icons-round mr-2">person_add</i> New Admission
+                    </h2>
+
+                    <form id="enrollment-form" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-text-muted uppercase mb-1">Full Name</label>
+                            <input type="text" id="s-name" class="input-field" placeholder="John Doe" required>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-text-muted uppercase mb-1">Index
+                                    Number</label>
+                                <input type="text" id="s-idx" class="input-field" placeholder="102030" required>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-text-muted uppercase mb-1">Program</label>
+                                <select id="s-prog" class="input-field">
+                                    <option value="General Science">General Science</option>
+                                    <option value="General Arts">General Arts</option>
+                                    <option value="Business">Business</option>
+                                    <option value="Visual Arts">Visual Arts</option>
+                                    <option value="Home Economics">Home Economics</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-text-muted uppercase mb-1">Hall /
+                                    House</label>
+                                <select id="s-hall" class="input-field">
+                                    <option value="Ababio">Ababio</option>
+                                    <option value="Alafia">Alafia</option>
+                                    <option value="Awuletey">Awuletey</option>
+                                    <option value="Ellen">Ellen</option>
+                                    <option value="Guggisberg">Guggisberg</option>
+                                    <option value="Nana Akufo-Addo">Nana Akufo-Addo</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-text-muted uppercase mb-1">Enroll
+                                    Year</label>
+                                <input type="number" id="s-year" class="input-field" value="2024">
+                            </div>
+                        </div>
+
+                        <button type="submit" id="enroll-btn" class="w-full btn-gold mt-4">
+                            Register Student
+                        </button>
+                    </form>
+                </div>
+
+                <div class="glass-panel p-6">
+                    <h3 class="font-bold text-white mb-4">Quick Stats</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 bg-black/20 rounded-xl border border-white/5">
+                            <p class="text-xs text-text-muted uppercase">Total Students</p>
+                            <p class="text-2xl font-bold" id="stat-total">0</p>
+                        </div>
+                        <div class="p-4 bg-black/20 rounded-xl border border-white/5">
+                            <p class="text-xs text-text-muted uppercase">Graduated</p>
+                            <p class="text-2xl font-bold" id="stat-alumni">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Student List -->
+            <div class="lg:col-span-2">
+                <div class="glass-panel overflow-hidden shadow-2xl">
+                    <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+                        <div>
+                            <h2 class="text-xl font-bold text-white">Student Database</h2>
+                            <p class="text-xs text-text-muted">Currently synced records</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="relative">
+                                <i
+                                    class="material-icons-round absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">search</i>
+                                <input type="text" id="search-db" placeholder="Search index..."
+                                    class="pl-9 pr-4 py-2 bg-black/40 border-white/10 rounded-lg text-sm focus:ring-1 focus:ring-royal w-48">
+                            </div>
+                            <button onclick="loadStudents(1)"
+                                class="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition">
+                                <i class="material-icons-round">refresh</i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-black/40 text-text-muted uppercase text-[10px] font-black">
+                                <tr>
+                                    <th class="p-4">Student</th>
+                                    <th class="p-4">Index</th>
+                                    <th class="p-4">Program</th>
+                                    <th class="p-4">Hall</th>
+                                    <th class="p-4">Year</th>
+                                    <th class="p-4 text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="student-list" class="divide-y divide-white/5">
+                                <!-- Loaded dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="p-4 flex justify-between items-center bg-black/20">
+                        <p class="text-xs text-text-muted" id="pagination-info">Showing 0 students</p>
+                        <div class="flex gap-2">
+                            <button onclick="changePage(-1)"
+                                class="px-3 py-1 rounded bg-white/5 hover:bg-white/10 disabled:opacity-30">Prev</button>
+                            <button onclick="changePage(1)"
+                                class="px-3 py-1 rounded bg-white/5 hover:bg-white/10">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+        let currentPage = 1;
+        let query = '';
+
+        async function fetchAuth(endpoint, options = {}) {
+            const token = localStorage.getItem('token');
+            const headers = { 'Content-Type': 'application/json', ...options.headers };
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+            const res = await fetch(`${API_BASE}${endpoint}`, options.headers ? options : { ...options, headers });
+            if (res.status === 401) {
+                localStorage.removeItem('token');
+                window.location.href = 'admin.html';
+            }
+            return await res.json();
+        }
+
+        async function loadStudents(page = 1) {
+            currentPage = page;
+            const list = document.getElementById('student-list');
+            list.innerHTML = `<tr><td colspan="6" class="p-12 text-center text-text-muted italic"><div class="animate-pulse">Accessing Secure Records...</div></td></tr>`;
+
+            try {
+                const res = await fetchAuth(`/students?page=${page}&limit=12&search=${query}`);
+                if (res.success) {
+                    document.getElementById('stat-total').innerText = res.pagination.total;
+                    document.getElementById('pagination-info').innerText = `Page ${page} of ${res.pagination.pages} (${res.pagination.total} total)`;
+
+                    if (res.students.length === 0) {
+                        list.innerHTML = `<tr><td colspan="6" class="p-12 text-center text-text-muted italic">No students found matching criteria.</td></tr>`;
+                        return;
+                    }
+
+                    list.innerHTML = res.students.map(s => `
+                        <tr class="hover:bg-white/5 transition group">
+                            <td class="p-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs">
+                                        ${s.name.charAt(0)}
+                                    </div>
+                                    <span class="font-bold text-white">${s.name}</span>
+                                </div>
+                            </td>
+                            <td class="p-4 font-mono text-gold text-xs">${s.indexNumber}</td>
+                            <td class="p-4 text-text-muted text-xs">${s.program}</td>
+                            <td class="p-4 text-text-muted text-xs">${s.hall || 'N/A'}</td>
+                            <td class="p-4 text-text-muted text-xs font-bold">${s.enrollmentYear}</td>
+                            <td class="p-4 text-center">
+                                <button onclick="deleteStudent('${s._id}')" class="text-red-400/50 hover:text-red-400 p-2 transition">
+                                    <i class="material-icons-round text-sm">delete_forever</i>
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (e) {
+                list.innerHTML = `<tr><td colspan="6" class="p-12 text-center text-red-500 italic">Failed to load data.</td></tr>`;
+            }
+        }
+
+        document.getElementById('enrollment-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('enroll-btn');
+            const original = btn.innerText;
+            btn.innerText = 'Syncing...';
+            btn.disabled = true;
+
+            const payload = {
+                name: document.getElementById('s-name').value,
+                indexNumber: document.getElementById('s-idx').value,
+                program: document.getElementById('s-prog').value,
+                hall: document.getElementById('s-hall').value,
+                enrollmentYear: parseInt(document.getElementById('s-year').value)
+            };
+
+            try {
+                const res = await fetchAuth('/students', {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.success) {
+                    alert('Student Enrolled Successfully!');
+                    document.getElementById('enrollment-form').reset();
+                    loadStudents(1);
+                } else {
+                    alert('Error: ' + res.error);
+                }
+            } catch (e) {
+                alert('Connection timed out.');
+            } finally {
+                btn.innerText = original;
+                btn.disabled = false;
+            }
+        };
+
+        async function deleteStudent(id) {
+            if (!confirm('This will permanently delete this student record. Continue?')) return;
+            const res = await fetchAuth(`/students/${id}`, { method: 'DELETE' });
+            if (res.success) loadStudents(currentPage);
+        }
+
+        function changePage(delta) {
+            loadStudents(currentPage + delta);
+        }
+
+        document.getElementById('search-db').oninput = (e) => {
+            query = e.target.value;
+            loadStudents(1);
+        };
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'admin.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => loadStudents());
+    </script>
+</body>
+
+</html>

@@ -973,41 +973,49 @@
             </svg>
         </button>
         <!-- =========================================
-       MODERN LEADER MODAL
+       MODERN LEADER MODAL (REBUILT)
        ========================================= -->
         <div id="leader-modal" onclick="closeLeaderModal()">
-            <div class="modal-backdrop"></div>
-            <div class="modal-content flex flex-col md:flex-row" onclick="event.stopPropagation()">
-                <!-- Image -->
-                <div class="md:w-2/5 h-64 md:h-auto overflow-hidden">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <!-- Close Button -->
+                <button class="modal-close-btn" onclick="closeLeaderModal()" aria-label="Close Modal">
+                    <i class="material-icons-round">close</i>
+                </button>
+
+                <!-- Image Side -->
+                <div class="md:w-2/5 modal-img-container">
                     <img id="modal-img" src="" class="w-full h-full object-cover">
                 </div>
-                <!-- Text Content -->
-                <div class="md:w-3/5 p-8 md:p-12 relative flex flex-col justify-center bg-royal text-white">
+
+                <!-- Content Side -->
+                <div class="md:w-3/5 p-8 md:p-14 relative flex flex-col justify-center bg-royal text-white">
                     <!-- Watermark -->
                     <img src="./assets/crest.png"
-                        class="absolute inset-0 m-auto w-48 opacity-[0.03] pointer-events-none">
+                        class="absolute inset-0 m-auto w-64 opacity-[0.03] pointer-events-none select-none">
 
-                    <div class="text-gold text-4xl mb-4 italic font-serif">❝</div>
+                    <div class="text-gold text-5xl mb-6 font-serif opacity-30 italic">❝</div>
 
-                    <h3 id="modal-name" class="text-3xl font-display font-bold text-white mb-1">Name</h3>
-                    <p id="modal-role" class="text-gold font-bold uppercase tracking-widest text-[10px] mb-6">Role</p>
+                    <div class="relative z-10">
+                        <h3 id="modal-name"
+                            class="text-3xl md:text-4xl font-display font-bold text-white mb-2 tracking-tight">Name</h3>
+                        <p id="modal-role" class="text-gold font-bold uppercase tracking-[0.3em] text-[10px] mb-8">Role
+                        </p>
 
-                    <div class="h-px w-12 bg-gold/30 mb-6"></div>
+                        <div class="h-px w-16 bg-gold/40 mb-10"></div>
 
-                    <p id="modal-msg" class="text-gray-300 leading-relaxed italic text-base">Message</p>
+                        <p id="modal-msg" class="text-gray-300 leading-relaxed italic text-lg line-clamp-[10]">
+                            Message content goes here...
+                        </p>
+                    </div>
 
-                    <!-- Thumbnails Navigation (Bottom Right) -->
-                    <div class="flex items-center gap-3 mt-12 pt-6 border-t border-white/10">
-                        <p class="text-[9px] uppercase tracking-widest font-bold text-gray-400 mr-2">Switch Leader:</p>
-                        <div id="modal-thumbnails" class="flex gap-2">
-                            <!-- JS will inject thumbnails here -->
+                    <!-- Thumbnails Nav -->
+                    <div class="mt-12 flex items-center gap-4 pt-8 border-t border-white/10">
+                        <span class="text-[9px] uppercase tracking-widest text-gray-500 font-bold">Switch Leader</span>
+                        <div id="modal-thumbnails" class="flex gap-3">
+                            <!-- JS Dynamic -->
                         </div>
                     </div>
                 </div>
-                <!-- Close Trigger (Top Right) -->
-                <button onclick="closeLeaderModal()"
-                    class="absolute top-6 right-6 text-gray-400 hover:text-red-500 transition text-2xl">✕</button>
             </div>
         </div>
 
