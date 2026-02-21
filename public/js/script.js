@@ -37,51 +37,55 @@ window.BleooLeadership = {
 
     init: function () {
         console.log('🚀 Leadership Engine Initializing...');
-        this.renderAllThumbnails(0);
         this.attachGlobalHandlers();
+        this.renderAllThumbnails(0);
     },
 
     attachGlobalHandlers: function () {
-        // Expose critical functions to window for HTML onclicks
         window.openLeaderModal = (idx) => this.openModal(idx);
         window.closeLeaderModal = () => this.closeModal();
         window.updateMainLeadership = (idx) => this.updateMain(idx);
-        window.updateLeaderModal = (idx) => this.updateModalContent(idx);
-        window.renderModalThumbnails = (idx) => this.renderModalThumbs(idx);
+        window.updateLeaderModal = (idx) => this.updateModal(idx);
     },
 
     updateMain: function (idx) {
         const data = leaderData[idx];
         if (!data) return;
 
-        // Content Area Animation
+        this.currentIndex = idx;
         const area = document.getElementById('leader-content-area');
+        const img = document.getElementById('main-leader-img');
+
         if (area) {
-            area.style.opacity = '0';
-            area.style.transform = 'translateY(10px)';
+            area.classList.remove('animate-fade-in');
+            void area.offsetWidth; // Trigger reflow
+            area.classList.add('animate-fade-in');
 
-            setTimeout(() => {
-                document.getElementById('main-leader-img').src = data.img;
-                document.getElementById('main-leader-name').innerText = data.name;
-                document.getElementById('main-leader-role').innerText = data.role;
-                document.getElementById('main-leader-msg').innerText = data.msg;
-                document.getElementById('main-leader-btn').onclick = () => this.openModal(idx);
-
-                area.style.opacity = '1';
-                area.style.transform = 'translateY(0)';
-                this.renderAllThumbnails(idx);
-            }, 300);
+            document.getElementById('main-leader-name').innerText = data.name;
+            document.getElementById('main-leader-role').innerText = data.role;
+            document.getElementById('main-leader-msg').innerText = data.msg;
+            document.getElementById('main-leader-btn').onclick = () => this.openModal(idx);
         }
+
+        if (img) {
+            img.style.opacity = '0.5';
+            setTimeout(() => {
+                img.src = data.img;
+                img.style.opacity = '1';
+            }, 200);
+        }
+
+        this.renderAllThumbnails(idx);
     },
 
     renderAllThumbnails: function (activeIdx) {
-        const mainContainer = document.getElementById('main-leader-thumbnails');
-        if (!mainContainer) return;
+        const container = document.getElementById('main-leader-thumbnails');
+        if (!container) return;
 
-        mainContainer.innerHTML = leaderData.map((leader, i) => `
-            <div class="w-12 h-12 rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-500 ${i === activeIdx ? 'border-gold scale-110 shadow-[0_0_15px_rgba(253,190,17,0.4)]' : 'border-white/10 opacity-40 hover:opacity-100 hover:scale-105'}" 
+        container.innerHTML = leaderData.map((leader, i) => `
+            <div class="w-12 h-12 rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-300 ${i === activeIdx ? 'border-gold scale-110 shadow-lg' : 'border-white/10 opacity-50'}" 
                  onclick="window.updateMainLeadership(${i})">
-                <img src="${leader.img}" class="w-full h-full object-cover">
+                <img src="${leader.img}" class="w-full h-full object-cover pointer-events-none">
             </div>
         `).join('');
     },
@@ -90,32 +94,29 @@ window.BleooLeadership = {
         const modal = document.getElementById('leader-modal');
         if (!modal) return;
 
-        this.updateModalContent(idx);
-        this.renderModalThumbs(idx);
-
+        this.updateModal(idx);
         modal.classList.add('active');
         document.body.classList.add('modal-open');
     },
 
-    updateModalContent: function (idx) {
+    updateModal: function (idx) {
         const data = leaderData[idx];
         if (!data) return;
+
         document.getElementById('modal-img').src = data.img;
         document.getElementById('modal-name').innerText = data.name;
         document.getElementById('modal-role').innerText = data.role;
         document.getElementById('modal-msg').innerText = data.msg;
-    },
 
-    renderModalThumbs: function (activeIdx) {
         const container = document.getElementById('modal-thumbnails');
-        if (!container) return;
-
-        container.innerHTML = leaderData.map((leader, i) => `
-            <div class="w-10 h-10 rounded-lg overflow-hidden cursor-pointer border-2 transition-all duration-300 ${i === activeIdx ? 'border-gold scale-110 shadow-lg' : 'border-white/10 opacity-50 hover:opacity-100'}" 
-                 onclick="window.updateLeaderModal(${i}); window.renderModalThumbnails(${i});">
-                <img src="${leader.img}" class="w-full h-full object-cover">
-            </div>
-        `).join('');
+        if (container) {
+            container.innerHTML = leaderData.map((leader, i) => `
+                <div class="w-12 h-12 rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-300 ${i === idx ? 'border-gold scale-110 shadow-lg' : 'border-white/10 opacity-50'}" 
+                     onclick="window.updateLeaderModal(${i})">
+                    <img src="${leader.img}" class="w-full h-full object-cover pointer-events-none">
+                </div>
+            `).join('');
+        }
     },
 
     closeModal: function () {

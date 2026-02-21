@@ -315,7 +315,8 @@ div[class*="from-royal"] {
 
 /* === PREMIUM MODAL SYSTEM === */
 #leader-modal {
-    display: none; /* Hidden by default */
+    display: none;
+    /* Hidden by default */
     position: fixed;
     inset: 0;
     z-index: 10000;
@@ -335,7 +336,8 @@ div[class*="from-royal"] {
 }
 
 .modal-content {
-    background: #002147; /* Solid Royal Blue */
+    background: #002147;
+    /* Solid Royal Blue */
     width: 100%;
     max-width: 950px;
     border-radius: 2rem;
@@ -359,10 +361,12 @@ div[class*="from-royal"] {
         max-height: 90vh;
         overflow-y: auto;
     }
+
     .modal-content .md\:w-2\/5 {
         width: 100%;
         height: 250px;
     }
+
     .modal-content .md\:w-3\/5 {
         width: 100%;
     }
@@ -407,6 +411,34 @@ div[class*="from-royal"] {
     background: #ef4444;
     border-color: #ef4444;
     transform: rotate(90deg);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Thumbnail hover effects */
+#main-leader-thumbnails>div:hover {
+    border-color: var(--gold) !important;
+    opacity: 1 !important;
+}
+
+/* Modal thumbnails */
+#modal-thumbnails>div:hover {
+    border-color: var(--gold) !important;
+    opacity: 1 !important;
 }
 
 body.modal-open {
