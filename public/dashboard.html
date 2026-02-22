@@ -263,12 +263,23 @@
     <script>
         const API_BASE = '/api';
 
+        // Check auth on page load — redirect to login if no session token
+        (function guardAuth() {
+            if (!sessionStorage.getItem('bleoo_admin_token')) {
+                window.location.href = 'admin.html';
+            }
+        })();
+
         async function fetchAuth(endpoint, options = {}) {
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('bleoo_admin_token');
             const headers = { 'Content-Type': 'application/json', ...options.headers };
             if (token) headers['Authorization'] = `Bearer ${token}`;
             const res = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
-            if (res.status === 401) window.location.href = 'admin.html';
+            if (res.status === 401) {
+                sessionStorage.removeItem('bleoo_admin_token');
+                window.location.href = 'admin.html';
+                return;
+            }
             return await res.json();
         }
 
@@ -282,33 +293,45 @@
         }
 
         async function loadOverview() {
-            const kb = await fetchAuth('/knowledge');
-            document.getElementById('stat-kb').innerText = kb.length || 0;
-            document.getElementById('kb-count').innerText = `${kb.length || 0} Entries`;
+            try {
+                const kb = await fetchAuth('/knowledge');
+                if (!Array.isArray(kb)) return;
+                document.getElementById('stat-kb').innerText = kb.length || 0;
+                document.getElementById('kb-count').innerText = `${kb.length || 0} Entries`;
 
-            const logs = await fetchAuth('/logs?limit=5');
-            document.getElementById('stat-queries').innerText = logs.length > 0 ? '1.2k+' : '0'; // Stats placeholder
+                const logs = await fetchAuth('/logs?limit=5');
+                if (!Array.isArray(logs)) return;
+                document.getElementById('stat-queries').innerText = logs.length > 0 ? logs.length + '+' : '0';
 
-            const ann = await fetchAuth('/announcement');
-            document.getElementById('curr-ann').innerText = ann.text ? `"${ann.text}"` : "No active broadcast.";
+                const ann = await fetchAuth('/announcement');
+                document.getElementById('curr-ann').innerText = ann && ann.text ? `"${ann.text}"` : "No active broadcast.";
 
-            document.getElementById('mini-logs').innerHTML = logs.map(l => `
-                <div class="p-3 bg-white/5 rounded-xl border border-white/5 flex items-center justify-between">
-                    <p class="text-xs truncate max-w-xs text-gray-300">${l.userMessage}</p>
-                    <span class="text-[9px] text-gray-500">${new Date(l.timestamp).toLocaleTimeString()}</span>
-                </div>
-            `).join('');
+                document.getElementById('mini-logs').innerHTML = logs.length ? logs.map(l => `
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5 flex items-center justify-between">
+                        <p class="text-xs truncate max-w-xs text-gray-300">${l.userMessage || ''}</p>
+                        <span class="text-[9px] text-gray-500">${new Date(l.timestamp).toLocaleTimeString()}</span>
+                    </div>
+                `).join('') : '<p class="text-xs text-gray-500 text-center py-4">No recent interactions.</p>';
+            } catch (e) {
+                console.error('loadOverview error:', e);
+            }
         }
 
         async function loadKB() {
-            const list = await fetchAuth('/knowledge');
-            document.getElementById('kb-list').innerHTML = list.map(k => `
-                <div class="group relative p-4 bg-white/5 rounded-xl border border-white/5 hover:border-royal/50 transition">
-                    <p class="text-xs font-bold text-royal mb-1">${k.question}</p>
-                    <p class="text-[11px] text-gray-400 line-clamp-2">${k.text || k.answer}</p>
-                    <button onclick="deleteKB('${k._id}')" class="absolute top-2 right-2 text-red-500 opacity-0 group-hover:opacity-100 transition"><i class="material-icons-round text-sm">delete</i></button>
-                </div>
-            `).join('');
+            try {
+                const list = await fetchAuth('/knowledge');
+                if (!Array.isArray(list)) return;
+                document.getElementById('kb-count').innerText = `${list.length} Entries`;
+                document.getElementById('kb-list').innerHTML = list.length ? list.map(k => `
+                    <div class="group relative p-4 bg-white/5 rounded-xl border border-white/5 hover:border-royal/50 transition">
+                        <p class="text-xs font-bold text-royal mb-1">${k.question || k.topic || ''}</p>
+                        <p class="text-[11px] text-gray-400 line-clamp-2">${k.text || k.content || k.answer || ''}</p>
+                        <button onclick="deleteKB('${k._id}')" class="absolute top-2 right-2 text-red-500 opacity-0 group-hover:opacity-100 transition"><i class="material-icons-round text-sm">delete</i></button>
+                    </div>
+                `).join('') : '<p class="text-xs text-gray-500 text-center py-8 col-span-2">No knowledge entries yet.</p>';
+            } catch (e) {
+                console.error('loadKB error:', e);
+            }
         }
 
         async function saveKB() {
@@ -335,15 +358,21 @@
         }
 
         async function loadLogs() {
-            const logs = await fetchAuth('/logs');
-            document.getElementById('logs-list').innerHTML = logs.map(l => `
-                <tr class="hover:bg-white/5 transition">
-                    <td class="p-4 text-gray-500 whitespace-nowrap text-xs">${new Date(l.timestamp).toLocaleString()}</td>
-                    <td class="p-4 font-medium text-white max-w-xs truncate">${l.userMessage}</td>
-                    <td class="p-4 text-gray-400 max-w-md truncate text-xs">${l.botReply}</td>
-                    <td class="p-4"><span class="px-2 py-0.5 rounded bg-green-500/10 text-green-400 text-[10px] font-bold">COMPLETED</span></td>
-                </tr>
-            `).join('');
+            try {
+                const logs = await fetchAuth('/logs');
+                if (!Array.isArray(logs)) return;
+                document.getElementById('logs-list').innerHTML = logs.length ? logs.map(l => `
+                    <tr class="hover:bg-white/5 transition">
+                        <td class="p-4 text-gray-500 whitespace-nowrap text-xs">${new Date(l.timestamp).toLocaleString()}</td>
+                        <td class="p-4 font-medium text-white max-w-xs truncate">${l.userMessage || ''}</td>
+                        <td class="p-4 text-gray-400 max-w-md truncate text-xs">${l.botReply || ''}</td>
+                        <td class="p-4"><span class="px-2 py-0.5 rounded bg-green-500/10 text-green-400 text-[10px] font-bold">COMPLETED</span></td>
+                    </tr>
+                `).join('') : '<tr><td colspan="4" class="p-8 text-center text-gray-500">No conversation logs yet.</td></tr>';
+            } catch (e) {
+                console.error('loadLogs error:', e);
+                document.getElementById('logs-list').innerHTML = '<tr><td colspan="4" class="p-8 text-center text-red-400">Error loading logs.</td></tr>';
+            }
         }
 
         document.addEventListener('DOMContentLoaded', loadOverview);
