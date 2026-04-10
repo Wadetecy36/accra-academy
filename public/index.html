@@ -415,7 +415,97 @@
         </div>
     </section>
 
+    <!-- =========================================
+       STATS & ACHIEVEMENTS COUNTER
+       ========================================= -->
+    <section class="py-20 bg-royal text-white relative overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+        </div>
 
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+
+                <!-- Stat 1 -->
+                <div class="p-6" data-aos="fade-up" data-aos-delay="0">
+                    <div class="text-4xl md:text-5xl font-bold text-gold mb-2 font-display">
+                        <span class="counter" data-target="93">0</span>+
+                    </div>
+                    <div class="h-1 w-12 bg-gold/50 mx-auto mb-3 rounded-full"></div>
+                    <p class="text-sm text-gray-300 uppercase tracking-wider">Years of Excellence</p>
+                </div>
+
+                <!-- Stat 2 -->
+                <div class="p-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-4xl md:text-5xl font-bold text-gold mb-2 font-display">
+                        <span class="counter" data-target="4381">0</span>+
+                    </div>
+                    <div class="h-1 w-12 bg-gold/50 mx-auto mb-3 rounded-full"></div>
+                    <p class="text-sm text-gray-300 uppercase tracking-wider">Students</p>
+                </div>
+
+                <!-- Stat 3 -->
+                <div class="p-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-4xl md:text-5xl font-bold text-gold mb-2 font-display">
+                        <span class="counter" data-target="226">0</span>
+                    </div>
+                    <div class="h-1 w-12 bg-gold/50 mx-auto mb-3 rounded-full"></div>
+                    <p class="text-sm text-gray-300 uppercase tracking-wider">Teaching Staff</p>
+                </div>
+
+                <!-- Stat 4 -->
+                <div class="p-6" data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-4xl md:text-5xl font-bold text-gold mb-2 font-display">
+                        <span class="counter" data-target="15000">0</span>+
+                    </div>
+                    <div class="h-1 w-12 bg-gold/50 mx-auto mb-3 rounded-full"></div>
+                    <p class="text-sm text-gray-300 uppercase tracking-wider">Alumni Network</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .counter {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+
+    <script>
+        // Counter Animation
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200;
+
+        const startCounting = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = +counter.getAttribute('data-target');
+
+                    const updateCount = () => {
+                        const count = +counter.innerText;
+                        const inc = target / speed;
+
+                        if (count < target) {
+                            counter.innerText = Math.ceil(count + inc);
+                            setTimeout(updateCount, 20);
+                        } else {
+                            counter.innerText = target;
+                        }
+                    };
+                    updateCount();
+                    observer.unobserve(counter);
+                }
+            });
+        };
+
+        const counterObserver = new IntersectionObserver(startCounting, {
+            threshold: 0.5
+        });
+
+        counters.forEach(counter => counterObserver.observe(counter));
+    </script>
 
     <!-- =========================================
        GLOBAL IMPACT (ALUMNI SPOTLIGHT)
@@ -616,7 +706,155 @@
     </section>
 
 
+    <!-- =========================================
+       TESTIMONIALS
+       ========================================= -->
+    <section class="py-24 section-glass relative">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-gold font-bold tracking-widest uppercase text-sm">Voices of Excellence</span>
+                <h2 class="text-3xl md:text-5xl font-display font-bold text-royal dark:text-white mt-2">What They Say
+                </h2>
+            </div>
 
+            <div class="max-w-4xl mx-auto relative">
+                <!-- Testimonial Slider -->
+                <div class="testimonial-slider overflow-hidden relative">
+                    <div class="testimonial-track flex transition-transform duration-500" id="testimonialTrack">
+
+                        <!-- Slide 1 -->
+                        <div class="testimonial-slide w-full flex-shrink-0 px-4">
+                            <div
+                                class="bg-white dark:bg-gray-800 rounded-2xl p-8 md:p-12 shadow-xl border border-gray-100 dark:border-gray-700 text-center relative">
+                                <div class="text-gold text-6xl absolute top-4 left-6 opacity-20">❝</div>
+                                <p
+                                    class="text-lg md:text-xl text-gray-700 dark:text-gray-300 italic mb-6 leading-relaxed relative z-10">
+                                    "Accra Academy didn't just give me an education; it gave me a brotherhood that lasts
+                                    a lifetime. The discipline and excellence instilled in me here have been the
+                                    foundation of my career."
+                                </p>
+                                <div class="flex items-center justify-center gap-4">
+                                    <img src="./assets/crest.png" alt="Alumnus"
+                                        class="w-12 h-12 rounded-full bg-royal p-1">
+                                    <div class="text-left">
+                                        <p class="font-bold text-royal dark:text-white">Dr. Unknown Alumnus</p>
+                                        <p class="text-sm text-gold">Class of 2010 • Medical Doctor</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 2 -->
+                        <div class="testimonial-slide w-full flex-shrink-0 px-4">
+                            <div
+                                class="bg-white dark:bg-gray-800 rounded-2xl p-8 md:p-12 shadow-xl border border-gray-100 dark:border-gray-700 text-center relative">
+                                <div class="text-gold text-6xl absolute top-4 left-6 opacity-20">❝</div>
+                                <p
+                                    class="text-lg md:text-xl text-gray-700 dark:text-gray-300 italic mb-6 leading-relaxed relative z-10">
+                                    "The robotics club at Accra Academy sparked my passion for engineering. Today, I
+                                    work at a top tech firm, and I trace it all back to those afternoons in the science
+                                    lab."
+                                </p>
+                                <div class="flex items-center justify-center gap-4">
+                                    <img src="./assets/crest.png" alt="Alumnus"
+                                        class="w-12 h-12 rounded-full bg-royal p-1">
+                                    <div class="text-left">
+                                        <p class="font-bold text-royal dark:text-white">Anonymous Graduate</p>
+                                        <p class="text-sm text-gold">Class of 2018 • Software Engineer</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 3 -->
+                        <div class="testimonial-slide w-full flex-shrink-0 px-4">
+                            <div
+                                class="bg-white dark:bg-gray-800 rounded-2xl p-8 md:p-12 shadow-xl border border-gray-100 dark:border-gray-700 text-center relative">
+                                <div class="text-gold text-6xl absolute top-4 left-6 opacity-20">❝</div>
+                                <p
+                                    class="text-lg md:text-xl text-gray-700 dark:text-gray-300 italic mb-6 leading-relaxed relative z-10">
+                                    "Sending my son to Accra Academy was the best decision. The transformation in his
+                                    discipline and academic performance has been remarkable. Bleoo really changes
+                                    lives."
+                                </p>
+                                <div class="flex items-center justify-center gap-4">
+                                    <img src="./assets/crest.png" alt="Parent"
+                                        class="w-12 h-12 rounded-full bg-royal p-1">
+                                    <div class="text-left">
+                                        <p class="font-bold text-royal dark:text-white">Parent Testimonial</p>
+                                        <p class="text-sm text-gold">Current Parent • Business Owner</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Navigation Dots -->
+                    <div class="flex justify-center gap-3 mt-8">
+                        <button
+                            class="testimonial-dot w-3 h-3 rounded-full bg-gold/30 hover:bg-gold transition-colors active"
+                            data-slide="0"></button>
+                        <button class="testimonial-dot w-3 h-3 rounded-full bg-gold/30 hover:bg-gold transition-colors"
+                            data-slide="1"></button>
+                        <button class="testimonial-dot w-3 h-3 rounded-full bg-gold/30 hover:bg-gold transition-colors"
+                            data-slide="2"></button>
+                    </div>
+
+                    <!-- Arrows -->
+                    <button id="prevTestimonial"
+                        class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center text-royal dark:text-gold hover:bg-gold hover:text-royal transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button id="nextTestimonial"
+                        class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center text-royal dark:text-gold hover:bg-gold hover:text-royal transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Simple Testimonial Slider
+        let currentSlide = 0;
+        const track = document.getElementById('testimonialTrack');
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const dots = document.querySelectorAll('.testimonial-dot');
+        const totalSlides = slides.length;
+
+        function goToSlide(index) {
+            if (index < 0) index = totalSlides - 1;
+            if (index >= totalSlides) index = 0;
+
+            currentSlide = index;
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+            dots.forEach((dot, i) => {
+                if (i === currentSlide) {
+                    dot.classList.add('bg-gold');
+                    dot.classList.remove('bg-gold/30');
+                } else {
+                    dot.classList.remove('bg-gold');
+                    dot.classList.add('bg-gold/30');
+                }
+            });
+        }
+
+        document.getElementById('nextTestimonial').addEventListener('click', () => goToSlide(currentSlide + 1));
+        document.getElementById('prevTestimonial').addEventListener('click', () => goToSlide(currentSlide - 1));
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => goToSlide(index));
+        });
+
+        // Auto-advance
+        setInterval(() => goToSlide(currentSlide + 1), 6000);
+    </script>
 
     <!-- GALLERY SECTION (Panoramic Glass Mode) -->
     <section class="gallery-section py-24 section-glass border-t border-white/10 overflow-hidden" id="gallery">
@@ -715,6 +953,52 @@
                 <!-- Custom Navigation Arrows -->
                 <div class="swiper-button-next !text-gold"></div>
                 <div class="swiper-button-prev !text-gold"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================
+       ADMISSIONS CTA
+       ========================================= -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-royal to-blue-900"></div>
+        <div class="absolute inset-0 opacity-20 bg-[url('./assets/crest.png')] bg-repeat-space bg-center"></div>
+
+        <div class="container mx-auto px-4 relative z-10 text-center">
+            <h2 class="text-3xl md:text-5xl font-display font-bold text-white mb-6">Ready to Join the Bleoo Family?</h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Applications for the 2025/2026 academic year are now
+                open. Secure your child's future with Ghana's premier educational institution.</p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="./admissions.html"
+                    class="bg-gold text-royal px-8 py-4 rounded-full font-bold text-lg hover:scale-105 hover:shadow-[0_0_30px_rgba(253,190,17,0.5)] transition-all duration-300">
+                    Apply Now
+                </a>
+                <a href="./contacts.html"
+                    class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-royal transition-all duration-300">
+                    Book a Tour
+                </a>
+            </div>
+
+            <div class="mt-8 flex justify-center gap-8 text-sm text-gray-400">
+                <span class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    World-class Facilities
+                </span>
+                <span class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Expert Faculty
+                </span>
+                <span class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    90+ Years Legacy
+                </span>
             </div>
         </div>
     </section>
