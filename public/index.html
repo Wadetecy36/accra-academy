@@ -1139,6 +1139,13 @@
         });
     </script>
 
+    <script>
+        // Emergency test - click anywhere on page to check if JS is running
+        document.addEventListener('click', function (e) {
+            console.log('Clicked element:', e.target.tagName, e.target.id || e.target.className);
+        });
+    </script>
+
 </body>
 
 </html>
