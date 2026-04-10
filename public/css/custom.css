@@ -1411,3 +1411,40 @@ section::after {
 .hero * {
     isolation: isolate;
 }
+
+/* CHAT WIDGET FIXES */
+#chat-window {
+    display: flex !important;
+    /* Ensure flex layout */
+    flex-direction: column !important;
+}
+
+#chat-messages {
+    flex: 1 1 auto !important;
+    /* Take available space but don't grow beyond */
+    min-height: 0 !important;
+    /* Critical: allows flex child to shrink */
+    max-height: calc(500px - 140px) !important;
+    /* 500px total minus header+input height */
+    overflow-y: auto !important;
+    scroll-behavior: smooth !important;
+}
+
+/* Ensure input stays at bottom */
+#chat-form {
+    flex-shrink: 0 !important;
+}
+
+/* Style the scrollbar */
+#chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+#chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#chat-messages::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 3px;
+}
