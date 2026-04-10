@@ -971,92 +971,100 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
         </button>
-        <!-- =========================================
-       MODERN LEADER MODAL (REBUILT)
+
+    </div>
+
+
+    <!-- =========================================
+       MODAL - MOVED OUTSIDE CHAT WIDGET (FIXED)
        ========================================= -->
-        <div id="leader-modal" onclick="closeLeaderModal()">
-            <div class="modal-content" onclick="event.stopPropagation()">
-                <!-- Close Button -->
-                <button class="modal-close-btn" onclick="closeLeaderModal()" aria-label="Close Modal">
-                    <i class="material-icons-round">close</i>
-                </button>
+    <div id="leader-modal"
+        class="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm opacity-0 invisible transition-all duration-300">
+        <div class="modal-content bg-royal w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row relative transform scale-95 transition-transform duration-300"
+            onclick="event.stopPropagation()">
 
-                <!-- Image Side -->
-                <div class="md:w-2/5 modal-img-container">
-                    <img id="modal-img" src="" class="w-full h-full object-cover">
-                </div>
+            <!-- Close Button -->
+            <button onclick="closeLeaderModal()"
+                class="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-white/10 hover:bg-red-500 flex items-center justify-center text-white transition-colors border border-white/20">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
 
-                <!-- Content Side -->
-                <div class="md:w-3/5 p-8 md:p-14 relative flex flex-col justify-center bg-royal text-white">
-                    <!-- Watermark -->
-                    <img src="./assets/crest.png"
-                        class="absolute inset-0 m-auto w-64 opacity-[0.03] pointer-events-none select-none">
+            <!-- Image Side -->
+            <div class="md:w-2/5 h-64 md:h-auto relative">
+                <img id="modal-img" src="" class="w-full h-full object-cover" alt="Leader">
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent to-royal/90 md:block hidden"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-royal to-transparent md:hidden"></div>
+            </div>
 
-                    <div class="text-gold text-5xl mb-6 font-serif opacity-30 italic">❝</div>
+            <!-- Content Side -->
+            <div class="md:w-3/5 p-8 md:p-12 flex flex-col justify-center text-white relative">
+                <!-- Watermark -->
+                <img src="./assets/crest.png" class="absolute inset-0 m-auto w-64 opacity-[0.03] pointer-events-none">
 
-                    <div class="relative z-10">
-                        <h3 id="modal-name"
-                            class="text-3xl md:text-4xl font-display font-bold text-white mb-2 tracking-tight">Name</h3>
-                        <p id="modal-role" class="text-gold font-bold uppercase tracking-[0.3em] text-[10px] mb-8">Role
-                        </p>
+                <div class="text-gold text-5xl mb-4 font-serif opacity-30">❝</div>
 
-                        <div class="h-px w-16 bg-gold/40 mb-10"></div>
+                <h3 id="modal-name" class="text-3xl md:text-4xl font-display font-bold mb-2">Name</h3>
+                <p id="modal-role" class="text-gold font-bold uppercase tracking-widest text-xs mb-6">Role</p>
 
-                        <p id="modal-msg" class="text-gray-300 leading-relaxed italic text-lg">
-                            Message content goes here...
-                        </p>
-                    </div>
+                <div class="h-px w-16 bg-gold/40 mb-6"></div>
 
-                    <!-- Thumbnails Nav -->
-                    <div class="mt-12 flex items-center gap-4 pt-8 border-t border-white/10">
-                        <span class="text-[9px] uppercase tracking-widest text-gray-500 font-bold">Switch Leader</span>
-                        <div id="modal-thumbnails" class="flex gap-3">
-                            <!-- JS Dynamic -->
-                        </div>
+                <p id="modal-msg" class="text-gray-300 leading-relaxed italic text-lg mb-8 max-h-60 overflow-y-auto">
+                    Message...
+                </p>
+
+                <!-- Thumbnails -->
+                <div class="mt-auto pt-6 border-t border-white/10">
+                    <span class="text-xs uppercase tracking-widest text-gray-500 font-bold block mb-3">Switch
+                        Leader</span>
+                    <div id="modal-thumbnails" class="flex gap-3 flex-wrap">
+                        <!-- JS Injected -->
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- BACKGROUND AUDIO CONTROL -->
-        <div id="audio-control" class="fixed bottom-6 left-6 z-50 flex items-center gap-3">
-            <audio id="bg-music" loop>
-                <source src="./assets/cylf.mp3" type="audio/mpeg">
-            </audio>
-            <button id="music-toggle"
-                class="w-12 h-12 rounded-full bg-royal/80 backdrop-blur-md border border-gold/30 text-gold flex items-center justify-center shadow-lg hover:scale-110 transition group overflow-hidden"
-                aria-label="Toggle background music">
-                <div id="music-bars" class="flex gap-1 items-end h-4">
-                    <span class="w-1 bg-gold rounded-full music-bar-1"></span>
-                    <span class="w-1 bg-gold rounded-full music-bar-2"></span>
-                    <span class="w-1 bg-gold rounded-full music-bar-3"></span>
-                </div>
-                <svg id="music-off" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z">
-                    </path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>
-                </svg>
-            </button>
-        </div>
+    <!-- BACKGROUND AUDIO CONTROL -->
+    <div id="audio-control" class="fixed bottom-6 left-6 z-50 flex items-center gap-3">
+        <audio id="bg-music" loop>
+            <source src="./assets/cylf.mp3" type="audio/mpeg">
+        </audio>
+        <button id="music-toggle"
+            class="w-12 h-12 rounded-full bg-royal/80 backdrop-blur-md border border-gold/30 text-gold flex items-center justify-center shadow-lg hover:scale-110 transition group overflow-hidden"
+            aria-label="Toggle background music">
+            <div id="music-bars" class="flex gap-1 items-end h-4">
+                <span class="w-1 bg-gold rounded-full music-bar-1"></span>
+                <span class="w-1 bg-gold rounded-full music-bar-2"></span>
+                <span class="w-1 bg-gold rounded-full music-bar-3"></span>
+            </div>
+            <svg id="music-off" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z">
+                </path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>
+            </svg>
+        </button>
+    </div>
 
-        <!-- SCRIPTS -->
-        <!-- THREE.JS MUST LOAD FIRST -->
+    <!-- SCRIPTS -->
+    <!-- THREE.JS MUST LOAD FIRST -->
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-        <script src="./js/background-3d.js"></script>
-        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-        <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-        <script src="./js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="./js/background-3d.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="./js/script.js"></script>
 
-        <script>
-            // Safe initialization
-            document.addEventListener('DOMContentLoaded', () => {
-                if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true });
-            });
-        </script>
+    <script>
+        // Safe initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true });
+        });
+    </script>
 
 </body>
 

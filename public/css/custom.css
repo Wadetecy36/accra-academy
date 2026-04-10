@@ -1448,3 +1448,21 @@ section::after {
     background: var(--gold);
     border-radius: 3px;
 }
+
+#leader-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+#leader-modal.active .modal-content {
+    transform: scale(1);
+}
+
+#modal-thumbnails button {
+    transition: all 0.3s ease;
+}
+
+#modal-thumbnails button:hover {
+    transform: scale(1.1);
+    border-color: var(--gold);
+}

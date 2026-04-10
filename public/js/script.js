@@ -33,165 +33,113 @@ const leaderData = [
 ];
 
 /* ----------------------------------------------------------
-   LEADERSHIP ENGINE (COMPLETELY FIXED)
+   LEADERSHIP ENGINE (CLEAN REBUILD)
 ---------------------------------------------------------- */
 (function () {
     let currentIdx = 0;
     const getEl = (id) => document.getElementById(id);
 
-    // Main section update
-    function switchLeader(idx) {
-        if (idx < 0 || idx >= leaderData.length) return;
+    function updateMainView(idx) {
         currentIdx = idx;
         const data = leaderData[idx];
 
-        const nameEl = getEl('main-leader-name');
-        const roleEl = getEl('main-leader-role');
-        const msgEl = getEl('main-leader-msg');
         const img = getEl('main-leader-img');
-        const area = getEl('leader-content-area');
-
-        if (nameEl) nameEl.textContent = data.name;
-        if (roleEl) roleEl.textContent = data.role;
-        if (msgEl) msgEl.textContent = data.msg;
+        const name = getEl('main-leader-name');
+        const role = getEl('main-leader-role');
+        const msg = getEl('main-leader-msg');
 
         if (img) {
-            img.style.opacity = '0';
-            setTimeout(() => {
-                img.src = data.img;
-                img.style.opacity = '1';
-            }, 200);
+            img.style.opacity = '0.5';
+            setTimeout(() => { img.src = data.img; img.style.opacity = '1'; }, 150);
         }
+        if (name) name.textContent = data.name;
+        if (role) role.textContent = data.role;
+        if (msg) msg.textContent = data.msg;
 
-        if (area) {
-            area.style.opacity = '0';
-            setTimeout(() => area.style.opacity = '1', 100);
-        }
-
-        renderMainThumbnails();
+        renderThumbnails('main-leader-thumbnails', updateMainView);
     }
 
-    // Modal update - SEPARATE function to avoid confusion
-    function switchModalLeader(idx) {
-        if (idx < 0 || idx >= leaderData.length) return;
-        currentIdx = idx; // Keep sync with main
-
+    function updateModalView(idx) {
+        currentIdx = idx;
         const data = leaderData[idx];
+
         const img = getEl('modal-img');
         const name = getEl('modal-name');
         const role = getEl('modal-role');
         const msg = getEl('modal-msg');
 
-        // Animate out
-        if (img) img.style.opacity = '0';
-        if (name) name.style.opacity = '0';
-        if (msg) msg.style.opacity = '0';
+        if (img) {
+            img.style.opacity = '0';
+            setTimeout(() => { img.src = data.img; img.style.opacity = '1'; }, 200);
+        }
+        if (name) name.textContent = data.name;
+        if (role) role.textContent = data.role;
+        if (msg) msg.textContent = data.msg;
 
-        setTimeout(() => {
-            if (img) {
-                img.src = data.img;
-                img.style.opacity = '1';
-            }
-            if (name) {
-                name.textContent = data.name;
-                name.style.opacity = '1';
-            }
-            if (role) role.textContent = data.role;
-            if (msg) {
-                msg.textContent = data.msg;
-                msg.style.opacity = '1';
-            }
-            renderModalThumbnails(); // Re-render with new active state
-        }, 200);
+        renderThumbnails('modal-thumbnails', updateModalView);
     }
 
-    function renderMainThumbnails() {
-        const container = getEl('main-leader-thumbnails');
+    function renderThumbnails(containerId, clickHandler) {
+        const container = getEl(containerId);
         if (!container) return;
 
         container.innerHTML = '';
+
         leaderData.forEach((leader, i) => {
             const btn = document.createElement('button');
-            btn.className = `w-12 h-12 rounded-xl overflow-hidden border-2 transition-all duration-300 flex-shrink-0 ${i === currentIdx
-                ? 'border-gold opacity-100 scale-110 shadow-[0_0_10px_rgba(253,190,17,0.5)]'
-                : 'border-white/20 opacity-50 hover:opacity-80'
+            const isActive = i === currentIdx;
+
+            btn.className = `w-12 h-12 rounded-xl overflow-hidden border-2 transition-all duration-300 ${isActive
+                ? 'border-gold opacity-100 scale-110 shadow-[0_0_15px_rgba(253,190,17,0.5)]'
+                : 'border-white/30 opacity-60 hover:opacity-100 hover:border-white/60'
                 }`;
-            btn.innerHTML = `<img src="${leader.img}" alt="${leader.name}" class="w-full h-full object-cover pointer-events-none">`;
-            btn.onclick = (e) => {
+
+            btn.innerHTML = `<img src="${leader.img}" alt="${leader.name}" class="w-full h-full object-cover">`;
+
+            // Simple direct click handler
+            btn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                switchLeader(i);
-            };
-            container.appendChild(btn);
-        });
-    }
-
-    function renderModalThumbnails() {
-        const container = getEl('modal-thumbnails');
-        if (!container) return;
-
-        container.innerHTML = '';
-        leaderData.forEach((leader, i) => {
-            const btn = document.createElement('button');
-            btn.className = `w-12 h-12 rounded-xl overflow-hidden border-2 transition-all duration-300 flex-shrink-0 ${i === currentIdx
-                ? 'border-gold opacity-100 scale-110 shadow-[0_0_10px_rgba(253,190,17,0.5)]'
-                : 'border-white/20 opacity-50 hover:opacity-80'
-                }`;
-            btn.innerHTML = `<img src="${leader.img}" alt="${leader.name}" class="w-full h-full object-cover pointer-events-none">`;
-
-            // CRITICAL: Explicit onclick with stopPropagation
-            btn.onclick = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log(`Switching to leader ${i}: ${leader.name}`);
-                switchModalLeader(i);
-                return false;
-            };
+                clickHandler(i);
+            });
 
             container.appendChild(btn);
         });
     }
 
-    function openModal(idx) {
+    // Global functions
+    window.openLeaderModal = function (idx) {
         const modal = getEl('leader-modal');
         if (!modal) return;
 
-        currentIdx = idx;
-        switchModalLeader(idx); // Initial render
-
+        updateModalView(idx);
         modal.classList.add('active');
-        document.body.classList.add('modal-open');
         document.body.style.overflow = 'hidden';
-    }
+    };
 
-    function closeModal() {
+    window.closeLeaderModal = function () {
         const modal = getEl('leader-modal');
         if (modal) modal.classList.remove('active');
-        document.body.classList.remove('modal-open');
         document.body.style.overflow = '';
 
-        // Sync main view with modal selection
-        switchLeader(currentIdx);
-    }
-
-    // Expose globals
-    window.openLeaderModal = openModal;
-    window.closeLeaderModal = closeModal;
+        // Sync main view
+        updateMainView(currentIdx);
+    };
 
     // Init
     document.addEventListener('DOMContentLoaded', () => {
-        switchLeader(0);
+        updateMainView(0);
 
-        // Main view button
+        // Main button
         const mainBtn = getEl('main-leader-btn');
         if (mainBtn) {
-            mainBtn.onclick = () => openModal(currentIdx);
+            mainBtn.onclick = () => window.openLeaderModal(currentIdx);
         }
 
-        // Modal backdrop click to close
+        // Backdrop click
         const modal = getEl('leader-modal');
         if (modal) {
             modal.addEventListener('click', (e) => {
-                if (e.target === modal) closeModal();
+                if (e.target === modal) window.closeLeaderModal();
             });
         }
     });
