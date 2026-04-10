@@ -33,9 +33,7 @@ const leaderData = [
 ];
 
 /* ----------------------------------------------------------
-   LEADERSHIP ENGINE
-   - Uses inline styles for dynamic states to avoid Tailwind
-     JIT not scanning dynamically injected innerHTML.
+   LEADERSHIP ENGINE (FIXED MODAL SWITCHING)
 ---------------------------------------------------------- */
 (function () {
     let currentIdx = 0;
@@ -44,9 +42,9 @@ const leaderData = [
 
     function switchLeader(idx) {
         const data = leaderData[idx];
-        if (!data || idx === currentIdx && document.getElementById('main-leader-name')?.innerText === data.name) {
-            // still update to allow force-refresh
-        }
+        if (!data) return;
+
+        // Only update if actually different (or force refresh)
         currentIdx = idx;
 
         // --- Update main section content ---
@@ -64,7 +62,10 @@ const leaderData = [
         if (img) {
             img.style.transition = 'opacity 0.25s ease';
             img.style.opacity = '0';
-            setTimeout(() => { img.src = data.img; img.style.opacity = '1'; }, 250);
+            setTimeout(() => {
+                img.src = data.img;
+                img.style.opacity = '1';
+            }, 250);
         }
 
         // Re-animate content
@@ -72,15 +73,25 @@ const leaderData = [
             area.style.opacity = '0';
             area.style.transform = 'translateY(8px)';
             area.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-            setTimeout(() => { area.style.opacity = '1'; area.style.transform = 'translateY(0)'; }, 50);
+            setTimeout(() => {
+                area.style.opacity = '1';
+                area.style.transform = 'translateY(0)';
+            }, 50);
         }
 
-        renderThumbnails(idx, 'main-leader-thumbnails', switchLeader);
+        renderThumbnails(idx, 'main-leader-thumbnails', (i) => {
+            switchLeader(i);
+            // If modal is open, sync it too
+            if (document.getElementById('leader-modal')?.classList.contains('active')) {
+                switchModal(i);
+            }
+        });
     }
 
     function renderThumbnails(activeIdx, containerId, clickHandler) {
         const container = getEl(containerId);
         if (!container) return;
+
         container.innerHTML = '';
         leaderData.forEach((leader, i) => {
             const div = document.createElement('div');
@@ -90,14 +101,25 @@ const leaderData = [
                 opacity:${i === activeIdx ? '1' : '0.55'};
                 transform:${i === activeIdx ? 'scale(1.1)' : 'scale(1)'};
                 transition:all 0.25s ease; box-shadow:${i === activeIdx ? '0 0 14px rgba(253,190,17,0.5)' : 'none'};
+                flex-shrink:0;
             `;
             div.title = leader.name;
+
             const imgEl = document.createElement('img');
             imgEl.src = leader.img;
             imgEl.alt = leader.name;
             imgEl.style.cssText = 'width:100%;height:100%;object-fit:cover;pointer-events:none;';
+            imgEl.loading = 'lazy';
+
             div.appendChild(imgEl);
-            div.addEventListener('click', () => clickHandler(i));
+
+            // CRITICAL FIX: Stop propagation and handle click
+            div.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent modal from closing
+                e.preventDefault();
+                clickHandler(i);
+            });
+
             container.appendChild(div);
         });
     }
@@ -105,22 +127,58 @@ const leaderData = [
     function openModal(idx) {
         const modal = getEl('leader-modal');
         if (!modal) return;
+
+        // Sync current index with modal
+        currentIdx = idx;
         switchModal(idx);
+
         modal.classList.add('active');
         document.body.classList.add('modal-open');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
     }
 
     function switchModal(idx) {
         const data = leaderData[idx];
         if (!data) return;
+
+        // Update current index so main view syncs when closing
+        currentIdx = idx;
+
         const img = getEl('modal-img');
         const name = getEl('modal-name');
         const role = getEl('modal-role');
         const msg = getEl('modal-msg');
-        if (img) { img.style.opacity = '0'; setTimeout(() => { img.src = data.img; img.style.opacity = '1'; }, 200); img.style.transition = 'opacity 0.2s'; }
-        if (name) name.textContent = data.name;
+
+        // Update with animation
+        if (img) {
+            img.style.opacity = '0';
+            setTimeout(() => {
+                img.src = data.img;
+                img.style.opacity = '1';
+            }, 200);
+            img.style.transition = 'opacity 0.2s';
+        }
+
+        if (name) {
+            name.style.opacity = '0';
+            setTimeout(() => {
+                name.textContent = data.name;
+                name.style.opacity = '1';
+            }, 100);
+            name.style.transition = 'opacity 0.2s';
+        }
+
         if (role) role.textContent = data.role;
-        if (msg) msg.textContent = data.msg;
+        if (msg) {
+            msg.style.opacity = '0';
+            setTimeout(() => {
+                msg.textContent = data.msg;
+                msg.style.opacity = '1';
+            }, 150);
+            msg.style.transition = 'opacity 0.2s';
+        }
+
+        // Re-render thumbnails with switchModal as handler
         renderThumbnails(idx, 'modal-thumbnails', switchModal);
     }
 
@@ -128,9 +186,13 @@ const leaderData = [
         const modal = getEl('leader-modal');
         if (modal) modal.classList.remove('active');
         document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+
+        // Sync main view with whatever was selected in modal
+        switchLeader(currentIdx);
     }
 
-    // Expose globals for HTML onclick attributes
+    // Expose globals
     window.openLeaderModal = openModal;
     window.closeLeaderModal = closeModal;
     window.updateMainLeadership = switchLeader;
@@ -138,17 +200,24 @@ const leaderData = [
 
     // Init on DOM ready
     document.addEventListener('DOMContentLoaded', () => {
-        switchLeader(0); // render initial state + thumbnails
+        switchLeader(0);
 
-        // Remove hardcoded onclick from main button; re-attach cleanly
+        // Attach main button
         const mainBtn = getEl('main-leader-btn');
         if (mainBtn) {
             mainBtn.removeAttribute('onclick');
             mainBtn.addEventListener('click', () => openModal(currentIdx));
         }
+
+        // Close on backdrop click (but not content)
+        const modal = getEl('leader-modal');
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+        }
     });
 }());
-
 
 document.addEventListener('DOMContentLoaded', () => {
     // SENIOR DEV: Initialization Log
