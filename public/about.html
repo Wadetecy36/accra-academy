@@ -38,129 +38,338 @@
     <!-- CUSTOM CSS -->
     <link href="./css/custom.css" rel="stylesheet">
 
-    <!-- EMERGENCY OVERRIDES -->
+    <!-- GLASS MORPHISM FIXES -->
     <style>
-        /* Nuclear fix for transparency issues */
-        html,
-        body {
-            background-color: #002147 !important;
-        }
-
-        /* Make all sections solid - no transparency */
-        .section-glass {
-            background: #002147 !important;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Alternate section colors for visual separation */
-        .section-glass:nth-child(even) {
-            background: #001a35 !important;
-        }
-
-        /* Ensure text is visible */
-        .section-glass h1,
-        .section-glass h2,
-        .section-glass h3,
-        .section-glass p {
-            color: white;
-        }
-
-        .section-glass .text-gray-600,
-        .section-glass .text-gray-500 {
-            color: #cbd5e1 !important;
-        }
-
-        .section-glass .text-gray-700 {
-            color: #e2e8f0 !important;
-        }
-
-        /* Fix dark mode text */
-        .dark .section-glass .dark\:text-white {
-            color: white !important;
-        }
-
-        /* Cards should be slightly lighter but solid */
-        .feature-card,
-        .info-card,
-        .leader-card {
-            background: #0f2744 !important;
-            border: 1px solid rgba(253, 190, 17, 0.2);
-            color: white;
-        }
-
-        .feature-card h3,
-        .info-card h3,
-        .leader-card h3 {
-            color: #FDBE11 !important;
-        }
-
-        .feature-card p,
-        .info-card p {
-            color: #cbd5e1 !important;
-        }
-
-        /* 3D Canvas stays at back */
+        /* Base setup - 3D Canvas at very back */
         #canvas-container {
             position: fixed !important;
             inset: 0 !important;
-            z-index: 0 !important;
+            z-index: -100 !important;
             pointer-events: none !important;
-            opacity: 0.4;
-            /* Dim it so text is readable */
+            opacity: 0.6;
         }
 
-        /* Ensure content is above canvas */
+        /* Main background gradient */
+        html {
+            background: linear-gradient(135deg, #001529 0%, #002147 50%, #001a35 100%);
+            min-height: 100vh;
+        }
+
         body {
+            background: transparent !important;
             position: relative;
             z-index: 1;
-            background: transparent !important;
+            overflow-x: hidden;
         }
 
-        /* Header solid */
+        /* GLASS SECTIONS - Proper implementation */
+        .section-glass {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.03) !important;
+            backdrop-filter: blur(20px) saturate(1.8);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Alternate sections for depth */
+        .section-glass:nth-child(even) {
+            background: rgba(0, 33, 71, 0.4) !important;
+            backdrop-filter: blur(25px) saturate(2);
+        }
+
+        /* Header - Frosted glass */
         .site-header {
-            background: rgba(0, 33, 71, 0.98) !important;
-            border-bottom: 2px solid #FDBE11;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(0, 33, 71, 0.7) !important;
+            backdrop-filter: blur(20px) saturate(1.8);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            border-bottom: 1px solid rgba(253, 190, 17, 0.2);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
         }
 
-        /* Footer solid */
+        .dark .site-header {
+            background: rgba(2, 6, 23, 0.8) !important;
+        }
+
+        /* CARDS - Glass morphism */
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05) !important;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-color: rgba(253, 190, 17, 0.5);
+            box-shadow: 0 20px 60px -10px rgba(253, 190, 17, 0.2);
+        }
+
+        .feature-card h3 {
+            color: #FDBE11 !important;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-card p {
+            color: #e2e8f0 !important;
+            font-weight: 400;
+        }
+
+        /* Info cards (Halls) */
+        .info-card {
+            background: rgba(255, 255, 255, 0.03) !important;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            background: rgba(253, 190, 17, 0.1) !important;
+            border-color: rgba(253, 190, 17, 0.4);
+            transform: translateY(-5px);
+        }
+
+        .info-card h3 {
+            color: #FDBE11 !important;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .info-card p {
+            color: #94a3b8 !important;
+        }
+
+        /* Leadership cards */
+        .leader-card {
+            background: rgba(255, 255, 255, 0.05) !important;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .leader-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-color: rgba(253, 190, 17, 0.6);
+            box-shadow: 0 30px 60px -15px rgba(253, 190, 17, 0.3);
+        }
+
+        .leader-card h3 {
+            color: white !important;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .leader-card p {
+            color: #FDBE11 !important;
+        }
+
+        /* Timeline cards */
+        .timeline-card-inner {
+            background: rgba(255, 255, 255, 0.05) !important;
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(253, 190, 17, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-card-inner:hover {
+            border-color: rgba(253, 190, 17, 0.6);
+            box-shadow: 0 20px 50px -10px rgba(253, 190, 17, 0.2);
+        }
+
+        .timeline-card-inner h3 {
+            color: #FDBE11 !important;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-card-inner p {
+            color: #cbd5e1 !important;
+        }
+
+        /* Timeline line glow */
+        .timeline-line-glow {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom,
+                    transparent,
+                    rgba(253, 190, 17, 0.5),
+                    rgba(253, 190, 17, 0.8),
+                    rgba(253, 190, 17, 0.5),
+                    transparent);
+            box-shadow: 0 0 20px rgba(253, 190, 17, 0.5);
+        }
+
+        /* Timeline dots */
+        .timeline-dot-glow {
+            width: 24px;
+            height: 24px;
+            background: #002147;
+            border: 3px solid #FDBE11;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(253, 190, 17, 0.8),
+                inset 0 0 10px rgba(253, 190, 17, 0.5);
+            z-index: 20;
+            animation: pulse-gold 2s infinite;
+        }
+
+        @keyframes pulse-gold {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(253, 190, 17, 0.8), inset 0 0 10px rgba(253, 190, 17, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(253, 190, 17, 1), inset 0 0 20px rgba(253, 190, 17, 0.8);
+            }
+        }
+
+        /* Text styling */
+        .section-title {
+            color: white !important;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            color: #FDBE11 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 700;
+        }
+
+        .body-text {
+            color: #e2e8f0 !important;
+            line-height: 1.8;
+        }
+
+        /* Hero specific */
+        .hero-crest {
+            filter: drop-shadow(0 0 30px rgba(253, 190, 17, 0.6));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Founder cards */
+        .founder-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s ease;
+        }
+
+        .founder-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            border-color: rgba(253, 190, 17, 0.5);
+            box-shadow: 0 30px 60px -15px rgba(253, 190, 17, 0.3);
+        }
+
+        .founder-card img {
+            transition: transform 0.6s ease;
+        }
+
+        .founder-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .founder-label {
+            background: rgba(0, 33, 71, 0.9);
+            backdrop-filter: blur(10px);
+            border-top: 2px solid #FDBE11;
+        }
+
+        /* Footer glass */
         .site-footer {
-            background: #001529 !important;
-            margin-top: 0 !important;
+            background: rgba(0, 21, 41, 0.8) !important;
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(253, 190, 17, 0.2);
+        }
+
+        /* Modal glass */
+        #leader-modal {
+            background: rgba(0, 10, 30, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .modal-content-glass {
+            background: rgba(0, 33, 71, 0.95) !important;
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(253, 190, 17, 0.3);
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.8);
         }
     </style>
     <base target="_blank">
 </head>
 
 <body class="min-h-screen transition-colors duration-300" id="main-content">
-    <!-- 3D BACKGROUND MUST BE INSIDE BODY -->
-    <div id="canvas-container" class="fixed inset-0 pointer-events-none"></div>
+    <!-- 3D BACKGROUND -->
+    <div id="canvas-container"></div>
 
     <!-- HEADER -->
-    <header class="site-header sticky top-0 z-50 transition-all duration-300">
+    <header class="site-header sticky top-0 transition-all duration-300">
         <div class="container mx-auto px-4 h-20 flex justify-between items-center">
             <a href="./index.html" class="flex items-center gap-3 group">
                 <img src="./assets/crest.png" alt="Crest"
-                    class="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300">
+                    class="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-lg">
                 <div class="flex flex-col">
                     <h1 class="text-xl md:text-2xl font-bold text-white font-display leading-tight">Accra Academy</h1>
-                    <p class="text-[10px] md:text-xs text-gray-300 uppercase tracking-widest font-semibold">Esse Quam
-                        Videri</p>
+                    <p class="text-[10px] md:text-xs text-gold uppercase tracking-widest font-semibold">Esse Quam Videri
+                    </p>
                 </div>
             </a>
 
             <nav class="hidden lg:flex items-center gap-8 text-sm font-bold tracking-wide">
-                <a href="./index.html" class="text-gray-300 hover:text-gold transition">HOME</a>
+                <a href="./index.html" class="text-gray-300 hover:text-gold transition duration-300">HOME</a>
                 <a href="./about.html" class="text-gold border-b-2 border-gold pb-1">ABOUT</a>
-                <a href="./academics.html" class="text-gray-300 hover:text-gold transition">ACADEMICS</a>
-                <a href="./news.html" class="text-gray-300 hover:text-gold transition">NEWS</a>
-                <a href="./gallery.html" class="text-gray-300 hover:text-gold transition">GALLERY</a>
-                <a href="./contacts.html" class="text-gray-300 hover:text-gold transition">CONTACT</a>
+                <a href="./academics.html" class="text-gray-300 hover:text-gold transition duration-300">ACADEMICS</a>
+                <a href="./news.html" class="text-gray-300 hover:text-gold transition duration-300">NEWS</a>
+                <a href="./gallery.html" class="text-gray-300 hover:text-gold transition duration-300">GALLERY</a>
+                <a href="./contacts.html" class="text-gray-300 hover:text-gold transition duration-300">CONTACT</a>
             </nav>
 
             <div class="flex items-center gap-4">
                 <button id="theme-toggle"
-                    class="p-2 rounded-full bg-white/10 text-gold hover:ring-2 hover:ring-gold transition shadow-sm">
+                    class="p-2 rounded-full bg-white/10 text-gold hover:bg-white/20 transition duration-300 border border-white/10">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
@@ -175,93 +384,118 @@
                 </button>
             </div>
         </div>
+
+        <!-- Mobile Menu -->
         <div id="mobile-menu"
-            class="hidden absolute top-full left-0 w-full bg-royal/98 border-t border-gold shadow-2xl origin-top transition-all duration-300">
+            class="hidden lg:hidden absolute top-full left-0 w-full bg-royal/95 backdrop-blur-xl border-t border-gold/30">
             <nav class="flex flex-col p-6 gap-4 text-center">
-                <a href="./index.html" class="text-gray-300 hover:text-gold">Home</a>
-                <a href="./about.html" class="text-gold font-bold">About Us</a>
-                <a href="./academics.html" class="text-gray-300 hover:text-gold">Academics</a>
-                <a href="./news.html" class="text-gray-300 hover:text-gold">News</a>
-                <a href="./gallery.html" class="text-gray-300 hover:text-gold">Gallery</a>
-                <a href="./contacts.html" class="text-gray-300 hover:text-gold">Contact</a>
+                <a href="./index.html" class="text-gray-300 hover:text-gold py-2">Home</a>
+                <a href="./about.html" class="text-gold font-bold py-2">About Us</a>
+                <a href="./academics.html" class="text-gray-300 hover:text-gold py-2">Academics</a>
+                <a href="./news.html" class="text-gray-300 hover:text-gold py-2">News</a>
+                <a href="./gallery.html" class="text-gray-300 hover:text-gold py-2">Gallery</a>
+                <a href="./contacts.html" class="text-gray-300 hover:text-gold py-2">Contact</a>
             </nav>
         </div>
     </header>
 
     <!-- HERO -->
-    <section class="relative pt-32 pb-24 section-glass text-center px-4 overflow-hidden" data-aos="fade-up">
-        <div class="relative z-10">
-            <img src="./assets/crest.png" class="h-32 w-32 mx-auto mb-6 drop-shadow-2xl animate-pulse"
-                fetchpriority="high">
-            <h1 class="text-4xl md:text-6xl font-display font-bold mb-4 text-white">Our Heritage</h1>
-            <div class="h-1 w-20 bg-gold mx-auto mb-6 rounded-full"></div>
-            <p class="text-gray-300 max-w-xl mx-auto text-lg italic">"The first private academy in the Gold Coast
-                established by indigenous investors."</p>
+    <section class="relative pt-32 pb-24 section-glass min-h-[80vh] flex items-center" data-aos="fade-up">
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <img src="./assets/crest.png" class="hero-crest h-32 w-32 mx-auto mb-8" fetchpriority="high">
+            <h1 class="text-5xl md:text-7xl font-display font-bold mb-6 section-title">Our Heritage</h1>
+            <div class="h-1 w-32 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mb-8"></div>
+            <p class="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto italic font-light">"The first private academy
+                in the Gold Coast established by indigenous investors."</p>
+
+            <!-- Scroll indicator -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
         </div>
     </section>
 
     <!-- THE BIG FOUR -->
-    <section class="py-20 section-glass">
+    <section class="py-24 section-glass" data-aos="fade-up">
         <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-2 gap-12 items-center mb-24" data-aos="fade-up">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
                 <div class="order-2 md:order-1">
-                    <span class="text-gold font-bold tracking-widest uppercase text-sm mb-2 block">The Big Four</span>
-                    <h2 class="text-3xl md:text-4xl font-display font-bold text-white mb-6">Founding Years (1931)</h2>
-                    <p class="text-lg text-gray-300 leading-relaxed mb-4">
+                    <span class="section-subtitle text-sm mb-4 block">The Big Four</span>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold mb-8 section-title">Founding Years (1931)
+                    </h2>
+                    <p class="text-lg body-text mb-6 leading-relaxed">
                         Accra Academy was founded on July 20, 1931, by four visionary educators in Mantse Agbonaa.
-                    </p>
-                    <p class="text-gray-300 mb-6">
-                        Driven by the desire to provide quality secondary education to students who could not afford the
+                        Driven by the desire to provide quality secondary education to students who could not afford
                         expensive government schools.
                     </p>
-                    <ul class="grid grid-cols-1 gap-3 border-l-4 border-gold pl-4">
-                        <li class="font-bold text-gold">1. Dr. Kofi George Konuah</li>
-                        <li class="font-bold text-gold">2. Gottfried Narku Alema</li>
-                        <li class="font-bold text-gold">3. James Akwei Halm-Addo</li>
-                        <li class="font-bold text-gold">4. Samuel Neils Awuletey</li>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-4 group">
+                            <span
+                                class="w-10 h-10 rounded-full bg-gold/20 border border-gold flex items-center justify-center text-gold font-bold group-hover:bg-gold group-hover:text-royal transition-all duration-300">1</span>
+                            <span class="text-white font-semibold text-lg">Dr. Kofi George Konuah</span>
+                        </li>
+                        <li class="flex items-center gap-4 group">
+                            <span
+                                class="w-10 h-10 rounded-full bg-gold/20 border border-gold flex items-center justify-center text-gold font-bold group-hover:bg-gold group-hover:text-royal transition-all duration-300">2</span>
+                            <span class="text-white font-semibold text-lg">Gottfried Narku Alema</span>
+                        </li>
+                        <li class="flex items-center gap-4 group">
+                            <span
+                                class="w-10 h-10 rounded-full bg-gold/20 border border-gold flex items-center justify-center text-gold font-bold group-hover:bg-gold group-hover:text-royal transition-all duration-300">3</span>
+                            <span class="text-white font-semibold text-lg">James Akwei Halm-Addo</span>
+                        </li>
+                        <li class="flex items-center gap-4 group">
+                            <span
+                                class="w-10 h-10 rounded-full bg-gold/20 border border-gold flex items-center justify-center text-gold font-bold group-hover:bg-gold group-hover:text-royal transition-all duration-300">4</span>
+                            <span class="text-white font-semibold text-lg">Samuel Neils Awuletey</span>
+                        </li>
                     </ul>
                 </div>
 
                 <div class="order-1 md:order-2">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="relative group overflow-hidden rounded-xl shadow-lg border border-gold/20">
-                            <img src="./assets/founder1.png"
-                                onerror="this.src='https://placehold.co/400x500/002147/FDBE11?text=Dr.+Konuah'"
-                                alt="Dr. K.G. Konuah"
-                                class="w-full h-48 object-cover transition duration-500 group-hover:scale-110">
-                            <div
-                                class="absolute bottom-0 inset-x-0 bg-royal/95 p-3 text-center translate-y-full group-hover:translate-y-0 transition duration-300 border-t border-gold/30">
-                                <p class="text-gold text-sm font-bold">Dr. K.G. Konuah</p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="founder-card" data-aos="fade-up" data-aos-delay="0">
+                            <div class="relative h-64 overflow-hidden">
+                                <img src="./assets/founder1.png"
+                                    onerror="this.src='https://placehold.co/400x500/001a35/FDBE11?text=Dr.+Konuah'"
+                                    alt="Dr. K.G. Konuah" class="w-full h-full object-cover">
+                                <div
+                                    class="founder-label absolute bottom-0 inset-x-0 p-4 text-center transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                    <p class="text-gold font-bold">Dr. K.G. Konuah</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="relative group overflow-hidden rounded-xl shadow-lg mt-8 border border-gold/20">
-                            <img src="./assets/founder2.png"
-                                onerror="this.src='https://placehold.co/400x500/002147/FDBE11?text=G.N.+Alema'"
-                                alt="G.N. Alema"
-                                class="w-full h-48 object-cover transition duration-500 group-hover:scale-110">
-                            <div
-                                class="absolute bottom-0 inset-x-0 bg-royal/95 p-3 text-center translate-y-full group-hover:translate-y-0 transition duration-300 border-t border-gold/30">
-                                <p class="text-gold text-sm font-bold">G.N. Alema</p>
+                        <div class="founder-card mt-12" data-aos="fade-up" data-aos-delay="100">
+                            <div class="relative h-64 overflow-hidden">
+                                <img src="./assets/founder2.png"
+                                    onerror="this.src='https://placehold.co/400x500/001a35/FDBE11?text=G.N.+Alema'"
+                                    alt="G.N. Alema" class="w-full h-full object-cover">
+                                <div class="founder-label absolute bottom-0 inset-x-0 p-4 text-center">
+                                    <p class="text-gold font-bold">G.N. Alema</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="relative group overflow-hidden rounded-xl shadow-lg border border-gold/20">
-                            <img src="./assets/founder3.png"
-                                onerror="this.src='https://placehold.co/400x500/002147/FDBE11?text=Halm-Addo'"
-                                alt="J.A. Halm-Addo"
-                                class="w-full h-48 object-cover transition duration-500 group-hover:scale-110">
-                            <div
-                                class="absolute bottom-0 inset-x-0 bg-royal/95 p-3 text-center translate-y-full group-hover:translate-y-0 transition duration-300 border-t border-gold/30">
-                                <p class="text-gold text-sm font-bold">J.A. Halm-Addo</p>
+                        <div class="founder-card" data-aos="fade-up" data-aos-delay="200">
+                            <div class="relative h-64 overflow-hidden">
+                                <img src="./assets/founder3.png"
+                                    onerror="this.src='https://placehold.co/400x500/001a35/FDBE11?text=Halm-Addo'"
+                                    alt="J.A. Halm-Addo" class="w-full h-full object-cover">
+                                <div class="founder-label absolute bottom-0 inset-x-0 p-4 text-center">
+                                    <p class="text-gold font-bold">J.A. Halm-Addo</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="relative group overflow-hidden rounded-xl shadow-lg mt-8 border border-gold/20">
-                            <img src="./assets/founder4.png"
-                                onerror="this.src='https://placehold.co/400x500/002147/FDBE11?text=S.N.+Awuletey'"
-                                alt="S.N. Awuletey"
-                                class="w-full h-48 object-cover transition duration-500 group-hover:scale-110">
-                            <div
-                                class="absolute bottom-0 inset-x-0 bg-royal/95 p-3 text-center translate-y-full group-hover:translate-y-0 transition duration-300 border-t border-gold/30">
-                                <p class="text-gold text-sm font-bold">S.N. Awuletey</p>
+                        <div class="founder-card mt-12" data-aos="fade-up" data-aos-delay="300">
+                            <div class="relative h-64 overflow-hidden">
+                                <img src="./assets/founder4.png"
+                                    onerror="this.src='https://placehold.co/400x500/001a35/FDBE11?text=S.N.+Awuletey'"
+                                    alt="S.N. Awuletey" class="w-full h-full object-cover">
+                                <div class="founder-label absolute bottom-0 inset-x-0 p-4 text-center">
+                                    <p class="text-gold font-bold">S.N. Awuletey</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -271,72 +505,63 @@
     </section>
 
     <!-- TIMELINE -->
-    <section id="history" class="py-24 section-glass relative overflow-hidden">
+    <section id="history" class="py-24 section-glass relative overflow-hidden" data-aos="fade-up">
         <div class="container mx-auto px-4 relative z-10">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-gold font-bold tracking-widest uppercase text-sm">Our Journey</span>
-                <h2 class="text-4xl md:text-5xl font-display font-bold text-white mt-2">Through the Decades</h2>
+            <div class="text-center mb-20">
+                <span class="section-subtitle text-sm mb-4 block">Our Journey</span>
+                <h2 class="text-4xl md:text-6xl font-display font-bold section-title">Through the Decades</h2>
             </div>
 
             <div class="relative max-w-4xl mx-auto">
-                <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gold/30"></div>
+                <!-- Glowing line -->
+                <div class="timeline-line-glow"></div>
 
                 <!-- 1931 -->
-                <div class="flex items-center justify-end w-full mb-12 relative">
-                    <div
-                        class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-royal border-4 border-gold rounded-full z-10 shadow-lg shadow-gold/50">
-                    </div>
-                    <div class="w-5/12 pr-8 text-right" data-aos="fade-right">
-                        <span class="text-gold font-bold text-4xl font-display block mb-2">1931</span>
-                        <div class="bg-royal border border-gold/30 p-6 rounded-xl shadow-xl">
-                            <h3 class="text-xl font-bold text-white mb-2">The Foundation</h3>
-                            <p class="text-sm text-gray-300">Founded on July 20th in Ellen House, James Town with just
-                                19 students.</p>
+                <div class="flex items-center justify-end mb-16 relative" data-aos="fade-right">
+                    <div class="timeline-dot-glow absolute left-1/2 transform -translate-x-1/2"></div>
+                    <div class="w-5/12 pr-12 text-right">
+                        <span class="text-6xl font-display font-bold text-gold/30 block mb-2">1931</span>
+                        <div class="timeline-card-inner">
+                            <h3>The Foundation</h3>
+                            <p>Founded on July 20th in Ellen House, James Town with just 19 students.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- 1961 -->
-                <div class="flex items-center justify-start w-full mb-12 relative">
-                    <div
-                        class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-royal border-4 border-gold rounded-full z-10 shadow-lg shadow-gold/50">
-                    </div>
-                    <div class="w-5/12 pl-8" data-aos="fade-left">
-                        <span class="text-gold font-bold text-4xl font-display block mb-2">1961</span>
-                        <div class="bg-royal border border-gold/30 p-6 rounded-xl shadow-xl">
-                            <h3 class="text-xl font-bold text-white mb-2">The Great Migration</h3>
-                            <p class="text-sm text-gray-300">Moved from James Town to the current spacious campus at
-                                Bubuashie.</p>
+                <div class="flex items-center justify-start mb-16 relative" data-aos="fade-left">
+                    <div class="timeline-dot-glow absolute left-1/2 transform -translate-x-1/2"></div>
+                    <div class="w-5/12 pl-12">
+                        <span class="text-6xl font-display font-bold text-gold/30 block mb-2">1961</span>
+                        <div class="timeline-card-inner">
+                            <h3>The Great Migration</h3>
+                            <p>Moved from James Town to the current spacious campus at Bubuashie.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- 2003 -->
-                <div class="flex items-center justify-end w-full mb-12 relative">
-                    <div
-                        class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-royal border-4 border-gold rounded-full z-10 shadow-lg shadow-gold/50">
-                    </div>
-                    <div class="w-5/12 pr-8 text-right" data-aos="fade-right">
-                        <span class="text-gold font-bold text-4xl font-display block mb-2">2003</span>
-                        <div class="bg-royal border border-gold/30 p-6 rounded-xl shadow-xl">
-                            <h3 class="text-xl font-bold text-white mb-2">African Excellence</h3>
-                            <p class="text-sm text-gray-300">Ranked <strong class="text-gold">8th Best High School in
-                                    Africa</strong> by the Africa Almanac.</p>
+                <div class="flex items-center justify-end mb-16 relative" data-aos="fade-right">
+                    <div class="timeline-dot-glow absolute left-1/2 transform -translate-x-1/2"></div>
+                    <div class="w-5/12 pr-12 text-right">
+                        <span class="text-6xl font-display font-bold text-gold/30 block mb-2">2003</span>
+                        <div class="timeline-card-inner">
+                            <h3>African Excellence</h3>
+                            <p>Ranked <span class="text-gold font-bold">8th Best High School in Africa</span> by the
+                                Africa Almanac.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Today -->
-                <div class="flex items-center justify-start w-full relative">
-                    <div
-                        class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-gold border-4 border-royal rounded-full z-10 shadow-lg shadow-gold/50">
-                    </div>
-                    <div class="w-5/12 pl-8" data-aos="fade-left">
-                        <span class="text-gold font-bold text-4xl font-display block mb-2">Today</span>
-                        <div class="bg-royal border border-gold/30 p-6 rounded-xl shadow-xl">
-                            <h3 class="text-xl font-bold text-white mb-2">Leading Innovation</h3>
-                            <p class="text-sm text-gray-300">Pioneering Robotics, AI Clubs, and modern Sports
-                                Infrastructure.</p>
+                <div class="flex items-center justify-start relative" data-aos="fade-left">
+                    <div class="timeline-dot-glow absolute left-1/2 transform -translate-x-1/2"
+                        style="background: #FDBE11; border-color: #002147;"></div>
+                    <div class="w-5/12 pl-12">
+                        <span class="text-6xl font-display font-bold text-gold/30 block mb-2">Today</span>
+                        <div class="timeline-card-inner border-gold/50">
+                            <h3>Leading Innovation</h3>
+                            <p>Pioneering Robotics, AI Clubs, and modern Sports Infrastructure.</p>
                         </div>
                     </div>
                 </div>
@@ -344,66 +569,57 @@
         </div>
     </section>
 
-    <!-- LEADERSHIP SECTION -->
-    <section class="py-24 section-glass" id="leadership">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-gold font-bold tracking-widest uppercase text-sm">Stewardship</span>
-                <h2 class="text-3xl md:text-5xl font-display font-bold text-white mt-2">Our Leadership</h2>
-                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Click to view full message</p>
+    <!-- LEADERSHIP -->
+    <section class="py-24 section-glass" id="leadership" data-aos="fade-up">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="section-subtitle text-sm mb-4 block">Stewardship</span>
+                <h2 class="text-4xl md:text-6xl font-display font-bold section-title mb-4">Our Leadership</h2>
+                <p class="text-gray-400 text-lg">Click to view full message</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto" id="leaders-container">
-                <!-- Cards will be injected here by JS or static below -->
-                <article
-                    class="leader-card rounded-2xl overflow-hidden shadow-lg cursor-pointer hover:-translate-y-2 transition-transform"
-                    data-leader="0" data-aos="fade-up">
-                    <div class="h-64 overflow-hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+                <article class="leader-card cursor-pointer" data-leader="0" data-aos="fade-up" data-aos-delay="0">
+                    <div class="h-72 overflow-hidden">
                         <img src="./assets/headmaster.jpg" alt="Headmaster"
-                            class="w-full h-full object-cover object-top">
+                            class="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-110">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white mb-1">Mr. Eric Ebo Sey</h3>
-                        <p class="text-gold text-sm font-bold uppercase tracking-wider">Headmaster</p>
+                        <h3>Mr. Eric Ebo Sey</h3>
+                        <p class="text-sm">Headmaster</p>
                     </div>
                 </article>
 
-                <article
-                    class="leader-card rounded-2xl overflow-hidden shadow-lg cursor-pointer hover:-translate-y-2 transition-transform"
-                    data-leader="1" data-aos="fade-up" data-aos-delay="100">
-                    <div class="h-64 overflow-hidden">
+                <article class="leader-card cursor-pointer" data-leader="1" data-aos="fade-up" data-aos-delay="100">
+                    <div class="h-72 overflow-hidden">
                         <img src="./assets/administration.jpg" alt="Administration"
-                            class="w-full h-full object-cover object-top">
+                            class="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-110">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white mb-1">Mr. Paul Kofi Yesu Dadzie</h3>
-                        <p class="text-gold text-sm font-bold uppercase tracking-wider">Assistant Headmaster (Admin)</p>
+                        <h3>Mr. Paul Kofi Yesu Dadzie</h3>
+                        <p class="text-sm">Assistant Headmaster (Administration)</p>
                     </div>
                 </article>
 
-                <article
-                    class="leader-card rounded-2xl overflow-hidden shadow-lg cursor-pointer hover:-translate-y-2 transition-transform"
-                    data-leader="2" data-aos="fade-up" data-aos-delay="200">
-                    <div class="h-64 overflow-hidden">
-                        <img src="./assets/academics.jpg" alt="Academic" class="w-full h-full object-cover object-top">
+                <article class="leader-card cursor-pointer" data-leader="2" data-aos="fade-up" data-aos-delay="200">
+                    <div class="h-72 overflow-hidden">
+                        <img src="./assets/academics.jpg" alt="Academic"
+                            class="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-110">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white mb-1">Mr. Isaac Tweneboah</h3>
-                        <p class="text-gold text-sm font-bold uppercase tracking-wider">Assistant Headmaster (Academic)
-                        </p>
+                        <h3>Mr. Isaac Tweneboah</h3>
+                        <p class="text-sm">Assistant Headmaster (Academic)</p>
                     </div>
                 </article>
 
-                <article
-                    class="leader-card rounded-2xl overflow-hidden shadow-lg cursor-pointer hover:-translate-y-2 transition-transform"
-                    data-leader="3" data-aos="fade-up" data-aos-delay="300">
-                    <div class="h-64 overflow-hidden">
-                        <img src="./assets/domestic.jpg" alt="Domestic" class="w-full h-full object-cover object-top">
+                <article class="leader-card cursor-pointer" data-leader="3" data-aos="fade-up" data-aos-delay="300">
+                    <div class="h-72 overflow-hidden">
+                        <img src="./assets/domestic.jpg" alt="Domestic"
+                            class="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-110">
                     </div>
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-white mb-1">Mr. William Kwame Asun</h3>
-                        <p class="text-gold text-sm font-bold uppercase tracking-wider">Assistant Headmaster (Domestic)
-                        </p>
+                        <h3>Mr. William Kwame Asun</h3>
+                        <p class="text-sm">Assistant Headmaster (Domestic/Welfare)</p>
                     </div>
                 </article>
             </div>
@@ -411,115 +627,145 @@
     </section>
 
     <!-- ACADEMICS -->
-    <section class="py-20 section-glass">
+    <section class="py-24 section-glass" data-aos="fade-up">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-3xl font-display font-bold text-white mb-4">Academic Departments</h2>
-                <p class="text-gray-300">Equipping students with knowledge for the modern world.</p>
+            <div class="text-center mb-16">
+                <span class="section-subtitle text-sm mb-4 block">Excellence</span>
+                <h2 class="text-4xl md:text-5xl font-display font-bold section-title mb-4">Academic Departments</h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">Equipping students with knowledge for the modern
+                    world.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                <div class="feature-card p-6 text-center" data-aos="fade-up">
-                    <div class="text-4xl mb-4">🔬</div>
-                    <h3 class="text-lg font-bold mb-2">General Science</h3>
-                    <p class="text-sm text-gray-400">Physics, Chemistry, Biology, Elective Math.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="feature-card text-center group" data-aos="fade-up" data-aos-delay="0">
+                    <div class="text-5xl mb-6 transform group-hover:scale-125 transition-transform duration-300">🔬
+                    </div>
+                    <h3>General Science</h3>
+                    <p>Physics, Chemistry, Biology, Elective Mathematics</p>
                 </div>
-                <div class="feature-card p-6 text-center" data-aos="fade-up" data-aos-delay="100">
-                    <div class="text-4xl mb-4">⚖️</div>
-                    <h3 class="text-lg font-bold mb-2">General Arts</h3>
-                    <p class="text-sm text-gray-400">History, Government, Literature, Economics.</p>
+
+                <div class="feature-card text-center group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-5xl mb-6 transform group-hover:scale-125 transition-transform duration-300">⚖️
+                    </div>
+                    <h3>General Arts</h3>
+                    <p>History, Government, Literature, Economics</p>
                 </div>
-                <div class="feature-card p-6 text-center" data-aos="fade-up" data-aos-delay="200">
-                    <div class="text-4xl mb-4">🎨</div>
-                    <h3 class="text-lg font-bold mb-2">Visual Art</h3>
-                    <p class="text-sm text-gray-400">Drawing, Painting, Sculpture, Ceramics.</p>
+
+                <div class="feature-card text-center group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-5xl mb-6 transform group-hover:scale-125 transition-transform duration-300">🎨
+                    </div>
+                    <h3>Visual Arts</h3>
+                    <p>Drawing, Painting, Sculpture, Ceramics</p>
                 </div>
-                <div class="feature-card p-6 text-center" data-aos="fade-up">
-                    <div class="text-4xl mb-4">📈</div>
-                    <h3 class="text-lg font-bold mb-2">Business</h3>
-                    <p class="text-sm text-gray-400">Accounting, Management, Costing, Economics.</p>
+
+                <div class="feature-card text-center group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-5xl mb-6 transform group-hover:scale-125 transition-transform duration-300">📈
+                    </div>
+                    <h3>Business</h3>
+                    <p>Accounting, Management, Costing, Economics</p>
                 </div>
-                <div class="feature-card p-6 text-center" data-aos="fade-up" data-aos-delay="100">
-                    <div class="text-4xl mb-4">🌱</div>
-                    <h3 class="text-lg font-bold mb-2">Agriculture</h3>
-                    <p class="text-sm text-gray-400">Animal Husbandry, Chemistry, General Agriculture.</p>
+
+                <div class="feature-card text-center group" data-aos="fade-up" data-aos-delay="400">
+                    <div class="text-5xl mb-6 transform group-hover:scale-125 transition-transform duration-300">🌱
+                    </div>
+                    <h3>Agriculture</h3>
+                    <p>Animal Husbandry, Chemistry, General Agriculture</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- HALLS -->
-    <section class="py-24 section-glass">
+    <section class="py-24 section-glass" data-aos="fade-up">
         <div class="container mx-auto px-4">
-            <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-3xl font-display font-bold text-white mb-4">Halls of Residence</h2>
-                <p class="text-gray-300">The four pillars of brotherhood.</p>
+            <div class="text-center mb-16">
+                <span class="section-subtitle text-sm mb-4 block">Brotherhood</span>
+                <h2 class="text-4xl md:text-5xl font-display font-bold section-title mb-4">Halls of Residence</h2>
+                <p class="text-gray-400 text-lg">The four pillars of brotherhood.</p>
             </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-6xl mx-auto">
-                <div class="info-card p-6 border-t-4 border-gold" data-aos="fade-up">
-                    <span class="text-3xl font-bold text-white/20 block mb-2">01</span>
-                    <h3 class="text-lg font-bold text-white mb-1">Alema Hall</h3>
-                    <p class="text-xs text-gray-400">Named after G.N. Alema.</p>
+                <div class="info-card" data-aos="fade-up" data-aos-delay="0">
+                    <span class="text-5xl font-bold text-white/10 block mb-4">01</span>
+                    <h3>Alema Hall</h3>
+                    <p>Named after G.N. Alema</p>
                 </div>
-                <div class="info-card p-6 border-t-4 border-indigo-500" data-aos="fade-up" data-aos-delay="100">
-                    <span class="text-3xl font-bold text-white/20 block mb-2">02</span>
-                    <h3 class="text-lg font-bold text-white mb-1">Awuletey Hall</h3>
-                    <p class="text-xs text-gray-400">Named after S.N. Awuletey.</p>
+                <div class="info-card" data-aos="fade-up" data-aos-delay="100">
+                    <span class="text-5xl font-bold text-white/10 block mb-4">02</span>
+                    <h3>Awuletey Hall</h3>
+                    <p>Named after S.N. Awuletey</p>
                 </div>
-                <div class="info-card p-6 border-t-4 border-red-500" data-aos="fade-up" data-aos-delay="200">
-                    <span class="text-3xl font-bold text-white/20 block mb-2">03</span>
-                    <h3 class="text-lg font-bold text-white mb-1">Ellen Hall</h3>
-                    <p class="text-xs text-gray-400">Named after Ellen House.</p>
+                <div class="info-card" data-aos="fade-up" data-aos-delay="200">
+                    <span class="text-5xl font-bold text-white/10 block mb-4">03</span>
+                    <h3>Ellen Hall</h3>
+                    <p>Named after Ellen House</p>
                 </div>
-                <div class="info-card p-6 border-t-4 border-yellow-500" data-aos="fade-up" data-aos-delay="300">
-                    <span class="text-3xl font-bold text-white/20 block mb-2">04</span>
-                    <h3 class="text-lg font-bold text-white mb-1">Halm-Addo</h3>
-                    <p class="text-xs text-gray-400">Named after J.A. Halm-Addo.</p>
+                <div class="info-card" data-aos="fade-up" data-aos-delay="300">
+                    <span class="text-5xl font-bold text-white/10 block mb-4">04</span>
+                    <h3>Halm-Addo</h3>
+                    <p>Named after J.A. Halm-Addo</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="site-footer py-12 border-t border-gold/20">
+    <footer class="site-footer py-16">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <h3 class="text-2xl font-bold text-gold mb-2">Accra Academy</h3>
-                    <p class="text-gold/80 text-sm mb-4">Esse Quam Videri</p>
-                    <p class="text-gray-400 text-sm">Pioneering education since 1931.</p>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div data-aos="fade-up">
+                    <h3 class="text-3xl font-display font-bold text-gold mb-2">Accra Academy</h3>
+                    <p class="text-gold/80 font-semibold mb-4">Esse Quam Videri</p>
+                    <p class="text-gray-400 text-sm leading-relaxed">Pioneering education since 1931, shaping leaders of
+                        tomorrow through excellence and innovation.</p>
                 </div>
-                <div>
-                    <h4 class="text-gold font-bold mb-4">Quick Links</h4>
-                    <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="./about.html" class="hover:text-gold">About Us</a></li>
-                        <li><a href="./academics.html" class="hover:text-gold">Academics</a></li>
-                        <li><a href="./gallery.html" class="hover:text-gold">Gallery</a></li>
-                        <li><a href="./contacts.html" class="hover:text-gold">Contact</a></li>
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <h4 class="text-gold font-bold text-lg mb-6">Quick Links</h4>
+                    <ul class="space-y-3 text-gray-300">
+                        <li><a href="./about.html" class="hover:text-gold transition duration-300">About Us</a></li>
+                        <li><a href="./academics.html" class="hover:text-gold transition duration-300">Academics</a>
+                        </li>
+                        <li><a href="./gallery.html" class="hover:text-gold transition duration-300">Gallery</a></li>
+                        <li><a href="./contacts.html" class="hover:text-gold transition duration-300">Contact</a></li>
                     </ul>
                 </div>
-                <div>
-                    <h4 class="text-gold font-bold mb-4">Resources</h4>
-                    <ul class="space-y-2 text-sm text-gray-300">
-                        <li><a href="./portal.html" class="hover:text-gold">Student Portal</a></li>
-                        <li><a href="./handbook.html" class="hover:text-gold">Handbook</a></li>
-                        <li><a href="./calendar.html" class="hover:text-gold">Calendar</a></li>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <h4 class="text-gold font-bold text-lg mb-6">Resources</h4>
+                    <ul class="space-y-3 text-gray-300">
+                        <li><a href="./portal.html" class="hover:text-gold transition duration-300">Student Portal</a>
+                        </li>
+                        <li><a href="./handbook.html" class="hover:text-gold transition duration-300">Handbook</a></li>
+                        <li><a href="./calendar.html" class="hover:text-gold transition duration-300">Calendar</a></li>
+                        <li><a href="./news.html" class="hover:text-gold transition duration-300">News & Events</a></li>
                     </ul>
                 </div>
-                <div>
-                    <h4 class="text-gold font-bold mb-4">Contact</h4>
-                    <div class="text-sm text-gray-300 space-y-2">
-                        <p>Bubuashie, Greater Accra, Ghana</p>
-                        <p>+233 30 222 2690</p>
-                        <p>info@accraacademy.edu.gh</p>
+                <div data-aos="fade-up" data-aos-delay="300">
+                    <h4 class="text-gold font-bold text-lg mb-6">Contact Info</h4>
+                    <div class="text-gray-300 space-y-3 text-sm">
+                        <p class="flex items-start gap-3">
+                            <span class="text-gold">📍</span>
+                            Bubuashie, Greater Accra, Ghana
+                        </p>
+                        <p class="flex items-center gap-3">
+                            <span class="text-gold">📞</span>
+                            +233 30 222 2690
+                        </p>
+                        <p class="flex items-center gap-3">
+                            <span class="text-gold">✉️</span>
+                            info@accraacademy.edu.gh
+                        </p>
                     </div>
                 </div>
             </div>
             <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                 <p class="text-gray-400 text-sm">&copy; 2024 Accra Academy. All rights reserved.</p>
-                <div class="flex gap-4">
-                    <a href="#" class="text-gold hover:text-white transition">Facebook</a>
-                    <a href="#" class="text-gold hover:text-white transition">Twitter</a>
-                    <a href="#" class="text-gold hover:text-white transition">Instagram</a>
+                <div class="flex gap-6">
+                    <a href="https://web.facebook.com/AccraAcademyGH/"
+                        class="text-gold hover:text-white transition duration-300 text-sm font-semibold">Facebook</a>
+                    <a href="https://x.com/accraacademygh"
+                        class="text-gold hover:text-white transition duration-300 text-sm font-semibold">Twitter</a>
+                    <a href="https://www.instagram.com/insidebleoo/"
+                        class="text-gold hover:text-white transition duration-300 text-sm font-semibold">Instagram</a>
                 </div>
             </div>
         </div>
@@ -527,23 +773,22 @@
 
     <!-- MODAL -->
     <div id="leader-modal"
-        class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 opacity-0 invisible transition-all duration-300">
+        class="fixed inset-0 z-[9999] flex items-center justify-center p-4 opacity-0 invisible transition-all duration-500">
         <div
-            class="bg-royal w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row relative transform scale-95 transition-transform duration-300 border border-gold/30">
+            class="modal-content-glass w-full max-w-4xl rounded-3xl overflow-hidden flex flex-col md:flex-row relative transform scale-95 transition-transform duration-500">
             <button id="modal-close"
-                class="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-white/10 hover:bg-red-500 border border-white/20 flex items-center justify-center text-white transition-colors text-2xl">×</button>
+                class="absolute top-4 right-4 z-50 w-12 h-12 rounded-full bg-white/10 hover:bg-red-500 border border-white/20 flex items-center justify-center text-white transition-all duration-300 text-2xl">&times;</button>
             <div class="md:w-2/5 h-64 md:h-auto relative">
                 <img id="modal-img" src="" alt="Leader" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-r from-transparent to-royal hidden md:block"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent to-royal/90 hidden md:block"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-royal to-transparent md:hidden"></div>
             </div>
-            <div class="md:w-3/5 p-8 md:p-12 flex flex-col justify-center text-white relative">
-                <div class="text-gold text-5xl mb-4 font-serif">❝</div>
-                <h3 id="modal-name" class="text-3xl font-display font-bold mb-2">Name</h3>
-                <p id="modal-role" class="text-gold font-bold uppercase tracking-widest text-xs mb-6">Role</p>
-                <div class="h-px w-16 bg-gold/40 mb-6"></div>
-                <p id="modal-msg" class="text-gray-300 leading-relaxed italic text-lg mb-8">Message...</p>
-                <div id="modal-thumbnails" class="flex gap-3 flex-wrap"></div>
+            <div class="md:w-3/5 p-8 md:p-12 flex flex-col justify-center text-white">
+                <div class="text-gold text-6xl mb-4 font-serif opacity-50">❝</div>
+                <h3 id="modal-name" class="text-3xl md:text-4xl font-display font-bold mb-2 text-white">Name</h3>
+                <p id="modal-role" class="text-gold font-bold uppercase tracking-widest text-sm mb-6">Role</p>
+                <div class="h-px w-20 bg-gold/50 mb-6"></div>
+                <p id="modal-msg" class="text-gray-300 leading-relaxed text-lg">Message...</p>
             </div>
         </div>
     </div>
@@ -555,16 +800,16 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
-        // Simple modal logic
+        // Leadership Data
         const leaderData = [
-            { name: "Mr. Eric Ebo Sey", role: "Headmaster", img: "./assets/headmaster.jpg", msg: "Accra Academy, established in 1931, is a distinguished educational institution in Accra, Ghana, boasting 226 staff and a student body of 4,381..." },
-            { name: "Mr. Paul Kofi Yesu Dadzie", role: "Assistant Headmaster (Administration)", img: "./assets/administration.jpg", msg: "Greetings from Accra Academy! As the Assistant Headmaster Administration, I extend a warm welcome..." },
-            { name: "Mr. Isaac Tweneboah", role: "Assistant Headmaster (Academic)", img: "./assets/academics.jpg", msg: "Welcome to Accra Academy! As the Assistant Headmaster Academic, I am thrilled to embark on this educational journey..." },
-            { name: "Mr. William Kwame Asun", role: "Assistant Headmaster (Domestic/Welfare)", img: "./assets/domestic.jpg", msg: "I am honored to welcome you as the Assistant Headmaster Domestic/Welfare. Our focus extends beyond the classroom..." }
+            { name: "Mr. Eric Ebo Sey", role: "Headmaster", img: "./assets/headmaster.jpg", msg: "Accra Academy, established in 1931, is a distinguished educational institution in Accra, Ghana, boasting 226 staff and a student body of 4,381. Evolving from a private institution to a Government-Assisted School in 1950, we prioritize academic excellence, personal growth, and character development. Join us in nurturing future leaders who excel academically and impact the world positively." },
+            { name: "Mr. Paul Kofi Yesu Dadzie", role: "Assistant Headmaster (Administration)", img: "./assets/administration.jpg", msg: "Greetings from Accra Academy! As the Assistant Headmaster Administration, I extend a warm welcome to our esteemed community. At the heart of our institution is a commitment to efficient and supportive administration, ensuring a seamless experience for students and staff alike." },
+            { name: "Mr. Isaac Tweneboah", role: "Assistant Headmaster (Academic)", img: "./assets/academics.jpg", msg: "Welcome to Accra Academy! As the Assistant Headmaster Academic, I am thrilled to embark on this educational journey with you. Our commitment to academic excellence is unwavering, and we strive to create an environment that nurtures not only knowledge but also critical thinking." },
+            { name: "Mr. William Kwame Asun", role: "Assistant Headmaster (Domestic/Welfare)", img: "./assets/domestic.jpg", msg: "I am honored to welcome you as the Assistant Headmaster Domestic/Welfare. Our focus extends beyond the classroom, ensuring a supportive and nurturing environment for every student. From dormitory life to overall well-being, we prioritize the domestic and welfare aspects." }
         ];
 
         const modal = document.getElementById('leader-modal');
-        const modalClose = document.getElementById('modal-close');
+        const modalContent = modal.querySelector('.modal-content-glass');
 
         document.querySelectorAll('.leader-card').forEach((card, idx) => {
             card.addEventListener('click', () => {
@@ -573,8 +818,11 @@
                 document.getElementById('modal-name').textContent = data.name;
                 document.getElementById('modal-role').textContent = data.role;
                 document.getElementById('modal-msg').textContent = data.msg;
+
                 modal.classList.remove('opacity-0', 'invisible');
                 modal.classList.add('opacity-100', 'visible');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
                 document.body.style.overflow = 'hidden';
             });
         });
@@ -582,18 +830,36 @@
         function closeModal() {
             modal.classList.add('opacity-0', 'invisible');
             modal.classList.remove('opacity-100', 'visible');
+            modalContent.classList.add('scale-95');
+            modalContent.classList.remove('scale-100');
             document.body.style.overflow = '';
         }
 
-        modalClose.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
+        document.getElementById('modal-close').addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100,
+            easing: 'ease-out-cubic'
         });
 
-        // Init AOS
-        if (typeof AOS !== 'undefined') {
-            AOS.init({ duration: 800, once: true });
-        }
+        // Mobile menu
+        const mobileBtn = document.getElementById('mobile-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Theme toggle (basic)
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
     </script>
 </body>
 
