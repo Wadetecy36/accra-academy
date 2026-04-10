@@ -1129,6 +1129,75 @@
                 padding: 2rem;
             }
         }
+
+        /* TINTED BLACK OVERLAY - Fixed */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Ensure ALL content is clickable and above overlay */
+        .main-header,
+        section,
+        .hero-section,
+        footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* MODAL - Must be above everything */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 99999 !important;
+            /* Force above everything */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 2rem;
+            pointer-events: auto;
+            /* Ensure modal captures clicks */
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Ensure thumbnails are clickable */
+        .leader-thumb {
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
+            pointer-events: auto;
+        }
+
+        .leader-thumb img {
+            pointer-events: none;
+            /* Let click pass to parent */
+        }
     </style>
     <base target="_blank">
 </head>
@@ -1302,6 +1371,72 @@
         </div>
     </section>
 
+
+    <!-- TIMELINE -->
+    <section class="py-24 glass-panel">
+        <div class="container mx-auto px-6">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Our Journey</span>
+                <h2 class="section-title">History & Milestones</h2>
+            </div>
+
+            <div class="timeline">
+                <!-- 1931 -->
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content-wrapper">
+                        <div class="timeline-content glass-card">
+                            <span class="timeline-year">1931</span>
+                            <h3 class="text-gold font-bold text-xl mb-2">Foundation</h3>
+                            <p class="text-white/70">Accra Academy was founded on July 20, 1931, in Mantse Agbonaa by
+                                four visionary educators. It was the first private academy in the Gold Coast established
+                                by indigenous investors.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1950 -->
+                <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content-wrapper">
+                        <div class="timeline-content glass-card">
+                            <span class="timeline-year">1950</span>
+                            <h3 class="text-gold font-bold text-xl mb-2">Government Assisted</h3>
+                            <p class="text-white/70">Transitioned from a private institution to a Government-Assisted
+                                School, opening doors to greater resources while maintaining our independent spirit.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1959 -->
+                <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content-wrapper">
+                        <div class="timeline-content glass-card">
+                            <span class="timeline-year">1959</span>
+                            <h3 class="text-gold font-bold text-xl mb-2">Relocation</h3>
+                            <p class="text-white/70">Moved to our current location at Bubuashie, providing expanded
+                                facilities and grounds to accommodate growing student numbers and academic programs.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2024 -->
+                <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content-wrapper">
+                        <div class="timeline-content glass-card">
+                            <span class="timeline-year">2024</span>
+                            <h3 class="text-gold font-bold text-xl mb-2">90+ Years of Excellence</h3>
+                            <p class="text-white/70">Over 4,300 students, 226 staff, and countless distinguished alumni.
+                                Continued commitment to academic excellence, innovation, and character development.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- LEADERSHIP SECTION - REDESIGNED -->
     <section class="py-24 min-h-screen flex items-center" id="leadership">
         <div class="container mx-auto px-6">
@@ -1353,16 +1488,16 @@
 
                     <!-- Thumbnail Navigation -->
                     <div class="leader-nav">
-                        <div class="leader-thumb active" data-index="0" onclick="switchLeader(0)">
+                        <div class="leader-thumb active" data-index="0">
                             <img src="./assets/headmaster.jpg" alt="Headmaster">
                         </div>
-                        <div class="leader-thumb" data-index="1" onclick="switchLeader(1)">
+                        <div class="leader-thumb" data-index="1">
                             <img src="./assets/administration.jpg" alt="Administration">
                         </div>
-                        <div class="leader-thumb" data-index="2" onclick="switchLeader(2)">
+                        <div class="leader-thumb" data-index="2">
                             <img src="./assets/academics.jpg" alt="Academic">
                         </div>
-                        <div class="leader-thumb" data-index="3" onclick="switchLeader(3)">
+                        <div class="leader-thumb" data-index="3">
                             <img src="./assets/domestic.jpg" alt="Domestic">
                         </div>
 
@@ -1632,10 +1767,6 @@
     <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <!-- SCRIPTS -->
-    <script src="./js/background-3d.js"></script>
-    <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
         // Leader Data
@@ -1650,19 +1781,19 @@
                 name: "Mr. Paul Kofi Yesu Dadzie",
                 role: "Assistant Headmaster (Administration)",
                 image: "./assets/administration.jpg",
-                message: "As the Assistant Headmaster Administration, I extend a warm welcome to our esteemed community. At the heart of our institution is a commitment to efficient and supportive administration, ensuring a seamless experience for students and staff alike. From admissions to facilities management, our dedicated team strives for excellence in every administrative process."
+                message: "As the Assistant Headmaster Administration, I extend a warm welcome to our esteemed community. At the heart of our institution is a commitment to efficient and supportive administration, ensuring a seamless experience for students and staff alike."
             },
             {
                 name: "Mr. Isaac Tweneboah",
                 role: "Assistant Headmaster (Academic)",
                 image: "./assets/academics.jpg",
-                message: "Welcome to Accra Academy! As the Assistant Headmaster Academic, I am thrilled to embark on this educational journey with you. Our commitment to academic excellence is unwavering, and we strive to create an environment that nurtures not only knowledge but also critical thinking and personal growth. Explore our diverse academic programs where innovation meets tradition."
+                message: "Welcome to Accra Academy! As the Assistant Headmaster Academic, I am thrilled to embark on this educational journey with you. Our commitment to academic excellence is unwavering."
             },
             {
                 name: "Mr. William Kwame Asun",
                 role: "Assistant Headmaster (Domestic/Welfare)",
                 image: "./assets/domestic.jpg",
-                message: "I am honored to welcome you as the Assistant Headmaster Domestic/Welfare. Our focus extends beyond the classroom, ensuring a supportive and nurturing environment for every student. From dormitory life to overall well-being, we prioritize the domestic and welfare aspects of your experience at Accra Academy."
+                message: "I am honored to welcome you as the Assistant Headmaster Domestic/Welfare. Our focus extends beyond the classroom, ensuring a supportive and nurturing environment for every student."
             }
         ];
 
@@ -1686,135 +1817,140 @@
         function updateLeaderDisplay() {
             const leader = leaders[currentLeader];
 
-            // Update image
             const imgEl = document.getElementById('main-leader-image');
-            if (imgEl) imgEl.src = leader.image;
-
-            // Update text with fade effect
             const nameEl = document.getElementById('main-leader-name');
             const roleEl = document.getElementById('main-leader-role');
             const msgEl = document.getElementById('main-leader-message');
 
+            if (imgEl) imgEl.src = leader.image;
             if (nameEl) {
                 nameEl.style.opacity = '0';
-                setTimeout(() => {
-                    nameEl.textContent = leader.name;
-                    nameEl.style.opacity = '1';
-                }, 200);
+                setTimeout(() => { nameEl.textContent = leader.name; nameEl.style.opacity = '1'; }, 200);
             }
-
             if (roleEl) {
                 roleEl.style.opacity = '0';
-                setTimeout(() => {
-                    roleEl.textContent = leader.role;
-                    roleEl.style.opacity = '1';
-                }, 200);
+                setTimeout(() => { roleEl.textContent = leader.role; roleEl.style.opacity = '1'; }, 200);
             }
-
             if (msgEl) {
                 msgEl.style.opacity = '0';
-                setTimeout(() => {
-                    msgEl.textContent = leader.message;
-                    msgEl.style.opacity = '1';
-                }, 200);
+                setTimeout(() => { msgEl.textContent = leader.message; msgEl.style.opacity = '1'; }, 200);
             }
 
-            // Update thumbnails
             document.querySelectorAll('.leader-thumb').forEach((thumb, idx) => {
                 thumb.classList.toggle('active', idx === currentLeader);
             });
 
-            // Update progress dots
             document.querySelectorAll('.progress-dot').forEach((dot, idx) => {
                 dot.classList.toggle('active', idx === currentLeader);
             });
+        }
+
+        function openModal(index) {
+            const modal = document.getElementById('leader-modal');
+            const leader = leaders[index];
+
+            if (!modal || !leader) return;
+
+            document.getElementById('modal-img').src = leader.image;
+            document.getElementById('modal-name').textContent = leader.name;
+            document.getElementById('modal-role').textContent = leader.role;
+            document.getElementById('modal-msg').textContent = leader.message;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('leader-modal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             // Remove loader
             setTimeout(() => {
-                document.getElementById('loader').classList.add('hidden');
+                const loader = document.getElementById('loader');
+                if (loader) loader.classList.add('hidden');
             }, 1500);
 
             // AOS
-            AOS.init({ duration: 1000, once: true, offset: 100 });
+            try {
+                if (typeof AOS !== 'undefined') {
+                    AOS.init({ duration: 1000, once: true, offset: 100 });
+                }
+            } catch (e) { console.log('AOS error'); }
 
             // Swiper
-            new Swiper('.mySwiper', {
-                slidesPerView: 1,
-                spaceBetween: 30,
-                loop: true,
-                autoplay: { delay: 4000, disableOnInteraction: false },
-                pagination: { el: '.swiper-pagination', clickable: true },
-                breakpoints: {
-                    640: { slidesPerView: 2 },
-                    1024: { slidesPerView: 3 }
+            try {
+                if (typeof Swiper !== 'undefined') {
+                    new Swiper('.mySwiper', {
+                        slidesPerView: 1,
+                        spaceBetween: 30,
+                        loop: true,
+                        autoplay: { delay: 4000, disableOnInteraction: false },
+                        pagination: { el: '.swiper-pagination', clickable: true },
+                        breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }
+                    });
                 }
-            });
+            } catch (e) { console.log('Swiper error'); }
 
-            // Header scroll effect
+            // Header scroll
             window.addEventListener('scroll', () => {
                 const header = document.getElementById('header');
                 const scrollBtn = document.getElementById('scrollTop');
+                if (window.scrollY > 50) header?.classList.add('scrolled');
+                else header?.classList.remove('scrolled');
 
-                if (window.scrollY > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-
-                if (window.scrollY > 500) {
-                    scrollBtn.classList.add('visible');
-                } else {
-                    scrollBtn.classList.remove('visible');
-                }
+                if (window.scrollY > 500) scrollBtn?.classList.add('visible');
+                else scrollBtn?.classList.remove('visible');
             });
 
             // Scroll to top
-            document.getElementById('scrollTop').addEventListener('click', () => {
+            document.getElementById('scrollTop')?.addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
             // Mobile menu
             const mobileBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
-
-            mobileBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('translate-x-full');
-            });
-
-            // Modal functionality - FIX: Define modal variable before use
-            const modal = document.getElementById('leader-modal');
-
-            if (modal) {
-                document.querySelector('.modal-close').addEventListener('click', closeModal);
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) closeModal();
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('translate-x-full');
                 });
             }
 
-            function closeModal() {
-                if (modal) {
-                    modal.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            }
+            // Modal close button
+            document.querySelector('.modal-close')?.addEventListener('click', closeModal);
+
+            // Modal click outside
+            document.getElementById('leader-modal')?.addEventListener('click', (e) => {
+                if (e.target.id === 'leader-modal') closeModal();
+            });
+
+            // Thumbnail clicks - OPEN MODAL
+            document.querySelectorAll('.leader-thumb').forEach((thumb, idx) => {
+                thumb.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openModal(idx);
+                });
+            });
 
             // Theme toggle
-            document.getElementById('theme-toggle').addEventListener('click', () => {
+            document.getElementById('theme-toggle')?.addEventListener('click', () => {
                 document.documentElement.classList.toggle('dark');
             });
 
-            // Auto-rotate leaders every 6 seconds
-            setInterval(() => {
-                nextLeader();
-            }, 6000);
-        });
+            // Auto-rotate
+            setInterval(nextLeader, 6000);
 
-        // Add transition styles dynamically
-        document.querySelectorAll('#main-leader-name, #main-leader-role, #main-leader-message').forEach(el => {
-            if (el) el.style.transition = 'opacity 0.3s ease';
+            // Set initial transitions
+            document.querySelectorAll('#main-leader-name, #main-leader-role, #main-leader-message').forEach(el => {
+                if (el) el.style.transition = 'opacity 0.3s ease';
+            });
         });
     </script>
 </body>
