@@ -16,7 +16,7 @@ router.post('/', publicLimiter, async (req, res) => {
         const facts = await Knowledge.find({}, 'topic content').limit(30).lean();
         const context = `${AI_INSTRUCTIONS}\nFACTS:\n${facts.map(f => `[${f.topic}]: ${f.content}`).join('\n')}\nUSER Q: ${message}`;
 
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`, {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ contents: [{ parts: [{ text: context }] }] })
         });
