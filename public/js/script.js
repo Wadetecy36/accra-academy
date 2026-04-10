@@ -32,136 +32,125 @@ const leaderData = [
     }
 ];
 
-window.BleooLeadership = {
-    currentIndex: 0,
+/* ----------------------------------------------------------
+   LEADERSHIP ENGINE
+   - Uses inline styles for dynamic states to avoid Tailwind
+     JIT not scanning dynamically injected innerHTML.
+---------------------------------------------------------- */
+(function () {
+    let currentIdx = 0;
 
-    init: function () {
-        console.log('🚀 Leadership Engine Initializing...');
-        this.attachGlobalHandlers();
-        this.renderAllThumbnails(0);
+    function getEl(id) { return document.getElementById(id); }
 
-        // Ensure main button matches initial state
-        const mainBtn = document.getElementById('main-leader-btn');
-        if (mainBtn) {
-            mainBtn.addEventListener('click', () => this.openModal(this.currentIndex));
-        }
-    },
-
-    attachGlobalHandlers: function () {
-        window.openLeaderModal = (idx) => this.openModal(idx);
-        window.closeLeaderModal = () => this.closeModal();
-        window.updateMainLeadership = (idx) => this.updateMain(idx);
-        window.updateLeaderModal = (idx) => this.updateModal(idx);
-    },
-
-    updateMain: function (idx) {
+    function switchLeader(idx) {
         const data = leaderData[idx];
-        if (!data) return;
-
-        this.currentIndex = idx;
-        const area = document.getElementById('leader-content-area');
-        const img = document.getElementById('main-leader-img');
-
-        if (area) {
-            area.classList.remove('animate-fade-in');
-            void area.offsetWidth; // Trigger reflow
-            area.classList.add('animate-fade-in');
-
-            const nameEl = document.getElementById('main-leader-name');
-            const roleEl = document.getElementById('main-leader-role');
-            const msgEl = document.getElementById('main-leader-msg');
-
-            if (nameEl) nameEl.innerText = data.name;
-            if (roleEl) roleEl.innerText = data.role;
-            if (msgEl) msgEl.innerText = data.msg;
+        if (!data || idx === currentIdx && document.getElementById('main-leader-name')?.innerText === data.name) {
+            // still update to allow force-refresh
         }
+        currentIdx = idx;
 
+        // --- Update main section content ---
+        const nameEl = getEl('main-leader-name');
+        const roleEl = getEl('main-leader-role');
+        const msgEl = getEl('main-leader-msg');
+        const img = getEl('main-leader-img');
+        const area = getEl('leader-content-area');
+
+        if (nameEl) nameEl.textContent = data.name;
+        if (roleEl) roleEl.textContent = data.role;
+        if (msgEl) msgEl.textContent = data.msg;
+
+        // Fade image
         if (img) {
-            img.style.transition = 'opacity 0.3s ease';
-            img.style.opacity = '0.4';
-            setTimeout(() => {
-                img.src = data.img;
-                img.style.opacity = '1';
-            }, 300);
+            img.style.transition = 'opacity 0.25s ease';
+            img.style.opacity = '0';
+            setTimeout(() => { img.src = data.img; img.style.opacity = '1'; }, 250);
         }
 
-        this.renderAllThumbnails(idx);
-    },
+        // Re-animate content
+        if (area) {
+            area.style.opacity = '0';
+            area.style.transform = 'translateY(8px)';
+            area.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            setTimeout(() => { area.style.opacity = '1'; area.style.transform = 'translateY(0)'; }, 50);
+        }
 
-    renderAllThumbnails: function (activeIdx) {
-        const container = document.getElementById('main-leader-thumbnails');
+        renderThumbnails(idx, 'main-leader-thumbnails', switchLeader);
+    }
+
+    function renderThumbnails(activeIdx, containerId, clickHandler) {
+        const container = getEl(containerId);
         if (!container) return;
+        container.innerHTML = '';
+        leaderData.forEach((leader, i) => {
+            const div = document.createElement('div');
+            div.style.cssText = `
+                width:48px; height:48px; border-radius:12px; overflow:hidden;
+                cursor:pointer; border:2px solid ${i === activeIdx ? '#FDBE11' : 'rgba(255,255,255,0.15)'};
+                opacity:${i === activeIdx ? '1' : '0.55'};
+                transform:${i === activeIdx ? 'scale(1.1)' : 'scale(1)'};
+                transition:all 0.25s ease; box-shadow:${i === activeIdx ? '0 0 14px rgba(253,190,17,0.5)' : 'none'};
+            `;
+            div.title = leader.name;
+            const imgEl = document.createElement('img');
+            imgEl.src = leader.img;
+            imgEl.alt = leader.name;
+            imgEl.style.cssText = 'width:100%;height:100%;object-fit:cover;pointer-events:none;';
+            div.appendChild(imgEl);
+            div.addEventListener('click', () => clickHandler(i));
+            container.appendChild(div);
+        });
+    }
 
-        container.innerHTML = leaderData.map((leader, i) => `
-            <div class="w-12 h-12 rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-300 ${i === activeIdx ? 'border-gold scale-110 shadow-lg' : 'border-white/10 opacity-50'}" 
-                 onclick="window.updateMainLeadership(${i})">
-                <img src="${leader.img}" class="w-full h-full object-cover pointer-events-none" alt="${leader.name}">
-            </div>
-        `).join('');
-    },
-
-    openModal: function (idx) {
-        const modal = document.getElementById('leader-modal');
+    function openModal(idx) {
+        const modal = getEl('leader-modal');
         if (!modal) return;
-
-        this.updateModal(idx);
+        switchModal(idx);
         modal.classList.add('active');
         document.body.classList.add('modal-open');
-    },
+    }
 
-    updateModal: function (idx) {
+    function switchModal(idx) {
         const data = leaderData[idx];
         if (!data) return;
+        const img = getEl('modal-img');
+        const name = getEl('modal-name');
+        const role = getEl('modal-role');
+        const msg = getEl('modal-msg');
+        if (img) { img.style.opacity = '0'; setTimeout(() => { img.src = data.img; img.style.opacity = '1'; }, 200); img.style.transition = 'opacity 0.2s'; }
+        if (name) name.textContent = data.name;
+        if (role) role.textContent = data.role;
+        if (msg) msg.textContent = data.msg;
+        renderThumbnails(idx, 'modal-thumbnails', switchModal);
+    }
 
-        const img = document.getElementById('modal-img');
-        const name = document.getElementById('modal-name');
-        const role = document.getElementById('modal-role');
-        const msg = document.getElementById('modal-msg');
-
-        // Add small fade effect for modal content switch
-        const contentArea = name ? name.parentElement : null;
-        if (contentArea) {
-            contentArea.style.opacity = '0.4';
-            contentArea.style.transform = 'translateY(5px)';
-            contentArea.style.transition = 'all 0.3s ease';
-        }
-
-        setTimeout(() => {
-            if (img) img.src = data.img;
-            if (name) name.innerText = data.name;
-            if (role) role.innerText = data.role;
-            if (msg) msg.innerText = data.msg;
-
-            if (contentArea) {
-                contentArea.style.opacity = '1';
-                contentArea.style.transform = 'translateY(0)';
-            }
-        }, 150);
-
-        const container = document.getElementById('modal-thumbnails');
-        if (container) {
-            container.innerHTML = leaderData.map((leader, i) => `
-                <div class="w-12 h-12 rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-300 ${i === idx ? 'border-gold scale-110 shadow-lg' : 'border-white/10 opacity-50'}" 
-                     onclick="window.updateLeaderModal(${i})">
-                    <img src="${leader.img}" class="w-full h-full object-cover pointer-events-none" alt="${leader.name}">
-                </div>
-            `).join('');
-        }
-    },
-
-    closeModal: function () {
-        const modal = document.getElementById('leader-modal');
-        if (modal) {
-            modal.classList.remove('active');
-        }
+    function closeModal() {
+        const modal = getEl('leader-modal');
+        if (modal) modal.classList.remove('active');
         document.body.classList.remove('modal-open');
     }
-};
+
+    // Expose globals for HTML onclick attributes
+    window.openLeaderModal = openModal;
+    window.closeLeaderModal = closeModal;
+    window.updateMainLeadership = switchLeader;
+    window.updateLeaderModal = switchModal;
+
+    // Init on DOM ready
+    document.addEventListener('DOMContentLoaded', () => {
+        switchLeader(0); // render initial state + thumbnails
+
+        // Remove hardcoded onclick from main button; re-attach cleanly
+        const mainBtn = getEl('main-leader-btn');
+        if (mainBtn) {
+            mainBtn.removeAttribute('onclick');
+            mainBtn.addEventListener('click', () => openModal(currentIdx));
+        }
+    });
+}());
+
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Start Engine
-    window.BleooLeadership.init();
-
     // SENIOR DEV: Initialization Log
     console.log('%c 🔧 DOMContentLoaded: Initializing Scripts... ', 'background: #002147; color: #FDBE11; font-weight: bold;');
 
@@ -608,54 +597,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const barsIcon = document.getElementById('music-bars');
     const offIcon = document.getElementById('music-off');
 
-    if (audio && musicBtn && barsIcon && offIcon) {
+    if (audio && musicBtn) {
         audio.volume = 0.3;
-        let audioStarted = false;
+        let isPlaying = false;
 
-        const updateUI = (isPlaying) => {
-            if (isPlaying) {
-                barsIcon.classList.remove('hidden');
-                offIcon.classList.add('hidden');
-                musicBtn.classList.add('border-gold');
-            } else {
-                barsIcon.classList.add('hidden');
-                offIcon.classList.remove('hidden');
-                musicBtn.classList.remove('border-gold');
-            }
-        };
+        function setMusicUI(playing) {
+            isPlaying = playing;
+            if (barsIcon) barsIcon.style.display = playing ? 'flex' : 'none';
+            if (offIcon) offIcon.style.display = playing ? 'none' : 'block';
+            musicBtn.style.borderColor = playing ? '#FDBE11' : 'rgba(253,190,17,0.3)';
+        }
 
-        // Show paused state initially  
-        updateUI(false);
+        // Start paused by default
+        setMusicUI(false);
 
-        // Toggle play/pause on button click
-        musicBtn.addEventListener('click', (e) => {
+        // Button click: toggle play/pause
+        musicBtn.addEventListener('click', function (e) {
             e.stopPropagation();
-            if (audio.paused) {
-                audio.play()
-                    .then(() => {
-                        audioStarted = true;
-                        updateUI(true);
-                    })
-                    .catch(err => console.warn('Play error:', err));
-            } else {
+            if (isPlaying) {
                 audio.pause();
-                updateUI(false);
+                setMusicUI(false);
+            } else {
+                audio.play().then(() => setMusicUI(true)).catch(err => console.warn('Audio play failed:', err));
             }
         });
 
-        // Autoplay on first non-button interaction (e.g. scroll or click elsewhere)
-        const autoStart = (e) => {
-            if (audioStarted) return;
-            if (e.target === musicBtn || musicBtn.contains(e.target)) return;
-            audio.play()
-                .then(() => {
-                    audioStarted = true;
-                    updateUI(true);
-                })
-                .catch(() => { });
-        };
-        document.addEventListener('click', autoStart);
-        document.addEventListener('scroll', autoStart, { once: true });
+        // Auto-start on first user scroll/click (browser policy)
+        function tryAutoPlay(e) {
+            if (isPlaying) return;
+            if (e && (e.target === musicBtn || musicBtn.contains(e.target))) return;
+            audio.play().then(() => { setMusicUI(true); }).catch(() => { });
+        }
+        document.addEventListener('scroll', tryAutoPlay, { once: true });
+        document.addEventListener('click', tryAutoPlay);
     }
 
 }); // END OF DOMContentLoaded
