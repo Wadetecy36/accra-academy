@@ -33,21 +33,18 @@ const leaderData = [
 ];
 
 /* ----------------------------------------------------------
-   LEADERSHIP ENGINE (FIXED MODAL SWITCHING)
+   LEADERSHIP ENGINE (COMPLETELY FIXED)
 ---------------------------------------------------------- */
 (function () {
     let currentIdx = 0;
+    const getEl = (id) => document.getElementById(id);
 
-    function getEl(id) { return document.getElementById(id); }
-
+    // Main section update
     function switchLeader(idx) {
-        const data = leaderData[idx];
-        if (!data) return;
-
-        // Only update if actually different (or force refresh)
+        if (idx < 0 || idx >= leaderData.length) return;
         currentIdx = idx;
+        const data = leaderData[idx];
 
-        // --- Update main section content ---
         const nameEl = getEl('main-leader-name');
         const roleEl = getEl('main-leader-role');
         const msgEl = getEl('main-leader-msg');
@@ -58,69 +55,99 @@ const leaderData = [
         if (roleEl) roleEl.textContent = data.role;
         if (msgEl) msgEl.textContent = data.msg;
 
-        // Fade image
         if (img) {
-            img.style.transition = 'opacity 0.25s ease';
             img.style.opacity = '0';
             setTimeout(() => {
                 img.src = data.img;
                 img.style.opacity = '1';
-            }, 250);
+            }, 200);
         }
 
-        // Re-animate content
         if (area) {
             area.style.opacity = '0';
-            area.style.transform = 'translateY(8px)';
-            area.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-            setTimeout(() => {
-                area.style.opacity = '1';
-                area.style.transform = 'translateY(0)';
-            }, 50);
+            setTimeout(() => area.style.opacity = '1', 100);
         }
 
-        renderThumbnails(idx, 'main-leader-thumbnails', (i) => {
-            switchLeader(i);
-            // If modal is open, sync it too
-            if (document.getElementById('leader-modal')?.classList.contains('active')) {
-                switchModal(i);
-            }
-        });
+        renderMainThumbnails();
     }
 
-    function renderThumbnails(activeIdx, containerId, clickHandler) {
-        const container = getEl(containerId);
+    // Modal update - SEPARATE function to avoid confusion
+    function switchModalLeader(idx) {
+        if (idx < 0 || idx >= leaderData.length) return;
+        currentIdx = idx; // Keep sync with main
+
+        const data = leaderData[idx];
+        const img = getEl('modal-img');
+        const name = getEl('modal-name');
+        const role = getEl('modal-role');
+        const msg = getEl('modal-msg');
+
+        // Animate out
+        if (img) img.style.opacity = '0';
+        if (name) name.style.opacity = '0';
+        if (msg) msg.style.opacity = '0';
+
+        setTimeout(() => {
+            if (img) {
+                img.src = data.img;
+                img.style.opacity = '1';
+            }
+            if (name) {
+                name.textContent = data.name;
+                name.style.opacity = '1';
+            }
+            if (role) role.textContent = data.role;
+            if (msg) {
+                msg.textContent = data.msg;
+                msg.style.opacity = '1';
+            }
+            renderModalThumbnails(); // Re-render with new active state
+        }, 200);
+    }
+
+    function renderMainThumbnails() {
+        const container = getEl('main-leader-thumbnails');
         if (!container) return;
 
         container.innerHTML = '';
         leaderData.forEach((leader, i) => {
-            const div = document.createElement('div');
-            div.style.cssText = `
-                width:48px; height:48px; border-radius:12px; overflow:hidden;
-                cursor:pointer; border:2px solid ${i === activeIdx ? '#FDBE11' : 'rgba(255,255,255,0.15)'};
-                opacity:${i === activeIdx ? '1' : '0.55'};
-                transform:${i === activeIdx ? 'scale(1.1)' : 'scale(1)'};
-                transition:all 0.25s ease; box-shadow:${i === activeIdx ? '0 0 14px rgba(253,190,17,0.5)' : 'none'};
-                flex-shrink:0;
-            `;
-            div.title = leader.name;
+            const btn = document.createElement('button');
+            btn.className = `w-12 h-12 rounded-xl overflow-hidden border-2 transition-all duration-300 flex-shrink-0 ${i === currentIdx
+                ? 'border-gold opacity-100 scale-110 shadow-[0_0_10px_rgba(253,190,17,0.5)]'
+                : 'border-white/20 opacity-50 hover:opacity-80'
+                }`;
+            btn.innerHTML = `<img src="${leader.img}" alt="${leader.name}" class="w-full h-full object-cover pointer-events-none">`;
+            btn.onclick = (e) => {
+                e.stopPropagation();
+                switchLeader(i);
+            };
+            container.appendChild(btn);
+        });
+    }
 
-            const imgEl = document.createElement('img');
-            imgEl.src = leader.img;
-            imgEl.alt = leader.name;
-            imgEl.style.cssText = 'width:100%;height:100%;object-fit:cover;pointer-events:none;';
-            imgEl.loading = 'lazy';
+    function renderModalThumbnails() {
+        const container = getEl('modal-thumbnails');
+        if (!container) return;
 
-            div.appendChild(imgEl);
+        container.innerHTML = '';
+        leaderData.forEach((leader, i) => {
+            const btn = document.createElement('button');
+            btn.className = `w-12 h-12 rounded-xl overflow-hidden border-2 transition-all duration-300 flex-shrink-0 ${i === currentIdx
+                ? 'border-gold opacity-100 scale-110 shadow-[0_0_10px_rgba(253,190,17,0.5)]'
+                : 'border-white/20 opacity-50 hover:opacity-80'
+                }`;
+            btn.innerHTML = `<img src="${leader.img}" alt="${leader.name}" class="w-full h-full object-cover pointer-events-none">`;
 
-            // CRITICAL FIX: Stop propagation and handle click
-            div.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent modal from closing
+            // CRITICAL: Explicit onclick with stopPropagation
+            btn.onclick = (e) => {
                 e.preventDefault();
-                clickHandler(i);
-            });
+                e.stopPropagation();
+                console.log(`Switching to leader ${i}: ${leader.name}`);
+                switchModalLeader(i);
+                return false;
+            };
 
-            container.appendChild(div);
+            container.appendChild(btn);
         });
     }
 
@@ -128,58 +155,12 @@ const leaderData = [
         const modal = getEl('leader-modal');
         if (!modal) return;
 
-        // Sync current index with modal
         currentIdx = idx;
-        switchModal(idx);
+        switchModalLeader(idx); // Initial render
 
         modal.classList.add('active');
         document.body.classList.add('modal-open');
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
-    }
-
-    function switchModal(idx) {
-        const data = leaderData[idx];
-        if (!data) return;
-
-        // Update current index so main view syncs when closing
-        currentIdx = idx;
-
-        const img = getEl('modal-img');
-        const name = getEl('modal-name');
-        const role = getEl('modal-role');
-        const msg = getEl('modal-msg');
-
-        // Update with animation
-        if (img) {
-            img.style.opacity = '0';
-            setTimeout(() => {
-                img.src = data.img;
-                img.style.opacity = '1';
-            }, 200);
-            img.style.transition = 'opacity 0.2s';
-        }
-
-        if (name) {
-            name.style.opacity = '0';
-            setTimeout(() => {
-                name.textContent = data.name;
-                name.style.opacity = '1';
-            }, 100);
-            name.style.transition = 'opacity 0.2s';
-        }
-
-        if (role) role.textContent = data.role;
-        if (msg) {
-            msg.style.opacity = '0';
-            setTimeout(() => {
-                msg.textContent = data.msg;
-                msg.style.opacity = '1';
-            }, 150);
-            msg.style.transition = 'opacity 0.2s';
-        }
-
-        // Re-render thumbnails with switchModal as handler
-        renderThumbnails(idx, 'modal-thumbnails', switchModal);
+        document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
@@ -188,28 +169,25 @@ const leaderData = [
         document.body.classList.remove('modal-open');
         document.body.style.overflow = '';
 
-        // Sync main view with whatever was selected in modal
+        // Sync main view with modal selection
         switchLeader(currentIdx);
     }
 
     // Expose globals
     window.openLeaderModal = openModal;
     window.closeLeaderModal = closeModal;
-    window.updateMainLeadership = switchLeader;
-    window.updateLeaderModal = switchModal;
 
-    // Init on DOM ready
+    // Init
     document.addEventListener('DOMContentLoaded', () => {
         switchLeader(0);
 
-        // Attach main button
+        // Main view button
         const mainBtn = getEl('main-leader-btn');
         if (mainBtn) {
-            mainBtn.removeAttribute('onclick');
-            mainBtn.addEventListener('click', () => openModal(currentIdx));
+            mainBtn.onclick = () => openModal(currentIdx);
         }
 
-        // Close on backdrop click (but not content)
+        // Modal backdrop click to close
         const modal = getEl('leader-modal');
         if (modal) {
             modal.addEventListener('click', (e) => {
