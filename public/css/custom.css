@@ -1,5 +1,6 @@
 /* ============================================================= */
-/*  css/custom.css – SHARP & CLEAR VERSION (NO BLUR)             */
+/*  css/custom.css – FIXED VERSION                              */
+/*  Fixes: Z-index layering, glass transparency, 3D background  */
 /* ============================================================= */
 
 :root {
@@ -16,282 +17,166 @@
 }
 
 /* ============================================================= */
-/*  ADD THIS TO css/custom.css (After the emergency fix)        */
-/*  This restores the royal blue background layer               */
+/*  BASE LAYERING FIX                                           */
 /* ============================================================= */
 
-/* === RESTORE ROYAL BLUE BACKGROUND === */
-
-/* 1. Set HTML to royal blue (base layer) */
 html {
-    background-color: #001a35 !important;
-    /* Darker royal blue */
+    background-color: #002147;
     min-height: 100vh;
     height: 100%;
+    overflow-x: hidden;
 }
 
-/* 2. Keep body transparent so canvas shows through */
 body {
+    font-family: 'Merriweather', serif;
+    font-weight: 300;
+    color: #0F172A;
     background: transparent !important;
-    position: relative;
-    z-index: 1;
-}
-
-/* Subtle dark tint */
-body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.15);
-    /* 15% dark */
-    z-index: 0;
-    pointer-events: none;
-}
-
-#canvas-container {
-    z-index: 1 !important;
-}
-
-
-/* Balanced dark tint for all sections */
-.section-glass {
-    position: relative;
-    background: rgba(0, 0, 0, 0.18) !important;
-    /* 18% - balanced */
-    backdrop-filter: blur(6px) saturate(1.1) !important;
-    -webkit-backdrop-filter: blur(6px) saturate(1.1) !important;
-}
-
-.dark .section-glass {
-    background: rgba(0, 0, 0, 0.28) !important;
-}
-
-/* Hero section - lighter */
-section.min-h-screen.section-glass {
-    background: rgba(0, 0, 0, 0.12) !important;
-    /* 12% - lighter */
-    backdrop-filter: blur(5px) !important;
-    -webkit-backdrop-filter: blur(5px) !important;
-}
-
-.dark section.min-h-screen.section-glass {
-    background: rgba(0, 0, 0, 0.18) !important;
-}
-
-/* The three info cards at the bottom of hero */
-section.min-h-screen .bg-white\/40 {
-    background: rgba(255, 255, 255, 0.12) !important;
-    /* Subtle white tint */
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-}
-
-.dark section.min-h-screen .dark\:bg-white\/5 {
-    background: rgba(255, 255, 255, 0.08) !important;
-}
-
-/* Remove blur from everything EXCEPT sections/header */
-div:not(section):not(header):not(.crest-glass-orb):not(#chat-window) {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-}
-
-/* 5. Keep specific sections with their own colors */
-section.bg-royal {
-    background: #002147 !important;
-}
-
-section.bg-soft,
-.bg-soft {
-    background: #F0F4F8 !important;
-}
-
-.dark section.bg-soft,
-.dark .bg-soft {
-    background: #1a202c !important;
-}
-
-/* 6. Leadership section should have its background */
-#leadership {
-    background: #F0F4F8 !important;
-}
-
-.dark #leadership {
-    background: #1a202c !important;
-}
-
-/* === ALTERNATIVE: If you want a gradient instead === */
-/* Uncomment this and comment out the solid color above */
-/*
-html {
-    background: linear-gradient(180deg, #002147 0%, #001529 100%) !important;
     min-height: 100vh;
-}
-*/
-
-/* === FOR DARK MODE === */
-.dark html {
-    background-color: #001529 !important;
-    /* Darker royal for dark mode */
-}
-
-/* ============================================================= */
-/*  PASTE THIS AT THE VERY TOP OF css/custom.css                */
-/*  THIS WILL FIX ALL OVERLAY AND TINT ISSUES                   */
-/* ============================================================= */
-
-/* === EMERGENCY NUCLEAR FIX === */
-
-body,
-html,
-#main-content {
-    background: transparent !important;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
 }
 
-/* 5. FIX CANVAS (3D Background) */
+/* 3D Background Canvas - Fixed Layer */
 #canvas-container {
     position: fixed !important;
     inset: 0 !important;
-    z-index: -999 !important;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1 !important;
+    /* Consistent z-index */
     pointer-events: none !important;
     background: transparent !important;
+    overflow: hidden;
 }
 
 #canvas-container canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
     background: transparent !important;
 }
 
-/* 6. REMOVE PSEUDO-ELEMENT OVERLAYS */
-body::before,
-body::after,
-html::before,
-html::after,
-section::before,
-section::after {
-    content: none !important;
-    display: none !important;
+/* ============================================================= */
+/*  GLASS SECTIONS - Cleaned up transparency                    */
+/* ============================================================= */
+
+.section-glass {
+    position: relative;
+    z-index: 1;
+    /* Ensure above canvas */
+    background: rgba(0, 33, 71, 0.85) !important;
+    /* More opaque for readability */
+    backdrop-filter: blur(8px) saturate(1.1);
+    -webkit-backdrop-filter: blur(8px) saturate(1.1);
+    border-top: 1px solid rgba(253, 190, 17, 0.1);
+    border-bottom: 1px solid rgba(253, 190, 17, 0.1);
 }
 
-/* 7. ENSURE ALL SECTIONS ARE TRANSPARENT */
-section {
-    background: transparent !important;
+.dark .section-glass {
+    background: rgba(2, 6, 23, 0.9) !important;
 }
 
-/* 8. FIX SPECIFIC SECTIONS THAT SHOULD HAVE COLOR */
-section.bg-royal {
-    background: #002147 !important;
-    /* Keep the royal blue section */
+/* Hero specific - lighter tint */
+section.min-h-screen.section-glass,
+section:first-of-type.section-glass {
+    background: rgba(0, 33, 71, 0.75) !important;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
-section.bg-soft {
-    background: #F0F4F8 !important;
-    /* Keep soft backgrounds */
-}
+/* ============================================================= */
+/*  HEADER - Fixed positioning                                   */
+/* ============================================================= */
 
-.dark section.bg-soft {
-    background: #1a202c !important;
-    /* Dark mode soft */
-}
-
-/* 9. RE-ENABLE BLUR ONLY WHERE NEEDED */
 .site-header {
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-    background: rgba(255, 255, 255, 0.98) !important;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.98);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .dark .site-header {
-    background: rgba(15, 23, 42, 0.98) !important;
+    background: rgba(15, 23, 42, 0.98);
+    border-color: rgba(255, 255, 255, 0.05);
 }
 
-.crest-glass-orb {
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
+/* ============================================================= */
+/*  CARDS & COMPONENTS                                           */
+/* ============================================================= */
+
+.feature-card,
+.info-card {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    padding: 2rem;
+    transform-style: preserve-3d;
+    transform: perspective(1000px);
+    transition: transform 0.1s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
 }
 
-#chat-window {
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
+.dark .feature-card,
+.dark .info-card {
+    background: rgba(30, 41, 59, 0.95);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* 10. HERO INFO CARDS - Keep their blur */
-.hero .bg-white\/40,
-.hero .dark\:bg-white\/5 {
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
+.feature-card:hover,
+.info-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 10px 40px -5px rgba(253, 190, 17, 0.2);
 }
 
-/* 11. ENSURE CONTENT IS VISIBLE */
-.container {
-    position: relative !important;
-    z-index: 10 !important;
+/* Card Text Colors */
+.feature-card h3,
+.info-card h3 {
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--royal);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-    position: relative !important;
-    z-index: 100 !important;
+.dark .feature-card h3,
+.dark .info-card h3 {
+    color: var(--gold);
 }
 
-/* 12. FIX ANY REMAINING DARK BACKGROUNDS */
-[class*="bg-black"] {
-    background: transparent !important;
+.feature-card p,
+.info-card p {
+    color: #475569;
 }
 
-/* 13. GALLERY SLIDER - Remove dark overlays but keep text visible */
-.swiper-slide .absolute.bottom-0 {
-    background: linear-gradient(to top, rgba(0, 33, 71, 0.8), transparent) !important;
-    padding: 2rem !important;
+.dark .feature-card p,
+.dark .info-card p {
+    color: #cbd5e1;
 }
 
-/* 14. FEATURE CARDS - Ensure they're visible */
-.feature-card {
-    background: #ffffff !important;
-    border: 1px solid rgba(0, 0, 0, 0.1) !important;
-}
+/* ============================================================= */
+/*  LEADERSHIP CARDS                                             */
+/* ============================================================= */
 
-.dark .feature-card {
-    background: #1e293b !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* EMERGENCY: Hide ALL gradient overlays */
-.absolute.inset-0[class*="bg-gradient"],
-div[class*="from-black"],
-div[class*="from-royal"] {
-    display: none !important;
-    opacity: 0 !important;
-}
-
-/* Also remove any remaining blur effects */
-* {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-}
-
-/* Re-enable ONLY for header and crest */
-.site-header,
-.crest-glass-orb {
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-}
-
-/* =========================================
-   NEW LEADERSHIP & MODAL SYSTEM
-   ========================================= */
 .leader-card {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     border: 1px solid rgba(253, 190, 17, 0.2);
     border-radius: 24px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     overflow: hidden;
     position: relative;
     cursor: pointer;
+    z-index: 2;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .leader-card:hover {
@@ -301,7 +186,7 @@ div[class*="from-royal"] {
 }
 
 .dark .leader-card {
-    background: rgba(15, 23, 42, 0.8);
+    background: rgba(15, 23, 42, 0.9);
     border-color: rgba(255, 255, 255, 0.05);
 }
 
@@ -310,19 +195,22 @@ div[class*="from-royal"] {
 }
 
 .leader-card:hover img {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
-/* === PREMIUM MODAL SYSTEM === */
+/* ============================================================= */
+/*  MODAL SYSTEM                                                 */
+/* ============================================================= */
+
 #leader-modal {
     position: fixed;
     inset: 0;
-    z-index: 10000;
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    background: rgba(0, 10, 30, 0.75);
+    background: rgba(0, 10, 30, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     opacity: 0;
@@ -339,7 +227,6 @@ div[class*="from-royal"] {
 
 .modal-content {
     background: #002147;
-    /* Solid Royal Blue */
     width: 100%;
     max-width: 950px;
     border-radius: 2rem;
@@ -351,15 +238,11 @@ div[class*="from-royal"] {
     display: flex;
     flex-direction: row;
     position: relative;
+    z-index: 10000;
 }
 
 #leader-modal.active .modal-content {
     transform: translateY(0) scale(1);
-}
-
-.modal-content .md\:w-3\/5 {
-    overflow-y: auto;
-    max-height: 80vh;
 }
 
 @media (max-width: 850px) {
@@ -369,30 +252,13 @@ div[class*="from-royal"] {
         overflow-y: auto;
     }
 
-    .modal-content .md\:w-2\/5 {
+    .modal-content>div:first-child {
         width: 100%;
         height: 250px;
     }
 
-    .modal-content .md\:w-3\/5 {
+    .modal-content>div:last-child {
         width: 100%;
-    }
-}
-
-.modal-img-container {
-    position: relative;
-}
-
-.modal-img-container::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to right, transparent, #002147);
-}
-
-@media (max-width: 850px) {
-    .modal-img-container::after {
-        background: linear-gradient(to bottom, transparent, #002147);
     }
 }
 
@@ -403,7 +269,7 @@ div[class*="from-royal"] {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -420,157 +286,10 @@ div[class*="from-royal"] {
     transform: rotate(90deg);
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
+/* ============================================================= */
+/*  BUTTONS                                                      */
+/* ============================================================= */
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.animate-fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
-}
-
-/* Thumbnail hover effects */
-#main-leader-thumbnails>div:hover {
-    border-color: var(--gold) !important;
-    opacity: 1 !important;
-}
-
-/* Modal thumbnails */
-#modal-thumbnails>div:hover {
-    border-color: var(--gold) !important;
-    opacity: 1 !important;
-}
-
-body.modal-open {
-    overflow: hidden !important;
-}
-
-/* Music Waveform Animation */
-@keyframes musicWave {
-
-    0%,
-    100% {
-        height: 4px;
-    }
-
-    50% {
-        height: 16px;
-    }
-}
-
-.music-bar-1 {
-    animation: musicWave 1s ease-in-out infinite;
-}
-
-.music-bar-2 {
-    animation: musicWave 0.8s ease-in-out infinite 0.2s;
-}
-
-.music-bar-3 {
-    animation: musicWave 1.2s ease-in-out infinite 0.4s;
-}
-
-
-/* DARK MODE VARS */
-.dark {
-    --bg-body: var(--bg-dark);
-    --text-primary: #f1f5f9;
-    --text-secondary: #94a3b8;
-    --footer-bg: #020617;
-}
-
-html {
-    background-color: #002147;
-    /* Royal Blue fallback */
-    height: 100%;
-}
-
-html,
-body {
-    isolation: isolate;
-}
-
-body {
-    font-family: 'Merriweather', serif;
-    font-weight: 300;
-    color: #0F172A;
-    background: transparent !important;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    /* CRITICAL: Establishes stacking context */
-}
-
-html,
-body {
-    background: transparent !important;
-}
-
-body {
-    position: relative;
-    z-index: 1;
-}
-
-
-.dark body {
-    color: var(--text-primary);
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-}
-
-
-/* --- ACCESSIBILITY --- */
-.skip-link {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: var(--gold);
-    color: var(--royal);
-    padding: 0.5rem 1rem;
-    z-index: 100;
-    font-weight: 700;
-}
-
-.skip-link:focus {
-    top: 0;
-}
-
-/* --- HEADER --- */
-.site-header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 50;
-    /* Keep high for header */
-    background: rgba(255, 255, 255, 0.98);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-}
-
-.dark .site-header {
-    background: rgba(15, 23, 42, 0.98);
-    border-color: rgba(255, 255, 255, 0.05);
-    backdrop-filter: none;
-    /* ADD THIS */
-    -webkit-backdrop-filter: none;
-    /* ADD THIS */
-}
-
-/* --- BUTTONS --- */
 .btn {
     padding: 14px 40px;
     border-radius: 50px;
@@ -608,72 +327,10 @@ body {
     transform: translateY(-3px) scale(1.05);
 }
 
-/* --- CARDS & TILT (Sharpened) --- */
-.feature-card,
-.info-card {
-    background: #ffffff;
-    /* Solid white for maximum sharpness */
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 20px;
-    padding: 2rem;
-    transform-style: preserve-3d;
-    transform: perspective(1000px);
-    transition: transform 0.1s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    position: relative;
-    overflow: hidden;
-}
+/* ============================================================= */
+/*  GALLERY & SWIPER                                             */
+/* ============================================================= */
 
-.dark .feature-card {
-    border-color: rgba(255, 255, 255, 0.1);
-    background: #1e293b;
-    /* Solid slate */
-}
-
-.feature-card:hover,
-.info-card:hover {
-    border-color: var(--gold);
-    box-shadow: 0 10px 40px -5px rgba(253, 190, 17, 0.2);
-}
-
-/* Card Text Colors */
-.feature-card h3 {
-    font-weight: 700;
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-    color: var(--royal);
-}
-
-.dark .feature-card h3 {
-    color: var(--gold);
-}
-
-.feature-card p {
-    color: #475569;
-}
-
-.dark .feature-card p {
-    color: #cbd5e1;
-}
-
-.feature-card .icon svg {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 1rem;
-    color: var(--royal);
-    transition: transform 0.3s ease;
-}
-
-.dark .feature-card .icon svg {
-    color: var(--gold);
-}
-
-.feature-card:hover .icon svg {
-    transform: scale(1.1);
-    color: var(--gold);
-}
-
-/* --- GALLERY CAROUSEL --- */
 .gallery-section {
     position: relative;
     overflow: hidden;
@@ -684,6 +341,7 @@ body {
     overflow: hidden;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .swiper-slide img {
@@ -722,13 +380,6 @@ body {
     transition: all 0.3s ease;
 }
 
-.swiper-button-next::after,
-.swiper-button-prev::after {
-    font-family: 'swiper-icons' !important;
-    font-size: 20px !important;
-    font-weight: bold !important;
-}
-
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
     background: var(--gold);
@@ -744,17 +395,70 @@ body {
     }
 }
 
+/* ============================================================= */
+/*  TIMELINE                                                     */
+/* ============================================================= */
+
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: rgba(253, 190, 17, 0.3);
+    border-radius: 4px;
+    z-index: 0;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 24px;
+    background: var(--royal);
+    border: 4px solid var(--gold);
+    border-radius: 50%;
+    z-index: 10;
+    box-shadow: 0 0 15px rgba(253, 190, 17, 0.6);
+}
+
+@media (max-width: 768px) {
+    .timeline-line {
+        left: 20px;
+    }
+
+    .timeline-dot {
+        left: 20px;
+    }
+
+    .timeline-card {
+        margin-left: 50px !important;
+        width: auto !important;
+    }
+
+    .timeline-item {
+        justify-content: flex-start !important;
+    }
+
+    .timeline-item.right {
+        flex-direction: row !important;
+    }
+}
+
+/* ============================================================= */
+/*  FOOTER                                                       */
+/* ============================================================= */
+
 .site-footer {
     background: var(--footer-bg);
     color: var(--footer-text);
     padding: 4rem 0 2rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: 0 !important;
-    /* ADD THIS */
-    margin-bottom: 0 !important;
-    /* ADD THIS */
+    margin-top: 0;
+    margin-bottom: 0;
     position: relative;
-    z-index: 20;
+    z-index: 10;
 }
 
 .footer-grid {
@@ -762,6 +466,19 @@ body {
     grid-template-columns: repeat(4, 1fr);
     gap: 2.5rem;
     margin-bottom: 3rem;
+}
+
+@media (max-width: 900px) {
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 520px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
 }
 
 .footer-col {
@@ -795,12 +512,12 @@ body {
     color: var(--footer-link);
     text-decoration: none;
     transition: color 0.3s ease, transform 0.25s ease;
+    display: inline-block;
 }
 
 .footer-links a:hover {
     color: var(--gold);
     transform: translateX(8px);
-    display: inline-block;
 }
 
 .footer-bottom {
@@ -809,6 +526,13 @@ body {
     align-items: center;
     padding-top: 2rem;
     border-top: 1px solid rgba(255, 204, 0, 0.15);
+}
+
+@media (max-width: 520px) {
+    .footer-bottom {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
 }
 
 .footer-social {
@@ -869,7 +593,6 @@ body {
     text-decoration: underline;
 }
 
-/* Easter Egg Crest */
 .footer-brand .crest {
     width: 40px;
     height: 40px;
@@ -889,27 +612,10 @@ body {
     box-shadow: 0 0 15px rgba(253, 190, 17, 0.3);
 }
 
-/* Fix footer gap */
-.site-footer {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-}
+/* ============================================================= */
+/*  UTILITY COMPONENTS                                           */
+/* ============================================================= */
 
-body {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-section:last-of-type {
-    margin-bottom: 0 !important;
-}
-
-html,
-body {
-    overflow-x: hidden;
-}
-
-/* Scroll Top */
 #scrollTop {
     position: fixed;
     bottom: 20px;
@@ -947,285 +653,57 @@ body {
     transform: translateY(0);
 }
 
-/* Responsive */
-@media (max-width: 900px) {
-
-    .navlinks,
-    .mobile-btn {
-        display: none;
-    }
-
-    .mobile-btn {
-        display: block;
-    }
-
-    .hero-cards,
-    .mv-grid,
-    .features-grid,
-    .stats-grid,
-    .footer-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .footer-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 520px) {
-    .hero-title {
-        font-size: 2.2rem;
-    }
-
-    .footer-grid {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
-
-    .footer-bottom {
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-}
-
-/* =========================================
-   LEGACY / HISTORY SECTION
-   ========================================= */
-.legacy-card {
+.crest-glass-orb {
     background: rgba(255, 255, 255, 0.05);
-    /* Very slight tint */
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 2rem;
-    transition: all 0.4s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.legacy-card:hover {
-    background: rgba(0, 33, 71, 0.9);
-    border-color: var(--gold);
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(253, 190, 17, 0.15);
-}
-
-.legacy-number {
-    position: absolute;
-    top: -20px;
-    right: -10px;
-    font-size: 6rem;
-    font-weight: 900;
-    color: rgba(255, 255, 255, 0.03);
-    font-family: 'Merriweather', serif;
-    transition: color 0.3s ease;
-    z-index: 0;
-}
-
-.legacy-card:hover .legacy-number {
-    color: rgba(253, 190, 17, 0.1);
-}
-
-.legacy-icon {
-    width: 50px;
-    height: 50px;
-    background: rgba(253, 190, 17, 0.1);
-    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.5rem;
-    color: var(--gold);
-    position: relative;
-    z-index: 1;
+    border: 1px solid rgba(253, 190, 17, 0.3);
+    animation: gold-breathe 4s ease-in-out infinite;
+    will-change: box-shadow, transform;
 }
 
-.legacy-content {
-    position: relative;
-    z-index: 1;
+@keyframes gold-breathe {
+
+    0%,
+    100% {
+        box-shadow: 0 0 25px rgba(253, 190, 17, 0.2),
+            inset 0 0 10px rgba(253, 190, 17, 0.1);
+        border-color: rgba(253, 190, 17, 0.3);
+        transform: scale(1);
+    }
+
+    50% {
+        box-shadow: 0 0 60px rgba(253, 190, 17, 0.6),
+            inset 0 0 20px rgba(253, 190, 17, 0.2);
+        border-color: rgba(253, 190, 17, 0.8);
+        transform: scale(1.02);
+    }
 }
 
-.legacy-title {
-    color: white;
-    font-family: 'Merriweather', serif;
-    font-size: 1.25rem;
+/* ============================================================= */
+/*  ACCESSIBILITY & SCROLLBAR                                    */
+/* ============================================================= */
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--gold);
+    color: var(--royal);
+    padding: 0.5rem 1rem;
+    z-index: 1000;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    transition: top 0.3s;
 }
 
-.legacy-desc {
-    color: #94A3B8;
-    font-size: 0.95rem;
-    line-height: 1.6;
+.skip-link:focus {
+    top: 0;
 }
 
-/* =========================================
-   GALLERY MASONRY & LIGHTBOX
-   ========================================= */
-.gallery-grid-masonry {
-    column-count: 1;
-    column-gap: 1.5rem;
-}
-
-@media (min-width: 640px) {
-    .gallery-grid-masonry {
-        column-count: 2;
-    }
-}
-
-@media (min-width: 1024px) {
-    .gallery-grid-masonry {
-        column-count: 3;
-    }
-}
-
-.gallery-item {
-    break-inside: avoid;
-    margin-bottom: 1.5rem;
-    border-radius: 16px;
-    overflow: hidden;
-    position: relative;
-    cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: var(--shadow-soft);
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-.gallery-item img {
-    width: 100%;
-    display: block;
-    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.gallery-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px -10px rgba(253, 190, 17, 0.3);
-    border-color: var(--gold);
-}
-
-.gallery-item:hover img {
-    transform: scale(1.1);
-}
-
-.overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0, 33, 71, 0.9), transparent 80%);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 1.5rem;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.gallery-item:hover .overlay {
-    opacity: 1;
-}
-
-.overlay h4 {
-    color: var(--gold);
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    margin-bottom: 0.25rem;
-}
-
-.overlay p {
-    color: white;
-    font-family: 'Merriweather', serif;
-    font-size: 1.1rem;
-}
-
-/* Filter Buttons */
-.filter-btn.active {
-    background-color: var(--gold) !important;
-    color: var(--royal) !important;
-    border-color: var(--gold) !important;
-}
-
-.filter-btn {
-    background-color: white;
-    color: #4b5563;
-}
-
-.dark .filter-btn {
-    background-color: #1f2937;
-    color: #d1d5db;
-}
-
-/* Lightbox */
-#lightbox {
-    transition: opacity 0.3s ease, backdrop-filter 0.3s ease;
-}
-
-#lightbox:not(.hidden) {
-    backdrop-filter: blur(10px);
-}
-
-/* =========================================
-   5. VERTICAL TIMELINE ARCHITECTURE
-   ========================================= */
-
-/* The Central Line */
-.timeline-line {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 100%;
-    background: rgba(253, 190, 17, 0.3);
-    /* Gold tint */
-    border-radius: 4px;
-    z-index: 0;
-}
-
-/* The Glowing Node */
-.timeline-dot {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 24px;
-    height: 24px;
-    background: var(--royal);
-    border: 4px solid var(--gold);
-    border-radius: 50%;
-    z-index: 10;
-    box-shadow: 0 0 15px rgba(253, 190, 17, 0.6);
-}
-
-/* Mobile Adjustments (Collapse to single column) */
-@media (max-width: 768px) {
-    .timeline-line {
-        left: 20px;
-    }
-
-    .timeline-dot {
-        left: 20px;
-    }
-
-    .timeline-card {
-        margin-left: 50px !important;
-        width: auto !important;
-    }
-
-    .timeline-item {
-        justify-content: flex-start !important;
-    }
-
-    .timeline-item.right {
-        flex-direction: row !important;
-    }
-
-    .timeline-date {
-        position: static !important;
-        margin-bottom: 0.5rem;
-        display: block;
-    }
-}
-
-/* =========================================
-   SENIOR DEV: POLISH & DEBUG
-   ========================================= */
 ::-webkit-scrollbar {
     width: 10px;
 }
@@ -1249,12 +727,33 @@ body {
     color: var(--royal);
 }
 
-body.debug-layout * {
-    outline: 1px solid rgba(255, 0, 0, 0.3) !important;
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
 }
 
-body.debug-layout img {
-    outline: 2px solid blue !important;
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* ============================================================= */
+/*  ANIMATIONS                                                   */
+/* ============================================================= */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
 }
 
 @keyframes marquee {
@@ -1271,171 +770,69 @@ body.debug-layout img {
     animation: marquee 15s linear infinite;
 }
 
-/* =========================================
-   HERO CREST: GOLDEN GLASS ORB
-   ========================================= */
+/* ============================================================= */
+/*  DARK MODE                                                    */
+/* ============================================================= */
 
-@keyframes gold-breathe {
+.dark {
+    --bg-body: var(--bg-dark);
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --footer-bg: #020617;
+}
 
-    0%,
-    100% {
-        /* Subtle glow, lower opacity */
-        box-shadow: 0 0 25px rgba(253, 190, 17, 0.2),
-            inset 0 0 10px rgba(253, 190, 17, 0.1);
-        border-color: rgba(253, 190, 17, 0.3);
-        transform: scale(1);
+.dark body {
+    color: var(--text-primary);
+}
+
+/* ============================================================= */
+/*  MOBILE MENU                                                  */
+/* ============================================================= */
+
+#mobile-menu {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.dark #mobile-menu {
+    background: rgba(15, 23, 42, 0.98);
+}
+
+@media (max-width: 1024px) {
+    .navlinks {
+        display: none;
     }
-
-    50% {
-        /* Intense glow, expanded aura */
-        box-shadow: 0 0 60px rgba(253, 190, 17, 0.6),
-            inset 0 0 20px rgba(253, 190, 17, 0.2);
-        border-color: rgba(253, 190, 17, 0.8);
-        transform: scale(1.02);
-        /* Slight physical expansion */
-    }
 }
 
-.crest-glass-orb {
-    /* 1. Glass Physics */
-    background: rgba(255, 255, 255, 0.03);
-    /* Extremely faint fill */
-    backdrop-filter: blur(10px);
-    /* The frosted effect */
-    -webkit-backdrop-filter: blur(10px);
-    /* Safari support */
+/* ============================================================= */
+/*  CHAT WIDGET                                                  */
+/* ============================================================= */
 
-    /* 2. Shape & Layout */
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(253, 190, 17, 0.3);
-    /* Initial gold rim */
-
-    /* 3. Animation Trigger */
-    animation: gold-breathe 4s ease-in-out infinite;
-    will-change: box-shadow, transform;
-}
-
-/* =========================================
-   TRANSPARENT GLASS MODIFIER (For Parallax)
-   ========================================= */
-.glass-clear {
-    /* Lower opacity (0.6) allows the 3D background to show through */
-    background: rgba(255, 255, 255, 0.6) !important;
-    backdrop-filter: blur(8px) !important;
-    /* Lower blur to see shapes better */
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.dark .glass-clear {
-    /* Dark mode transparency */
-    background: rgba(2, 6, 23, 0.6) !important;
-    border-color: rgba(255, 255, 255, 0.05);
-}
-
-
-
-/* ===== BACKDROP BLUR SAFETY FIX ===== */
-.crest-glass-orb,
-.glass-clear {
-    backdrop-filter: blur(4px) saturate(1.2);
-    -webkit-backdrop-filter: blur(4px) saturate(1.2);
-}
-
-
-
-
-/* Hide scrollbar on thumbnails */
-.scrollbar-hide::-webkit-scrollbar {
-    display: none;
-}
-
-.scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-/* === 3D BACKGROUND CANVAS (FINAL) === */
-#canvas-container {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -10;
-    /* PUSH IT FAR BACK */
-    pointer-events: none;
-    overflow: hidden;
-}
-
-#canvas-container canvas {
-    width: 100%;
-    height: 100%;
-    display: block;
-    background: transparent !important;
-}
-
-
-/* Simplified Z-Index Stack */
-body {
-    position: relative;
-    z-index: 1;
-}
-
-
-.site-header {
-    z-index: 100;
-    position: relative;
-}
-
-
-footer {
-    z-index: 10;
-    position: relative;
-}
-
-
-
-/* 🚨 PREVENT FULL-PAGE OVERLAYS */
-body::before,
-body::after,
-section::before,
-section::after {
-    max-height: 100vh;
-    overflow: hidden;
-}
-
-.hero,
-.hero * {
-    isolation: isolate;
-}
-
-/* CHAT WIDGET FIXES */
 #chat-window {
-    display: flex !important;
-    /* Ensure flex layout */
-    flex-direction: column !important;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.dark #chat-window {
+    background: rgba(15, 23, 42, 0.95);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 #chat-messages {
-    flex: 1 1 auto !important;
-    /* Take available space but don't grow beyond */
-    min-height: 0 !important;
-    /* Critical: allows flex child to shrink */
-    max-height: calc(500px - 140px) !important;
-    /* 500px total minus header+input height */
-    overflow-y: auto !important;
-    scroll-behavior: smooth !important;
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: 350px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
 }
 
-/* Ensure input stays at bottom */
-#chat-form {
-    flex-shrink: 0 !important;
-}
-
-/* Style the scrollbar */
 #chat-messages::-webkit-scrollbar {
     width: 6px;
 }
@@ -1449,20 +846,25 @@ section::after {
     border-radius: 3px;
 }
 
-#leader-modal.active {
-    opacity: 1;
-    visibility: visible;
+/* ============================================================= */
+/*  FOUNDERS GRID (Specific fix for Big Four section)            */
+/* ============================================================= */
+
+.grid-cols-2 .relative.group {
+    position: relative;
+    z-index: 1;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
 }
 
-#leader-modal.active .modal-content {
-    transform: scale(1);
+.grid-cols-2 .relative.group img {
+    width: 100%;
+    height: 12rem;
+    object-fit: cover;
+    transition: transform 0.5s ease;
 }
 
-#modal-thumbnails button {
-    transition: all 0.3s ease;
-}
-
-#modal-thumbnails button:hover {
+.grid-cols-2 .relative.group:hover img {
     transform: scale(1.1);
-    border-color: var(--gold);
 }
