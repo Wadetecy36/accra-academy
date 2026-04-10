@@ -31,6 +31,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/swiper@11/swiper-bundle.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <style>
         /* RESET & BASE */
         *,
@@ -729,6 +730,119 @@
             transform: translateY(-3px);
         }
 
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #002147 0%, #001529 100%);
+            border: 1px solid rgba(253, 190, 17, 0.3);
+            border-radius: 30px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            display: flex;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: #ff4444;
+            border-color: #ff4444;
+            transform: rotate(90deg);
+        }
+
+        .modal-image {
+            width: 40%;
+            min-height: 400px;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-body {
+            flex: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .modal-quote {
+            font-size: 4rem;
+            color: #FDBE11;
+            opacity: 0.3;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .modal-body h3 {
+            font-family: 'Merriweather', serif;
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-body .role {
+            color: #FDBE11;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+        }
+
+        .modal-body p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
         /* SCROLL TO TOP */
         .scroll-top {
             position: fixed;
@@ -779,6 +893,52 @@
             transition: all 0.3s ease;
         }
 
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .founders-grid {
+                max-width: 100%;
+            }
+
+            .modal-content {
+                flex-direction: column;
+            }
+
+            .modal-image {
+                width: 100%;
+                height: 250px;
+                min-height: auto;
+            }
+
+            .modal-body {
+                padding: 2rem;
+            }
+
+            .leader-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* LOADING ANIMATION */
         .loader {
             position: fixed;
@@ -813,320 +973,6 @@
             50% {
                 transform: scale(1.1);
                 opacity: 0.7;
-            }
-        }
-
-        /* LEADERSHIP SHOWCASE - MISSING STYLES ADDED */
-        .leadership-showcase {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            align-items: center;
-        }
-
-        .leader-image-container {
-            position: relative;
-            border-radius: 24px;
-            overflow: hidden;
-            aspect-ratio: 4/5;
-        }
-
-        .leader-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .leader-image-frame {
-            position: absolute;
-            inset: 0;
-            border: 2px solid rgba(253, 190, 17, 0.3);
-            border-radius: 24px;
-            pointer-events: none;
-        }
-
-        .leader-content {
-            position: relative;
-            padding: 2rem;
-        }
-
-        .leader-quote-icon {
-            font-size: 6rem;
-            color: rgba(253, 190, 17, 0.2);
-            line-height: 1;
-            margin-bottom: -2rem;
-            font-family: serif;
-        }
-
-        .leader-name {
-            font-family: 'Merriweather', serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 0.5rem;
-        }
-
-        .leader-role {
-            display: inline-block;
-            color: #FDBE11;
-            font-weight: 600;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 1.5rem;
-            padding: 0.5rem 1rem;
-            background: rgba(253, 190, 17, 0.1);
-            border: 1px solid rgba(253, 190, 17, 0.3);
-            border-radius: 50px;
-        }
-
-        .leader-message {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 2rem;
-        }
-
-        .leader-nav {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .leader-thumb {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            opacity: 0.5;
-        }
-
-        .leader-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .leader-thumb.active {
-            border-color: #FDBE11;
-            opacity: 1;
-            box-shadow: 0 0 20px rgba(253, 190, 17, 0.3);
-        }
-
-        .leader-thumb:hover {
-            opacity: 1;
-            transform: translateY(-2px);
-        }
-
-        .nav-arrows {
-            display: flex;
-            gap: 0.5rem;
-            margin-left: auto;
-        }
-
-        .nav-arrow {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(253, 190, 17, 0.1);
-            border: 1px solid rgba(253, 190, 17, 0.3);
-            color: #FDBE11;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .nav-arrow:hover {
-            background: #FDBE11;
-            color: #002147;
-            transform: translateY(-2px);
-        }
-
-        .leader-progress {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .progress-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .progress-dot.active {
-            background: #FDBE11;
-            width: 24px;
-            border-radius: 4px;
-        }
-
-        /* MODAL - MISSING STYLES ADDED */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            padding: 2rem;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, rgba(0, 33, 71, 0.95) 0%, rgba(0, 20, 40, 0.98) 100%);
-            border: 1px solid rgba(253, 190, 17, 0.3);
-            border-radius: 24px;
-            max-width: 800px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(253, 190, 17, 0.1);
-            border: 1px solid rgba(253, 190, 17, 0.3);
-            color: #FDBE11;
-            font-size: 1.5rem;
-            cursor: pointer;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .modal-close:hover {
-            background: #FDBE11;
-            color: #002147;
-            transform: rotate(90deg);
-        }
-
-        .modal-image {
-            height: 100%;
-            min-height: 300px;
-        }
-
-        .modal-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 24px 0 0 24px;
-        }
-
-        .modal-body {
-            padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .modal-quote {
-            font-size: 4rem;
-            color: rgba(253, 190, 17, 0.2);
-            line-height: 1;
-            margin-bottom: -1rem;
-            font-family: serif;
-        }
-
-        .modal-body h3 {
-            font-family: 'Merriweather', serif;
-            font-size: 2rem;
-            color: white;
-            margin-bottom: 0.5rem;
-        }
-
-        .modal-body .role {
-            color: #FDBE11;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 1.5rem;
-            font-size: 0.875rem;
-        }
-
-        .modal-body p {
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.8;
-        }
-
-        @media (max-width: 1024px) {
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .mobile-menu-btn {
-                display: flex;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .founders-grid {
-                max-width: 100%;
-            }
-
-            .leadership-showcase {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .leader-name {
-                font-size: 1.75rem;
-            }
-
-            .modal-content {
-                grid-template-columns: 1fr;
-                max-height: 80vh;
-            }
-
-            .modal-image {
-                min-height: 200px;
-                border-radius: 24px 24px 0 0;
-            }
-
-            .modal-image img {
-                border-radius: 24px 24px 0 0;
-            }
-
-            .modal-body {
-                padding: 2rem;
             }
         }
     </style>
@@ -1301,97 +1147,121 @@
             </div>
         </div>
     </section>
-
-    <!-- LEADERSHIP SECTION - REDESIGNED -->
-    <section class="py-24 min-h-screen flex items-center" id="leadership">
+    <!-- TIMELINE SECTION -->
+    <section class="py-24" style="background: rgba(255,255,255,0.02);">
         <div class="container mx-auto px-6">
-
-            <!-- Section Header -->
             <div class="text-center mb-16" data-aos="fade-up">
-                <span class="text-gold font-bold tracking-widest uppercase text-sm mb-4 block">Stewardship</span>
-                <h2 class="text-4xl md:text-6xl font-display font-bold text-white mb-4">Our Leadership</h2>
-                <p class="text-white/60 max-w-2xl mx-auto">Meet the dedicated leaders guiding Accra Academy towards
-                    excellence in education and character development.</p>
+                <span class="text-gold font-bold tracking-widest uppercase text-sm mb-4 block">Our Journey</span>
+                <h2 class="text-4xl md:text-5xl font-display font-bold text-white">Through the Decades</h2>
             </div>
 
-            <!-- Main Showcase -->
-            <div class="leadership-showcase" data-aos="fade-up">
-
-                <!-- Left: Large Image -->
-                <div class="leader-image-container glass-card">
-                    <img id="main-leader-image" src="./assets/headmaster.jpg" alt="Headmaster">
-                    <div class="leader-image-frame"></div>
-
-                    <!-- Decorative elements -->
-                    <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
-                        <div class="bg-royal/90 backdrop-blur-md px-4 py-2 rounded-lg border border-gold/30">
-                            <span class="text-gold text-xs font-bold uppercase tracking-wider">Featured</span>
-                        </div>
-                        <div
-                            class="w-16 h-16 rounded-full bg-gold/20 backdrop-blur-md border-2 border-gold/50 flex items-center justify-center">
-                            <svg class="w-8 h-8 text-gold" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                            </svg>
+            <div class="timeline">
+                <!-- 1931 -->
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content-wrapper">
+                        <div class="timeline-content glass-card">
+                            <span class="timeline-year">1931</span>
+                            <h3 class="text-2xl font-bold text-gold mb-3">The Foundation</h3>
+                            <p class="text-white/70">Founded on July 20th in Ellen House, James Town with just 19
+                                students and a vision for excellence.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right: Content -->
-                <div class="leader-content">
-                    <div class="leader-quote-icon">❝</div>
-
-                    <h3 class="leader-name" id="main-leader-name">Mr. Eric Ebo Sey</h3>
-                    <span class="leader-role" id="main-leader-role">Headmaster</span>
-
-                    <p class="leader-message" id="main-leader-message">
-                        Accra Academy, established in 1931, is a distinguished educational institution in Accra, Ghana,
-                        boasting 226 staff and a student body of 4,381. Evolving from a private institution to a
-                        Government-Assisted School in 1950, we prioritize academic excellence, personal growth, and
-                        character development. Join us in nurturing future leaders who excel academically and impact the
-                        world positively.
-                    </p>
-
-                    <!-- Thumbnail Navigation -->
-                    <div class="leader-nav">
-                        <div class="leader-thumb active" data-index="0" onclick="switchLeader(0)">
-                            <img src="./assets/headmaster.jpg" alt="Headmaster">
-                        </div>
-                        <div class="leader-thumb" data-index="1" onclick="switchLeader(1)">
-                            <img src="./assets/administration.jpg" alt="Administration">
-                        </div>
-                        <div class="leader-thumb" data-index="2" onclick="switchLeader(2)">
-                            <img src="./assets/academics.jpg" alt="Academic">
-                        </div>
-                        <div class="leader-thumb" data-index="3" onclick="switchLeader(3)">
-                            <img src="./assets/domestic.jpg" alt="Domestic">
-                        </div>
-
-                        <div class="nav-arrows">
-                            <button class="nav-arrow" onclick="prevLeader()">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 19l-7-7 7-7" />
-                                </svg>
-                            </button>
-                            <button class="nav-arrow" onclick="nextLeader()">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7" />
-                                </svg>
-                            </button>
+                <!-- 1961 -->
+                <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content-wrapper">
+                        <div class="timeline-content glass-card">
+                            <span class="timeline-year">1961</span>
+                            <h3 class="text-2xl font-bold text-gold mb-3">The Great Migration</h3>
+                            <p class="text-white/70">Moved from James Town to the current spacious campus at Bubuashie,
+                                marking a new era of growth.</p>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Progress Dots -->
-                    <div class="leader-progress">
-                        <div class="progress-dot active" data-index="0" onclick="switchLeader(0)"></div>
-                        <div class="progress-dot" data-index="1" onclick="switchLeader(1)"></div>
-                        <div class="progress-dot" data-index="2" onclick="switchLeader(2)"></div>
-                        <div class="progress-dot" data-index="3" onclick="switchLeader(3)"></div>
+                <!-- 2003 -->
+                <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content-wrapper">
+                        <div class="timeline-content glass-card">
+                            <span class="timeline-year">2003</span>
+                            <h3 class="text-2xl font-bold text-gold mb-3">African Excellence</h3>
+                            <p class="text-white/70">Ranked <span class="text-gold font-bold">8th Best High School in
+                                    Africa</span> by the Africa Almanac.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Today -->
+                <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content-wrapper">
+                        <div class="timeline-content glass-card" style="border-color: rgba(253,190,17,0.5);">
+                            <span class="timeline-year">Today</span>
+                            <h3 class="text-2xl font-bold text-gold mb-3">Leading Innovation</h3>
+                            <p class="text-white/70">Pioneering Robotics, AI Clubs, and modern Sports Infrastructure
+                                while maintaining academic excellence.</p>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
 
+
+    <!-- LEADERSHIP -->
+    <section class="py-24" id="leadership">
+        <div class="container mx-auto px-6">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Stewardship</span>
+                <h2 class="section-title">Our Leadership</h2>
+                <p class="text-white/60 mt-4">Click on any card to read their message</p>
+            </div>
+
+            <div class="leader-grid">
+                <div class="leader-profile glass-card" data-leader="0" data-aos="fade-up">
+                    <div class="leader-image">
+                        <img src="./assets/headmaster.jpg" alt="Headmaster">
+                    </div>
+                    <div class="leader-info">
+                        <h3>Mr. Eric Ebo Sey</h3>
+                        <p>Headmaster</p>
+                    </div>
+                </div>
+
+                <div class="leader-profile glass-card" data-leader="1" data-aos="fade-up" data-aos-delay="100">
+                    <div class="leader-image">
+                        <img src="./assets/administration.jpg" alt="Administration">
+                    </div>
+                    <div class="leader-info">
+                        <h3>Mr. Paul Kofi Yesu Dadzie</h3>
+                        <p>Assistant Headmaster (Admin)</p>
+                    </div>
+                </div>
+
+                <div class="leader-profile glass-card" data-leader="2" data-aos="fade-up" data-aos-delay="200">
+                    <div class="leader-image">
+                        <img src="./assets/academics.jpg" alt="Academic">
+                    </div>
+                    <div class="leader-info">
+                        <h3>Mr. Isaac Tweneboah</h3>
+                        <p>Assistant Headmaster (Academic)</p>
+                    </div>
+                </div>
+
+                <div class="leader-profile glass-card" data-leader="3" data-aos="fade-up" data-aos-delay="300">
+                    <div class="leader-image">
+                        <img src="./assets/domestic.jpg" alt="Domestic">
+                    </div>
+                    <div class="leader-info">
+                        <h3>Mr. William Kwame Asun</h3>
+                        <p>Assistant Headmaster (Domestic)</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1632,103 +1502,14 @@
     <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <!-- SCRIPTS -->
-    <script src="./js/background-3d.js"></script>
-    <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
     <script>
         // Leader Data
-        const leaders = [
-            {
-                name: "Mr. Eric Ebo Sey",
-                role: "Headmaster",
-                image: "./assets/headmaster.jpg",
-                message: "Accra Academy, established in 1931, is a distinguished educational institution in Accra, Ghana, boasting 226 staff and a student body of 4,381. Evolving from a private institution to a Government-Assisted School in 1950, we prioritize academic excellence, personal growth, and character development. Join us in nurturing future leaders who excel academically and impact the world positively."
-            },
-            {
-                name: "Mr. Paul Kofi Yesu Dadzie",
-                role: "Assistant Headmaster (Administration)",
-                image: "./assets/administration.jpg",
-                message: "As the Assistant Headmaster Administration, I extend a warm welcome to our esteemed community. At the heart of our institution is a commitment to efficient and supportive administration, ensuring a seamless experience for students and staff alike. From admissions to facilities management, our dedicated team strives for excellence in every administrative process."
-            },
-            {
-                name: "Mr. Isaac Tweneboah",
-                role: "Assistant Headmaster (Academic)",
-                image: "./assets/academics.jpg",
-                message: "Welcome to Accra Academy! As the Assistant Headmaster Academic, I am thrilled to embark on this educational journey with you. Our commitment to academic excellence is unwavering, and we strive to create an environment that nurtures not only knowledge but also critical thinking and personal growth. Explore our diverse academic programs where innovation meets tradition."
-            },
-            {
-                name: "Mr. William Kwame Asun",
-                role: "Assistant Headmaster (Domestic/Welfare)",
-                image: "./assets/domestic.jpg",
-                message: "I am honored to welcome you as the Assistant Headmaster Domestic/Welfare. Our focus extends beyond the classroom, ensuring a supportive and nurturing environment for every student. From dormitory life to overall well-being, we prioritize the domestic and welfare aspects of your experience at Accra Academy."
-            }
+        const leaderData = [
+            { name: "Mr. Eric Ebo Sey", role: "Headmaster", img: "./assets/headmaster.jpg", msg: "Accra Academy, established in 1931, is a distinguished educational institution in Accra, Ghana, boasting 226 staff and a student body of 4,381. We prioritize academic excellence, personal growth, and character development. Join us in nurturing future leaders." },
+            { name: "Mr. Paul Kofi Yesu Dadzie", role: "Assistant Headmaster (Administration)", img: "./assets/administration.jpg", msg: "As the Assistant Headmaster Administration, I extend a warm welcome. Our commitment to efficient administration ensures a seamless experience for students and staff alike." },
+            { name: "Mr. Isaac Tweneboah", role: "Assistant Headmaster (Academic)", img: "./assets/academics.jpg", msg: "Welcome! Our commitment to academic excellence is unwavering. We create an environment that nurtures not only knowledge but also critical thinking and personal growth." },
+            { name: "Mr. William Kwame Asun", role: "Assistant Headmaster (Domestic/Welfare)", img: "./assets/domestic.jpg", msg: "Our focus extends beyond the classroom. We ensure a supportive environment for every student, from dormitory life to overall well-being." }
         ];
-
-        let currentLeader = 0;
-
-        function switchLeader(index) {
-            currentLeader = index;
-            updateLeaderDisplay();
-        }
-
-        function nextLeader() {
-            currentLeader = (currentLeader + 1) % leaders.length;
-            updateLeaderDisplay();
-        }
-
-        function prevLeader() {
-            currentLeader = (currentLeader - 1 + leaders.length) % leaders.length;
-            updateLeaderDisplay();
-        }
-
-        function updateLeaderDisplay() {
-            const leader = leaders[currentLeader];
-
-            // Update image
-            const imgEl = document.getElementById('main-leader-image');
-            if (imgEl) imgEl.src = leader.image;
-
-            // Update text with fade effect
-            const nameEl = document.getElementById('main-leader-name');
-            const roleEl = document.getElementById('main-leader-role');
-            const msgEl = document.getElementById('main-leader-message');
-
-            if (nameEl) {
-                nameEl.style.opacity = '0';
-                setTimeout(() => {
-                    nameEl.textContent = leader.name;
-                    nameEl.style.opacity = '1';
-                }, 200);
-            }
-
-            if (roleEl) {
-                roleEl.style.opacity = '0';
-                setTimeout(() => {
-                    roleEl.textContent = leader.role;
-                    roleEl.style.opacity = '1';
-                }, 200);
-            }
-
-            if (msgEl) {
-                msgEl.style.opacity = '0';
-                setTimeout(() => {
-                    msgEl.textContent = leader.message;
-                    msgEl.style.opacity = '1';
-                }, 200);
-            }
-
-            // Update thumbnails
-            document.querySelectorAll('.leader-thumb').forEach((thumb, idx) => {
-                thumb.classList.toggle('active', idx === currentLeader);
-            });
-
-            // Update progress dots
-            document.querySelectorAll('.progress-dot').forEach((dot, idx) => {
-                dot.classList.toggle('active', idx === currentLeader);
-            });
-        }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
@@ -1784,37 +1565,39 @@
                 mobileMenu.classList.toggle('translate-x-full');
             });
 
-            // Modal functionality - FIX: Define modal variable before use
+            // Leader modal
             const modal = document.getElementById('leader-modal');
+            const modalImg = document.getElementById('modal-img');
+            const modalName = document.getElementById('modal-name');
+            const modalRole = document.getElementById('modal-role');
+            const modalMsg = document.getElementById('modal-msg');
 
-            if (modal) {
-                document.querySelector('.modal-close').addEventListener('click', closeModal);
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) closeModal();
+            document.querySelectorAll('.leader-profile').forEach((card, idx) => {
+                card.addEventListener('click', () => {
+                    const data = leaderData[idx];
+                    modalImg.src = data.img;
+                    modalName.textContent = data.name;
+                    modalRole.textContent = data.role;
+                    modalMsg.textContent = data.msg;
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
                 });
-            }
+            });
+
+            document.querySelector('.modal-close').addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
 
             function closeModal() {
-                if (modal) {
-                    modal.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
             }
 
             // Theme toggle
             document.getElementById('theme-toggle').addEventListener('click', () => {
                 document.documentElement.classList.toggle('dark');
             });
-
-            // Auto-rotate leaders every 6 seconds
-            setInterval(() => {
-                nextLeader();
-            }, 6000);
-        });
-
-        // Add transition styles dynamically
-        document.querySelectorAll('#main-leader-name, #main-leader-role, #main-leader-message').forEach(el => {
-            if (el) el.style.transition = 'opacity 0.3s ease';
         });
     </script>
 </body>
