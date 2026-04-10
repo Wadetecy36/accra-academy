@@ -2,9 +2,9 @@
 /*  js/script.js – SENIOR DEV MODE: CLEAN & CONFLICT-FREE        */
 /* ============================================================= */
 
-/* ============================================ */
-/*    LEADERSHIP DATA (S.O.T)                    */
-/* ============================================ */
+/* ----------------------------------------------------------
+   LEADERSHIP SYSTEM - CLEAN IMPLEMENTATION
+---------------------------------------------------------- */
 const leaderData = [
     {
         name: "Mr. Eric Ebo Sey",
@@ -31,6 +31,186 @@ const leaderData = [
         msg: "I am honored to welcome you as the Assistant Headmaster Domestic/Welfare. Our focus extends beyond the classroom, ensuring a supportive and nurturing environment for every student. From dormitory life to overall well-being, we prioritize the domestic and welfare aspects of your experience. Thank you for being part of the Accra Academy family."
     }
 ];
+
+// State
+let currentLeaderIdx = 0;
+
+// Helper
+function getEl(id) {
+    return document.getElementById(id);
+}
+
+// Update Main Section
+function updateMainLeader(idx) {
+    currentLeaderIdx = idx;
+    const data = leaderData[idx];
+
+    const img = getEl('main-leader-img');
+    const name = getEl('main-leader-name');
+    const role = getEl('main-leader-role');
+    const msg = getEl('main-leader-msg');
+
+    if (img) {
+        img.style.opacity = '0.5';
+        setTimeout(() => {
+            img.src = data.img;
+            img.style.opacity = '1';
+        }, 200);
+    }
+    if (name) name.textContent = data.name;
+    if (role) role.textContent = data.role;
+    if (msg) msg.textContent = data.msg;
+
+    renderMainThumbnails();
+}
+
+// Render Main Thumbnails
+function renderMainThumbnails() {
+    const container = getEl('main-leader-thumbnails');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    leaderData.forEach((leader, i) => {
+        const btn = document.createElement('button');
+        const isActive = i === currentLeaderIdx;
+
+        btn.style.cssText = `
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid ${isActive ? '#FDBE11' : 'rgba(255,255,255,0.2)'};
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: ${isActive ? '1' : '0.6'};
+            transform: ${isActive ? 'scale(1.1)' : 'scale(1)'};
+            box-shadow: ${isActive ? '0 0 15px rgba(253,190,17,0.4)' : 'none'};
+            padding: 0;
+            background: transparent;
+            flex-shrink: 0;
+        `;
+
+        btn.innerHTML = `<img src="${leader.img}" alt="${leader.name}" style="width:100%;height:100%;object-fit:cover;pointer-events:none;">`;
+
+        btn.onclick = function (e) {
+            e.stopPropagation();
+            updateMainLeader(i);
+        };
+
+        container.appendChild(btn);
+    });
+}
+
+// Open Modal
+function openLeaderModal(idx) {
+    console.log('Opening modal for index:', idx);
+    currentLeaderIdx = idx;
+    updateModalContent(idx);
+
+    const modal = getEl('leader-modal');
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// Update Modal Content
+function updateModalContent(idx) {
+    const data = leaderData[idx];
+
+    const img = getEl('modal-img');
+    const name = getEl('modal-name');
+    const role = getEl('modal-role');
+    const msg = getEl('modal-msg');
+
+    if (img) {
+        img.style.opacity = '0';
+        setTimeout(() => {
+            img.src = data.img;
+            img.style.opacity = '1';
+        }, 150);
+    }
+    if (name) name.textContent = data.name;
+    if (role) role.textContent = data.role;
+    if (msg) msg.textContent = data.msg;
+
+    renderModalThumbnails();
+}
+
+// Render Modal Thumbnails
+function renderModalThumbnails() {
+    const container = getEl('modal-thumbnails');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    leaderData.forEach((leader, i) => {
+        const btn = document.createElement('button');
+        const isActive = i === currentLeaderIdx;
+
+        btn.className = isActive ? 'active' : '';
+        btn.innerHTML = `<img src="${leader.img}" alt="${leader.name}">`;
+
+        btn.onclick = function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            console.log('Clicked thumbnail:', i);
+            updateModalContent(i);
+            return false;
+        };
+
+        container.appendChild(btn);
+    });
+}
+
+// Close Modal
+function closeLeaderModal() {
+    console.log('Closing modal');
+    const modal = getEl('leader-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    // Sync main view
+    updateMainLeader(currentLeaderIdx);
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('Initializing Leadership...');
+
+    // Set up main view
+    updateMainLeader(0);
+
+    // Set up main button
+    const mainBtn = getEl('main-leader-btn');
+    if (mainBtn) {
+        mainBtn.onclick = function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openLeaderModal(currentLeaderIdx);
+            return false;
+        };
+    }
+
+    // Set up modal backdrop click
+    const modal = getEl('leader-modal');
+    if (modal) {
+        modal.onclick = function (e) {
+            if (e.target === modal) {
+                closeLeaderModal();
+            }
+        };
+    }
+
+    // Escape key to close
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            closeLeaderModal();
+        }
+    });
+});
 
 /* ----------------------------------------------------------
    LEADERSHIP ENGINE (CLEAN REBUILD)

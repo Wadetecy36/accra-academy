@@ -884,12 +884,7 @@
         </div>
     </footer>
 
-    <!-- SCROLL TOP -->
-    <button id="scrollTop" title="Back to top">
-        <svg class="scroll-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
-        </svg>
-    </button>
+
 
     <!-- =========================================
        AI CHATBOT WIDGET
@@ -975,56 +970,6 @@
     </div>
 
 
-    <!-- =========================================
-       MODAL - MOVED OUTSIDE CHAT WIDGET (FIXED)
-       ========================================= -->
-    <div id="leader-modal"
-        class="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm opacity-0 invisible transition-all duration-300">
-        <div class="modal-content bg-royal w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row relative transform scale-95 transition-transform duration-300"
-            onclick="event.stopPropagation()">
-
-            <!-- Close Button -->
-            <button onclick="closeLeaderModal()"
-                class="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-white/10 hover:bg-red-500 flex items-center justify-center text-white transition-colors border border-white/20">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-
-            <!-- Image Side -->
-            <div class="md:w-2/5 h-64 md:h-auto relative">
-                <img id="modal-img" src="" class="w-full h-full object-cover" alt="Leader">
-                <div class="absolute inset-0 bg-gradient-to-r from-transparent to-royal/90 md:block hidden"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-royal to-transparent md:hidden"></div>
-            </div>
-
-            <!-- Content Side -->
-            <div class="md:w-3/5 p-8 md:p-12 flex flex-col justify-center text-white relative">
-                <!-- Watermark -->
-                <img src="./assets/crest.png" class="absolute inset-0 m-auto w-64 opacity-[0.03] pointer-events-none">
-
-                <div class="text-gold text-5xl mb-4 font-serif opacity-30">❝</div>
-
-                <h3 id="modal-name" class="text-3xl md:text-4xl font-display font-bold mb-2">Name</h3>
-                <p id="modal-role" class="text-gold font-bold uppercase tracking-widest text-xs mb-6">Role</p>
-
-                <div class="h-px w-16 bg-gold/40 mb-6"></div>
-
-                <p id="modal-msg" class="text-gray-300 leading-relaxed italic text-lg mb-8 max-h-60 overflow-y-auto">
-                    Message...
-                </p>
-
-                <!-- Thumbnails -->
-                <div class="mt-auto pt-6 border-t border-white/10">
-                    <span class="text-xs uppercase tracking-widest text-gray-500 font-bold block mb-3">Switch
-                        Leader</span>
-                    <div id="modal-thumbnails" class="flex gap-3 flex-wrap">
-                        <!-- JS Injected -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- BACKGROUND AUDIO CONTROL -->
     <div id="audio-control" class="fixed bottom-6 left-6 z-50 flex items-center gap-3">
@@ -1049,6 +994,134 @@
         </button>
     </div>
 
+    <!-- =========================================
+       LEADER MODAL - MUST BE AT ROOT LEVEL
+       ========================================= -->
+    <div id="leader-modal"
+        style="position: fixed; inset: 0; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 1rem; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); opacity: 0; visibility: hidden; transition: all 0.3s ease;">
+
+        <div class="modal-inner"
+            style="background: #002147; width: 100%; max-width: 900px; border-radius: 24px; overflow: hidden; display: flex; flex-direction: row; position: relative; transform: scale(0.95); transition: transform 0.3s ease; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 1px solid rgba(253,190,17,0.3);">
+
+            <!-- Close Button -->
+            <button onclick="closeLeaderModal()"
+                style="position: absolute; top: 16px; right: 16px; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; font-size: 24px; line-height: 1; transition: all 0.2s;">
+                ×
+            </button>
+
+            <!-- Image Side (40%) -->
+            <div style="width: 40%; position: relative; min-height: 500px;">
+                <img id="modal-img" src=""
+                    style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;" alt="Leader">
+                <div
+                    style="position: absolute; inset: 0; background: linear-gradient(to right, transparent 60%, #002147);">
+                </div>
+            </div>
+
+            <!-- Content Side (60%) -->
+            <div
+                style="width: 60%; padding: 48px; display: flex; flex-direction: column; justify-content: center; color: white; position: relative;">
+
+                <!-- Watermark -->
+                <img src="./assets/crest.png"
+                    style="position: absolute; inset: 0; margin: auto; width: 200px; opacity: 0.03; pointer-events: none;"
+                    alt="">
+
+                <div style="color: #FDBE11; font-size: 48px; margin-bottom: 16px; opacity: 0.5;">❝</div>
+
+                <h3 id="modal-name"
+                    style="font-size: 32px; font-weight: bold; margin-bottom: 8px; font-family: 'Merriweather', serif;">
+                    Name</h3>
+                <p id="modal-role"
+                    style="color: #FDBE11; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; font-size: 12px; margin-bottom: 24px;">
+                    Role</p>
+
+                <div style="width: 64px; height: 2px; background: rgba(253,190,17,0.4); margin-bottom: 24px;"></div>
+
+                <p id="modal-msg"
+                    style="color: #cbd5e1; line-height: 1.6; font-size: 18px; font-style: italic; margin-bottom: 32px;">
+                    Message</p>
+
+                <!-- Thumbnails -->
+                <div style="margin-top: auto; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <span
+                        style="font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #64748b; font-weight: bold; display: block; margin-bottom: 12px;">Switch
+                        Leader</span>
+                    <div id="modal-thumbnails" style="display: flex; gap: 12px;">
+                        <!-- Thumbnails injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Responsive Styles for Modal -->
+    <style>
+        @media (max-width: 768px) {
+            #leader-modal .modal-inner {
+                flex-direction: column !important;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            #leader-modal>div>div:first-child {
+                width: 100% !important;
+                height: 250px !important;
+                min-height: 250px !important;
+            }
+
+            #leader-modal>div>div:last-child {
+                width: 100% !important;
+                padding: 24px !important;
+            }
+        }
+
+        #leader-modal.active {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        #leader-modal.active .modal-inner {
+            transform: scale(1) !important;
+        }
+
+        #modal-thumbnails button {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+            background: transparent;
+        }
+
+        #modal-thumbnails button.active {
+            border-color: #FDBE11;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(253, 190, 17, 0.4);
+        }
+
+        #modal-thumbnails button:hover {
+            border-color: #FDBE11;
+            opacity: 1;
+        }
+
+        #modal-thumbnails button img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+
+
+    <!-- SCROLL TOP -->
+    <button id="scrollTop" title="Back to top">
+        <svg class="scroll-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
     <!-- SCRIPTS -->
     <!-- THREE.JS MUST LOAD FIRST -->
 
