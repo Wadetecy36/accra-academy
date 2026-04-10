@@ -312,85 +312,135 @@
             transform: translateY(0);
         }
 
-        /* TIMELINE */
+        /* TIMELINE - FIXED VERSION */
         .timeline {
             position: relative;
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
+            padding: 2rem 0;
         }
 
         .timeline::before {
             content: '';
             position: absolute;
             left: 50%;
-            transform: translateX(-50%);
+            top: 0;
+            bottom: 0;
             width: 2px;
-            height: 100%;
-            background: linear-gradient(to bottom,
-                    transparent,
-                    rgba(253, 190, 17, 0.8),
-                    rgba(253, 190, 17, 0.8),
-                    transparent);
-            box-shadow: 0 0 20px rgba(253, 190, 17, 0.5);
+            background: linear-gradient(to bottom, transparent, rgba(253, 190, 17, 0.8) 10%, rgba(253, 190, 17, 0.8) 90%, transparent);
+            box-shadow: 0 0 15px rgba(253, 190, 17, 0.4);
+            transform: translateX(-50%);
         }
 
         .timeline-item {
-            display: flex;
-            justify-content: flex-end;
-            padding-right: 50%;
             position: relative;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
+            width: 100%;
         }
 
-        .timeline-item:nth-child(even) {
-            justify-content: flex-start;
-            padding-right: 0;
-            padding-left: 50%;
+        /* Left side items */
+        .timeline-item:nth-child(odd) .timeline-content-wrapper {
+            margin-right: 50%;
+            padding-right: 3rem;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: auto;
+        }
+
+        /* Right side items */
+        .timeline-item:nth-child(even) .timeline-content-wrapper {
+            margin-left: 50%;
+            padding-left: 3rem;
+            text-align: left;
         }
 
         .timeline-content {
             width: 90%;
-            padding: 2rem;
+            max-width: 380px;
+            padding: 1.5rem;
             position: relative;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 24px;
-            height: 24px;
-            background: #002147;
-            border: 3px solid #FDBE11;
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(253, 190, 17, 0.8);
-            z-index: 10;
-        }
-
-        .timeline-item:nth-child(even) .timeline-content {
-            text-align: left;
-        }
-
-        .timeline-item:not(:nth-child(even)) .timeline-content {
-            text-align: right;
+            display: inline-block;
         }
 
         .timeline-year {
             font-family: 'Merriweather', serif;
             font-size: 3rem;
             font-weight: 900;
-            color: rgba(253, 190, 17, 0.3);
+            color: rgba(253, 190, 17, 0.2);
+            line-height: 1;
             position: absolute;
             top: -10px;
-            line-height: 1;
+            z-index: 0;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-year {
+            right: 10px;
         }
 
         .timeline-item:nth-child(even) .timeline-year {
-            left: 20px;
+            left: 10px;
         }
 
-        .timeline-item:not(:nth-child(even)) .timeline-year {
-            right: 20px;
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 1.5rem;
+            width: 20px;
+            height: 20px;
+            background: #002147;
+            border: 3px solid #FDBE11;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(253, 190, 17, 0.6);
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .timeline-item:last-child .timeline-dot {
+            background: #FDBE11;
+            border-color: #002147;
+            box-shadow: 0 0 25px rgba(253, 190, 17, 1);
+        }
+
+        .timeline-content h3,
+        .timeline-content p {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-content-wrapper,
+            .timeline-item:nth-child(even) .timeline-content-wrapper {
+                margin-left: 50px;
+                margin-right: 0;
+                padding-left: 1rem;
+                padding-right: 0;
+                text-align: left;
+            }
+
+            .timeline-content {
+                width: 100%;
+                max-width: none;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+
+            .timeline-year {
+                position: relative;
+                display: block;
+                margin-bottom: 0.5rem;
+                top: 0;
+                left: 0 !important;
+                right: auto !important;
+            }
         }
 
         /* CARDS */
@@ -849,33 +899,7 @@
                 grid-template-columns: 1fr 1fr;
             }
 
-            .timeline::before {
-                left: 30px;
-            }
 
-            .timeline-item,
-            .timeline-item:nth-child(even) {
-                justify-content: flex-start;
-                padding-left: 80px;
-                padding-right: 0;
-            }
-
-            .timeline-dot {
-                left: 30px;
-                transform: translateX(-50%);
-            }
-
-            .timeline-content {
-                text-align: left !important;
-                width: 100%;
-            }
-
-            .timeline-year {
-                position: relative !important;
-                left: 0 !important;
-                right: auto !important;
-                margin-bottom: 1rem;
-            }
         }
 
         @media (max-width: 768px) {
@@ -1123,58 +1147,70 @@
             </div>
         </div>
     </section>
-
-    <!-- TIMELINE -->
-    <section class="py-24 glass-panel">
+    <!-- TIMELINE SECTION -->
+    <section class="py-24" style="background: rgba(255,255,255,0.02);">
         <div class="container mx-auto px-6">
-            <div class="section-header" data-aos="fade-up">
-                <span class="section-label">Our Journey</span>
-                <h2 class="section-title">Through the Decades</h2>
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-gold font-bold tracking-widest uppercase text-sm mb-4 block">Our Journey</span>
+                <h2 class="text-4xl md:text-5xl font-display font-bold text-white">Through the Decades</h2>
             </div>
 
             <div class="timeline">
+                <!-- 1931 -->
                 <div class="timeline-item" data-aos="fade-up">
                     <div class="timeline-dot"></div>
-                    <div class="timeline-content glass-card">
-                        <span class="timeline-year">1931</span>
-                        <h3 class="text-2xl font-bold text-gold mb-3">The Foundation</h3>
-                        <p class="text-white/70">Founded on July 20th in Ellen House, James Town with just 19 students
-                            and a vision for excellence.</p>
+                    <div class="timeline-content-wrapper">
+                        <div class="timeline-content glass-card">
+                            <span class="timeline-year">1931</span>
+                            <h3 class="text-2xl font-bold text-gold mb-3">The Foundation</h3>
+                            <p class="text-white/70">Founded on July 20th in Ellen House, James Town with just 19
+                                students and a vision for excellence.</p>
+                        </div>
                     </div>
                 </div>
 
+                <!-- 1961 -->
                 <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
                     <div class="timeline-dot"></div>
-                    <div class="timeline-content glass-card">
-                        <span class="timeline-year">1961</span>
-                        <h3 class="text-2xl font-bold text-gold mb-3">The Great Migration</h3>
-                        <p class="text-white/70">Moved from James Town to the current spacious campus at Bubuashie,
-                            marking a new era of growth.</p>
+                    <div class="timeline-content-wrapper">
+                        <div class="timeline-content glass-card">
+                            <span class="timeline-year">1961</span>
+                            <h3 class="text-2xl font-bold text-gold mb-3">The Great Migration</h3>
+                            <p class="text-white/70">Moved from James Town to the current spacious campus at Bubuashie,
+                                marking a new era of growth.</p>
+                        </div>
                     </div>
                 </div>
 
+                <!-- 2003 -->
                 <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
                     <div class="timeline-dot"></div>
-                    <div class="timeline-content glass-card">
-                        <span class="timeline-year">2003</span>
-                        <h3 class="text-2xl font-bold text-gold mb-3">African Excellence</h3>
-                        <p class="text-white/70">Ranked <span class="text-gold font-bold">8th Best High School in
-                                Africa</span> by the Africa Almanac.</p>
+                    <div class="timeline-content-wrapper">
+                        <div class="timeline-content glass-card">
+                            <span class="timeline-year">2003</span>
+                            <h3 class="text-2xl font-bold text-gold mb-3">African Excellence</h3>
+                            <p class="text-white/70">Ranked <span class="text-gold font-bold">8th Best High School in
+                                    Africa</span> by the Africa Almanac.</p>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Today -->
                 <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
-                    <div class="timeline-dot" style="background: #FDBE11; border-color: #002147;"></div>
-                    <div class="timeline-content glass-card border-gold/50">
-                        <span class="timeline-year">Today</span>
-                        <h3 class="text-2xl font-bold text-gold mb-3">Leading Innovation</h3>
-                        <p class="text-white/70">Pioneering Robotics, AI Clubs, and modern Sports Infrastructure while
-                            maintaining academic excellence.</p>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content-wrapper">
+                        <div class="timeline-content glass-card" style="border-color: rgba(253,190,17,0.5);">
+                            <span class="timeline-year">Today</span>
+                            <h3 class="text-2xl font-bold text-gold mb-3">Leading Innovation</h3>
+                            <p class="text-white/70">Pioneering Robotics, AI Clubs, and modern Sports Infrastructure
+                                while maintaining academic excellence.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
 
     <!-- LEADERSHIP -->
     <section class="py-24" id="leadership">
